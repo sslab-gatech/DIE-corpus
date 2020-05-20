@@ -1,0 +1,308 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2013 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+var X = 1.1;
+try { if (Inst0 <= 1000 && typeof (X) != "undefined") {_RecordType("<1634,1635,28>",(X)); Inst0++; } } catch(e) {}
+var K = 0.5;
+try { if (Inst1 <= 1000 && typeof (K) != "undefined") {_RecordType("<1647,1648,29>",(K)); Inst1++; } } catch(e) {}
+var O = 0;
+try { if (Inst2 <= 1000 && typeof (O) != "undefined") {_RecordType("<1660,1661,30>",(O)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (Float64Array) != "undefined") {_RecordType("<1684,1696,31>",(Float64Array)); Inst4++; } } catch(e) {}
+var result = new Float64Array(2);
+try { if (Inst3 <= 1000 && typeof (result) != "undefined") {_RecordType("<1671,1677,31>",(result)); Inst3++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (spill) != "undefined") {_RecordType("<1711,1716,33>",(spill)); Inst5++; } } catch(e) {}
+function spill() {
+try { if (Inst6 <= 1000 && typeof (e) != "undefined") {_RecordType("<1746,1747,36>",(e)); Inst6++; } } catch(e) {}
+  try {
+    ;
+  } catch (e) {
+    ;
+  }
+}
+
+try { if (Inst7 <= 1000 && typeof (buggy) != "undefined") {_RecordType("<1773,1778,41>",(buggy)); Inst7++; } } catch(e) {}
+function buggy() {
+try { if (Inst9 <= 1000 && typeof (X) != "undefined") {_RecordType("<1793,1794,42>",(X)); Inst9++; } } catch(e) {}
+  var v = X;
+try { if (Inst8 <= 1000 && typeof (v) != "undefined") {_RecordType("<1789,1790,42>",(v)); Inst8++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (v) != "undefined") {_RecordType("<1809,1810,43>",(v)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (K) != "undefined") {_RecordType("<1813,1814,43>",(K)); Inst12++; } } catch(e) {}
+  var phi1 = v + K;
+try { if (Inst10 <= 1000 && typeof (phi1) != "undefined") {_RecordType("<1802,1806,43>",(phi1)); Inst10++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (v) != "undefined") {_RecordType("<1829,1830,44>",(v)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (K) != "undefined") {_RecordType("<1833,1834,44>",(K)); Inst15++; } } catch(e) {}
+  var phi2 = v - K;
+try { if (Inst13 <= 1000 && typeof (phi2) != "undefined") {_RecordType("<1822,1826,44>",(phi2)); Inst13++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (spill) != "undefined") {_RecordType("<1838,1843,45>",(spill)); Inst16++; } } catch(e) {}
+  spill(); // At this point initial values for phi1 and phi2 are spilled.
+
+try { if (Inst18 <= 1000 && typeof (v) != "undefined") {_RecordType("<1924,1925,47>",(v)); Inst18++; } } catch(e) {}
+  var xmm1 = v;
+try { if (Inst17 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<1917,1921,47>",(xmm1)); Inst17++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (v) != "undefined") {_RecordType("<1940,1941,48>",(v)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (v) != "undefined") {_RecordType("<1944,1945,48>",(v)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (v) != "undefined") {_RecordType("<1948,1949,48>",(v)); Inst22++; } } catch(e) {}
+  var xmm2 = v * v * v;
+try { if (Inst19 <= 1000 && typeof (xmm2) != "undefined") {_RecordType("<1933,1937,48>",(xmm2)); Inst19++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (v) != "undefined") {_RecordType("<1964,1965,49>",(v)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (v) != "undefined") {_RecordType("<1968,1969,49>",(v)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (v) != "undefined") {_RecordType("<1972,1973,49>",(v)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (v) != "undefined") {_RecordType("<1976,1977,49>",(v)); Inst27++; } } catch(e) {}
+  var xmm3 = v * v * v * v;
+try { if (Inst23 <= 1000 && typeof (xmm3) != "undefined") {_RecordType("<1957,1961,49>",(xmm3)); Inst23++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (v) != "undefined") {_RecordType("<1992,1993,50>",(v)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (v) != "undefined") {_RecordType("<1996,1997,50>",(v)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (v) != "undefined") {_RecordType("<2000,2001,50>",(v)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (v) != "undefined") {_RecordType("<2004,2005,50>",(v)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (v) != "undefined") {_RecordType("<2008,2009,50>",(v)); Inst33++; } } catch(e) {}
+  var xmm4 = v * v * v * v * v;
+try { if (Inst28 <= 1000 && typeof (xmm4) != "undefined") {_RecordType("<1985,1989,50>",(xmm4)); Inst28++; } } catch(e) {}
+try { if (Inst35 <= 1000 && typeof (v) != "undefined") {_RecordType("<2024,2025,51>",(v)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (v) != "undefined") {_RecordType("<2028,2029,51>",(v)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (v) != "undefined") {_RecordType("<2032,2033,51>",(v)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (v) != "undefined") {_RecordType("<2036,2037,51>",(v)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (v) != "undefined") {_RecordType("<2040,2041,51>",(v)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (v) != "undefined") {_RecordType("<2044,2045,51>",(v)); Inst40++; } } catch(e) {}
+  var xmm5 = v * v * v * v * v * v;
+try { if (Inst34 <= 1000 && typeof (xmm5) != "undefined") {_RecordType("<2017,2021,51>",(xmm5)); Inst34++; } } catch(e) {}
+try { if (Inst42 <= 1000 && typeof (v) != "undefined") {_RecordType("<2060,2061,52>",(v)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (v) != "undefined") {_RecordType("<2064,2065,52>",(v)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (v) != "undefined") {_RecordType("<2068,2069,52>",(v)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (v) != "undefined") {_RecordType("<2072,2073,52>",(v)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (v) != "undefined") {_RecordType("<2076,2077,52>",(v)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (v) != "undefined") {_RecordType("<2080,2081,52>",(v)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (v) != "undefined") {_RecordType("<2084,2085,52>",(v)); Inst48++; } } catch(e) {}
+  var xmm6 = v * v * v * v * v * v * v;
+try { if (Inst41 <= 1000 && typeof (xmm6) != "undefined") {_RecordType("<2053,2057,52>",(xmm6)); Inst41++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (v) != "undefined") {_RecordType("<2100,2101,53>",(v)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (v) != "undefined") {_RecordType("<2104,2105,53>",(v)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (v) != "undefined") {_RecordType("<2108,2109,53>",(v)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (v) != "undefined") {_RecordType("<2112,2113,53>",(v)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (v) != "undefined") {_RecordType("<2116,2117,53>",(v)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (v) != "undefined") {_RecordType("<2120,2121,53>",(v)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (v) != "undefined") {_RecordType("<2124,2125,53>",(v)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (v) != "undefined") {_RecordType("<2128,2129,53>",(v)); Inst57++; } } catch(e) {}
+  var xmm7 = v * v * v * v * v * v * v * v;
+try { if (Inst49 <= 1000 && typeof (xmm7) != "undefined") {_RecordType("<2093,2097,53>",(xmm7)); Inst49++; } } catch(e) {}
+try { if (Inst59 <= 1000 && typeof (v) != "undefined") {_RecordType("<2144,2145,54>",(v)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (v) != "undefined") {_RecordType("<2148,2149,54>",(v)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (v) != "undefined") {_RecordType("<2152,2153,54>",(v)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (v) != "undefined") {_RecordType("<2156,2157,54>",(v)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (v) != "undefined") {_RecordType("<2160,2161,54>",(v)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (v) != "undefined") {_RecordType("<2164,2165,54>",(v)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (v) != "undefined") {_RecordType("<2168,2169,54>",(v)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (v) != "undefined") {_RecordType("<2172,2173,54>",(v)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (v) != "undefined") {_RecordType("<2176,2177,54>",(v)); Inst67++; } } catch(e) {}
+  var xmm8 = v * v * v * v * v * v * v * v * v; // All registers are blocked and phis for phi1 and phi2 are spilled because
+try { if (Inst58 <= 1000 && typeof (xmm8) != "undefined") {_RecordType("<2137,2141,54>",(xmm8)); Inst58++; } } catch(e) {}
+  // their left (incoming) value is spilled, there are no free registers,
+  // and phis themselves have only ANY-policy uses.
+
+  for (var x = 0; x < 2; x++) {
+try { if (Inst68 <= 1000 && typeof (x) != "undefined") {_RecordType("<2393,2394,58>",(x)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (x) != "undefined") {_RecordType("<2400,2401,58>",(x)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (x) != "undefined") {_RecordType("<2407,2408,58>",(x)); Inst70++; } } catch(e) {}
+try { if (Inst72 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2426,2430,59>",(xmm1)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (xmm6) != "undefined") {_RecordType("<2433,2437,59>",(xmm6)); Inst73++; } } catch(e) {}
+    xmm1 += xmm1 * xmm6;
+try { if (Inst71 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2418,2422,59>",(xmm1)); Inst71++; } } catch(e) {}
+try { if (Inst75 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2451,2455,60>",(xmm1)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (xmm5) != "undefined") {_RecordType("<2458,2462,60>",(xmm5)); Inst76++; } } catch(e) {}
+    xmm2 += xmm1 * xmm5;
+try { if (Inst74 <= 1000 && typeof (xmm2) != "undefined") {_RecordType("<2443,2447,60>",(xmm2)); Inst74++; } } catch(e) {}
+try { if (Inst78 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2476,2480,61>",(xmm1)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (xmm4) != "undefined") {_RecordType("<2483,2487,61>",(xmm4)); Inst79++; } } catch(e) {}
+    xmm3 += xmm1 * xmm4;
+try { if (Inst77 <= 1000 && typeof (xmm3) != "undefined") {_RecordType("<2468,2472,61>",(xmm3)); Inst77++; } } catch(e) {}
+try { if (Inst81 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2501,2505,62>",(xmm1)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (xmm3) != "undefined") {_RecordType("<2508,2512,62>",(xmm3)); Inst82++; } } catch(e) {}
+    xmm4 += xmm1 * xmm3;
+try { if (Inst80 <= 1000 && typeof (xmm4) != "undefined") {_RecordType("<2493,2497,62>",(xmm4)); Inst80++; } } catch(e) {}
+try { if (Inst84 <= 1000 && typeof (xmm1) != "undefined") {_RecordType("<2526,2530,63>",(xmm1)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (xmm2) != "undefined") {_RecordType("<2533,2537,63>",(xmm2)); Inst85++; } } catch(e) {}
+    xmm5 += xmm1 * xmm2; // Now swap values of phi1 and phi2 to create cycle between phis.
+try { if (Inst83 <= 1000 && typeof (xmm5) != "undefined") {_RecordType("<2518,2522,63>",(xmm5)); Inst83++; } } catch(e) {}
+
+try { if (Inst87 <= 1000 && typeof (phi1) != "undefined") {_RecordType("<2618,2622,65>",(phi1)); Inst87++; } } catch(e) {}
+    var t = phi1;
+try { if (Inst86 <= 1000 && typeof (t) != "undefined") {_RecordType("<2614,2615,65>",(t)); Inst86++; } } catch(e) {}
+try { if (Inst89 <= 1000 && typeof (phi2) != "undefined") {_RecordType("<2635,2639,66>",(phi2)); Inst89++; } } catch(e) {}
+    phi1 = phi2;
+try { if (Inst88 <= 1000 && typeof (phi1) != "undefined") {_RecordType("<2628,2632,66>",(phi1)); Inst88++; } } catch(e) {}
+try { if (Inst91 <= 1000 && typeof (t) != "undefined") {_RecordType("<2652,2653,67>",(t)); Inst91++; } } catch(e) {}
+    phi2 = t;
+try { if (Inst90 <= 1000 && typeof (phi2) != "undefined") {_RecordType("<2645,2649,67>",(phi2)); Inst90++; } } catch(e) {}
+  } // Now we want to get values of phi1 and phi2. However we would like to
+  // do it in a way that does not produce any uses of phi1&phi2 that have
+  // a register beneficial policy. How? We just hide these uses behind phis.
+
+
+try { if (Inst94 <= 1000 && typeof (O) != "undefined") {_RecordType("<2898,2899,73>",(O)); Inst94++; } } catch(e) {}try { if (Inst95 <= 1000 && typeof (phi1) != "undefined") {_RecordType("<2908,2912,73>",(phi1)); Inst95++; } } catch(e) {}try { if (Inst96 <= 1000 && typeof (phi2) != "undefined") {_RecordType("<2915,2919,73>",(phi2)); Inst96++; } } catch(e) {}
+  result[0] = O === 0 ? phi1 : phi2;
+try { if (Inst92 <= 1000 && typeof (result[0]) != "undefined") {_RecordType("<2886,2895,73>",(result[0])); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (result) != "undefined") {_RecordType("<2886,2892,73>",(result)); Inst93++; } } catch(e) {}
+try { if (Inst99 <= 1000 && typeof (O) != "undefined") {_RecordType("<2935,2936,74>",(O)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (phi1) != "undefined") {_RecordType("<2945,2949,74>",(phi1)); Inst100++; } } catch(e) {}try { if (Inst101 <= 1000 && typeof (phi2) != "undefined") {_RecordType("<2952,2956,74>",(phi2)); Inst101++; } } catch(e) {}
+  result[1] = O !== 0 ? phi1 : phi2;
+try { if (Inst97 <= 1000 && typeof (result[1]) != "undefined") {_RecordType("<2923,2932,74>",(result[1])); Inst97++; } } catch(e) {}try { if (Inst98 <= 1000 && typeof (result) != "undefined") {_RecordType("<2923,2929,74>",(result)); Inst98++; } } catch(e) {}
+}
+
+try { if (Inst102 <= 1000 && typeof (test) != "undefined") {_RecordType("<2970,2974,77>",(test)); Inst102++; } } catch(e) {}
+function test() {
+try { if (Inst103 <= 1000 && typeof (buggy) != "undefined") {_RecordType("<2981,2986,78>",(buggy)); Inst103++; } } catch(e) {}
+  buggy();
+try { if (Inst104 <= 1000 && typeof (X) != "undefined") {_RecordType("<2993,2994,79>",(X)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (K) != "undefined") {_RecordType("<2997,2998,79>",(K)); Inst105++; } } catch(e) {}try { if (Inst106 <= 1000 && typeof (X) != "undefined") {_RecordType("<3000,3001,79>",(X)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (K) != "undefined") {_RecordType("<3004,3005,79>",(K)); Inst107++; } } catch(e) {}
+  [X + K, X - K];
+try { if (Inst108 <= 1000 && typeof (result) != "undefined") {_RecordType("<3010,3016,80>",(result)); Inst108++; } } catch(e) {}
+  result;
+}
+
+try { if (Inst109 <= 1000 && typeof (test) != "undefined") {_RecordType("<3021,3025,83>",(test)); Inst109++; } } catch(e) {}
+test();
+try { if (Inst110 <= 1000 && typeof (test) != "undefined") {_RecordType("<3029,3033,84>",(test)); Inst110++; } } catch(e) {}
+test();
+try { if (Inst111 <= 1000 && typeof (test) != "undefined") {_RecordType("<3037,3041,85>",(test)); Inst111++; } } catch(e) {}
+test();
+

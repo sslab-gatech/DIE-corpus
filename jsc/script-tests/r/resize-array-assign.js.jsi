@@ -1,0 +1,101 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Tests that assignments into arrays behave properly after the array is resized.");
+
+try { if (Inst2 <= 1000 && typeof (resize) != "undefined") {_RecordType("<105,111,3>",(resize)); Inst2++; } } catch(e) {}
+function resize(X) {
+try { if (Inst3 <= 1000 && typeof (X) != "undefined") {_RecordType("<112,113,3>",(X)); Inst3++; } } catch(e) {}
+  X[9999] = 0;
+try { if (Inst4 <= 1000 && typeof (X[9999]) != "undefined") {_RecordType("<119,126,4>",(X[9999])); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (X) != "undefined") {_RecordType("<119,120,4>",(X)); Inst5++; } } catch(e) {}
+  return 1;
+}
+
+try { if (Inst6 <= 1000 && typeof (getZerothEntry) != "undefined") {_RecordType("<156,170,8>",(getZerothEntry)); Inst6++; } } catch(e) {}
+function getZerothEntry(X) {
+try { if (Inst7 <= 1000 && typeof (X) != "undefined") {_RecordType("<171,172,8>",(X)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (X[0]) != "undefined") {_RecordType("<185,189,9>",(X[0])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (X) != "undefined") {_RecordType("<185,186,9>",(X)); Inst9++; } } catch(e) {}
+  return X[0];
+}
+
+try { if (Inst11 <= 1000 && typeof (Array) != "undefined") {_RecordType("<206,211,12>",(Array)); Inst11++; } } catch(e) {}
+var A = new Array();
+try { if (Inst10 <= 1000 && typeof (A) != "undefined") {_RecordType("<198,199,12>",(A)); Inst10++; } } catch(e) {}
+A[0] = 0;
+try { if (Inst12 <= 1000 && typeof (A[0]) != "undefined") {_RecordType("<215,219,13>",(A[0])); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (A) != "undefined") {_RecordType("<215,216,13>",(A)); Inst13++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (resize) != "undefined") {_RecordType("<232,238,14>",(resize)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (A) != "undefined") {_RecordType("<239,240,14>",(A)); Inst17++; } } catch(e) {}
+A[0] = resize(A);
+try { if (Inst14 <= 1000 && typeof (A[0]) != "undefined") {_RecordType("<225,229,14>",(A[0])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (A) != "undefined") {_RecordType("<225,226,14>",(A)); Inst15++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (getZerothEntry(A).toString) != "undefined") {_RecordType("<243,269,15>",(getZerothEntry(A).toString)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (getZerothEntry) != "undefined") {_RecordType("<243,257,15>",(getZerothEntry)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (A) != "undefined") {_RecordType("<258,259,15>",(A)); Inst20++; } } catch(e) {}
+getZerothEntry(A).toString();
+

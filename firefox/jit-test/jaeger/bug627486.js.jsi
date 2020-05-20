@@ -1,0 +1,116 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: TypeError
+// vim: set ts=8 sts=4 et sw=4 tw=99:
+try { if (Inst1 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<73,82,3>",(undefined)); Inst1++; } } catch(e) {}
+g = undefined;
+try { if (Inst0 <= 1000 && typeof (g) != "undefined") {_RecordType("<69,70,3>",(g)); Inst0++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (L) != "undefined") {_RecordType("<94,95,5>",(L)); Inst2++; } } catch(e) {}
+function L() {
+  ;
+}
+
+try { if (Inst3 <= 1000 && typeof (h) != "undefined") {_RecordType("<116,117,9>",(h)); Inst3++; } } catch(e) {}
+function h() {
+try { if (Inst4 <= 1000 && typeof (h) != "undefined") {_RecordType("<130,131,10>",(h)); Inst4++; } } catch(e) {}
+  with (h) {
+    ;
+  }
+
+  for (var i = 0; i < 10; i++) {
+try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<157,158,14>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<164,165,14>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<172,173,14>",(i)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (g) != "undefined") {_RecordType("<183,184,15>",(g)); Inst8++; } } catch(e) {}
+    g();
+  }
+}
+
+try { if (Inst9 <= 1000 && typeof (f) != "undefined") {_RecordType("<204,205,19>",(f)); Inst9++; } } catch(e) {}
+function f(x) {
+try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<206,207,19>",(x)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<217,218,20>",(x)); Inst12++; } } catch(e) {}
+  g = x;
+try { if (Inst11 <= 1000 && typeof (g) != "undefined") {_RecordType("<213,214,20>",(g)); Inst11++; } } catch(e) {}
+}
+
+try { if (Inst13 <= 1000 && typeof (f) != "undefined") {_RecordType("<223,224,23>",(f)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (L) != "undefined") {_RecordType("<225,226,23>",(L)); Inst14++; } } catch(e) {}
+f(L);
+try { if (Inst15 <= 1000 && typeof (h) != "undefined") {_RecordType("<229,230,24>",(h)); Inst15++; } } catch(e) {}
+h();
+try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<234,235,25>",(f)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (L) != "undefined") {_RecordType("<236,237,25>",(L)); Inst17++; } } catch(e) {}
+f(L);
+try { if (Inst18 <= 1000 && typeof (f) != "undefined") {_RecordType("<240,241,26>",(f)); Inst18++; } } catch(e) {}
+f(2);
+try { if (Inst19 <= 1000 && typeof (h) != "undefined") {_RecordType("<246,247,27>",(h)); Inst19++; } } catch(e) {}
+h();
+/* Don't assert/crash. */
+

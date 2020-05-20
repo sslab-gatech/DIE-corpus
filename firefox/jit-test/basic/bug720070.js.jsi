@@ -1,0 +1,75 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var bytes = [0xff, 0xf7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]; // big-endian
+try { if (Inst0 <= 1000 && typeof (bytes) != "undefined") {_RecordType("<4,9,1>",(bytes)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (bytes.reverse) != "undefined") {_RecordType("<77,90,3>",(bytes.reverse)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (bytes) != "undefined") {_RecordType("<77,82,3>",(bytes)); Inst2++; } } catch(e) {}
+bytes.reverse(); // if testing on little-endian
+
+try { if (Inst4 <= 1000 && typeof (new Float64Array(new Uint8Array(bytes).buffer)[0]) != "undefined") {_RecordType("<139,188,5>",(new Float64Array(new Uint8Array(bytes).buffer)[0])); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Float64Array) != "undefined") {_RecordType("<143,155,5>",(Float64Array)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (new Uint8Array(bytes).buffer) != "undefined") {_RecordType("<156,184,5>",(new Uint8Array(bytes).buffer)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Uint8Array) != "undefined") {_RecordType("<160,170,5>",(Uint8Array)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (bytes) != "undefined") {_RecordType("<171,176,5>",(bytes)); Inst8++; } } catch(e) {}
+var result = new Float64Array(new Uint8Array(bytes).buffer)[0]; // Check that this doesn't crash
+try { if (Inst3 <= 1000 && typeof (result) != "undefined") {_RecordType("<130,136,5>",(result)); Inst3++; } } catch(e) {}
+
+try { if (Inst9 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<224,229,7>",(isNaN)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (result) != "undefined") {_RecordType("<230,236,7>",(result)); Inst10++; } } catch(e) {}
+isNaN(result + 0);
+

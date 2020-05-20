@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --noexpose-wasm --validate-asm --allow-natives-syntax
+// NOTE: This is in its own file because it calls %DisallowCodegenFromStrings,
+// which messes with the isolate's state.
+try { if (Inst0 <= 1000 && typeof (testAsmWithWasmOff) != "undefined") {_RecordType("<362,380,7>",(testAsmWithWasmOff)); Inst0++; } } catch(e) {}
+(function testAsmWithWasmOff() {
+try { if (Inst1 <= 1000 && typeof (Module) != "undefined") {_RecordType("<396,402,8>",(Module)); Inst1++; } } catch(e) {}
+  function Module() {
+    'use asm';
+
+try { if (Inst2 <= 1000 && typeof (foo) != "undefined") {_RecordType("<436,439,11>",(foo)); Inst2++; } } catch(e) {}
+    function foo() {
+      return 0;
+    }
+
+try { if (Inst3 <= 1000 && typeof (foo) != "undefined") {_RecordType("<491,494,16>",(foo)); Inst3++; } } catch(e) {}
+    return {
+      foo: foo
+    };
+  }
+
+try { if (Inst4 <= 1000 && typeof (Module) != "undefined") {_RecordType("<509,515,20>",(Module)); Inst4++; } } catch(e) {}
+  Module();
+})();
+

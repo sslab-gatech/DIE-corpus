@@ -1,0 +1,482 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function test1() {
+  function f1({
+    x: x
+  }) {
+    return x;
+  }
+
+  let ret = f1({
+    x: 1
+  });
+  console.log(ret, 1);
+
+  function f2([x]) {
+    return x;
+  }
+
+  ret = f2([2]);
+  console.log(ret, 2);
+
+  function f3({
+    x
+  }, [y], z) {
+    return x + y + z;
+  }
+
+  ret = f3({
+    x: 1
+  }, [2], 3);
+  console.log(ret, 6);
+
+  let f4 = function ([x], {
+    y: y
+  }, z) {
+    return x + y + z;
+  };
+
+  ret = f4([1], {
+    y: 2
+  }, 3);
+  console.log(ret, 6);
+}
+
+test1();
+
+function test2() {
+  function f1({
+    x: x1 = 11
+  }, [x2 = 22]) {
+    console.log(x1, 1);
+    console.log(x2, 2);
+  }
+
+  f1({
+    x: 1
+  }, [2]);
+
+  function f2({
+    x: x1 = 11
+  }, [x2 = 22]) {
+    console.log(x1, 11);
+    console.log(x2, 22);
+  }
+
+  f2({}, []);
+
+  (function ({
+    x: x1 = 11
+  } = {
+    x: 111
+  }, [x2 = 22] = [222]) {
+    console.log(x1, 111);
+    console.log(x2, 222);
+  })(undefined, undefined);
+}
+
+test2();
+
+function test3() {
+  (function ({
+    x: x1
+  }) {
+    console.log(x1, 1);
+  })({
+    x: 1
+  });
+
+  let f1 = ([x1]) => x1 * 2;
+
+  console.log(f1([2]), 4);
+
+  let f2 = ({
+    x: x2
+  }) => x2 * 4;
+
+  console.log(f2({
+    x: 2
+  }), 8);
+
+  let f3 = function foo({
+    x: x1
+  }) {
+    console.log(x1, 1);
+  };
+
+  f3({
+    x: 1
+  });
+  let f4 = new Function("{x}", "[y]", "return x + y");
+  console.log(f4({
+    x: 1
+  }, [2]), 3);
+}
+
+test3();
+
+function testx() {
+  function f1({
+    x: x1
+  }) {
+    function f1_1() {
+      console.log(x1, 1);
+    }
+
+    f1_1();
+  }
+
+  f1({
+    x: 1
+  });
+
+  function f2([x1]) {
+    function f2_1() {
+      console.log(x1, 2);
+    }
+
+    f2_1();
+  }
+
+  f2([2]);
+
+  function f3({
+    x: x1
+  }, [y1], z) {
+    (function () {
+      x1++;
+    })();
+
+    (function () {
+      y1++;
+    })();
+
+    var k = x1 + y1 + z;
+    console.log(k, 62);
+  }
+
+  f3({
+    x: 10
+  }, [20], 30);
+
+  function f4(a) {
+    return a();
+  }
+
+  var f5 = ({
+    x
+  }) => f4(() => x);
+
+  console.log(f5({
+    x: 42
+  }), 42);
+}
+
+testx();
+
+function test4() {
+  function f1({
+    x: x1
+  }, [x2]) {
+    
+    console.log(x1, 1);
+    console.log(x2, 2);
+  }
+
+  f1({
+    x: 1
+  }, [2]);
+
+  function f2({
+    x: x1
+  }, [x2]) {
+    
+
+    (function () {
+      x1;
+      x2;
+    })();
+
+    console.log(x1, 3);
+    console.log(x2, 4);
+  }
+
+  f2({
+    x: 3
+  }, [4]);
+
+  function f3({
+    x: x1
+  }, [x2]) {
+    (function () {
+     
+      console.log(x1, 5);
+      console.log(x2, 6);
+    })();
+  }
+
+  f3({
+    x: 5
+  }, [6]);
+
+  function f4(a) {
+    return a();
+  }
+
+  var f5 = ({
+    x
+  }) => f4(() => eval("x"));
+
+  console.log(f5({
+    x: 42
+  }), 42);
+}
+
+test4();
+
+function test5() {
+  function f1({
+    x: x1
+  }, [x2]) {
+    console.log(arguments[0], {
+      x: 1
+    });
+    console.log(arguments[1], [2]);
+  }
+
+  f1({
+    x: 1
+  }, [2]);
+
+  function f2({
+    x: x1
+  }, [x2]) {
+    (function () {
+      ;
+    })();
+
+    
+    console.log(arguments[0], {
+      x: 1
+    });
+    console.log(arguments[1], [2]);
+  }
+
+  f2({
+    x: 1
+  }, [2]);
+
+  function f3({
+    x: x1
+  }, [x2]) {
+    (function () {
+     
+    })();
+
+    console.log(arguments[0], {
+      x: 1
+    });
+    console.log(arguments[1], [2]);
+  }
+
+  f3({
+    x: 1
+  }, [2]);
+
+  (function ({
+    x: x1
+  }, x2) {
+    x2 = 3;
+    console.log(arguments[1], 2);
+  })({
+    x: 1
+  }, 2);
+
+  (function ([x1], x2) {
+    arguments[1] = 2;
+    console.log(x2, 1);
+  })([], 1);
+
+  (function ({
+    x: x1
+  }, x2) {
+    x2 = 2;
+
+    (function () {
+     
+    })();
+
+    console.log(arguments[1], 1);
+  })({}, 1);
+
+  (function ([x1], x2) {
+    (function () {
+     
+    })();
+
+    arguments[1] = 2;
+    console.log(x2, 1);
+  })([], 1);
+}
+
+test5();
+
+function test6() {
+  (function (x1, {
+    x2,
+    x3
+  }, [x4, x5], x6) {
+    var k = x1 + x2 + x3 + x4 + x5 + x6;
+    console.log(k, 21);
+  })(1, {
+    x2: 2,
+    x3: 3
+  }, [4, 5], 6);
+
+  (function (x1, {
+    x2,
+    x3
+  }, [x4, x5], x6) {
+    var k = x1 + x2 + x3 + x4 + x5 + x6;
+   
+    console.log(k, 21);
+  })(1, {
+    x2: 2,
+    x3: 3
+  }, [4, 5], 6);
+
+  (function (x1, {
+    x2,
+    x3
+  }, [x4, x5], x6) {
+    var k = x1 + x2 + x3 + x4 + x5 + x6;
+
+    (function () {
+     
+    });
+
+    console.log(k, 21);
+  })(1, {
+    x2: 2,
+    x3: 3
+  }, [4, 5], 6);
+}
+
+test6();
+
+function test7() {
+  let f1 = function foo(x0, {
+    x: x1
+  }, [x2]) {
+    console.log(x1, 1);
+    console.log(x2, 2);
+  };
+
+  f1(0, {
+    x: 1
+  }, [2]);
+
+  let f2 = function foo1(x0, {
+    x: x1
+  }, [x2]) {
+    
+    console.log(x1, 1);
+    console.log(x2, 2);
+  };
+
+  f2(0, {
+    x: 1
+  }, [2]);
+
+  let f3 = function foo2(x0, {
+    x: x1
+  }, [x2]) {
+    with (x1) {
+      console.log(x1_1, 1);
+      console.log(x2, 2);
+    }
+  };
+
+  f3(0, {
+    x: {
+      x1_1: 1
+    }
+  }, [2]);
+
+  let f4 = function foo3(x0, {
+    x: x1
+  }, [x2]) {
+    try {
+      throw 'abc';
+    } catch (e) {
+      (function () {
+        console.log(x1, 1);
+        console.log(x2, 2);
+      })();
+    }
+  };
+
+  f4(0, {
+    x: 1
+  }, [2]);
+
+  let f5 = function foo4(x0, {
+    x: x1
+  }, [x2]) {
+    try {
+      throw 'abc';
+    } catch (e) {
+      (function () {
+       
+        console.log(x1, 1);
+        console.log(x2, 2);
+      })();
+    }
+  };
+
+  f5(0, {
+    x: 1
+  }, [2]);
+}
+
+test7();
+
+function test8() {
+  class Foo {
+    add([x1]) {
+      this.x1 += x1;
+    }
+
+    set prop({
+      x1
+    }) {
+      this.x1 = x1;
+    }
+
+    get prop() {
+      return this.x1;
+    }
+
+    static Avg({
+      x1
+    }, [x2], x3) {
+      return (x1 + x2 + x3) / 3;
+    }
+
+  }
+
+  console.log(Foo.Avg({
+    x1: 3
+  }, [4], 5), 4);
+  let obj = new Foo();
+  obj.prop = {
+    x1: 1
+  };
+  console.log(obj.prop, 1);
+  obj.add([2]);
+  console.log(obj.prop, 3);
+}
+
+test8();

@@ -1,0 +1,117 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+// This tests that SpeculativeNumberSubtract can still lower to
+// Int32Sub in SimplifiedLowering, which requires some magic
+// to make sure that SpeculativeNumberSubtract survives to that
+// point, especially the JSTypedLowering needs to be unable
+// to tell that the inputs to SpeculativeNumberAdd are not
+// Number, Undefined, Null or Boolean.
+(function () {
+  // We need a function that has a - with feedback Number or
+  // NumberOrOddball, but for whose inputs the JSTypedLowering
+  // cannot reduce it to NumberSubtract (with SpeculativeToNumber
+  // conversions). We achieve this utilizing an object literal
+  // indirection here.
+try { if (Inst0 <= 1000 && typeof (baz) != "undefined") {_RecordType("<849,852,17>",(baz)); Inst0++; } } catch(e) {}
+  function baz(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<853,854,17>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof ({
+      x
+    }.x) != "undefined") {_RecordType("<869,886,18>",({
+      x
+    }.x)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<877,878,19>",(x)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<889,890,20>",(x)); Inst4++; } } catch(e) {}
+    return {
+      x
+    }.x - x;
+  }
+
+try { if (Inst5 <= 1000 && typeof (baz) != "undefined") {_RecordType("<899,902,23>",(baz)); Inst5++; } } catch(e) {}
+  baz(null);
+try { if (Inst6 <= 1000 && typeof (baz) != "undefined") {_RecordType("<912,915,24>",(baz)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<916,925,24>",(undefined)); Inst7++; } } catch(e) {}
+  baz(undefined); // Now we just need to truncate the result.
+
+try { if (Inst8 <= 1000 && typeof (foo) != "undefined") {_RecordType("<984,987,26>",(foo)); Inst8++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<988,989,26>",(x)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (baz) != "undefined") {_RecordType("<1004,1007,27>",(baz)); Inst10++; } } catch(e) {}
+    return baz(42) | 0;
+  }
+
+  0;
+try { if (Inst11 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1029,1032,31>",(foo)); Inst11++; } } catch(e) {}
+  foo();
+  0;
+try { if (Inst12 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1043,1046,33>",(foo)); Inst12++; } } catch(e) {}
+  foo();
+  0;
+try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1057,1060,35>",(foo)); Inst13++; } } catch(e) {}
+  foo();
+})();
+

@@ -1,0 +1,121 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+//-----------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (print) != "undefined") {_RecordType("<185,190,4>",(print)); Inst0++; } } catch(e) {}
+print("Test for correct implementation of |Date == boolean| and vice versa");
+/**************
+ * BEGIN TEST *
+ **************/
+
+Date.prototype.toString = function () {
+  return 1;
+};
+try { if (Inst1 <= 1000 && typeof (Date.prototype.toString) != "undefined") {_RecordType("<313,336,9>",(Date.prototype.toString)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Date.prototype) != "undefined") {_RecordType("<313,327,9>",(Date.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Date) != "undefined") {_RecordType("<313,317,9>",(Date)); Inst3++; } } catch(e) {}
+
+Date.prototype.valueOf = function () {
+  return 0;
+};
+try { if (Inst4 <= 1000 && typeof (Date.prototype.valueOf) != "undefined") {_RecordType("<369,391,13>",(Date.prototype.valueOf)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Date.prototype) != "undefined") {_RecordType("<369,383,13>",(Date.prototype)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Date) != "undefined") {_RecordType("<369,373,13>",(Date)); Inst6++; } } catch(e) {}
+/*
+ * ES5 11.9.3 doesn't directly handle obj == boolean.  Instead it translates it
+ * as follows:
+ *
+ *   obj == boolean
+ *   ↳ obj == ToNumber(boolean), per step 7
+ *     ↳ ToPrimitive(obj) == ToNumber(boolean), per step 9
+ *
+ * ToPrimitive calls [[DefaultValue]] with no hint.  For Date objects this is
+ * treated as if it were instead called with hint String.  That calls toString,
+ * which returns 1, so Date objects here should compare equal to true and
+ * unequal to false.
+ */
+
+
+try { if (Inst7 <= 1000 && typeof (Date) != "undefined") {_RecordType("<913,917,31>",(Date)); Inst7++; } } catch(e) {}
+new Date() == true;
+true;
+try { if (Inst8 <= 1000 && typeof (Date) != "undefined") {_RecordType("<939,943,33>",(Date)); Inst8++; } } catch(e) {}
+new Date() == false;
+false;
+try { if (Inst9 <= 1000 && typeof (Date) != "undefined") {_RecordType("<975,979,35>",(Date)); Inst9++; } } catch(e) {}
+true == new Date();
+true;
+try { if (Inst10 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1002,1006,37>",(Date)); Inst10++; } } catch(e) {}
+false == new Date();
+false;
+
+/******************************************************************************/
+try { if (Inst11 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1110,1123,41>",(reportCompare)); Inst11++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1144,1157,42>",(reportCompare)); Inst12++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst13 <= 1000 && typeof (print) != "undefined") {_RecordType("<1174,1179,45>",(print)); Inst13++; } } catch(e) {}
+print("Tests complete");
+

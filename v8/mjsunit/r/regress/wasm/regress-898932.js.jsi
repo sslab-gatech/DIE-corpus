@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --wasm-max-mem-pages=49152
+try { if (Inst1 <= 1000 && typeof (WebAssembly.Memory) != "undefined") {_RecordType("<218,236,5>",(WebAssembly.Memory)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (WebAssembly) != "undefined") {_RecordType("<218,229,5>",(WebAssembly)); Inst2++; } } catch(e) {}
+let mem = new WebAssembly.Memory({
+  initial: 1
+});
+try { if (Inst0 <= 1000 && typeof (mem) != "undefined") {_RecordType("<208,211,5>",(mem)); Inst0++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (e) != "undefined") {_RecordType("<291,292,11>",(e)); Inst5++; } } catch(e) {}
+try {
+try { if (Inst3 <= 1000 && typeof (mem.grow) != "undefined") {_RecordType("<265,273,10>",(mem.grow)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (mem) != "undefined") {_RecordType("<265,268,10>",(mem)); Inst4++; } } catch(e) {}
+  mem.grow(49151);
+} catch (e) {
+  // This can fail on 32-bit systems if we cannot make such a big reservation.
+try { if (Inst6 <= 1000 && typeof (e) != "undefined") {_RecordType("<383,384,13>",(e)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<396,406,13>",(RangeError)); Inst7++; } } catch(e) {}
+  if (!(e instanceof RangeError)) {
+try { if (Inst8 <= 1000 && typeof (e) != "undefined") {_RecordType("<421,422,14>",(e)); Inst8++; } } catch(e) {}
+    throw e;
+  }
+}
+

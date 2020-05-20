@@ -1,0 +1,152 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+// Ensure we provide 'long' and 'short' descriptive names for non-meta time
+// zones. (CLDR stores names for Etc/UTC, Europe/Dublin, and Europe/London as
+// non-meta zones.)
+try { if (Inst1 <= 1000 && typeof (Date) != "undefined") {_RecordType("<242,246,5>",(Date)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Date.UTC) != "undefined") {_RecordType("<247,255,5>",(Date.UTC)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Date) != "undefined") {_RecordType("<247,251,5>",(Date)); Inst3++; } } catch(e) {}
+const date = new Date(Date.UTC(2018, 7 - 1, 24));
+try { if (Inst0 <= 1000 && typeof (date) != "undefined") {_RecordType("<231,235,5>",(date)); Inst0++; } } catch(e) {}
+const tests = [{
+  locale: "en-US",
+  timeZoneName: "long",
+  zones: {
+    "Etc/UTC": "7/24/2018, Coordinated Universal Time",
+    "Europe/Dublin": "7/24/2018, Irish Standard Time",
+    "Europe/London": "7/24/2018, British Summer Time"
+  }
+}, {
+  locale: "de",
+  timeZoneName: "long",
+  zones: {
+    "Etc/UTC": "24.7.2018, Koordinierte Weltzeit",
+    "Europe/Dublin": "24.7.2018, Irische Sommerzeit",
+    "Europe/London": "24.7.2018, Britische Sommerzeit"
+  }
+}, {
+  locale: "en-US",
+  timeZoneName: "short",
+  zones: {
+    "Europe/Dublin": "7/24/2018, GMT+1",
+    "Europe/London": "7/24/2018, GMT+1"
+  }
+}, {
+  locale: "en-GB",
+  timeZoneName: "short",
+  zones: {
+    "Europe/Dublin": "24/07/2018, GMT+1",
+    "Europe/London": "24/07/2018, BST"
+  }
+}, {
+  locale: "en-IE",
+  timeZoneName: "short",
+  zones: {
+    "Europe/Dublin": "24/7/2018, IST",
+    "Europe/London": "24/7/2018, GMT+1"
+  }
+}];
+try { if (Inst4 <= 1000 && typeof (tests) != "undefined") {_RecordType("<281,286,6>",(tests)); Inst4++; } } catch(e) {}
+
+for (let {
+  locale,
+  timeZoneName,
+  zones
+} of tests) {
+try { if (Inst5 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1186,1192,46>",(locale)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (timeZoneName) != "undefined") {_RecordType("<1196,1208,47>",(timeZoneName)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (zones) != "undefined") {_RecordType("<1212,1217,48>",(zones)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (tests) != "undefined") {_RecordType("<1223,1228,49>",(tests)); Inst8++; } } catch(e) {}
+  for (let [timeZone, expected] of Object.entries(zones)) {
+try { if (Inst9 <= 1000 && typeof (timeZone) != "undefined") {_RecordType("<1244,1252,50>",(timeZone)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1254,1262,50>",(expected)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Object.entries) != "undefined") {_RecordType("<1267,1281,50>",(Object.entries)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1267,1273,50>",(Object)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (zones) != "undefined") {_RecordType("<1282,1287,50>",(zones)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (new Intl.DateTimeFormat(locale, {
+      timeZone,
+      timeZoneName
+    }).format) != "undefined") {_RecordType("<1296,1378,51>",(new Intl.DateTimeFormat(locale, {
+      timeZone,
+      timeZoneName
+    }).format)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<1300,1319,51>",(Intl.DateTimeFormat)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<1300,1304,51>",(Intl)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1320,1326,51>",(locale)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (timeZone) != "undefined") {_RecordType("<1336,1344,52>",(timeZone)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (timeZoneName) != "undefined") {_RecordType("<1352,1364,53>",(timeZoneName)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (date) != "undefined") {_RecordType("<1379,1383,54>",(date)); Inst20++; } } catch(e) {}
+    new Intl.DateTimeFormat(locale, {
+      timeZone,
+      timeZoneName
+    }).format(date);
+try { if (Inst21 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1390,1398,55>",(expected)); Inst21++; } } catch(e) {}
+    expected;
+  }
+}
+
+try { if (Inst22 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1418,1431,59>",(reportCompare)); Inst22++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1452,1465,60>",(reportCompare)); Inst23++; } } catch(e) {}
+  reportCompare(0, 0, "ok");
+}
+

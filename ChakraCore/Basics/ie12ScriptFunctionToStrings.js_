@@ -1,0 +1,64 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+eval("function \n\t\r foo() {var a = 5;}");
+print("function foo() {var a = 5;}" == foo.toString());
+eval("var a = function \t\n\r\t foo() {var a = 5;}");
+print("function foo() {var a = 5;}" == a.toString());
+
+a = function (i) {
+  i++;
+};
+
+print("function (i) {i++;}" == a.toString());
+eval("function* \t\r\n  foo() {var a = 5;}");
+print("function* foo() {var a = 5;}" == foo.toString());
+eval("function \t\r\n*\n\r\n \t foo() {var a = 5;}");
+print("function* foo() {var a = 5;}" == foo.toString());
+eval("var a = function* \t\n\r  \t foo() {var a = 5;}");
+print("function* foo() {var a = 5;}" == a.toString());
+eval("var a = function \t\n\r  *  \t\n foo() {var a = 5;}");
+print("function* foo() {var a = 5;}" == a.toString());
+eval("var o = { foo : function \n\t bar \t () {}}");
+eval("o.e = function \t qui \t () {}");
+print("function bar() {}" == o.foo.toString());
+print("function qui() {}" == o.e.toString());
+eval("var o = { foo : function \n\t  \t () {}}");
+eval("o.e = function \t  \t () {}");
+print("function () {}" == o.foo.toString());
+print("function () {}" == o.e.toString());
+eval("function foo() { return foo.toString(); }");
+var a = foo;
+print("function foo() { return foo.toString(); }" == a());
+eval("var qux = class { constructor(){} static func(){} method(){} get getter(){} set setter(v){}}");
+var quxObj = new qux();
+print("constructor(){}" == quxObj.constructor.toString());
+print("func(){}" == qux.func.toString());
+print("method(){}" == quxObj.method.toString());
+var oGet = Object.getOwnPropertyDescriptor(qux.prototype, "getter");
+var oSet = Object.getOwnPropertyDescriptor(qux.prototype, "setter");
+print("getter(){}" == oGet.get.toString());
+print("setter(v){}" == oSet.set.toString());
+var qux = class {};
+var quxObj = new qux(); // I left a space between closing ellipse ) and the opening bracket { because that's how all browsers do toString on runtime functions
+// Should this not be how other browsers do default constructor go to RuntimeCommon.h and change JS_DEFAULT_CTOR_DISPLAY_STRING
+
+print("constructor() {}" == quxObj.constructor.toString());
+var o = {
+  ['f']() {
+    ;
+  },
+
+  g() {
+    ;
+  }
+
+};
+print("f() {}" == o.f.toString());
+
+var arrowDecl = () => {
+  ;
+};
+
+print("() => {}" == arrowDecl.toString());

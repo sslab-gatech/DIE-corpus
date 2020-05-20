@@ -1,0 +1,126 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Latin1
+s = "a%2b%20def%00A0";
+try { if (Inst0 <= 1000 && typeof (s) != "undefined") {_RecordType("<10,11,2>",(s)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<39,47,3>",(unescape)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (s) != "undefined") {_RecordType("<48,49,3>",(s)); Inst3++; } } catch(e) {}
+res = unescape(s);
+try { if (Inst1 <= 1000 && typeof (res) != "undefined") {_RecordType("<33,36,3>",(res)); Inst1++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (res) != "undefined") {_RecordType("<52,55,4>",(res)); Inst4++; } } catch(e) {}
+res;
+"a+ def\x00A0";
+try { if (Inst5 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<73,81,6>",(isLatin1)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (res) != "undefined") {_RecordType("<82,85,6>",(res)); Inst6++; } } catch(e) {}
+isLatin1(res);
+true;
+s = "a%2b%20def%00A0%u1200";
+try { if (Inst7 <= 1000 && typeof (s) != "undefined") {_RecordType("<94,95,8>",(s)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<123,131,9>",(unescape)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (s) != "undefined") {_RecordType("<132,133,9>",(s)); Inst9++; } } catch(e) {}
+unescape(s);
+"a+ def\x00A0\u1200";
+// TwoByte
+s += "\u1200";
+try { if (Inst10 <= 1000 && typeof (s) != "undefined") {_RecordType("<169,170,12>",(s)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<184,192,13>",(unescape)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (s) != "undefined") {_RecordType("<193,194,13>",(s)); Inst12++; } } catch(e) {}
+unescape(s);
+"a+ def\x00A0\u1200\u1200";
+// Latin1
+s = "abc \u00ff";
+try { if (Inst13 <= 1000 && typeof (s) != "undefined") {_RecordType("<235,236,16>",(s)); Inst13++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (escape) != "undefined") {_RecordType("<259,265,17>",(escape)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (s) != "undefined") {_RecordType("<266,267,17>",(s)); Inst16++; } } catch(e) {}
+res = escape(s);
+try { if (Inst14 <= 1000 && typeof (res) != "undefined") {_RecordType("<253,256,17>",(res)); Inst14++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (res) != "undefined") {_RecordType("<270,273,18>",(res)); Inst17++; } } catch(e) {}
+res;
+"abc%20%FF";
+try { if (Inst18 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<288,296,20>",(isLatin1)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (res) != "undefined") {_RecordType("<297,300,20>",(res)); Inst19++; } } catch(e) {}
+isLatin1(res);
+true;
+// TwoByte
+s += "\u1200";
+try { if (Inst20 <= 1000 && typeof (s) != "undefined") {_RecordType("<320,321,23>",(s)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (escape) != "undefined") {_RecordType("<341,347,24>",(escape)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (s) != "undefined") {_RecordType("<348,349,24>",(s)); Inst23++; } } catch(e) {}
+res = escape(s);
+try { if (Inst21 <= 1000 && typeof (res) != "undefined") {_RecordType("<335,338,24>",(res)); Inst21++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (res) != "undefined") {_RecordType("<352,355,25>",(res)); Inst24++; } } catch(e) {}
+res;
+"abc%20%FF%u1200";
+try { if (Inst25 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<376,384,27>",(isLatin1)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (res) != "undefined") {_RecordType("<385,388,27>",(res)); Inst26++; } } catch(e) {}
+isLatin1(res);
+true;
+

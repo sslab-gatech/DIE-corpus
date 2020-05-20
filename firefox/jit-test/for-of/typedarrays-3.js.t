@@ -1,0 +1,1 @@
+[null,null,{"type":"Void"},{"type":"Void"},null,null,null,null,{"type":"Constructor","extra":{"name":"Int32Array","ret":{"type":"TypedArray","extra":{"subType":"Int32Array"}}}},{"type":"Number"},{"type":"Void"},null,{"type":"String"}]

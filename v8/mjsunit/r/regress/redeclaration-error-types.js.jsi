@@ -1,0 +1,192 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2016 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+try { if (Inst0 <= 1000 && typeof (doTest) != "undefined") {_RecordType("<176,182,4>",(doTest)); Inst0++; } } catch(e) {}
+function doTest(scripts, expectedError) {
+try { if (Inst1 <= 1000 && typeof (scripts) != "undefined") {_RecordType("<183,190,4>",(scripts)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (expectedError) != "undefined") {_RecordType("<192,205,4>",(expectedError)); Inst2++; } } catch(e) {}
+  for (var i = 0; i < scripts.length - 1; i++) {
+try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<220,221,5>",(i)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<227,228,5>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (scripts.length) != "undefined") {_RecordType("<231,245,5>",(scripts.length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (scripts) != "undefined") {_RecordType("<231,238,5>",(scripts)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<251,252,5>",(i)); Inst7++; } } catch(e) {}
+    ;
+  }
+}
+
+try { if (Inst9 <= 1000 && typeof (`
+        eval("
+          function f() {
+            function b() {
+              (0, eval)('function NaN() {}');
+            }
+            b();
+          }
+          f();
+        ");
+      `.replace) != "undefined") {_RecordType("<2687,2887,79>",(`
+        eval("
+          function f() {
+            function b() {
+              (0, eval)('function NaN() {}');
+            }
+            b();
+          }
+          f();
+        ");
+      `.replace)); Inst9++; } } catch(e) {}
+var tests = [{
+  // ES#sec-globaldeclarationinstantiation 5.a:
+  // If envRec.HasVarDeclaration(name) is true, throw a SyntaxError
+  // exception.
+  scripts: ["var a;", "let a;"],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-globaldeclarationinstantiation 6.a:
+  // If envRec.HasLexicalDeclaration(name) is true, throw a SyntaxError
+  // exception.
+  scripts: ["let a;", "var a;"],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-globaldeclarationinstantiation 5.b:
+  // If envRec.HasLexicalDeclaration(name) is true, throw a SyntaxError
+  // exception.
+  scripts: ["let a;", "let a;"],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 5.a.i.1:
+  // If varEnvRec.HasLexicalDeclaration(name) is true, throw a SyntaxError
+  // exception.
+  scripts: ['let a; eval("var a;");'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 5.a.i.1:
+  // If varEnvRec.HasLexicalDeclaration(name) is true, throw a SyntaxError
+  // exception.
+  scripts: ['let a; eval("function a() {}");'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 5.d.ii.2.a.i:
+  // Throw a SyntaxError exception.
+  scripts: ['(function() { let a; eval("var a;"); })();'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 5.d.ii.2.a.i:
+  // Throw a SyntaxError exception.
+  scripts: ['(function() { let a; eval("function a() {}"); })();'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-globaldeclarationinstantiation 5.d:
+  // If hasRestrictedGlobal is true, throw a SyntaxError exception.
+  scripts: ['let NaN;'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-globaldeclarationinstantiation 5.d:
+  // If hasRestrictedGlobal is true, throw a SyntaxError exception.
+  scripts: ['function NaN() {}'],
+  expectedError: "SyntaxError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 8.a.iv.1.b:
+  // If fnDefinable is false, throw a TypeError exception.
+  scripts: ['eval("function NaN() {}");'],
+  expectedError: "TypeError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 8.a.iv.1.b:
+  // If fnDefinable is false, throw a TypeError exception.
+  scripts: [`
+        let a;
+        try {
+          eval("function a() {}");
+        } catch (e) {}
+        eval("function NaN() {}");
+      `],
+  expectedError: "TypeError"
+}, {
+  // ES#sec-evaldeclarationinstantiation 8.a.iv.1.b:
+  // If fnDefinable is false, throw a TypeError exception.
+  scripts: [`
+        eval("
+          function f() {
+            function b() {
+              (0, eval)('function NaN() {}');
+            }
+            b();
+          }
+          f();
+        ");
+      `.replace(/"/g, '`')],
+  expectedError: "TypeError"
+}];
+try { if (Inst8 <= 1000 && typeof (tests) != "undefined") {_RecordType("<275,280,10>",(tests)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (tests.forEach) != "undefined") {_RecordType("<2934,2947,92>",(tests.forEach)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (tests) != "undefined") {_RecordType("<2934,2939,92>",(tests)); Inst11++; } } catch(e) {}
+tests.forEach(function (test) {
+try { if (Inst12 <= 1000 && typeof (test) != "undefined") {_RecordType("<2958,2962,92>",(test)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (doTest) != "undefined") {_RecordType("<2968,2974,93>",(doTest)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (test.scripts) != "undefined") {_RecordType("<2975,2987,93>",(test.scripts)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (test) != "undefined") {_RecordType("<2975,2979,93>",(test)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (test.expectedError) != "undefined") {_RecordType("<2989,3007,93>",(test.expectedError)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (test) != "undefined") {_RecordType("<2989,2993,93>",(test)); Inst17++; } } catch(e) {}
+  doTest(test.scripts, test.expectedError);
+});
+

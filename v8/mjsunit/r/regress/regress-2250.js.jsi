@@ -1,0 +1,161 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2012 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax --opt
+// The original problem from the bug: In the example below SMI check for b
+// generated for inlining of equals invocation (marked with (*)) will be hoisted
+// out of the loop across the typeof b === "object" condition and cause an
+// immediate deopt. Another problem here is that no matter how many time we
+// deopt and reopt we will continue to produce the wrong code.
+//
+// The fix is to notice when a deopt and subsequent reopt doesn't find
+// additional type information, indicating that optimistic LICM should be
+// disabled during compilation.
+try { if (Inst0 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2195,2197,37>",(eq)); Inst0++; } } catch(e) {}
+function eq(a, b) {
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<2198,2199,37>",(a)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (b) != "undefined") {_RecordType("<2201,2202,37>",(b)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (b) != "undefined") {_RecordType("<2219,2220,38>",(b)); Inst3++; } } catch(e) {}
+  if (typeof b === "object") {
+try { if (Inst4 <= 1000 && typeof (b.equals) != "undefined") {_RecordType("<2248,2256,39>",(b.equals)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (b) != "undefined") {_RecordType("<2248,2249,39>",(b)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<2257,2258,39>",(a)); Inst6++; } } catch(e) {}
+    return b.equals(a); // (*)
+  }
+
+try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<2282,2283,42>",(a)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<2288,2289,42>",(b)); Inst8++; } } catch(e) {}
+  return a === b;
+}
+
+Object.prototype.equals = function (other) {
+try { if (Inst12 <= 1000 && typeof (other) != "undefined") {_RecordType("<2330,2335,45>",(other)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (other) != "undefined") {_RecordType("<2357,2362,46>",(other)); Inst13++; } } catch(e) {}
+  return this === other;
+};
+try { if (Inst9 <= 1000 && typeof (Object.prototype.equals) != "undefined") {_RecordType("<2294,2317,45>",(Object.prototype.equals)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<2294,2310,45>",(Object.prototype)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2294,2300,45>",(Object)); Inst11++; } } catch(e) {}
+
+try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<2377,2381,49>",(test)); Inst14++; } } catch(e) {}
+function test() {
+  for (var i = 0; !eq(i, 10); i++) {
+try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<2397,2398,50>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2405,2407,50>",(eq)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<2408,2409,50>",(i)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<2416,2417,50>",(i)); Inst18++; } } catch(e) {}
+    ;
+  }
+}
+
+try { if (Inst19 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2436,2438,55>",(eq)); Inst19++; } } catch(e) {}
+eq({}, {});
+try { if (Inst20 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2448,2450,56>",(eq)); Inst20++; } } catch(e) {}
+eq({}, {});
+try { if (Inst21 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2460,2462,57>",(eq)); Inst21++; } } catch(e) {}
+eq(1, 1);
+try { if (Inst22 <= 1000 && typeof (eq) != "undefined") {_RecordType("<2470,2472,58>",(eq)); Inst22++; } } catch(e) {}
+eq(1, 1);
+try { if (Inst23 <= 1000 && typeof (test) != "undefined") {_RecordType("<2480,2484,59>",(test)); Inst23++; } } catch(e) {}
+test();
+try { if (Inst24 <= 1000 && typeof (test) != "undefined") {_RecordType("<2488,2492,60>",(test)); Inst24++; } } catch(e) {}
+test(); // Second compilation should have noticed that LICM wasn't a good idea, and now
+// function should no longer deopt when called.
+
+try { if (Inst25 <= 1000 && typeof (test) != "undefined") {_RecordType("<2625,2629,63>",(test)); Inst25++; } } catch(e) {}
+test();
+try { if (Inst26 <= 1000 && typeof (test) != "undefined") {_RecordType("<2633,2637,64>",(test)); Inst26++; } } catch(e) {}
+test();
+

@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// for-of works on a cross-compartment wrapper of a Set.
+try { if (Inst1 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<65,74,2>",(newGlobal)); Inst1++; } } catch(e) {}
+var g = newGlobal();
+try { if (Inst0 <= 1000 && typeof (g) != "undefined") {_RecordType("<61,62,2>",(g)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (g.eval) != "undefined") {_RecordType("<87,93,3>",(g.eval)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (g) != "undefined") {_RecordType("<87,88,3>",(g)); Inst4++; } } catch(e) {}
+var mw = g.eval("new Set(['a', 'b', 1, 2])");
+try { if (Inst2 <= 1000 && typeof (mw) != "undefined") {_RecordType("<82,84,3>",(mw)); Inst2++; } } catch(e) {}
+var log = '';
+try { if (Inst5 <= 1000 && typeof (log) != "undefined") {_RecordType("<128,131,4>",(log)); Inst5++; } } catch(e) {}
+
+for (let x of mw) {
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<148,149,6>",(x)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (mw) != "undefined") {_RecordType("<153,155,6>",(mw)); Inst7++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<168,169,7>",(x)); Inst9++; } } catch(e) {}
+  log += x;
+try { if (Inst8 <= 1000 && typeof (log) != "undefined") {_RecordType("<161,164,7>",(log)); Inst8++; } } catch(e) {}
+}
+
+try { if (Inst10 <= 1000 && typeof (log) != "undefined") {_RecordType("<174,177,10>",(log)); Inst10++; } } catch(e) {}
+log;
+"ab12";
+

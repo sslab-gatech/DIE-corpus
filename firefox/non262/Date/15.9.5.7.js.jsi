@@ -1,0 +1,289 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+   File Name:    15.9.5.7.js
+   ECMA Section: 15.9.5.7 Date.prototype.toLocaleTimeString()
+   Description:
+   This function returns a string value. The contents of the string are
+   implementation dependent, but are intended to represent the "time"
+   portion of the Date in the current time zone in a convenient,
+   human-readable form.   We test the content of the string by checking
+   that
+
+   new Date(d.toDateString() + " " + d.toLocaleTimeString()) ==  d
+
+   Author:  pschwartau@netscape.com                            
+   Date:    14 november 2000
+   Revised: 07 january 2002  because of a change in JS Date format:
+   Revised: 21 November 2005 since the string comparison stuff is horked.
+   bclary
+
+   See http://bugzilla.mozilla.org/show_bug.cgi?id=118266 (SpiderMonkey)
+   See http://bugzilla.mozilla.org/show_bug.cgi?id=118636 (Rhino)
+*/
+//-----------------------------------------------------------------------------
+var SECTION = "15.9.5.7";
+try { if (Inst0 <= 1000 && typeof (SECTION) != "undefined") {_RecordType("<1202,1209,29>",(SECTION)); Inst0++; } } catch(e) {}
+var TITLE = "Date.prototype.toLocaleTimeString()";
+try { if (Inst1 <= 1000 && typeof (TITLE) != "undefined") {_RecordType("<1228,1233,30>",(TITLE)); Inst1++; } } catch(e) {}
+var status = '';
+try { if (Inst2 <= 1000 && typeof (status) != "undefined") {_RecordType("<1279,1285,31>",(status)); Inst2++; } } catch(e) {}
+var actual = '';
+try { if (Inst3 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1296,1302,32>",(actual)); Inst3++; } } catch(e) {}
+var expect = '';
+try { if (Inst4 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1313,1319,33>",(expect)); Inst4++; } } catch(e) {}
+var givenDate;
+try { if (Inst5 <= 1000 && typeof (givenDate) != "undefined") {_RecordType("<1330,1339,34>",(givenDate)); Inst5++; } } catch(e) {}
+var year = '';
+try { if (Inst6 <= 1000 && typeof (year) != "undefined") {_RecordType("<1345,1349,35>",(year)); Inst6++; } } catch(e) {}
+var regexp = '';
+try { if (Inst7 <= 1000 && typeof (regexp) != "undefined") {_RecordType("<1360,1366,36>",(regexp)); Inst7++; } } catch(e) {}
+var TimeString = '';
+try { if (Inst8 <= 1000 && typeof (TimeString) != "undefined") {_RecordType("<1377,1387,37>",(TimeString)); Inst8++; } } catch(e) {}
+var reducedDateString = '';
+try { if (Inst9 <= 1000 && typeof (reducedDateString) != "undefined") {_RecordType("<1398,1415,38>",(reducedDateString)); Inst9++; } } catch(e) {}
+var hopeThisIsLocaleTimeString = '';
+try { if (Inst10 <= 1000 && typeof (hopeThisIsLocaleTimeString) != "undefined") {_RecordType("<1426,1452,39>",(hopeThisIsLocaleTimeString)); Inst10++; } } catch(e) {}
+var cnERR = 'OOPS! FATAL ERROR: no regexp match in extractLocaleTimeString()';
+try { if (Inst11 <= 1000 && typeof (cnERR) != "undefined") {_RecordType("<1463,1468,40>",(cnERR)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (writeHeaderToLog) != "undefined") {_RecordType("<1538,1554,41>",(writeHeaderToLog)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (SECTION) != "undefined") {_RecordType("<1555,1562,41>",(SECTION)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (TITLE) != "undefined") {_RecordType("<1571,1576,41>",(TITLE)); Inst14++; } } catch(e) {}
+writeHeaderToLog(SECTION + " " + TITLE);
+try { if (Inst16 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1593,1597,42>",(Date)); Inst16++; } } catch(e) {}
+var now = new Date(); // valueOf() is to accurate to the millisecond,
+try { if (Inst15 <= 1000 && typeof (now) != "undefined") {_RecordType("<1583,1586,42>",(now)); Inst15++; } } catch(e) {}
+// Date.parse() is accurate only to the second
+
+try { if (Inst18 <= 1000 && typeof (now.valueOf) != "undefined") {_RecordType("<1712,1723,45>",(now.valueOf)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (now) != "undefined") {_RecordType("<1712,1715,45>",(now)); Inst19++; } } catch(e) {}
+var TIME_NOW = now.valueOf(); // first, a couple generic tests -
+try { if (Inst17 <= 1000 && typeof (TIME_NOW) != "undefined") {_RecordType("<1701,1709,45>",(TIME_NOW)); Inst17++; } } catch(e) {}
+
+status = "typeof (now.toLocaleTimeString())";
+try { if (Inst20 <= 1000 && typeof (status) != "undefined") {_RecordType("<1763,1769,47>",(status)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (now.toLocaleTimeString) != "undefined") {_RecordType("<1825,1847,48>",(now.toLocaleTimeString)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (now) != "undefined") {_RecordType("<1825,1828,48>",(now)); Inst23++; } } catch(e) {}
+actual = typeof now.toLocaleTimeString();
+try { if (Inst21 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1809,1815,48>",(actual)); Inst21++; } } catch(e) {}
+expect = "string";
+try { if (Inst24 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1851,1857,49>",(expect)); Inst24++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (addTestCase) != "undefined") {_RecordType("<1870,1881,50>",(addTestCase)); Inst25++; } } catch(e) {}
+addTestCase();
+status = "Date.prototype.toLocaleTimeString.length";
+try { if (Inst26 <= 1000 && typeof (status) != "undefined") {_RecordType("<1885,1891,51>",(status)); Inst26++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (Date.prototype.toLocaleTimeString.length) != "undefined") {_RecordType("<1947,1987,52>",(Date.prototype.toLocaleTimeString.length)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Date.prototype.toLocaleTimeString) != "undefined") {_RecordType("<1947,1980,52>",(Date.prototype.toLocaleTimeString)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Date.prototype) != "undefined") {_RecordType("<1947,1961,52>",(Date.prototype)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1947,1951,52>",(Date)); Inst31++; } } catch(e) {}
+actual = Date.prototype.toLocaleTimeString.length;
+try { if (Inst27 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1938,1944,52>",(actual)); Inst27++; } } catch(e) {}
+expect = 0;
+try { if (Inst32 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1989,1995,53>",(expect)); Inst32++; } } catch(e) {}
+try { if (Inst33 <= 1000 && typeof (addTestCase) != "undefined") {_RecordType("<2001,2012,54>",(addTestCase)); Inst33++; } } catch(e) {}
+addTestCase(); // 1970
+
+try { if (Inst34 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2025,2040,56>",(addDateTestCase)); Inst34++; } } catch(e) {}
+addDateTestCase(0);
+try { if (Inst35 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2045,2060,57>",(addDateTestCase)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2061,2070,57>",(TZ_ADJUST)); Inst36++; } } catch(e) {}
+addDateTestCase(TZ_ADJUST); // 1900
+
+try { if (Inst37 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2082,2097,59>",(addDateTestCase)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (UTC_01_JAN_1900) != "undefined") {_RecordType("<2098,2113,59>",(UTC_01_JAN_1900)); Inst38++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_1900);
+try { if (Inst39 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2116,2131,60>",(addDateTestCase)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (UTC_01_JAN_1900) != "undefined") {_RecordType("<2132,2147,60>",(UTC_01_JAN_1900)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2150,2159,60>",(TZ_ADJUST)); Inst41++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_1900 - TZ_ADJUST); // 2000
+
+try { if (Inst42 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2171,2186,62>",(addDateTestCase)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (UTC_01_JAN_2000) != "undefined") {_RecordType("<2187,2202,62>",(UTC_01_JAN_2000)); Inst43++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_2000);
+try { if (Inst44 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2205,2220,63>",(addDateTestCase)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (UTC_01_JAN_2000) != "undefined") {_RecordType("<2221,2236,63>",(UTC_01_JAN_2000)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2239,2248,63>",(TZ_ADJUST)); Inst46++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_2000 - TZ_ADJUST); // 29 Feb 2000
+
+try { if (Inst47 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2267,2282,65>",(addDateTestCase)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (UTC_29_FEB_2000) != "undefined") {_RecordType("<2283,2298,65>",(UTC_29_FEB_2000)); Inst48++; } } catch(e) {}
+addDateTestCase(UTC_29_FEB_2000);
+try { if (Inst49 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2301,2316,66>",(addDateTestCase)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (UTC_29_FEB_2000) != "undefined") {_RecordType("<2317,2332,66>",(UTC_29_FEB_2000)); Inst50++; } } catch(e) {}
+addDateTestCase(UTC_29_FEB_2000 - 1000);
+try { if (Inst51 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2342,2357,67>",(addDateTestCase)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (UTC_29_FEB_2000) != "undefined") {_RecordType("<2358,2373,67>",(UTC_29_FEB_2000)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2376,2385,67>",(TZ_ADJUST)); Inst53++; } } catch(e) {}
+addDateTestCase(UTC_29_FEB_2000 - TZ_ADJUST); // Now
+
+try { if (Inst54 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2396,2411,69>",(addDateTestCase)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (TIME_NOW) != "undefined") {_RecordType("<2412,2420,69>",(TIME_NOW)); Inst55++; } } catch(e) {}
+addDateTestCase(TIME_NOW);
+try { if (Inst56 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2423,2438,70>",(addDateTestCase)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (TIME_NOW) != "undefined") {_RecordType("<2439,2447,70>",(TIME_NOW)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2450,2459,70>",(TZ_ADJUST)); Inst58++; } } catch(e) {}
+addDateTestCase(TIME_NOW - TZ_ADJUST); // 2005
+
+try { if (Inst59 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2471,2486,72>",(addDateTestCase)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (UTC_01_JAN_2005) != "undefined") {_RecordType("<2487,2502,72>",(UTC_01_JAN_2005)); Inst60++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_2005);
+try { if (Inst61 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2505,2520,73>",(addDateTestCase)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (UTC_01_JAN_2005) != "undefined") {_RecordType("<2521,2536,73>",(UTC_01_JAN_2005)); Inst62++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_2005 - 1000);
+try { if (Inst63 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2546,2561,74>",(addDateTestCase)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (UTC_01_JAN_2005) != "undefined") {_RecordType("<2562,2577,74>",(UTC_01_JAN_2005)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (TZ_ADJUST) != "undefined") {_RecordType("<2580,2589,74>",(TZ_ADJUST)); Inst65++; } } catch(e) {}
+addDateTestCase(UTC_01_JAN_2005 - TZ_ADJUST);
+try { if (Inst66 <= 1000 && typeof (test) != "undefined") {_RecordType("<2592,2596,75>",(test)); Inst66++; } } catch(e) {}
+test();
+
+try { if (Inst67 <= 1000 && typeof (addTestCase) != "undefined") {_RecordType("<2610,2621,77>",(addTestCase)); Inst67++; } } catch(e) {}
+function addTestCase() {
+try { if (Inst68 <= 1000 && typeof (TestCase) != "undefined") {_RecordType("<2632,2640,78>",(TestCase)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (status) != "undefined") {_RecordType("<2641,2647,78>",(status)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2649,2655,78>",(expect)); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2657,2663,78>",(actual)); Inst71++; } } catch(e) {}
+  new TestCase(status, expect, actual);
+}
+
+try { if (Inst72 <= 1000 && typeof (addDateTestCase) != "undefined") {_RecordType("<2678,2693,81>",(addDateTestCase)); Inst72++; } } catch(e) {}
+function addDateTestCase(date_given_in_milliseconds) {
+try { if (Inst73 <= 1000 && typeof (date_given_in_milliseconds) != "undefined") {_RecordType("<2694,2720,81>",(date_given_in_milliseconds)); Inst73++; } } catch(e) {}
+try { if (Inst75 <= 1000 && typeof (date_given_in_milliseconds) != "undefined") {_RecordType("<2748,2774,82>",(date_given_in_milliseconds)); Inst75++; } } catch(e) {}
+  var s = 'new Date(' + date_given_in_milliseconds + ')';
+try { if (Inst74 <= 1000 && typeof (s) != "undefined") {_RecordType("<2730,2731,82>",(s)); Inst74++; } } catch(e) {}
+try { if (Inst77 <= 1000 && typeof (Date) != "undefined") {_RecordType("<2800,2804,83>",(Date)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (date_given_in_milliseconds) != "undefined") {_RecordType("<2805,2831,83>",(date_given_in_milliseconds)); Inst78++; } } catch(e) {}
+  givenDate = new Date(date_given_in_milliseconds);
+try { if (Inst76 <= 1000 && typeof (givenDate) != "undefined") {_RecordType("<2784,2793,83>",(givenDate)); Inst76++; } } catch(e) {}
+try { if (Inst80 <= 1000 && typeof (s) != "undefined") {_RecordType("<2854,2855,84>",(s)); Inst80++; } } catch(e) {}
+  status = 'd = ' + s + '; d == new Date(d.toDateString() + " " + d.toLocaleTimeString())';
+try { if (Inst79 <= 1000 && typeof (status) != "undefined") {_RecordType("<2836,2842,84>",(status)); Inst79++; } } catch(e) {}
+try { if (Inst82 <= 1000 && typeof (givenDate.toString) != "undefined") {_RecordType("<2937,2955,85>",(givenDate.toString)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (givenDate) != "undefined") {_RecordType("<2937,2946,85>",(givenDate)); Inst83++; } } catch(e) {}
+  expect = givenDate.toString();
+try { if (Inst81 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2928,2934,85>",(expect)); Inst81++; } } catch(e) {}
+try { if (Inst85 <= 1000 && typeof (new Date(givenDate.toDateString() + ' ' + givenDate.toLocaleTimeString()).toString) != "undefined") {_RecordType("<2970,3052,86>",(new Date(givenDate.toDateString() + ' ' + givenDate.toLocaleTimeString()).toString)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (Date) != "undefined") {_RecordType("<2974,2978,86>",(Date)); Inst86++; } } catch(e) {}try { if (Inst87 <= 1000 && typeof (givenDate.toDateString) != "undefined") {_RecordType("<2979,3001,86>",(givenDate.toDateString)); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (givenDate) != "undefined") {_RecordType("<2979,2988,86>",(givenDate)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (givenDate.toLocaleTimeString) != "undefined") {_RecordType("<3012,3040,86>",(givenDate.toLocaleTimeString)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (givenDate) != "undefined") {_RecordType("<3012,3021,86>",(givenDate)); Inst90++; } } catch(e) {}
+  actual = new Date(givenDate.toDateString() + ' ' + givenDate.toLocaleTimeString()).toString();
+try { if (Inst84 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2961,2967,86>",(actual)); Inst84++; } } catch(e) {}
+try { if (Inst91 <= 1000 && typeof (addTestCase) != "undefined") {_RecordType("<3058,3069,87>",(addTestCase)); Inst91++; } } catch(e) {}
+  addTestCase();
+}
+

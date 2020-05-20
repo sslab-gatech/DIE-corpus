@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (Q) != "undefined") {_RecordType("<9,10,1>",(Q)); Inst0++; } } catch(e) {}
+function Q(on) {
+try { if (Inst1 <= 1000 && typeof (on) != "undefined") {_RecordType("<11,13,1>",(on)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (options().match) != "undefined") {_RecordType("<19,34,2>",(options().match)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (options) != "undefined") {_RecordType("<19,26,2>",(options)); Inst3++; } } catch(e) {}
+  options().match;
+}
+
+try { if (Inst4 <= 1000 && typeof (options) != "undefined") {_RecordType("<48,55,5>",(options)); Inst4++; } } catch(e) {}
+function options() {
+  return "methodjit";
+}
+
+try { if (Inst5 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<85,91,9>",(gczeal)); Inst5++; } } catch(e) {}
+gczeal(2);
+
+for (i = 0; i < 100; ++i) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<102,103,11>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<109,110,11>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<120,121,11>",(i)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (Q) != "undefined") {_RecordType("<127,128,12>",(Q)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Q) != "undefined") {_RecordType("<129,130,12>",(Q)); Inst10++; } } catch(e) {}
+  Q(Q(42, []));
+}
+

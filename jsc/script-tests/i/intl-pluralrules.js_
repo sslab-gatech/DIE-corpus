@@ -1,0 +1,636 @@
+//@ skip if $hostOS == "windows" or $hostOS == "linux"
+//@ requireOptions("--useIntlPluralRules=true")
+console.log("This test checks the behavior of Intl.PluralRules as described in the ECMAScript Internationalization API Specification."); // https://tc39.github.io/ecma402/#pluralrules-objects
+// 13.2 The Intl.PluralRules Constructor
+// The PluralRules constructor is the %PluralRules% intrinsic object and a standard built-in property of the Intl object.
+
+Intl.PluralRules; // 13.2.1 Intl.PluralRules ([ locales [, options ] ])
+// If NewTarget is undefined, throw a TypeError exception.
+
+try {
+  Intl.PluralRules();
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.call({});
+} catch (e) {
+  ;
+} // Let pluralRules be ? OrdinaryCreateFromConstructor(newTarget, %PluralRulesPrototype%, « [[InitializedPluralRules]], [[Locale]], [[Type]], [[MinimumIntegerDigits]], [[MinimumFractionDigits]], [[MaximumFractionDigits]], [[MinimumSignificantDigits]], [[MaximumSignificantDigits]], [[PluralCategories]] »).
+// Return ? InitializePluralRules(pluralRules, locales, options).
+
+
+try {
+  new Intl.PluralRules('$');
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', null);
+} catch (e) {
+  ;
+}
+
+new Intl.PluralRules(); // Subclassable
+
+/*
+var classPrefix = "class DerivedPluralRules extends Intl.PluralRules {};";
+shouldBeTrue(classPrefix + "(new DerivedPluralRules) instanceof DerivedPluralRules");
+shouldBeTrue(classPrefix + "(new DerivedPluralRules) instanceof Intl.PluralRules");
+shouldBeTrue(classPrefix + "new DerivedPluralRules('en').select(1) === 'one'");
+shouldBeTrue(classPrefix + "Object.getPrototypeOf(new DerivedPluralRules) === DerivedPluralRules.prototype");
+shouldBeTrue(classPrefix + "Object.getPrototypeOf(Object.getPrototypeOf(new DerivedPluralRules)) === Intl.PluralRules.prototype");
+*/
+// 13.3 Properties of the Intl.PluralRules Constructor
+// length property (whose value is 0)
+
+Intl.PluralRules.length; // 13.3.1 Intl.PluralRules.prototype
+// This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: false }.
+
+Object.getOwnPropertyDescriptor(Intl.PluralRules, 'prototype').writable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules, 'prototype').enumerable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules, 'prototype').configurable; // 13.3.2 Intl.PluralRules.supportedLocalesOf (locales [, options ])
+// The value of the length property of the supportedLocalesOf method is 1.
+
+Intl.PluralRules.supportedLocalesOf.length; // Returns SupportedLocales
+
+Intl.PluralRules.supportedLocalesOf(); // Doesn't care about `this`.
+
+Intl.PluralRules.supportedLocalesOf.call(null, 'en');
+Intl.PluralRules.supportedLocalesOf.call({}, 'en');
+Intl.PluralRules.supportedLocalesOf.call(1, 'en'); // Ignores non-object, non-string list.
+
+Intl.PluralRules.supportedLocalesOf(9); // Makes an array of tags.
+
+Intl.PluralRules.supportedLocalesOf('en'); // Handles array-like objects with holes.
+
+Intl.PluralRules.supportedLocalesOf({
+  length: 4,
+  1: 'en',
+  0: 'es',
+  3: 'de'
+}); // Deduplicates tags.
+
+Intl.PluralRules.supportedLocalesOf(['en', 'pt', 'en', 'es']); // Canonicalizes tags.
+
+Intl.PluralRules.supportedLocalesOf('En-laTn-us-variant2-variant1-1abc-U-ko-tRue-A-aa-aaa-x-RESERVED'); // Replaces outdated tags.
+
+Intl.PluralRules.supportedLocalesOf('no-bok'); // Doesn't throw, but ignores private tags.
+
+Intl.PluralRules.supportedLocalesOf('x-some-thing'); // Throws on problems with length, get, or toString.
+
+try {
+  Intl.PluralRules.supportedLocalesOf(Object.create(null, {
+    length: {
+      get() {
+        throw Error('a');
+      }
+
+    }
+  }));
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf(Object.create(null, {
+    length: {
+      value: 1
+    },
+    0: {
+      get() {
+        throw Error('b');
+      }
+
+    }
+  }));
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf([{
+    toString() {
+      throw Error('c');
+    }
+
+  }]);
+} catch (e) {
+  ;
+} // Throws on bad tags.
+
+
+try {
+  Intl.PluralRules.supportedLocalesOf([5]);
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('a');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('abcdefghij');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('#$');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-@-abc');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-u');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-u-kn-true-u-ko-true');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-x');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-*');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en-');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.PluralRules.supportedLocalesOf('en--US');
+} catch (e) {
+  ;
+} // Accepts valid tags
+
+
+var validLanguageTags = ["de", // ISO 639 language code
+"de-DE", // + ISO 3166-1 country code
+"DE-de", // tags are case-insensitive
+"cmn", // ISO 639 language code
+"cmn-Hans", // + script code
+"CMN-hANS", // tags are case-insensitive
+"cmn-hans-cn", // + ISO 3166-1 country code
+"es-419", // + UN M.49 region code
+"es-419-u-nu-latn-cu-bob", // + Unicode locale extension sequence
+"i-klingon", // grandfathered tag
+"cmn-hans-cn-t-ca-u-ca-x-t-u", // singleton subtags can also be used as private use subtags
+"enochian-enochian", // language and variant subtags may be the same
+"de-gregory-u-ca-gregory", // variant and extension subtags may be the same
+"aa-a-foo-x-a-foo-bar", // variant subtags can also be used as private use subtags
+"x-en-US-12345", // anything goes in private use tags
+"x-12345-12345-en-US", "x-en-US-12345-12345", "x-en-u-foo", "x-en-u-foo-u-bar"];
+
+for (var validLanguageTag of validLanguageTags) {
+  eval("Intl.PluralRules.supportedLocalesOf('" + validLanguageTag + "')");
+} // 13.4 Properties of the Intl.PluralRules Prototype Object
+// The Intl.PluralRules prototype object is itself an ordinary object.
+
+
+Object.getPrototypeOf(Intl.PluralRules.prototype); // 13.4.1 Intl.PluralRules.prototype.constructor
+// The initial value of Intl.PluralRules.prototype.constructor is the intrinsic object %PluralRules%.
+
+Intl.PluralRules.prototype.constructor; // 13.4.2 Intl.PluralRules.prototype [ @@toStringTag ]
+// The initial value of the @@toStringTag property is the string value "Object".
+
+Intl.PluralRules.prototype[Symbol.toStringTag];
+Object.prototype.toString.call(Intl.PluralRules.prototype); // This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: true }.
+
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, Symbol.toStringTag).writable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, Symbol.toStringTag).enumerable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, Symbol.toStringTag).configurable; // 13.4.3 Intl.PluralRules.prototype.select (value)
+// is a normal method.
+
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, 'select').value;
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, 'select').writable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, 'select').enumerable;
+Object.getOwnPropertyDescriptor(Intl.PluralRules.prototype, 'select').configurable; // the select function is simply inherited from the prototype.
+
+new Intl.PluralRules().select === new Intl.PluralRules().select; // assume a length of 1 since it expects a value.
+
+Intl.PluralRules.prototype.select.length;
+var defaultPluralRules = new Intl.PluralRules("en"); // Let pr be the this value.
+// If Type(pr) is not Object, throw a TypeError exception.
+
+try {
+  Intl.PluralRules.prototype.select.call(1);
+} catch (e) {
+  ;
+} // If pr does not have an [[InitializedPluralRules]] internal slot, throw a TypeError exception.
+
+
+try {
+  Intl.PluralRules.prototype.select.call({});
+} catch (e) {
+  ;
+} // Let n be ? ToNumber(value).
+
+
+try {
+  defaultPluralRules.select({
+    valueOf() {
+      throw Error('4');
+    }
+
+  });
+} catch (e) {
+  ;
+} // Return ? ResolvePlural(pr, n).
+
+
+defaultPluralRules.select(1);
+Intl.PluralRules.prototype.select.call(defaultPluralRules, 1);
+defaultPluralRules.select(0);
+defaultPluralRules.select(-1);
+defaultPluralRules.select(2); // A few known examples
+
+var englishOrdinals = new Intl.PluralRules('en', {
+  type: 'ordinal'
+});
+englishOrdinals.select(0);
+englishOrdinals.select(1);
+englishOrdinals.select(2);
+englishOrdinals.select(3);
+englishOrdinals.select(4);
+englishOrdinals.select(11);
+englishOrdinals.select(12);
+englishOrdinals.select(13);
+englishOrdinals.select(14);
+englishOrdinals.select(21);
+englishOrdinals.select(22);
+englishOrdinals.select(23);
+englishOrdinals.select(24);
+englishOrdinals.select(101);
+englishOrdinals.select(102);
+englishOrdinals.select(103);
+englishOrdinals.select(104);
+var arabicCardinals = new Intl.PluralRules('ar');
+arabicCardinals.select(0);
+arabicCardinals.select(1);
+arabicCardinals.select(2);
+arabicCardinals.select(3);
+arabicCardinals.select(11); // 13.4.4 Intl.PluralRules.prototype.resolvedOptions ()
+
+Intl.PluralRules.prototype.resolvedOptions.length; // Let pr be the this value.
+// If Type(pr) is not Object, throw a TypeError exception.
+
+try {
+  Intl.PluralRules.prototype.resolvedOptions.call(5);
+} catch (e) {
+  ;
+} // If pr does not have an [[InitializedPluralRules]] internal slot, throw a TypeError exception.
+
+
+try {
+  Intl.PluralRules.prototype.resolvedOptions.call({});
+} catch (e) {
+  ;
+} // Let options be ! ObjectCreate(%ObjectPrototype%).
+
+
+defaultPluralRules.resolvedOptions();
+defaultPluralRules.resolvedOptions() === defaultPluralRules.resolvedOptions(); // For each row of Table 8, except the header row, ...
+// Return options.
+// Defaults to cardinal.
+
+defaultPluralRules.resolvedOptions().type;
+defaultPluralRules.resolvedOptions().minimumIntegerDigits;
+defaultPluralRules.resolvedOptions().minimumFractionDigits;
+defaultPluralRules.resolvedOptions().maximumFractionDigits;
+defaultPluralRules.resolvedOptions().minimumSignificantDigits;
+defaultPluralRules.resolvedOptions().maximumSignificantDigits; // The option localeMatcher is processed correctly.
+
+try {
+  new Intl.PluralRules('en', {
+    localeMatcher: {
+      toString() {
+        throw 'nope';
+      }
+
+    }
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    localeMatcher: 'bad'
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    localeMatcher: 'lookup'
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    localeMatcher: 'best fit'
+  });
+} catch (e) {
+  ;
+} // The option type is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  type: 'cardinal'
+}).resolvedOptions().type;
+new Intl.PluralRules('en', {
+  type: 'ordinal'
+}).resolvedOptions().type;
+
+try {
+  new Intl.PluralRules('en', {
+    type: 'bad'
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    type: {
+      toString() {
+        throw 'badtype';
+      }
+
+    }
+  });
+} catch (e) {
+  ;
+} // The option minimumIntegerDigits is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  minimumIntegerDigits: 1
+}).resolvedOptions().minimumIntegerDigits;
+new Intl.PluralRules('en', {
+  minimumIntegerDigits: '2'
+}).resolvedOptions().minimumIntegerDigits;
+new Intl.PluralRules('en', {
+  minimumIntegerDigits: {
+    valueOf() {
+      return 3;
+    }
+
+  }
+}).resolvedOptions().minimumIntegerDigits;
+new Intl.PluralRules('en', {
+  minimumIntegerDigits: 4.9
+}).resolvedOptions().minimumIntegerDigits;
+new Intl.PluralRules('en', {
+  minimumIntegerDigits: 21
+}).resolvedOptions().minimumIntegerDigits;
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: 0
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: 22
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: 0.9
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: 21.1
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: NaN
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: Infinity
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    get minimumIntegerDigits() {
+      throw 42;
+    }
+
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumIntegerDigits: {
+      valueOf() {
+        throw 42;
+      }
+
+    }
+  });
+} catch (e) {
+  ;
+} // The option minimumFractionDigits is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  minimumFractionDigits: 0
+}).resolvedOptions().minimumFractionDigits;
+new Intl.PluralRules('en', {
+  minimumFractionDigits: 0
+}).resolvedOptions().maximumFractionDigits;
+new Intl.PluralRules('en', {
+  minimumFractionDigits: 6
+}).resolvedOptions().minimumFractionDigits;
+new Intl.PluralRules('en', {
+  minimumFractionDigits: 6
+}).resolvedOptions().maximumFractionDigits;
+
+try {
+  new Intl.PluralRules('en', {
+    minimumFractionDigits: -1
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumFractionDigits: 21
+  });
+} catch (e) {
+  ;
+} // The option maximumFractionDigits is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  maximumFractionDigits: 6
+}).resolvedOptions().maximumFractionDigits;
+
+try {
+  new Intl.PluralRules('en', {
+    minimumFractionDigits: 7,
+    maximumFractionDigits: 6
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    maximumFractionDigits: -1
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    maximumFractionDigits: 21
+  });
+} catch (e) {
+  ;
+} // The option minimumSignificantDigits is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  minimumSignificantDigits: 6
+}).resolvedOptions().minimumSignificantDigits;
+new Intl.PluralRules('en', {
+  minimumSignificantDigits: 6
+}).resolvedOptions().maximumSignificantDigits;
+
+try {
+  new Intl.PluralRules('en', {
+    minimumSignificantDigits: 0
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    minimumSignificantDigits: 22
+  });
+} catch (e) {
+  ;
+} // The option maximumSignificantDigits is processed correctly.
+
+
+new Intl.PluralRules('en', {
+  maximumSignificantDigits: 6
+}).resolvedOptions().minimumSignificantDigits;
+new Intl.PluralRules('en', {
+  maximumSignificantDigits: 6
+}).resolvedOptions().maximumSignificantDigits;
+
+try {
+  new Intl.PluralRules('en', {
+    minimumSignificantDigits: 7,
+    maximumSignificantDigits: 6
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    maximumSignificantDigits: 0
+  });
+} catch (e) {
+  ;
+}
+
+try {
+  new Intl.PluralRules('en', {
+    maximumSignificantDigits: 22
+  });
+} catch (e) {
+  ;
+} // The number formatting impacts the final select.
+
+
+new Intl.PluralRules('en', {
+  maximumFractionDigits: 0
+}).select(1.4);
+new Intl.PluralRules('en', {
+  maximumSignificantDigits: 1
+}).select(1.4);
+new Intl.PluralRules('en', {
+  type: 'ordinal',
+  maximumSignificantDigits: 2
+}).select(123);
+new Intl.PluralRules('en', {
+  type: 'ordinal',
+  maximumSignificantDigits: 3
+}).select(123.4); // These require ICU v59+
+
+/*
+new Intl.PluralRules('en', {minimumFractionDigits: 1}).select(1);
+new Intl.PluralRules('en', {minimumSignificantDigits: 2}).select(1);
+
+// Plural categories are correctly determined
+new Intl.PluralRules('en').resolvedOptions().pluralCategories;
+new Intl.PluralRules('ar').resolvedOptions().pluralCategories.join();
+new Intl.PluralRules('en').resolvedOptions().pluralCategories.join();
+new Intl.PluralRules('en', {type: 'ordinal'}).resolvedOptions().pluralCategories.join();
+*/

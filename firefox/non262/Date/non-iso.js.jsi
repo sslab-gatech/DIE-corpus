@@ -1,0 +1,237 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommonn.org/licenses/publicdomain/
+ */
+
+/*
+ * For the sake of cross compatibility with other implementations we
+ * follow the W3C "NOTE-datetime" specification when parsing dates of
+ * the form YYYY-MM-DDTHH:MM:SS save for a few exceptions: months, days, hours
+ * minutes, and seconds may be either one _or_ two digits long, and the 'T'
+ * preceding the time part may be replaced with a space. So, a string like
+ * "1997-3-8 1:1:1" will parse successfully. See bug: 1203298
+ */
+
+/**************
+ * BEGIN TEST *
+ **************/
+try { if (Inst0 <= 1000 && typeof (new Date("1997-03-08 1:1:1.01").getTime) != "undefined") {_RecordType("<601,640,18>",(new Date("1997-03-08 1:1:1.01").getTime)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Date) != "undefined") {_RecordType("<605,609,18>",(Date)); Inst1++; } } catch(e) {}
+new Date("1997-03-08 1:1:1.01").getTime();
+try { if (Inst2 <= 1000 && typeof (new Date("1997-03-08T01:01:01.01").getTime) != "undefined") {_RecordType("<644,686,19>",(new Date("1997-03-08T01:01:01.01").getTime)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Date) != "undefined") {_RecordType("<648,652,19>",(Date)); Inst3++; } } catch(e) {}
+new Date("1997-03-08T01:01:01.01").getTime();
+try { if (Inst4 <= 1000 && typeof (new Date("1997-03-08 11:19:20").getTime) != "undefined") {_RecordType("<690,729,20>",(new Date("1997-03-08 11:19:20").getTime)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Date) != "undefined") {_RecordType("<694,698,20>",(Date)); Inst5++; } } catch(e) {}
+new Date("1997-03-08 11:19:20").getTime();
+try { if (Inst6 <= 1000 && typeof (new Date("1997-03-08T11:19:20").getTime) != "undefined") {_RecordType("<733,772,21>",(new Date("1997-03-08T11:19:20").getTime)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Date) != "undefined") {_RecordType("<737,741,21>",(Date)); Inst7++; } } catch(e) {}
+new Date("1997-03-08T11:19:20").getTime();
+try { if (Inst8 <= 1000 && typeof (new Date("1997-3-08 11:19:20").getTime) != "undefined") {_RecordType("<776,814,22>",(new Date("1997-3-08 11:19:20").getTime)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Date) != "undefined") {_RecordType("<780,784,22>",(Date)); Inst9++; } } catch(e) {}
+new Date("1997-3-08 11:19:20").getTime();
+try { if (Inst10 <= 1000 && typeof (new Date("1997-03-08T11:19:20").getTime) != "undefined") {_RecordType("<818,857,23>",(new Date("1997-03-08T11:19:20").getTime)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Date) != "undefined") {_RecordType("<822,826,23>",(Date)); Inst11++; } } catch(e) {}
+new Date("1997-03-08T11:19:20").getTime();
+try { if (Inst12 <= 1000 && typeof (new Date("1997-3-8 11:19:20").getTime) != "undefined") {_RecordType("<861,898,24>",(new Date("1997-3-8 11:19:20").getTime)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Date) != "undefined") {_RecordType("<865,869,24>",(Date)); Inst13++; } } catch(e) {}
+new Date("1997-3-8 11:19:20").getTime();
+try { if (Inst14 <= 1000 && typeof (new Date("1997-03-08T11:19:20").getTime) != "undefined") {_RecordType("<902,941,25>",(new Date("1997-03-08T11:19:20").getTime)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Date) != "undefined") {_RecordType("<906,910,25>",(Date)); Inst15++; } } catch(e) {}
+new Date("1997-03-08T11:19:20").getTime();
+try { if (Inst16 <= 1000 && typeof (new Date("1997-3-8T11:19:20").getTime) != "undefined") {_RecordType("<945,982,26>",(new Date("1997-3-8T11:19:20").getTime)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Date) != "undefined") {_RecordType("<949,953,26>",(Date)); Inst17++; } } catch(e) {}
+new Date("1997-3-8T11:19:20").getTime();
+try { if (Inst18 <= 1000 && typeof (new Date("1997-03-08T11:19:20").getTime) != "undefined") {_RecordType("<986,1025,27>",(new Date("1997-03-08T11:19:20").getTime)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Date) != "undefined") {_RecordType("<990,994,27>",(Date)); Inst19++; } } catch(e) {}
+new Date("1997-03-08T11:19:20").getTime();
+try { if (Inst20 <= 1000 && typeof (new Date("1997-03-8T11:19:20").getTime) != "undefined") {_RecordType("<1029,1067,28>",(new Date("1997-03-8T11:19:20").getTime)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1033,1037,28>",(Date)); Inst21++; } } catch(e) {}
+new Date("1997-03-8T11:19:20").getTime();
+try { if (Inst22 <= 1000 && typeof (new Date("1997-03-08T11:19:20").getTime) != "undefined") {_RecordType("<1071,1110,29>",(new Date("1997-03-08T11:19:20").getTime)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1075,1079,29>",(Date)); Inst23++; } } catch(e) {}
+new Date("1997-03-08T11:19:20").getTime();
+try { if (Inst24 <= 1000 && typeof (new Date("1997-03-08 11:19").getTime) != "undefined") {_RecordType("<1114,1150,30>",(new Date("1997-03-08 11:19").getTime)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1118,1122,30>",(Date)); Inst25++; } } catch(e) {}
+new Date("1997-03-08 11:19").getTime();
+try { if (Inst26 <= 1000 && typeof (new Date("1997-03-08T11:19").getTime) != "undefined") {_RecordType("<1154,1190,31>",(new Date("1997-03-08T11:19").getTime)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1158,1162,31>",(Date)); Inst27++; } } catch(e) {}
+new Date("1997-03-08T11:19").getTime();
+try { if (Inst28 <= 1000 && typeof (new Date("1997-03-08 1:19").getTime) != "undefined") {_RecordType("<1194,1229,32>",(new Date("1997-03-08 1:19").getTime)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1198,1202,32>",(Date)); Inst29++; } } catch(e) {}
+new Date("1997-03-08 1:19").getTime();
+try { if (Inst30 <= 1000 && typeof (new Date("1997-03-08T1:19").getTime) != "undefined") {_RecordType("<1233,1268,33>",(new Date("1997-03-08T1:19").getTime)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1237,1241,33>",(Date)); Inst31++; } } catch(e) {}
+new Date("1997-03-08T1:19").getTime();
+try { if (Inst32 <= 1000 && typeof (new Date("1997-03-08 1:1").getTime) != "undefined") {_RecordType("<1272,1306,34>",(new Date("1997-03-08 1:1").getTime)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1276,1280,34>",(Date)); Inst33++; } } catch(e) {}
+new Date("1997-03-08 1:1").getTime();
+try { if (Inst34 <= 1000 && typeof (new Date("1997-03-08T1:1").getTime) != "undefined") {_RecordType("<1310,1344,35>",(new Date("1997-03-08T1:1").getTime)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1314,1318,35>",(Date)); Inst35++; } } catch(e) {}
+new Date("1997-03-08T1:1").getTime();
+try { if (Inst36 <= 1000 && typeof (new Date("1997-03-08 1:1:01").getTime) != "undefined") {_RecordType("<1348,1385,36>",(new Date("1997-03-08 1:1:01").getTime)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1352,1356,36>",(Date)); Inst37++; } } catch(e) {}
+new Date("1997-03-08 1:1:01").getTime();
+try { if (Inst38 <= 1000 && typeof (new Date("1997-03-08T1:1:01").getTime) != "undefined") {_RecordType("<1389,1426,37>",(new Date("1997-03-08T1:1:01").getTime)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1393,1397,37>",(Date)); Inst39++; } } catch(e) {}
+new Date("1997-03-08T1:1:01").getTime();
+try { if (Inst40 <= 1000 && typeof (new Date("1997-03-08 1:1:1").getTime) != "undefined") {_RecordType("<1430,1466,38>",(new Date("1997-03-08 1:1:1").getTime)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1434,1438,38>",(Date)); Inst41++; } } catch(e) {}
+new Date("1997-03-08 1:1:1").getTime();
+try { if (Inst42 <= 1000 && typeof (new Date("1997-03-08T1:1:1").getTime) != "undefined") {_RecordType("<1470,1506,39>",(new Date("1997-03-08T1:1:1").getTime)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1474,1478,39>",(Date)); Inst43++; } } catch(e) {}
+new Date("1997-03-08T1:1:1").getTime();
+try { if (Inst44 <= 1000 && typeof (new Date("1997-03-08 11").getTime) != "undefined") {_RecordType("<1510,1543,40>",(new Date("1997-03-08 11").getTime)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1514,1518,40>",(Date)); Inst45++; } } catch(e) {}
+new Date("1997-03-08 11").getTime();
+try { if (Inst46 <= 1000 && typeof (new Date("1997-03-08T11").getTime) != "undefined") {_RecordType("<1547,1580,41>",(new Date("1997-03-08T11").getTime)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1551,1555,41>",(Date)); Inst47++; } } catch(e) {}
+new Date("1997-03-08T11").getTime();
+try { if (Inst48 <= 1000 && typeof (new Date("1997-03-08").getTime) != "undefined") {_RecordType("<1584,1614,42>",(new Date("1997-03-08").getTime)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1588,1592,42>",(Date)); Inst49++; } } catch(e) {}
+new Date("1997-03-08").getTime();
+try { if (Inst50 <= 1000 && typeof (new Date("1997-03-08").getTime) != "undefined") {_RecordType("<1618,1648,43>",(new Date("1997-03-08").getTime)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1622,1626,43>",(Date)); Inst51++; } } catch(e) {}
+new Date("1997-03-08").getTime();
+try { if (Inst52 <= 1000 && typeof (new Date("1997-03-8").getTime) != "undefined") {_RecordType("<1652,1681,44>",(new Date("1997-03-8").getTime)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1656,1660,44>",(Date)); Inst53++; } } catch(e) {}
+new Date("1997-03-8").getTime();
+try { if (Inst54 <= 1000 && typeof (new Date("1997-03-08").getTime) != "undefined") {_RecordType("<1685,1715,45>",(new Date("1997-03-08").getTime)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1689,1693,45>",(Date)); Inst55++; } } catch(e) {}
+new Date("1997-03-08").getTime();
+try { if (Inst56 <= 1000 && typeof (new Date("1997-3-8").getTime) != "undefined") {_RecordType("<1719,1747,46>",(new Date("1997-3-8").getTime)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1723,1727,46>",(Date)); Inst57++; } } catch(e) {}
+new Date("1997-3-8").getTime();
+try { if (Inst58 <= 1000 && typeof (new Date("1997-03-08").getTime) != "undefined") {_RecordType("<1751,1781,47>",(new Date("1997-03-08").getTime)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1755,1759,47>",(Date)); Inst59++; } } catch(e) {}
+new Date("1997-03-08").getTime();
+try { if (Inst60 <= 1000 && typeof (new Date("1997-3-8 ").getTime) != "undefined") {_RecordType("<1785,1814,48>",(new Date("1997-3-8 ").getTime)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1789,1793,48>",(Date)); Inst61++; } } catch(e) {}
+new Date("1997-3-8 ").getTime();
+try { if (Inst62 <= 1000 && typeof (new Date("1997-03-08T").getTime) != "undefined") {_RecordType("<1818,1849,49>",(new Date("1997-03-08T").getTime)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1822,1826,49>",(Date)); Inst63++; } } catch(e) {}
+new Date("1997-03-08T").getTime();
+try { if (Inst64 <= 1000 && typeof (new Date("1997-3-8 :00:01").getTime) != "undefined") {_RecordType("<1853,1888,50>",(new Date("1997-3-8 :00:01").getTime)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1857,1861,50>",(Date)); Inst65++; } } catch(e) {}
+new Date("1997-3-8 :00:01").getTime();
+try { if (Inst66 <= 1000 && typeof (new Date(NaN).getTime) != "undefined") {_RecordType("<1892,1913,51>",(new Date(NaN).getTime)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1896,1900,51>",(Date)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<1901,1904,51>",(NaN)); Inst68++; } } catch(e) {}
+new Date(NaN).getTime();
+try { if (Inst69 <= 1000 && typeof (new Date("1997-3-8 :00:01").getTime) != "undefined") {_RecordType("<1917,1952,52>",(new Date("1997-3-8 :00:01").getTime)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1921,1925,52>",(Date)); Inst70++; } } catch(e) {}
+new Date("1997-3-8 :00:01").getTime();
+try { if (Inst71 <= 1000 && typeof (new Date(NaN).getTime) != "undefined") {_RecordType("<1956,1977,53>",(new Date(NaN).getTime)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1960,1964,53>",(Date)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<1965,1968,53>",(NaN)); Inst73++; } } catch(e) {}
+new Date(NaN).getTime();
+try { if (Inst74 <= 1000 && typeof (new Date("1997-3-8 01::01").getTime) != "undefined") {_RecordType("<1981,2016,54>",(new Date("1997-3-8 01::01").getTime)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1985,1989,54>",(Date)); Inst75++; } } catch(e) {}
+new Date("1997-3-8 01::01").getTime();
+try { if (Inst76 <= 1000 && typeof (new Date(NaN).getTime) != "undefined") {_RecordType("<2020,2041,55>",(new Date(NaN).getTime)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (Date) != "undefined") {_RecordType("<2024,2028,55>",(Date)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<2029,2032,55>",(NaN)); Inst78++; } } catch(e) {}
+new Date(NaN).getTime();
+
+/******************************************************************************/
+try { if (Inst79 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2138,2151,58>",(reportCompare)); Inst79++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst80 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2172,2185,59>",(reportCompare)); Inst80++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst81 <= 1000 && typeof (print) != "undefined") {_RecordType("<2202,2207,62>",(print)); Inst81++; } } catch(e) {}
+print("Tests complete");
+

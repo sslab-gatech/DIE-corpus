@@ -1,0 +1,15 @@
+console.log('Test for regular expressions with non-character values in them, specifically in character classes.');
+"F".match(/[\uD7FF]/);
+"0".match(/[\uD800]/);
+"F".match(/[\uDFFF]/);
+"E".match(/[\uE000]/);
+"y".match(/[\uFDBF]/);
+"y".match(/[\uFDD0]/);
+"y".match(/[\uFDEF]/);
+"y".match(/[\uFDF0]/);
+"y".match(/[\uFEFF]/);
+"y".match(/[\uFEFF]/);
+"y".match(/[\uFFFE]/);
+"y".match(/[\uFFFF]/);
+"y".match(/[\u10FFFF]/);
+"y".match(/[\u110000]/);

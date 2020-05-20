@@ -1,0 +1,111 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Map.clear is unaffected by deleting/monkeypatching Map.prototype.{delete,iterator}.
+var data = [["a", 1], ["b", 2]];
+try { if (Inst0 <= 1000 && typeof (data) != "undefined") {_RecordType("<91,95,2>",(data)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (Map) != "undefined") {_RecordType("<133,136,3>",(Map)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (data) != "undefined") {_RecordType("<137,141,3>",(data)); Inst3++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Map) != "undefined") {_RecordType("<157,160,4>",(Map)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (data) != "undefined") {_RecordType("<161,165,4>",(data)); Inst6++; } } catch(e) {}
+var m1 = new Map(data),
+    m2 = new Map(data);
+try { if (Inst1 <= 1000 && typeof (m1) != "undefined") {_RecordType("<124,126,3>",(m1)); Inst1++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (m2) != "undefined") {_RecordType("<148,150,4>",(m2)); Inst4++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Map.prototype.delete) != "undefined") {_RecordType("<175,195,5>",(Map.prototype.delete)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Map.prototype) != "undefined") {_RecordType("<175,188,5>",(Map.prototype)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Map) != "undefined") {_RecordType("<175,178,5>",(Map)); Inst9++; } } catch(e) {}
+delete Map.prototype.delete;
+try { if (Inst10 <= 1000 && typeof (Map.prototype.iterator) != "undefined") {_RecordType("<204,226,6>",(Map.prototype.iterator)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Map.prototype) != "undefined") {_RecordType("<204,217,6>",(Map.prototype)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Map) != "undefined") {_RecordType("<204,207,6>",(Map)); Inst12++; } } catch(e) {}
+delete Map.prototype.iterator;
+try { if (Inst13 <= 1000 && typeof (m1.clear) != "undefined") {_RecordType("<228,236,7>",(m1.clear)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (m1) != "undefined") {_RecordType("<228,230,7>",(m1)); Inst14++; } } catch(e) {}
+m1.clear();
+try { if (Inst15 <= 1000 && typeof (m1.size) != "undefined") {_RecordType("<240,247,8>",(m1.size)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (m1) != "undefined") {_RecordType("<240,242,8>",(m1)); Inst16++; } } catch(e) {}
+m1.size;
+0;
+
+Map.prototype.delete = function () {
+  throw "FAIL";
+};
+try { if (Inst17 <= 1000 && typeof (Map.prototype.delete) != "undefined") {_RecordType("<253,273,11>",(Map.prototype.delete)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Map.prototype) != "undefined") {_RecordType("<253,266,11>",(Map.prototype)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Map) != "undefined") {_RecordType("<253,256,11>",(Map)); Inst19++; } } catch(e) {}
+
+Map.prototype.iterator = function () {
+  throw "FAIL";
+};
+try { if (Inst20 <= 1000 && typeof (Map.prototype.iterator) != "undefined") {_RecordType("<310,332,15>",(Map.prototype.iterator)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Map.prototype) != "undefined") {_RecordType("<310,323,15>",(Map.prototype)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Map) != "undefined") {_RecordType("<310,313,15>",(Map)); Inst22++; } } catch(e) {}
+
+try { if (Inst23 <= 1000 && typeof (m2.clear) != "undefined") {_RecordType("<369,377,19>",(m2.clear)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (m2) != "undefined") {_RecordType("<369,371,19>",(m2)); Inst24++; } } catch(e) {}
+m2.clear();
+try { if (Inst25 <= 1000 && typeof (m2.size) != "undefined") {_RecordType("<381,388,20>",(m2.size)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (m2) != "undefined") {_RecordType("<381,383,20>",(m2)); Inst26++; } } catch(e) {}
+m2.size;
+0;
+

@@ -1,0 +1,101 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --no-stress-opt
+try { if (Inst1 <= 1000 && typeof (Set) != "undefined") {_RecordType("<230,233,5>",(Set)); Inst1++; } } catch(e) {}
+var set = new Set([1, 2, 3]); // This changes %SetIteratorPrototype%. No more tests should be run after this
+try { if (Inst0 <= 1000 && typeof (set) != "undefined") {_RecordType("<220,223,5>",(set)); Inst0++; } } catch(e) {}
+// in the same instance.
+
+try { if (Inst3 <= 1000 && typeof (set.values) != "undefined") {_RecordType("<366,376,8>",(set.values)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (set) != "undefined") {_RecordType("<366,369,8>",(set)); Inst4++; } } catch(e) {}
+var iterator = set.values();
+try { if (Inst2 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<355,363,8>",(iterator)); Inst2++; } } catch(e) {}
+
+iterator.__proto__.next = () => ({
+  done: true
+});
+try { if (Inst5 <= 1000 && typeof (iterator.__proto__.next) != "undefined") {_RecordType("<381,404,10>",(iterator.__proto__.next)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (iterator.__proto__) != "undefined") {_RecordType("<381,399,10>",(iterator.__proto__)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<381,389,10>",(iterator)); Inst7++; } } catch(e) {}
+
+[];
+try { if (Inst8 <= 1000 && typeof (set) != "undefined") {_RecordType("<442,445,15>",(set)); Inst8++; } } catch(e) {}
+[...set];
+[];
+try { if (Inst9 <= 1000 && typeof (set.entries) != "undefined") {_RecordType("<456,467,17>",(set.entries)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (set) != "undefined") {_RecordType("<456,459,17>",(set)); Inst10++; } } catch(e) {}
+[...set.entries()];
+[];
+try { if (Inst11 <= 1000 && typeof (set.keys) != "undefined") {_RecordType("<480,488,19>",(set.keys)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (set) != "undefined") {_RecordType("<480,483,19>",(set)); Inst12++; } } catch(e) {}
+[...set.keys()];
+[];
+try { if (Inst13 <= 1000 && typeof (set.values) != "undefined") {_RecordType("<501,511,21>",(set.values)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (set) != "undefined") {_RecordType("<501,504,21>",(set)); Inst14++; } } catch(e) {}
+[...set.values()];
+[];
+try { if (Inst15 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<524,532,23>",(iterator)); Inst15++; } } catch(e) {}
+[...iterator];
+

@@ -1,0 +1,98 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (test0) != "undefined") {_RecordType("<376,381,5>",(test0)); Inst0++; } } catch(e) {}
+function test0() {
+  //Snippets:stfldprototype.ecs
+try { if (Inst1 <= 1000 && typeof (v710235) != "undefined") {_RecordType("<429,436,7>",(v710235)); Inst1++; } } catch(e) {}
+  function v710235() {
+    ;
+  }
+
+  v710235.prototype = 1;
+try { if (Inst2 <= 1000 && typeof (v710235.prototype) != "undefined") {_RecordType("<454,471,11>",(v710235.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (v710235) != "undefined") {_RecordType("<454,461,11>",(v710235)); Inst3++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (v710235) != "undefined") {_RecordType("<497,504,12>",(v710235)); Inst5++; } } catch(e) {}
+  var v710236 = new v710235(); // Make sure this literal's type isn't shared with the one with the constructor above
+try { if (Inst4 <= 1000 && typeof (v710236) != "undefined") {_RecordType("<483,490,12>",(v710236)); Inst4++; } } catch(e) {}
+  // as we would have the inline slot count locked for the literal
+
+  var litObj4 = {
+    prop0: 1,
+    prop1: 1,
+    prop2: 1,
+    prop3: 1,
+    prop4: 1
+  };
+try { if (Inst6 <= 1000 && typeof (litObj4) != "undefined") {_RecordType("<668,675,15>",(litObj4)); Inst6++; } } catch(e) {}
+}
+
+;
+try { if (Inst7 <= 1000 && typeof (test0) != "undefined") {_RecordType("<759,764,25>",(test0)); Inst7++; } } catch(e) {}
+test0();
+try { if (Inst8 <= 1000 && typeof (test0) != "undefined") {_RecordType("<768,773,26>",(test0)); Inst8++; } } catch(e) {}
+test0();
+try { if (Inst9 <= 1000 && typeof (print) != "undefined") {_RecordType("<777,782,27>",(print)); Inst9++; } } catch(e) {}
+print("PASS");
+

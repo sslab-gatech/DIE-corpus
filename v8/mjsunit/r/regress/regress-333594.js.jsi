@@ -1,0 +1,121 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2014 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+var a = {
+  x: 1.1
+};
+try { if (Inst0 <= 1000 && typeof (a) != "undefined") {_RecordType("<1634,1635,28>",(a)); Inst0++; } } catch(e) {}
+a.x = 0;
+try { if (Inst1 <= 1000 && typeof (a.x) != "undefined") {_RecordType("<1652,1655,31>",(a.x)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<1652,1653,31>",(a)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (a.x) != "undefined") {_RecordType("<1669,1672,32>",(a.x)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (a) != "undefined") {_RecordType("<1669,1670,32>",(a)); Inst5++; } } catch(e) {}
+var G = a.x;
+try { if (Inst3 <= 1000 && typeof (G) != "undefined") {_RecordType("<1665,1666,32>",(G)); Inst3++; } } catch(e) {}
+var o = {
+  x: {}
+};
+try { if (Inst6 <= 1000 && typeof (o) != "undefined") {_RecordType("<1678,1679,33>",(o)); Inst6++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (func) != "undefined") {_RecordType("<1705,1709,37>",(func)); Inst7++; } } catch(e) {}
+function func() {
+try { if (Inst8 <= 1000 && typeof (G) != "undefined") {_RecordType("<1732,1733,39>",(G)); Inst8++; } } catch(e) {}
+  return {
+    x: G
+  };
+}
+
+try { if (Inst9 <= 1000 && typeof (func) != "undefined") {_RecordType("<1742,1746,43>",(func)); Inst9++; } } catch(e) {}
+func();
+try { if (Inst10 <= 1000 && typeof (func) != "undefined") {_RecordType("<1750,1754,44>",(func)); Inst10++; } } catch(e) {}
+func();
+0;
+try { if (Inst11 <= 1000 && typeof (func().x) != "undefined") {_RecordType("<1761,1769,46>",(func().x)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (func) != "undefined") {_RecordType("<1761,1765,46>",(func)); Inst12++; } } catch(e) {}
+func().x;
+

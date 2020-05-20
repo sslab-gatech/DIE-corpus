@@ -1,0 +1,99 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst1 <= 1000 && typeof (Function) != "undefined") {_RecordType("<16,24,1>",(Function)); Inst1++; } } catch(e) {}
+const run = new Function("init", "num", `
+
+function value() { return 'v'; }
+noInline(value);
+
+const calc = val => {
+    let c = 0;
+    for (let v = val; v; v >>>= 1) c += v & 1;
+    return val * 2 + val / 2 + c;
+}
+
+class A {
+    constructor(x) { this._v = x; }
+    set v(x) { this._v = x; }
+    get v() { return this._v; }
+}
+class B extends A {
+    set v(x) { super[value()] = x; }
+    get v() { return calc(super[value()]); }
+}
+
+const bench = (init, num) => {
+    let arr = [];
+    for (let i = 0; i != num; ++i) arr.push(new B(init));
+    for (let i = 0; i != num; ++i) arr[i].v += i;
+    let sum = 0;
+    for (let i = 0; i != num; ++i) sum += arr[i].v;
+};
+
+bench(init, num);
+`);
+try { if (Inst0 <= 1000 && typeof (run) != "undefined") {_RecordType("<6,9,1>",(run)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (run) != "undefined") {_RecordType("<682,685,32>",(run)); Inst2++; } } catch(e) {}
+run(2, 10000);
+try { if (Inst3 <= 1000 && typeof (run) != "undefined") {_RecordType("<697,700,33>",(run)); Inst3++; } } catch(e) {}
+run(1 << 30, 10000);
+try { if (Inst4 <= 1000 && typeof (run) != "undefined") {_RecordType("<718,721,34>",(run)); Inst4++; } } catch(e) {}
+run(42.2, 10000);
+try { if (Inst5 <= 1000 && typeof (run) != "undefined") {_RecordType("<736,739,35>",(run)); Inst5++; } } catch(e) {}
+run(42.5e10, 10000);
+

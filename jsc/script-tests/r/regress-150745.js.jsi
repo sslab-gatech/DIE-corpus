@@ -1,0 +1,163 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Regression test for 150745"); // We should be able to ORS exit from an inlined tail callee of a getter.  This test shouldn't crash.
+
+"use strict";
+
+class Test {
+  constructor(a, b) {
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<188,189,6>",(a)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<191,192,6>",(b)); Inst4++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<209,210,7>",(a)); Inst6++; } } catch(e) {}
+    this.a = a;
+try { if (Inst5 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<200,206,7>",(this.a)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<225,226,8>",(b)); Inst8++; } } catch(e) {}
+    this.b = b;
+try { if (Inst7 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<216,222,8>",(this.b)); Inst7++; } } catch(e) {}
+    this.callCount = 0;
+try { if (Inst9 <= 1000 && typeof (this.callCount) != "undefined") {_RecordType("<232,246,9>",(this.callCount)); Inst9++; } } catch(e) {}
+  }
+
+  get sum() {
+try { if (Inst10 <= 1000 && typeof (this.doSum) != "undefined") {_RecordType("<282,292,13>",(this.doSum)); Inst10++; } } catch(e) {}
+    return this.doSum(1, 2);
+  }
+
+  doSum(dummy1, dummy2) {
+try { if (Inst11 <= 1000 && typeof (dummy1) != "undefined") {_RecordType("<313,319,16>",(dummy1)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (dummy2) != "undefined") {_RecordType("<321,327,16>",(dummy2)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (this.callCount) != "undefined") {_RecordType("<335,349,17>",(this.callCount)); Inst13++; } } catch(e) {}
+    this.callCount++;
+
+try { if (Inst14 <= 1000 && typeof (this.callCount) != "undefined") {_RecordType("<362,376,19>",(this.callCount)); Inst14++; } } catch(e) {}
+    if (this.callCount == 49000) {
+      this.dfgCompiled = true;
+try { if (Inst15 <= 1000 && typeof (this.dfgCompiled) != "undefined") {_RecordType("<395,411,20>",(this.dfgCompiled)); Inst15++; } } catch(e) {}
+    }
+
+try { if (Inst16 <= 1000 && typeof (this.callCount) != "undefined") {_RecordType("<435,449,23>",(this.callCount)); Inst16++; } } catch(e) {}
+    if (this.callCount == 199000) {
+      this.ftlCompiled = true;
+try { if (Inst17 <= 1000 && typeof (this.ftlCompiled) != "undefined") {_RecordType("<469,485,24>",(this.ftlCompiled)); Inst17++; } } catch(e) {}
+    }
+
+try { if (Inst18 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<512,518,27>",(this.a)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<521,527,27>",(this.b)); Inst19++; } } catch(e) {}
+    return this.a + this.b;
+  }
+
+}
+try { if (Inst2 <= 1000 && typeof (Test) != "undefined") {_RecordType("<167,171,5>",(Test)); Inst2++; } } catch(e) {}
+
+try { if (Inst21 <= 1000 && typeof (Test) != "undefined") {_RecordType("<555,559,32>",(Test)); Inst21++; } } catch(e) {}
+var testObj = new Test(40, 2);
+try { if (Inst20 <= 1000 && typeof (testObj) != "undefined") {_RecordType("<541,548,32>",(testObj)); Inst20++; } } catch(e) {}
+
+try { if (Inst22 <= 1000 && typeof (getSum) != "undefined") {_RecordType("<578,584,34>",(getSum)); Inst22++; } } catch(e) {}
+function getSum(o) {
+try { if (Inst23 <= 1000 && typeof (o) != "undefined") {_RecordType("<585,586,34>",(o)); Inst23++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (o.sum) != "undefined") {_RecordType("<599,604,35>",(o.sum)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (o) != "undefined") {_RecordType("<599,600,35>",(o)); Inst25++; } } catch(e) {}
+  return o.sum;
+}
+
+for (var i = 0; i < 500000; i++) {
+try { if (Inst26 <= 1000 && typeof (i) != "undefined") {_RecordType("<618,619,38>",(i)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (i) != "undefined") {_RecordType("<625,626,38>",(i)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (i) != "undefined") {_RecordType("<637,638,38>",(i)); Inst28++; } } catch(e) {}
+try { if (Inst30 <= 1000 && typeof (getSum) != "undefined") {_RecordType("<659,665,39>",(getSum)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (testObj) != "undefined") {_RecordType("<666,673,39>",(testObj)); Inst31++; } } catch(e) {}
+  var result = getSum(testObj);
+try { if (Inst29 <= 1000 && typeof (result) != "undefined") {_RecordType("<650,656,39>",(result)); Inst29++; } } catch(e) {}
+
+try { if (Inst32 <= 1000 && typeof (result) != "undefined") {_RecordType("<683,689,41>",(result)); Inst32++; } } catch(e) {}
+  if (result != 42) {
+try { if (Inst33 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<703,714,42>",(console.log)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (console) != "undefined") {_RecordType("<703,710,42>",(console)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (result) != "undefined") {_RecordType("<757,763,42>",(result)); Inst35++; } } catch(e) {}
+    console.log("Expected 42 from \"sum\" getter, got " + result);
+  }
+}
+
+try { if (Inst36 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<773,784,46>",(console.log)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (console) != "undefined") {_RecordType("<773,780,46>",(console)); Inst37++; } } catch(e) {}
+console.log("Able to OSR exit from an inlined tail callee of a getter.");
+

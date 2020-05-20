@@ -1,0 +1,149 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+//
+// Test changing [writable] attribute should trigger Type transition.
+//
+try { if (Inst0 <= 1000 && typeof (assert) != "undefined") {_RecordType("<452,458,8>",(assert)); Inst0++; } } catch(e) {}
+function assert(value, msg) {
+try { if (Inst1 <= 1000 && typeof (value) != "undefined") {_RecordType("<459,464,8>",(value)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (msg) != "undefined") {_RecordType("<466,469,8>",(msg)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (value) != "undefined") {_RecordType("<480,485,9>",(value)); Inst3++; } } catch(e) {}
+  if (!value) {
+try { if (Inst4 <= 1000 && typeof (Error) != "undefined") {_RecordType("<503,508,10>",(Error)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (msg) != "undefined") {_RecordType("<522,525,10>",(msg)); Inst5++; } } catch(e) {}
+    throw new Error("Failed: " + msg);
+  }
+}
+
+try { if (Inst6 <= 1000 && typeof (endTest) != "undefined") {_RecordType("<544,551,14>",(endTest)); Inst6++; } } catch(e) {}
+function endTest() {
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<558,563,15>",(print)); Inst7++; } } catch(e) {}
+  print("pass");
+} //
+// Win8: 713428
+//
+//  When CLEAR writable on a SHARED SimpleTypeHandler, we fail to ChangeType, thus fail to invalidate cache.
+//  This test exploits the bug with inline cache.
+//
+
+
+try { if (Inst8 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<770,785,24>",(changePrototype)); Inst8++; } } catch(e) {}
+function changePrototype(f, expectedSucceed, msg) {
+try { if (Inst9 <= 1000 && typeof (f) != "undefined") {_RecordType("<786,787,24>",(f)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (expectedSucceed) != "undefined") {_RecordType("<789,804,24>",(expectedSucceed)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (msg) != "undefined") {_RecordType("<806,809,24>",(msg)); Inst11++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (Object) != "undefined") {_RecordType("<829,835,25>",(Object)); Inst13++; } } catch(e) {}
+  var tmp = new Object(); // This exploits inline cache
+try { if (Inst12 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<819,822,25>",(tmp)); Inst12++; } } catch(e) {}
+
+try { if (Inst16 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<886,889,27>",(tmp)); Inst16++; } } catch(e) {}
+  f.prototype = tmp;
+try { if (Inst14 <= 1000 && typeof (f.prototype) != "undefined") {_RecordType("<872,883,27>",(f.prototype)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (f) != "undefined") {_RecordType("<872,873,27>",(f)); Inst15++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (f.prototype) != "undefined") {_RecordType("<909,920,28>",(f.prototype)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (f) != "undefined") {_RecordType("<909,910,28>",(f)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<925,928,28>",(tmp)); Inst20++; } } catch(e) {}
+  var succeeded = f.prototype === tmp;
+try { if (Inst17 <= 1000 && typeof (succeeded) != "undefined") {_RecordType("<897,906,28>",(succeeded)); Inst17++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (succeeded) != "undefined") {_RecordType("<932,941,29>",(succeeded)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (expectedSucceed) != "undefined") {_RecordType("<946,961,29>",(expectedSucceed)); Inst22++; } } catch(e) {}
+  succeeded === expectedSucceed;
+try { if (Inst23 <= 1000 && typeof (msg) != "undefined") {_RecordType("<965,968,30>",(msg)); Inst23++; } } catch(e) {}
+  msg;
+} // Initially we use a shared SimpleTypeHandler with "prototype" property for a function.
+
+
+try { if (Inst24 <= 1000 && typeof (f) != "undefined") {_RecordType("<1072,1073,34>",(f)); Inst24++; } } catch(e) {}
+function f() {
+  ;
+}
+
+try { if (Inst25 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<1085,1100,38>",(changePrototype)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (f) != "undefined") {_RecordType("<1101,1102,38>",(f)); Inst26++; } } catch(e) {}
+changePrototype(f, true, "Should be able to change f.prototype initially");
+try { if (Inst27 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<1161,1182,39>",(Object.defineProperty)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1161,1167,39>",(Object)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (f) != "undefined") {_RecordType("<1183,1184,39>",(f)); Inst29++; } } catch(e) {}
+Object.defineProperty(f, "prototype", {
+  writable: false
+});
+try { if (Inst30 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<1223,1238,42>",(changePrototype)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (f) != "undefined") {_RecordType("<1239,1240,42>",(f)); Inst31++; } } catch(e) {}
+changePrototype(f, false, "f.prototype is now not writable, shouldn't be changed");
+try { if (Inst32 <= 1000 && typeof (endTest) != "undefined") {_RecordType("<1307,1314,43>",(endTest)); Inst32++; } } catch(e) {}
+endTest();
+

@@ -1,0 +1,126 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var test; // Ensure that if a function is encoded we don't encode its "name
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<4,8,1>",(test)); Inst0++; } } catch(e) {}
+// resolved" flag.
+
+test = `
+  function f() { delete f.name; return f.hasOwnProperty('name'); }
+  f();
+  `;
+try { if (Inst1 <= 1000 && typeof (test) != "undefined") {_RecordType("<96,100,4>",(test)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<184,197,8>",(evalWithCache)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (test) != "undefined") {_RecordType("<198,202,8>",(test)); Inst3++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+});
+test = `
+  function f() { return f.hasOwnProperty('name'); }
+  f();
+  `;
+try { if (Inst4 <= 1000 && typeof (test) != "undefined") {_RecordType("<259,263,12>",(test)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<332,345,16>",(evalWithCache)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (test) != "undefined") {_RecordType("<346,350,16>",(test)); Inst6++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+}); // Ensure that if a function is encoded we don't encode its "length
+// resolved" flag.
+
+test = `
+  function f() { delete f.length; return f.hasOwnProperty('length'); }
+  f();
+  `;
+try { if (Inst7 <= 1000 && typeof (test) != "undefined") {_RecordType("<495,499,22>",(test)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<587,600,26>",(evalWithCache)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<601,605,26>",(test)); Inst9++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+});
+test = `
+  function f() { return f.hasOwnProperty('length'); }
+  f();
+  `;
+try { if (Inst10 <= 1000 && typeof (test) != "undefined") {_RecordType("<662,666,30>",(test)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<737,750,34>",(evalWithCache)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (test) != "undefined") {_RecordType("<751,755,34>",(test)); Inst12++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+}); // And make sure our bytecode is actually not reflecting the flags,
+// not that we ignore them on decode.
+
+test = `
+  function f() { return f.hasOwnProperty('length') || f.hasOwnProperty('name'); }
+  f();
+  `;
+try { if (Inst13 <= 1000 && typeof (test) != "undefined") {_RecordType("<919,923,40>",(test)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<1022,1035,44>",(evalWithCache)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (test) != "undefined") {_RecordType("<1036,1040,44>",(test)); Inst15++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+});
+

@@ -1,0 +1,114 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Tests that the CompareEq optimization for the case where one side is predicted final object and the other side is predicted either final object or other (i.e. null or undefined) doesn't assert when both sides are also proven final object.");
+
+try { if (Inst2 <= 1000 && typeof (foo) != "undefined") {_RecordType("<265,268,3>",(foo)); Inst2++; } } catch(e) {}
+function foo(a, b) {
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<269,270,3>",(a)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<272,273,3>",(b)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (a.f) != "undefined") {_RecordType("<287,290,4>",(a.f)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<287,288,4>",(a)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (b.f) != "undefined") {_RecordType("<292,295,4>",(b.f)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<292,293,4>",(b)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<297,298,4>",(a)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (b) != "undefined") {_RecordType("<302,303,4>",(b)); Inst10++; } } catch(e) {}
+  return [a.f, b.f, a == b];
+}
+
+silentTestPass = true;
+try { if (Inst11 <= 1000 && typeof (silentTestPass) != "undefined") {_RecordType("<309,323,7>",(silentTestPass)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<332,340,8>",(noInline)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<341,344,8>",(foo)); Inst13++; } } catch(e) {}
+noInline(foo);
+
+for (var i = 0; i < 200; i++) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<357,358,10>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<364,365,10>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<373,374,10>",(i)); Inst16++; } } catch(e) {}
+  // i = dfgIncrement({f:foo, i:i + 1, n:50})) {
+try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<435,436,12>",(i)); Inst17++; } } catch(e) {}
+  if (i % 2) {
+    var o = {
+      f: 42
+    };
+try { if (Inst18 <= 1000 && typeof (o) != "undefined") {_RecordType("<452,453,13>",(o)); Inst18++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (foo) != "undefined") {_RecordType("<481,484,16>",(foo)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (o) != "undefined") {_RecordType("<485,486,16>",(o)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (o) != "undefined") {_RecordType("<488,489,16>",(o)); Inst21++; } } catch(e) {}
+    foo(o, o);
+  } else {
+try { if (Inst23 <= 1000 && typeof (e) != "undefined") {_RecordType("<568,569,22>",(e)); Inst23++; } } catch(e) {}
+    try {
+try { if (Inst22 <= 1000 && typeof (foo) != "undefined") {_RecordType("<519,522,19>",(foo)); Inst22++; } } catch(e) {}
+      foo({
+        f: 42
+      }, null);
+    } catch (e) {
+      ;
+    }
+  }
+}
+

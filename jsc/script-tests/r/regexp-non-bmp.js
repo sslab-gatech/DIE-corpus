@@ -1,0 +1,11 @@
+console.log('Tests that regular expressions treat non-BMP characters as two separate characters. ' + 'From a Unicode correctness point of view this is wrong, but it is what other browsers do. ' + 'And given that we store strings as UTF-16, it is also more efficient to implement. ' + 'Also test some other cases related to UTF-8 and UTF-16.');
+var surrogatePair = String.fromCharCode(0xD800) + String.fromCharCode(0xDC00);
+/./.exec(surrogatePair).toString().length;
+/\D/.exec(surrogatePair).toString().length;
+/\S/.exec(surrogatePair).toString().length;
+/\W/.exec(surrogatePair).toString().length;
+/[^x]/.exec(surrogatePair).toString().length;
+console.log('');
+/.{1,2}/.exec("!!" + String.fromCharCode(0xA1)).toString().length;
+/./.exec("");
+console.log('');

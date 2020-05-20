@@ -1,0 +1,119 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var glo;
+try { if (Inst0 <= 1000 && typeof (glo) != "undefined") {_RecordType("<371,374,5>",(glo)); Inst0++; } } catch(e) {}
+var doEscape = false;
+try { if (Inst1 <= 1000 && typeof (doEscape) != "undefined") {_RecordType("<380,388,6>",(doEscape)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (test) != "undefined") {_RecordType("<408,412,8>",(test)); Inst2++; } } catch(e) {}
+function test(param) {
+try { if (Inst3 <= 1000 && typeof (param) != "undefined") {_RecordType("<413,418,8>",(param)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (nested) != "undefined") {_RecordType("<433,439,9>",(nested)); Inst4++; } } catch(e) {}
+  function nested() {
+try { if (Inst5 <= 1000 && typeof (escape) != "undefined") {_RecordType("<448,454,10>",(escape)); Inst5++; } } catch(e) {}
+    escape();
+try { if (Inst6 <= 1000 && typeof (param) != "undefined") {_RecordType("<469,474,11>",(param)); Inst6++; } } catch(e) {}
+    return param;
+  }
+
+try { if (Inst7 <= 1000 && typeof (escape) != "undefined") {_RecordType("<492,498,14>",(escape)); Inst7++; } } catch(e) {}
+  function escape() {
+try { if (Inst8 <= 1000 && typeof (doEscape) != "undefined") {_RecordType("<511,519,15>",(doEscape)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (glo) != "undefined") {_RecordType("<524,527,15>",(glo)); Inst9++; } } catch(e) {}
+    if (doEscape && !glo) {
+try { if (Inst11 <= 1000 && typeof (arguments.callee.caller) != "undefined") {_RecordType("<543,566,16>",(arguments.callee.caller)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (arguments.callee) != "undefined") {_RecordType("<543,559,16>",(arguments.callee)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<543,552,16>",(arguments)); Inst13++; } } catch(e) {}
+      glo = arguments.callee.caller;
+try { if (Inst10 <= 1000 && typeof (glo) != "undefined") {_RecordType("<537,540,16>",(glo)); Inst10++; } } catch(e) {}
+    }
+  }
+
+try { if (Inst14 <= 1000 && typeof (nested) != "undefined") {_RecordType("<581,587,20>",(nested)); Inst14++; } } catch(e) {}
+  nested();
+}
+
+try { if (Inst15 <= 1000 && typeof (test) != "undefined") {_RecordType("<594,598,23>",(test)); Inst15++; } } catch(e) {}
+test("test3");
+try { if (Inst16 <= 1000 && typeof (test) != "undefined") {_RecordType("<609,613,24>",(test)); Inst16++; } } catch(e) {}
+test("test2"); // JIT
+
+doEscape = true;
+try { if (Inst17 <= 1000 && typeof (doEscape) != "undefined") {_RecordType("<632,640,26>",(doEscape)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (test) != "undefined") {_RecordType("<649,653,27>",(test)); Inst18++; } } catch(e) {}
+test("test1"); // box
+
+try { if (Inst19 <= 1000 && typeof (print) != "undefined") {_RecordType("<672,677,29>",(print)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (glo) != "undefined") {_RecordType("<678,681,29>",(glo)); Inst20++; } } catch(e) {}
+print(glo());
+

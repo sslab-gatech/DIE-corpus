@@ -1,0 +1,68 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+// Contributor: Gary Kwong <gary@rumblingedge.com>
+try { if (Inst0 <= 1000 && typeof (Object.create(evalcx('')).__defineSetter__) != "undefined") {_RecordType("<174,216,5>",(Object.create(evalcx('')).__defineSetter__)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<174,187,5>",(Object.create)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<174,180,5>",(Object)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (evalcx) != "undefined") {_RecordType("<188,194,5>",(evalcx)); Inst3++; } } catch(e) {}
+Object.create(evalcx('')).__defineSetter__('toString', function () {
+  ;
+});
+
+try { if (Inst4 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<252,265,9>",(reportCompare)); Inst4++; } } catch(e) {}
+reportCompare(0, 0, "ok");
+

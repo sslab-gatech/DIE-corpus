@@ -1,0 +1,142 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+'use strict';
+
+(() => {
+  var x = 1;
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<30,31,4>",(x)); Inst0++; } } catch(e) {}
+  x.a = 'a';
+try { if (Inst1 <= 1000 && typeof (x.a) != "undefined") {_RecordType("<39,42,5>",(x.a)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<39,40,5>",(x)); Inst2++; } } catch(e) {}
+})();
+
+`can't assign to property "a" on 1: not an object`;
+
+(() => {
+  var x = "hello";
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<125,126,11>",(x)); Inst3++; } } catch(e) {}
+  x.b = 'a';
+try { if (Inst4 <= 1000 && typeof (x.b) != "undefined") {_RecordType("<140,143,12>",(x.b)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<140,141,12>",(x)); Inst5++; } } catch(e) {}
+})();
+
+`can't assign to property "b" on "hello": not an object`;
+
+(() => {
+  var x = false;
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<232,233,18>",(x)); Inst6++; } } catch(e) {}
+  x.c = 'a';
+try { if (Inst7 <= 1000 && typeof (x.c) != "undefined") {_RecordType("<245,248,19>",(x.c)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (x) != "undefined") {_RecordType("<245,246,19>",(x)); Inst8++; } } catch(e) {}
+})();
+
+`can't assign to property "c" on false: not an object`;
+
+(() => {
+try { if (Inst10 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<339,345,25>",(Symbol)); Inst10++; } } catch(e) {}
+  var x = Symbol();
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<335,336,25>",(x)); Inst9++; } } catch(e) {}
+  x.d = 'a';
+try { if (Inst11 <= 1000 && typeof (x.d) != "undefined") {_RecordType("<351,354,26>",(x.d)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<351,352,26>",(x)); Inst12++; } } catch(e) {}
+})();
+
+`can't assign to property "d" on Symbol(): not an object`;
+
+(() => {
+try { if (Inst14 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<448,454,32>",(Symbol)); Inst14++; } } catch(e) {}
+  var x = Symbol("abc");
+try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<444,445,32>",(x)); Inst13++; } } catch(e) {}
+  x.d = 'a';
+try { if (Inst15 <= 1000 && typeof (x.d) != "undefined") {_RecordType("<465,468,33>",(x.d)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (x) != "undefined") {_RecordType("<465,466,33>",(x)); Inst16++; } } catch(e) {}
+})();
+
+`can't assign to property "d" on Symbol("abc"): not an object`;
+
+(() => {
+  var x = 1;
+try { if (Inst17 <= 1000 && typeof (x) != "undefined") {_RecordType("<563,564,39>",(x)); Inst17++; } } catch(e) {}
+  x[15] = 'a';
+try { if (Inst18 <= 1000 && typeof (x[15]) != "undefined") {_RecordType("<572,577,40>",(x[15])); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (x) != "undefined") {_RecordType("<572,573,40>",(x)); Inst19++; } } catch(e) {}
+})();
+
+`can't assign to property 15 on 1: not an object`;
+
+(() => {
+  var x = 1;
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<659,660,46>",(x)); Inst20++; } } catch(e) {}
+  x[Symbol("abc")] = 'a';
+try { if (Inst21 <= 1000 && typeof (x[Symbol("abc")]) != "undefined") {_RecordType("<668,684,47>",(x[Symbol("abc")])); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (x) != "undefined") {_RecordType("<668,669,47>",(x)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<670,676,47>",(Symbol)); Inst23++; } } catch(e) {}
+})();
+
+`can't assign to property Symbol("abc") on 1: not an object`;
+

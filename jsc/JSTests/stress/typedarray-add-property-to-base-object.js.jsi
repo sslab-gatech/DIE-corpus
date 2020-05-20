@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// This tests that we don't fast path intrinsics when they should not be fast pathed. Currently,
+// that means that we don't inline length and byteLength when they are "connected" to a TypedArray.
+try { if (Inst0 <= 1000 && typeof (body) != "undefined") {_RecordType("<207,211,3>",(body)); Inst0++; } } catch(e) {}
+(function body() {
+try { if (Inst1 <= 1000 && typeof (foo) != "undefined") {_RecordType("<227,230,4>",(foo)); Inst1++; } } catch(e) {}
+  function foo(a) {
+try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<231,232,4>",(a)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (a.length) != "undefined") {_RecordType("<247,255,5>",(a.length)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<247,248,5>",(a)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (a.byteLength) != "undefined") {_RecordType("<258,270,5>",(a.byteLength)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<258,259,5>",(a)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (a.byteOffset) != "undefined") {_RecordType("<273,285,5>",(a.byteOffset)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<273,274,5>",(a)); Inst8++; } } catch(e) {}
+    return a.length + a.byteLength + a.byteOffset;
+  }
+
+try { if (Inst10 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<310,320,8>",(Int32Array)); Inst10++; } } catch(e) {}
+  let array = new Int32Array(10);
+try { if (Inst9 <= 1000 && typeof (array) != "undefined") {_RecordType("<298,303,8>",(array)); Inst9++; } } catch(e) {}
+
+  for (let i = 0; i < 100000; i++) {
+try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<338,339,10>",(i)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<345,346,10>",(i)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<357,358,10>",(i)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (foo) != "undefined") {_RecordType("<368,371,11>",(foo)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (array) != "undefined") {_RecordType("<372,377,11>",(array)); Inst15++; } } catch(e) {}
+    foo(array);
+  }
+
+try { if (Inst16 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<387,408,14>",(Object.defineProperty)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Object) != "undefined") {_RecordType("<387,393,14>",(Object)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (array) != "undefined") {_RecordType("<409,414,14>",(array)); Inst18++; } } catch(e) {}
+  Object.defineProperty(array, "length", {
+    value: 0
+  });
+try { if (Inst19 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<449,470,17>",(Object.defineProperty)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Object) != "undefined") {_RecordType("<449,455,17>",(Object)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (array) != "undefined") {_RecordType("<471,476,17>",(array)); Inst21++; } } catch(e) {}
+  Object.defineProperty(array, "byteLength", {
+    value: 0
+  });
+try { if (Inst22 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<515,536,20>",(Object.defineProperty)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Object) != "undefined") {_RecordType("<515,521,20>",(Object)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (array) != "undefined") {_RecordType("<537,542,20>",(array)); Inst24++; } } catch(e) {}
+  Object.defineProperty(array, "byteOffset", {
+    value: 0
+  });
+
+try { if (Inst25 <= 1000 && typeof (foo) != "undefined") {_RecordType("<586,589,24>",(foo)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (array) != "undefined") {_RecordType("<590,595,24>",(array)); Inst26++; } } catch(e) {}
+  if (foo(array) !== 0) {
+    throw "wrong number!";
+  }
+})();
+

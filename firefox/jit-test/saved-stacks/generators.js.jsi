@@ -1,0 +1,116 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that we can save stacks which have generator frames.
+try { if (Inst1 <= 1000 && typeof (iife1) != "undefined") {_RecordType("<97,102,4>",(iife1)); Inst1++; } } catch(e) {}
+const {
+  value: frame
+} = function iife1() {
+try { if (Inst2 <= 1000 && typeof (function* generator() {
+    yield function iife2() {
+      return saveStack();
+    }();
+  }().next) != "undefined") {_RecordType("<116,214,5>",(function* generator() {
+    yield function iife2() {
+      return saveStack();
+    }();
+  }().next)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (generator) != "undefined") {_RecordType("<126,135,5>",(generator)); Inst3++; } } catch(e) {}
+  return function* generator() {
+try { if (Inst4 <= 1000 && typeof (iife2) != "undefined") {_RecordType("<159,164,6>",(iife2)); Inst4++; } } catch(e) {}
+    yield function iife2() {
+try { if (Inst5 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<182,191,7>",(saveStack)); Inst5++; } } catch(e) {}
+      return saveStack();
+    }();
+  }().next();
+}(); // Bug 1102498 - toString does not include self-hosted frames, which can appear
+try { if (Inst0 <= 1000 && typeof (frame) != "undefined") {_RecordType("<78,83,3>",(frame)); Inst0++; } } catch(e) {}
+// depending on GC timing. This may end up changing in the future, see
+// bug 1103155.
+
+
+try { if (Inst7 <= 1000 && typeof (frame.toString().split) != "undefined") {_RecordType("<404,426,15>",(frame.toString().split)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (frame.toString) != "undefined") {_RecordType("<404,418,15>",(frame.toString)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (frame) != "undefined") {_RecordType("<404,409,15>",(frame)); Inst9++; } } catch(e) {}
+var lines = frame.toString().split("\n");
+try { if (Inst6 <= 1000 && typeof (lines) != "undefined") {_RecordType("<396,401,15>",(lines)); Inst6++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (lines[0].startsWith) != "undefined") {_RecordType("<434,453,16>",(lines[0].startsWith)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (lines[0]) != "undefined") {_RecordType("<434,442,16>",(lines[0])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (lines) != "undefined") {_RecordType("<434,439,16>",(lines)); Inst12++; } } catch(e) {}
+lines[0].startsWith("iife2@");
+true;
+try { if (Inst13 <= 1000 && typeof (lines[1].startsWith) != "undefined") {_RecordType("<471,490,18>",(lines[1].startsWith)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (lines[1]) != "undefined") {_RecordType("<471,479,18>",(lines[1])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (lines) != "undefined") {_RecordType("<471,476,18>",(lines)); Inst15++; } } catch(e) {}
+lines[1].startsWith("generator@");
+true;
+try { if (Inst16 <= 1000 && typeof (lines[2].startsWith) != "undefined") {_RecordType("<512,531,20>",(lines[2].startsWith)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (lines[2]) != "undefined") {_RecordType("<512,520,20>",(lines[2])); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (lines) != "undefined") {_RecordType("<512,517,20>",(lines)); Inst18++; } } catch(e) {}
+lines[2].startsWith("iife1@");
+true;
+try { if (Inst19 <= 1000 && typeof (lines[3].startsWith) != "undefined") {_RecordType("<549,568,22>",(lines[3].startsWith)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (lines[3]) != "undefined") {_RecordType("<549,557,22>",(lines[3])); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (lines) != "undefined") {_RecordType("<549,554,22>",(lines)); Inst21++; } } catch(e) {}
+lines[3].startsWith("@");
+true;
+

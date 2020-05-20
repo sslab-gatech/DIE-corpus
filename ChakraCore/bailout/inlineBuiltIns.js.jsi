@@ -1,0 +1,290 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// Notes on running this script:
+// - rldirs.xml is set up in the following way so that this script is called 2 times:
+//   - First, it's called for interpreted variant.
+//   - Then, when it's called for dynapogo variant, jshost is called with: -args dynapogo.
+//   - This script is not called for the default variant.
+// - Idea:
+//   - Collect dynamic profile cache when called for interpreted variant.
+//   - Use dynamic profile cache when called with -args dynapogo.
+//   - Some tests cause bailout by passing different parameter to test function
+//     as when dynamic profile cache was created.
+// - How to manually run/repro:
+//   - jshost -nonative -dynamicprofilecache:inlineBuiltIns.dpl inlineBuiltIns.js
+//   - jshost -forcenative -dynamicprofileinput:inlineBuiltIns.dpl inlineBuiltIns.js -args dynapogo
+//   - also trying using -testtrace:bailout  to make sure you get the bailouts.
+// TODO: change passing -args native to jshost and instead
+//       add support to WScript to expose getFlagByString() for Js::ConfigFlagsTable flags and check for -native.
+try { if (Inst0 <= 1000 && typeof (TestSin) != "undefined") {_RecordType("<1443,1450,21>",(TestSin)); Inst0++; } } catch(e) {}
+function TestSin(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<1451,1452,21>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Math.sin) != "undefined") {_RecordType("<1467,1475,22>",(Math.sin)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1467,1471,22>",(Math)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<1476,1477,22>",(x)); Inst5++; } } catch(e) {}
+  var r1 = Math.sin(x);
+try { if (Inst2 <= 1000 && typeof (r1) != "undefined") {_RecordType("<1462,1464,22>",(r1)); Inst2++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (r1) != "undefined") {_RecordType("<1489,1491,23>",(r1)); Inst6++; } } catch(e) {}
+  return r1;
+}
+
+;
+try { if (Inst8 <= 1000 && typeof (TestSin) != "undefined") {_RecordType("<1506,1513,27>",(TestSin)); Inst8++; } } catch(e) {}
+var r = TestSin("string");
+try { if (Inst7 <= 1000 && typeof (r) != "undefined") {_RecordType("<1502,1503,27>",(r)); Inst7++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1525,1530,28>",(isNaN)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (r) != "undefined") {_RecordType("<1531,1532,28>",(r)); Inst10++; } } catch(e) {}
+isNaN(r);
+
+try { if (Inst11 <= 1000 && typeof (TestPow) != "undefined") {_RecordType("<1545,1552,30>",(TestPow)); Inst11++; } } catch(e) {}
+function TestPow(x, y) {
+try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<1553,1554,30>",(x)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (y) != "undefined") {_RecordType("<1556,1557,30>",(y)); Inst13++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<1572,1580,31>",(Math.pow)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1572,1576,31>",(Math)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (x) != "undefined") {_RecordType("<1581,1582,31>",(x)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (y) != "undefined") {_RecordType("<1584,1585,31>",(y)); Inst18++; } } catch(e) {}
+  var r1 = Math.pow(x, y);
+try { if (Inst14 <= 1000 && typeof (r1) != "undefined") {_RecordType("<1567,1569,31>",(r1)); Inst14++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (r1) != "undefined") {_RecordType("<1597,1599,32>",(r1)); Inst19++; } } catch(e) {}
+  return r1;
+}
+
+;
+try { if (Inst21 <= 1000 && typeof (TestPow) != "undefined") {_RecordType("<1614,1621,36>",(TestPow)); Inst21++; } } catch(e) {}
+var r = TestPow(2, "string");
+try { if (Inst20 <= 1000 && typeof (r) != "undefined") {_RecordType("<1610,1611,36>",(r)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1636,1641,37>",(isNaN)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (r) != "undefined") {_RecordType("<1642,1643,37>",(r)); Inst23++; } } catch(e) {}
+isNaN(r); // As long as there is no assert/crash, we are fine.
+
+(function () {
+  var i = -8.1E+18;
+try { if (Inst24 <= 1000 && typeof (i) != "undefined") {_RecordType("<1721,1722,40>",(i)); Inst24++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<1745,1753,41>",(Math.pow)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1745,1749,41>",(Math)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Math.exp) != "undefined") {_RecordType("<1757,1765,41>",(Math.exp)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1757,1761,41>",(Math)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Math.atan2) != "undefined") {_RecordType("<1766,1776,41>",(Math.atan2)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1766,1770,41>",(Math)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (i) != "undefined") {_RecordType("<1781,1782,41>",(i)); Inst32++; } } catch(e) {}
+  var r = Math.pow(1, Math.exp(Math.atan2(1, ~i - 737882964)));
+try { if (Inst25 <= 1000 && typeof (r) != "undefined") {_RecordType("<1741,1742,41>",(r)); Inst25++; } } catch(e) {}
+})();
+
+(function () {
+  var e = 1;
+try { if (Inst33 <= 1000 && typeof (e) != "undefined") {_RecordType("<1827,1828,45>",(e)); Inst33++; } } catch(e) {}
+try { if (Inst34 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<1843,1851,46>",(Math.pow)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1843,1847,46>",(Math)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (e) != "undefined") {_RecordType("<1852,1853,46>",(e)); Inst36++; } } catch(e) {}
+  return Math.pow(e >> 1, 3.2);
+})();
+
+(function () {
+  var e = 1;
+try { if (Inst37 <= 1000 && typeof (e) != "undefined") {_RecordType("<1894,1895,50>",(e)); Inst37++; } } catch(e) {}
+try { if (Inst38 <= 1000 && typeof (Math.atan2) != "undefined") {_RecordType("<1903,1913,51>",(Math.atan2)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1903,1907,51>",(Math)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<1917,1925,51>",(Math.pow)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1917,1921,51>",(Math)); Inst41++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (Math.tan) != "undefined") {_RecordType("<1935,1943,51>",(Math.tan)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1935,1939,51>",(Math)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Math.abs) != "undefined") {_RecordType("<1958,1966,51>",(Math.abs)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1958,1962,51>",(Math)); Inst46++; } } catch(e) {}
+  Math.atan2(1, Math.pow(e >>= 1, Math.tan(-1031883772 * Math.abs(-951135089))));
+try { if (Inst42 <= 1000 && typeof (e) != "undefined") {_RecordType("<1926,1927,51>",(e)); Inst42++; } } catch(e) {}
+})();
+
+(function () {
+try { if (Inst48 <= 1000 && typeof (Array) != "undefined") {_RecordType("<2021,2026,55>",(Array)); Inst48++; } } catch(e) {}
+  var ary = new Array();
+try { if (Inst47 <= 1000 && typeof (ary) != "undefined") {_RecordType("<2011,2014,55>",(ary)); Inst47++; } } catch(e) {}
+  ary[0] = 0;
+try { if (Inst49 <= 1000 && typeof (ary[0]) != "undefined") {_RecordType("<2032,2038,56>",(ary[0])); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (ary) != "undefined") {_RecordType("<2032,2035,56>",(ary)); Inst50++; } } catch(e) {}
+try { if (Inst51 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2046,2054,57>",(Math.pow)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2046,2050,57>",(Math)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (ary[0]) != "undefined") {_RecordType("<2070,2076,57>",(ary[0])); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (ary) != "undefined") {_RecordType("<2070,2073,57>",(ary)); Inst54++; } } catch(e) {}
+  Math.pow(1808815940.1, -ary[0]);
+})();
+
+(function () {
+try { if (Inst55 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2110,2118,61>",(Math.pow)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2110,2114,61>",(Math)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (Math.sin) != "undefined") {_RecordType("<2119,2127,61>",(Math.sin)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2119,2123,61>",(Math)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2132,2140,61>",(Math.pow)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2132,2136,61>",(Math)); Inst60++; } } catch(e) {}
+  return Math.pow(Math.sin(1), Math.pow(1, 1));
+})();
+
+(function () {
+  var o = {
+    x: 0
+  };
+try { if (Inst61 <= 1000 && typeof (o) != "undefined") {_RecordType("<2177,2178,65>",(o)); Inst61++; } } catch(e) {}
+
+  var func0 = function () {
+try { if (Inst63 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2230,2238,70>",(Math.pow)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2230,2234,70>",(Math)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (o.x) != "undefined") {_RecordType("<2244,2247,70>",(o.x)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (o) != "undefined") {_RecordType("<2244,2245,70>",(o)); Inst66++; } } catch(e) {}
+    Math.pow(1.1, o.x * -1);
+  };
+try { if (Inst62 <= 1000 && typeof (func0) != "undefined") {_RecordType("<2204,2209,69>",(func0)); Inst62++; } } catch(e) {}
+
+try { if (Inst67 <= 1000 && typeof (Math.atan2) != "undefined") {_RecordType("<2263,2273,73>",(Math.atan2)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2263,2267,73>",(Math)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (func0) != "undefined") {_RecordType("<2274,2279,73>",(func0)); Inst69++; } } catch(e) {}
+  Math.atan2(func0(), 1);
+})();
+
+for (var i in [0, 1]) {
+try { if (Inst70 <= 1000 && typeof (i) != "undefined") {_RecordType("<2303,2304,76>",(i)); Inst70++; } } catch(e) {}
+try { if (Inst71 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<2320,2325,77>",(isNaN)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2326,2334,77>",(Math.pow)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2326,2330,77>",(Math)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2335,2343,77>",(Math.pow)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2335,2339,77>",(Math)); Inst75++; } } catch(e) {}
+  isNaN(Math.pow(Math.pow(/x/, 0.1), 0.1));
+}
+
+var accumulator = "";
+try { if (Inst76 <= 1000 && typeof (accumulator) != "undefined") {_RecordType("<2369,2380,80>",(accumulator)); Inst76++; } } catch(e) {}
+
+try { if (Inst78 <= 1000 && typeof (vOf) != "undefined") {_RecordType("<2407,2410,82>",(vOf)); Inst78++; } } catch(e) {}
+var vOf = function vOf() {
+  accumulator += "x";
+try { if (Inst79 <= 1000 && typeof (accumulator) != "undefined") {_RecordType("<2417,2428,83>",(accumulator)); Inst79++; } } catch(e) {}
+  return 3;
+};
+try { if (Inst77 <= 1000 && typeof (vOf) != "undefined") {_RecordType("<2392,2395,82>",(vOf)); Inst77++; } } catch(e) {}
+
+try { if (Inst80 <= 1000 && typeof (testFunc) != "undefined") {_RecordType("<2462,2470,87>",(testFunc)); Inst80++; } } catch(e) {}
+function testFunc() {
+  var i = 1;
+try { if (Inst81 <= 1000 && typeof (i) != "undefined") {_RecordType("<2481,2482,88>",(i)); Inst81++; } } catch(e) {}
+
+try { if (Inst82 <= 1000 && typeof (vOf) != "undefined") {_RecordType("<2644,2647,95>",(vOf)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<2651,2660,95>",(undefined)); Inst83++; } } catch(e) {}
+  do {
+    // We need to make sure that we pass original value of i (== 1) as 1st arg.
+try { if (Inst85 <= 1000 && typeof (Math.pow) != "undefined") {_RecordType("<2588,2596,92>",(Math.pow)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2588,2592,92>",(Math)); Inst86++; } } catch(e) {}try { if (Inst87 <= 1000 && typeof (i) != "undefined") {_RecordType("<2597,2598,92>",(i)); Inst87++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (vOf) != "undefined") {_RecordType("<2621,2624,93>",(vOf)); Inst89++; } } catch(e) {}
+    var x = Math.pow(i, i = {
+      valueOf: vOf
+    });
+try { if (Inst84 <= 1000 && typeof (x) != "undefined") {_RecordType("<2584,2585,92>",(x)); Inst84++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (i) != "undefined") {_RecordType("<2600,2601,92>",(i)); Inst88++; } } catch(e) {}
+  } while (vOf == undefined);
+}
+
+try { if (Inst90 <= 1000 && typeof (testFunc) != "undefined") {_RecordType("<2666,2674,98>",(testFunc)); Inst90++; } } catch(e) {}
+testFunc();
+try { if (Inst91 <= 1000 && typeof (print) != "undefined") {_RecordType("<2678,2683,99>",(print)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (accumulator) != "undefined") {_RecordType("<2691,2702,99>",(accumulator)); Inst92++; } } catch(e) {}
+print("x" == accumulator);
+

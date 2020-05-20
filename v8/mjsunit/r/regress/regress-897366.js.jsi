@@ -1,0 +1,93 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --gc-interval=100
+let xs = [];
+try { if (Inst0 <= 1000 && typeof (xs) != "undefined") {_RecordType("<199,201,5>",(xs)); Inst0++; } } catch(e) {}
+
+for (let i = 0; i < 205; ++i) {
+try { if (Inst1 <= 1000 && typeof (i) != "undefined") {_RecordType("<218,219,7>",(i)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (i) != "undefined") {_RecordType("<225,226,7>",(i)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<236,237,7>",(i)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (xs.push) != "undefined") {_RecordType("<243,250,8>",(xs.push)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (xs) != "undefined") {_RecordType("<243,245,8>",(xs)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<251,252,8>",(i)); Inst6++; } } catch(e) {}
+  xs.push(i);
+}
+
+try { if (Inst7 <= 1000 && typeof (xs.sort) != "undefined") {_RecordType("<258,265,11>",(xs.sort)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (xs) != "undefined") {_RecordType("<258,260,11>",(xs)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<267,268,11>",(a)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (b) != "undefined") {_RecordType("<270,271,11>",(b)); Inst10++; } } catch(e) {}
+xs.sort((a, b) => {
+try { if (Inst11 <= 1000 && typeof (xs.shift) != "undefined") {_RecordType("<280,288,12>",(xs.shift)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (xs) != "undefined") {_RecordType("<280,282,12>",(xs)); Inst12++; } } catch(e) {}
+  xs.shift();
+  xs[xs.length] = -246;
+try { if (Inst13 <= 1000 && typeof (xs[xs.length]) != "undefined") {_RecordType("<294,307,13>",(xs[xs.length])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (xs) != "undefined") {_RecordType("<294,296,13>",(xs)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (xs.length) != "undefined") {_RecordType("<297,306,13>",(xs.length)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (xs) != "undefined") {_RecordType("<297,299,13>",(xs)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (a) != "undefined") {_RecordType("<325,326,14>",(a)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (b) != "undefined") {_RecordType("<329,330,14>",(b)); Inst18++; } } catch(e) {}
+  return a - b;
+});
+

@@ -1,0 +1,126 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Define constructor with a proxy as prototype
+let hook = {
+  get: function (target, name, receiver) {
+try { if (Inst1 <= 1000 && typeof (target) != "undefined") {_RecordType("<78,84,3>",(target)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (name) != "undefined") {_RecordType("<86,90,3>",(name)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<92,100,3>",(receiver)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<115,123,4>",(receiver)); Inst4++; } } catch(e) {}
+    return receiver;
+  }
+};
+try { if (Inst0 <= 1000 && typeof (hook) != "undefined") {_RecordType("<52,56,2>",(hook)); Inst0++; } } catch(e) {}
+
+let Base = function () {
+  ;
+};
+try { if (Inst5 <= 1000 && typeof (Base) != "undefined") {_RecordType("<137,141,8>",(Base)); Inst5++; } } catch(e) {}
+
+try { if (Inst8 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<187,192,12>",(Proxy)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Base.prototype) != "undefined") {_RecordType("<193,207,12>",(Base.prototype)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Base) != "undefined") {_RecordType("<193,197,12>",(Base)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (hook) != "undefined") {_RecordType("<209,213,12>",(hook)); Inst11++; } } catch(e) {}
+Base.prototype = new Proxy(Base.prototype, hook);
+try { if (Inst6 <= 1000 && typeof (Base.prototype) != "undefined") {_RecordType("<166,180,12>",(Base.prototype)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Base) != "undefined") {_RecordType("<166,170,12>",(Base)); Inst7++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (Base) != "undefined") {_RecordType("<239,243,14>",(Base)); Inst15++; } } catch(e) {}
+class Derived extends Base {
+  test() {
+    // Check proxy receiver is |this|, rather than Base.[[Prototype]]
+try { if (Inst13 <= 1000 && typeof (super.x) != "undefined") {_RecordType("<331,338,17>",(super.x)); Inst13++; } } catch(e) {}
+    super.x;
+    this;
+  }
+
+  test_elem() {
+    // Check proxy receiver is |this|, rather than Base.[[Prototype]]
+try { if (Inst14 <= 1000 && typeof (super[0]) != "undefined") {_RecordType("<445,453,23>",(super[0])); Inst14++; } } catch(e) {}
+    super[0];
+    this;
+  }
+
+}
+try { if (Inst12 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<223,230,14>",(Derived)); Inst12++; } } catch(e) {}
+
+try { if (Inst17 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<485,492,29>",(Derived)); Inst17++; } } catch(e) {}
+let d = new Derived();
+try { if (Inst16 <= 1000 && typeof (d) != "undefined") {_RecordType("<477,478,29>",(d)); Inst16++; } } catch(e) {}
+
+for (let i = 0; i < 20; ++i) {
+try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<506,507,31>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<513,514,31>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<523,524,31>",(i)); Inst20++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (d.test) != "undefined") {_RecordType("<530,536,32>",(d.test)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (d) != "undefined") {_RecordType("<530,531,32>",(d)); Inst22++; } } catch(e) {}
+  d.test();
+try { if (Inst23 <= 1000 && typeof (d.test_elem) != "undefined") {_RecordType("<542,553,33>",(d.test_elem)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (d) != "undefined") {_RecordType("<542,543,33>",(d)); Inst24++; } } catch(e) {}
+  d.test_elem();
+}
+

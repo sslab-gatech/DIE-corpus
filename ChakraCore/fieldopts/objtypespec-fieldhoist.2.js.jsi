@@ -1,0 +1,129 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// Windows Blue Bug 146740
+// Run with -maxInterpretCount:1
+// When hoisting a field load or store would hoist the associated type check as well.  However, this type check may
+// be protecting other fields operations that are not hoistable, and would then be executed without the required type
+// check.  Here the field load of exhxkm (for ++exhxkm) ostensibly checked the type of the global object and produced
+// a type value, which was then consumed by uiktzz++, but when copy prop replaced the load of exhxkm, the type check
+// got removed as well.
+x = this;
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<920,921,12>",(x)); Inst0++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (uiktzz) != "undefined") {_RecordType("<969,975,14>",(uiktzz)); Inst4++; } } catch(e) {}
+Object.prototype["uiktzz"] = function uiktzz() {
+  ;
+};
+try { if (Inst1 <= 1000 && typeof (Object.prototype["uiktzz"]) != "undefined") {_RecordType("<931,957,14>",(Object.prototype["uiktzz"])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<931,947,14>",(Object.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<931,937,14>",(Object)); Inst3++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (test) != "undefined") {_RecordType("<997,1001,18>",(test)); Inst5++; } } catch(e) {}
+function test() {
+  for (exhxkm = 0; exhxkm < 3; ++exhxkm) {
+try { if (Inst6 <= 1000 && typeof (exhxkm) != "undefined") {_RecordType("<1013,1019,19>",(exhxkm)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (exhxkm) != "undefined") {_RecordType("<1025,1031,19>",(exhxkm)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (exhxkm) != "undefined") {_RecordType("<1039,1045,19>",(exhxkm)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (exhxkm) != "undefined") {_RecordType("<1057,1063,20>",(exhxkm)); Inst9++; } } catch(e) {}
+    if (exhxkm == 1) {
+try { if (Inst10 <= 1000 && typeof (x.uiktzz) != "undefined") {_RecordType("<1085,1093,21>",(x.uiktzz)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (x) != "undefined") {_RecordType("<1085,1086,21>",(x)); Inst11++; } } catch(e) {}
+      delete x.uiktzz;
+    } else {
+try { if (Inst12 <= 1000 && typeof (uiktzz) != "undefined") {_RecordType("<1114,1120,23>",(uiktzz)); Inst12++; } } catch(e) {}
+      uiktzz++;
+    }
+  }
+
+  ;
+try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<1148,1149,28>",(x)); Inst13++; } } catch(e) {}
+  return x;
+}
+
+; // Interpreter call
+
+try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<1177,1181,33>",(test)); Inst14++; } } catch(e) {}
+test(); // JIT call
+
+try { if (Inst15 <= 1000 && typeof (test) != "undefined") {_RecordType("<1198,1202,35>",(test)); Inst15++; } } catch(e) {}
+test();
+try { if (Inst16 <= 1000 && typeof (test) != "undefined") {_RecordType("<1206,1210,36>",(test)); Inst16++; } } catch(e) {}
+test();
+try { if (Inst17 <= 1000 && typeof (test) != "undefined") {_RecordType("<1214,1218,37>",(test)); Inst17++; } } catch(e) {}
+test();
+try { if (Inst18 <= 1000 && typeof (print) != "undefined") {_RecordType("<1222,1227,38>",(print)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (uiktzz) != "undefined") {_RecordType("<1228,1234,38>",(uiktzz)); Inst19++; } } catch(e) {}
+print(uiktzz);
+try { if (Inst20 <= 1000 && typeof (print) != "undefined") {_RecordType("<1237,1242,39>",(print)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (this.x.uiktzz) != "undefined") {_RecordType("<1243,1256,39>",(this.x.uiktzz)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<1243,1249,39>",(this.x)); Inst22++; } } catch(e) {}
+print(this.x.uiktzz);
+

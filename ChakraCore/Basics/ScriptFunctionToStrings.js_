@@ -1,0 +1,132 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function test1() {
+  var s = "function \n\t\r foo() {var a = 5;}";
+  eval(s);
+  console.log(foo.toString());
+}
+
+test1();
+
+function test2() {
+  var s = "function \t\n\r\t foo() {var a = 5;}";
+  eval("var a = " + s);
+  console.log(a.toString());
+
+  a = function (i) {
+    i++;
+  };
+
+  console.log(a.toString());
+}
+
+test2();
+
+function test3() {
+  var s = "function* \t\r\n  foo() {var a = 5;}";
+  eval(s);
+  console.log(foo.toString());
+  s = "function \t\r\n*\n\r\n \t foo() {var a = 5;}";
+  eval(s);
+  console.log(foo.toString());
+}
+
+test3();
+
+function test4() {
+  var s = "function* \t\n\r  \t foo() {var a = 5;}";
+  eval("var a = " + s);
+  console.log(a.toString());
+  s = "function \t\n\r  *  \t\n foo() {var a = 5;}";
+  eval("var a = " + s);
+  console.log(a.toString());
+}
+
+test4();
+
+function test5() {
+  var s1 = "function \n\t bar \t () {}";
+  var s2 = "function \t qui \t () {}";
+  eval("var o = { foo : " + s1 + "}");
+  eval("o.e = " + s2);
+  console.log(o.foo.toString());
+  console.log(o.e.toString());
+}
+
+test5();
+
+function test6() {
+  var s1 = "function \n\t  \t () {}";
+  var s2 = "function \t  \t () {}";
+  eval("var o = { foo : " + s1 + "}");
+  eval("o.e = " + s2);
+  console.log(o.foo.toString());
+  console.log(o.e.toString());
+}
+
+test6();
+
+function test7() {
+  var s = "function foo() { return foo.toString(); }";
+  eval(s);
+  var a = foo;
+  console.log(a());
+}
+
+test7();
+
+function test8() {
+  eval("var qux = class { constructor(){} static func(){} method(){} get getter(){} set setter(v){}}");
+  var quxObj = new qux();
+  console.log(qux.func.toString());
+  console.log(quxObj.method.toString());
+  var oGet = Object.getOwnPropertyDescriptor(qux.prototype, "getter");
+  var oSet = Object.getOwnPropertyDescriptor(qux.prototype, "setter");
+  console.log(oGet.get.toString());
+  console.log(oSet.set.toString());
+}
+
+test8();
+
+function test9() {
+  // [19.2.3.5] Function.prototype.toString()
+  // The string representation must have the syntax of a FunctionDeclaration, FunctionExpression, GeneratorDeclaration,
+  //     GeneratorExpression, AsyncFunctionDeclaration, AsyncFunctionExpression, ClassDeclaration, ClassExpression, ArrowFunction,
+  //     AsyncArrowFunction, or MethodDefinition depending upon the actual characteristics of the object.
+  eval("var qux = class { constructor(){} static func(){} method(){} get getter(){} set setter(v){}}");
+  var quxObj = new qux();
+  console.log(quxObj.constructor.toString());
+  var qux = class {};
+  var quxObj = new qux();
+  console.log(quxObj.constructor.toString());
+}
+
+test9();
+
+function test10() {
+  var o = {
+    ['f']() {
+      ;
+    },
+
+    g() {
+      ;
+    }
+
+  };
+  console.log(o.f.toString());
+}
+
+test10();
+
+function test11() {
+  var arrowDecl = () => {
+    ;
+  };
+
+  console.log(arrowDecl.toString());
+}
+
+test11();

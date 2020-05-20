@@ -1,0 +1,347 @@
+console.log("This test checks that const declarations in JavaScript work and are readonly.");
+
+function shouldThrowInvalidConstAssignment(f) {
+  var threw = false;
+
+  try {
+    f();
+  } catch (e) {
+    if (e.name.indexOf("TypeError") !== -1 && e.message.indexOf("readonly") !== -1) {
+      threw = true;
+    }
+  }
+
+  if (threw) {
+    console.log("function threw exception: '" + f.toString() + "'");
+  } else {
+    console.log("function did not throw: '" + f.toString() + "'");
+  }
+}
+
+function assert(b) {
+  if (!b) {
+    console.log("Invalid assertion.");
+  } else {
+    console.log("Assertion passed.");
+  }
+} // try { const redef='a'; const redef='a';; } catch(e) {}
+
+
+const x = "RIGHT";
+shouldThrowInvalidConstAssignment(function () {
+  x = "WRONG";
+});
+x === "RIGHT";
+const z = "RIGHT",
+      y = "RIGHT";
+shouldThrowInvalidConstAssignment(function () {
+  y = "WRONG";
+});
+y === "RIGHT";
+const one = 1;
+var a = null; // PostIncResolveNode
+
+shouldThrowInvalidConstAssignment(function () {
+  a = one++;
+});
+a === null;
+one === 1;
+// PostDecResolveNode
+shouldThrowInvalidConstAssignment(function () {
+  a = one--;
+});
+a === null;
+one === 1;
+// PreIncResolveNode
+shouldThrowInvalidConstAssignment(function () {
+  a = ++one;
+});
+a === null;
+one === 1;
+// PreDecResolveNode
+shouldThrowInvalidConstAssignment(function () {
+  a = --one;
+});
+a === null;
+one === 1;
+// ReadModifyConstNode
+shouldThrowInvalidConstAssignment(function () {
+  a = one += 2;
+});
+a === null;
+one === 1;
+// AssignConstNode
+shouldThrowInvalidConstAssignment(function () {
+  a = one = 2;
+});
+a === null;
+one === 1;
+
+// PostIncResolveNode
+try {
+  function f() {
+    const one = 1;
+    one++;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const oneString = '1';
+    return oneString++;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return one++;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+} // PostDecResolveNode
+
+
+try {
+  function f() {
+    const one = 1;
+    one--;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const oneString = '1';
+    return oneString--;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return one--;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+} // PreIncResolveNode
+
+
+try {
+  function f() {
+    const one = 1;
+    ++one;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return ++one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+} // PreDecResolveNode
+
+
+try {
+  function f() {
+    const one = 1;
+    --one;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return --one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+} // ReadModifyConstNode
+
+
+try {
+  function f() {
+    const one = 1;
+    one += 2;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return one += 2;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+} // AssignConstNode
+
+
+try {
+  function f() {
+    const one = 1;
+    one = 2;
+    return one;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  function f() {
+    const one = 1;
+    return one = 2;
+  }
+
+  f();
+  ;
+} catch (e) {
+  ;
+}
+
+var object = {
+  inWith1: "a",
+  inWith2: "b"
+};
+with (object) {
+  const inWith1 = "hello";
+  const inWith2 = "world";
+  inWith1 === "hello";
+  inWith2 === "world";
+}
+object.inWith1;
+object.inWith2;
+
+var f = function g() {
+  g = "FAIL";
+  return g;
+};
+
+f(); // Make sure that dynamic scopes (catch, with) don't break const declarations
+
+function tryCatch1() {
+  var bar = null;
+  eval("try {\
+stuff();\
+} catch (e) {\
+const bar = 5;\
+}");
+  return bar;
+}
+
+function tryCatch2() {
+  var bar = null;
+
+  try {
+    stuff();
+  } catch (e) {
+    const bar = 5;
+  }
+
+  return bar;
+}
+
+tryCatch1Result = tryCatch1();
+tryCatch1Result;
+tryCatch2Result = tryCatch2();
+tryCatch2Result;
+
+function with1() {
+  var bar = null;
+  eval("with({foo:42}) { const bar = 5; }");
+  return bar;
+}
+
+function with2() {
+  var bar = null;
+  with ({
+    foo: 42
+  }) {
+    const bar = 5;
+  }
+  return bar;
+}
+
+with1Result = with1();
+with1Result;
+with2Result = with2();
+with2Result;
+
+(function () {
+  (function () {
+    const x = "1";
+    shouldThrowInvalidConstAssignment(function () {
+      ++x;
+    });
+    x === "1";
+    shouldThrowInvalidConstAssignment(function () {
+      x++;
+    });
+    x === "1";
+    shouldThrowInvalidConstAssignment(function () {
+      x--;
+    });
+    x === "1";
+    shouldThrowInvalidConstAssignment(function () {
+      --x;
+    });
+  })();
+})();

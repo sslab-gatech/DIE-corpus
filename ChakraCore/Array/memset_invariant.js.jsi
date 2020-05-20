@@ -1,0 +1,273 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (this.WScript.LoadScriptFile) != "undefined") {_RecordType("<367,394,5>",(this.WScript.LoadScriptFile)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (this.WScript) != "undefined") {_RecordType("<367,379,5>",(this.WScript)); Inst1++; } } catch(e) {}
+this.WScript.LoadScriptFile(".\\memset_tester.js");
+try { if (Inst3 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<445,454,6>",(undefined)); Inst3++; } } catch(e) {}
+const allTypes = [0, 1.5, undefined, null, 9223372036854775807, "string", {
+  a: null,
+  b: "b"
+}];
+try { if (Inst2 <= 1000 && typeof (allTypes) != "undefined") {_RecordType("<425,433,6>",(allTypes)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<578,587,12>",(undefined)); Inst5++; } } catch(e) {}
+const tests = [{
+  name: "memsetUndefined",
+  stringValue: undefined
+}, {
+  name: "memsetNull",
+  stringValue: null
+}, {
+  name: "memsetInt",
+  stringValue: 0,
+  v2: 1 << 30
+}, {
+  name: "memsetFloat",
+  stringValue: 3.14,
+  v2: -87.684
+}, {
+  name: "memsetNumber",
+  stringValue: 9223372036854775807,
+  v2: -987654987654987
+}, {
+  name: "memsetBoolean",
+  stringValue: true,
+  v2: false
+}, {
+  name: "memsetString",
+  stringValue: "\"thatString\"",
+  v2: "`A template string`"
+}, {
+  name: "memsetObject",
+  stringValue: "{test: 1}",
+  v2: [1, 2, 3]
+}];
+try { if (Inst4 <= 1000 && typeof (tests) != "undefined") {_RecordType("<525,530,10>",(tests)); Inst4++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof ("Int8Array Uint8Array Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array Array".split) != "undefined") {_RecordType("<1088,1194,41>",("Int8Array Uint8Array Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array Array".split)); Inst7++; } } catch(e) {}
+const types = "Int8Array Uint8Array Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array Array".split(" ");
+try { if (Inst6 <= 1000 && typeof (types) != "undefined") {_RecordType("<1080,1085,41>",(types)); Inst6++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (RunMemsetTest) != "undefined") {_RecordType("<1214,1227,42>",(RunMemsetTest)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (tests) != "undefined") {_RecordType("<1228,1233,42>",(tests)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (types) != "undefined") {_RecordType("<1235,1240,42>",(types)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (allTypes) != "undefined") {_RecordType("<1242,1250,42>",(allTypes)); Inst12++; } } catch(e) {}
+let passed = RunMemsetTest(tests, types, allTypes);
+try { if (Inst8 <= 1000 && typeof (passed) != "undefined") {_RecordType("<1205,1211,42>",(passed)); Inst8++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (memsetSymbol) != "undefined") {_RecordType("<1263,1275,44>",(memsetSymbol)); Inst13++; } } catch(e) {}
+function memsetSymbol() {
+try { if (Inst15 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1292,1298,45>",(Symbol)); Inst15++; } } catch(e) {}
+  const s = Symbol();
+try { if (Inst14 <= 1000 && typeof (s) != "undefined") {_RecordType("<1288,1289,45>",(s)); Inst14++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1320,1325,46>",(Array)); Inst17++; } } catch(e) {}
+  const arr = new Array(10);
+try { if (Inst16 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1310,1313,46>",(arr)); Inst16++; } } catch(e) {}
+
+  for (let i = 0; i < 10; ++i) {
+try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<1343,1344,48>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<1350,1351,48>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<1360,1361,48>",(i)); Inst20++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (s) != "undefined") {_RecordType("<1378,1379,49>",(s)); Inst23++; } } catch(e) {}
+    arr[i] = s;
+try { if (Inst21 <= 1000 && typeof (arr[i]) != "undefined") {_RecordType("<1369,1375,49>",(arr[i])); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1369,1372,49>",(arr)); Inst22++; } } catch(e) {}
+  }
+
+try { if (Inst24 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1395,1398,52>",(arr)); Inst24++; } } catch(e) {}
+  return arr;
+}
+
+try { if (Inst25 <= 1000 && typeof (memsetSymbolV) != "undefined") {_RecordType("<1412,1425,55>",(memsetSymbolV)); Inst25++; } } catch(e) {}
+function memsetSymbolV(v) {
+try { if (Inst26 <= 1000 && typeof (v) != "undefined") {_RecordType("<1426,1427,55>",(v)); Inst26++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1449,1454,56>",(Array)); Inst28++; } } catch(e) {}
+  const arr = new Array(10);
+try { if (Inst27 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1439,1442,56>",(arr)); Inst27++; } } catch(e) {}
+
+  for (let i = 0; i < 10; ++i) {
+try { if (Inst29 <= 1000 && typeof (i) != "undefined") {_RecordType("<1472,1473,58>",(i)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (i) != "undefined") {_RecordType("<1479,1480,58>",(i)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (i) != "undefined") {_RecordType("<1489,1490,58>",(i)); Inst31++; } } catch(e) {}
+try { if (Inst34 <= 1000 && typeof (v) != "undefined") {_RecordType("<1507,1508,59>",(v)); Inst34++; } } catch(e) {}
+    arr[i] = v;
+try { if (Inst32 <= 1000 && typeof (arr[i]) != "undefined") {_RecordType("<1498,1504,59>",(arr[i])); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1498,1501,59>",(arr)); Inst33++; } } catch(e) {}
+  }
+
+try { if (Inst35 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1524,1527,62>",(arr)); Inst35++; } } catch(e) {}
+  return arr;
+}
+
+try { if (Inst36 <= 1000 && typeof (checkSymbols) != "undefined") {_RecordType("<1541,1553,65>",(checkSymbols)); Inst36++; } } catch(e) {}
+function checkSymbols() {
+try { if (Inst38 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1570,1576,66>",(Symbol)); Inst38++; } } catch(e) {}
+  const s = Symbol(); // Since symbol are unique, and we want to compare the result, we have to pass the same symbol everytime
+try { if (Inst37 <= 1000 && typeof (s) != "undefined") {_RecordType("<1566,1567,66>",(s)); Inst37++; } } catch(e) {}
+
+try { if (Inst40 <= 1000 && typeof (memsetSymbolV) != "undefined") {_RecordType("<1699,1712,68>",(memsetSymbolV)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (s) != "undefined") {_RecordType("<1713,1714,68>",(s)); Inst41++; } } catch(e) {}
+  const a1 = memsetSymbolV(s);
+try { if (Inst39 <= 1000 && typeof (a1) != "undefined") {_RecordType("<1694,1696,68>",(a1)); Inst39++; } } catch(e) {}
+try { if (Inst43 <= 1000 && typeof (memsetSymbolV) != "undefined") {_RecordType("<1730,1743,69>",(memsetSymbolV)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (s) != "undefined") {_RecordType("<1744,1745,69>",(s)); Inst44++; } } catch(e) {}
+  const a2 = memsetSymbolV(s);
+try { if (Inst42 <= 1000 && typeof (a2) != "undefined") {_RecordType("<1725,1727,69>",(a2)); Inst42++; } } catch(e) {}
+
+  for (let i = 0; i < a1.length; ++i) {
+try { if (Inst45 <= 1000 && typeof (i) != "undefined") {_RecordType("<1760,1761,71>",(i)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (i) != "undefined") {_RecordType("<1767,1768,71>",(i)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (a1.length) != "undefined") {_RecordType("<1771,1780,71>",(a1.length)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (a1) != "undefined") {_RecordType("<1771,1773,71>",(a1)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (i) != "undefined") {_RecordType("<1784,1785,71>",(i)); Inst49++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (a1[i]) != "undefined") {_RecordType("<1797,1802,72>",(a1[i])); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (a1) != "undefined") {_RecordType("<1797,1799,72>",(a1)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (a2[i]) != "undefined") {_RecordType("<1807,1812,72>",(a2[i])); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (a2) != "undefined") {_RecordType("<1807,1809,72>",(a2)); Inst53++; } } catch(e) {}
+    if (a1[i] !== a2[i]) {
+      passed = false; // need explicit toString() for Symbol
+try { if (Inst54 <= 1000 && typeof (passed) != "undefined") {_RecordType("<1822,1828,73>",(passed)); Inst54++; } } catch(e) {}
+
+try { if (Inst55 <= 1000 && typeof (print) != "undefined") {_RecordType("<1884,1889,75>",(print)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (i) != "undefined") {_RecordType("<1911,1912,75>",(i)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (a1[i].toString) != "undefined") {_RecordType("<1917,1931,75>",(a1[i].toString)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (a1[i]) != "undefined") {_RecordType("<1917,1922,75>",(a1[i])); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (a1) != "undefined") {_RecordType("<1917,1919,75>",(a1)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (i) != "undefined") {_RecordType("<1944,1945,75>",(i)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (a2) != "undefined") {_RecordType("<1950,1952,75>",(a2)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (a2[i].toString) != "undefined") {_RecordType("<1956,1970,75>",(a2[i].toString)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (a2[i]) != "undefined") {_RecordType("<1956,1961,75>",(a2[i])); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (a2) != "undefined") {_RecordType("<1956,1958,75>",(a2)); Inst64++; } } catch(e) {}
+      print(`memsetSymbolV: a1[${i}](${a1[i].toString()}) != a2[${i}](${a2 && a2[i].toString() || ""})`);
+      break;
+    }
+  }
+
+try { if (Inst65 <= 1000 && typeof (memsetSymbol) != "undefined") {_RecordType("<2010,2022,80>",(memsetSymbol)); Inst65++; } } catch(e) {}
+  memsetSymbol();
+try { if (Inst67 <= 1000 && typeof (memsetSymbol) != "undefined") {_RecordType("<2048,2060,81>",(memsetSymbol)); Inst67++; } } catch(e) {}
+  const symbolArray = memsetSymbol();
+try { if (Inst66 <= 1000 && typeof (symbolArray) != "undefined") {_RecordType("<2034,2045,81>",(symbolArray)); Inst66++; } } catch(e) {}
+
+  for (let i = 0; i < symbolArray.length; ++i) {
+try { if (Inst68 <= 1000 && typeof (i) != "undefined") {_RecordType("<2076,2077,83>",(i)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (i) != "undefined") {_RecordType("<2083,2084,83>",(i)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (symbolArray.length) != "undefined") {_RecordType("<2087,2105,83>",(symbolArray.length)); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (symbolArray) != "undefined") {_RecordType("<2087,2098,83>",(symbolArray)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (i) != "undefined") {_RecordType("<2109,2110,83>",(i)); Inst72++; } } catch(e) {}
+try { if (Inst73 <= 1000 && typeof (symbolArray[i]) != "undefined") {_RecordType("<2129,2143,84>",(symbolArray[i])); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (symbolArray) != "undefined") {_RecordType("<2129,2140,84>",(symbolArray)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (s) != "undefined") {_RecordType("<2155,2156,84>",(s)); Inst75++; } } catch(e) {}
+    if (typeof symbolArray[i] !== typeof s) {
+      passed = false;
+try { if (Inst76 <= 1000 && typeof (passed) != "undefined") {_RecordType("<2166,2172,85>",(passed)); Inst76++; } } catch(e) {}
+try { if (Inst77 <= 1000 && typeof (print) != "undefined") {_RecordType("<2188,2193,86>",(print)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (i) != "undefined") {_RecordType("<2223,2224,86>",(i)); Inst78++; } } catch(e) {}
+      print(`memsetSymbol: symbolArray[${i}] is not a Symbol`);
+      break;
+    }
+  }
+}
+
+try { if (Inst79 <= 1000 && typeof (checkSymbols) != "undefined") {_RecordType("<2272,2284,92>",(checkSymbols)); Inst79++; } } catch(e) {}
+checkSymbols();
+try { if (Inst80 <= 1000 && typeof (print) != "undefined") {_RecordType("<2288,2293,93>",(print)); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (passed) != "undefined") {_RecordType("<2294,2300,93>",(passed)); Inst81++; } } catch(e) {}
+print(passed ? "PASSED" : "FAILED");
+

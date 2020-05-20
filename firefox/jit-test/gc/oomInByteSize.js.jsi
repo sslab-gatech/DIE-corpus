@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| skip-if: !('oomTest' in this)
+try { if (Inst0 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<44,51,2>",(oomTest)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<58,66,2>",(byteSize)); Inst1++; } } catch(e) {}
+oomTest(() => byteSize({}));
+try { if (Inst2 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<73,80,3>",(oomTest)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<87,95,3>",(byteSize)); Inst3++; } } catch(e) {}
+oomTest(() => byteSize({
+  w: 1,
+  x: 2,
+  y: 3
+}));
+try { if (Inst4 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<126,133,8>",(oomTest)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<140,148,8>",(byteSize)); Inst5++; } } catch(e) {}
+oomTest(() => byteSize({
+  w: 1,
+  x: 2,
+  y: 3,
+  z: 4,
+  a: 6,
+  0: 0,
+  1: 1,
+  2: 2
+}));
+try { if (Inst6 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<219,226,18>",(oomTest)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<233,241,18>",(byteSize)); Inst7++; } } catch(e) {}
+oomTest(() => byteSize([1, 2, 3]));
+try { if (Inst8 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<255,262,19>",(oomTest)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<269,277,19>",(byteSize)); Inst9++; } } catch(e) {}
+oomTest(() => byteSize(function () {
+  ;
+}));
+
+try { if (Inst10 <= 1000 && typeof (f1) != "undefined") {_RecordType("<311,313,23>",(f1)); Inst10++; } } catch(e) {}
+function f1() {
+  return 42;
+}
+
+try { if (Inst11 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<334,341,27>",(oomTest)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (byteSizeOfScript) != "undefined") {_RecordType("<348,364,27>",(byteSizeOfScript)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (f1) != "undefined") {_RecordType("<365,367,27>",(f1)); Inst13++; } } catch(e) {}
+oomTest(() => byteSizeOfScript(f1));
+try { if (Inst14 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<371,378,28>",(oomTest)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<385,393,28>",(byteSize)); Inst15++; } } catch(e) {}
+oomTest(() => byteSize("1234567"));
+try { if (Inst16 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<407,414,29>",(oomTest)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<421,429,29>",(byteSize)); Inst17++; } } catch(e) {}
+oomTest(() => byteSize("千早ぶる神代"));
+try { if (Inst19 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<450,456,30>",(Symbol)); Inst19++; } } catch(e) {}
+let s = Symbol();
+try { if (Inst18 <= 1000 && typeof (s) != "undefined") {_RecordType("<446,447,30>",(s)); Inst18++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<460,467,31>",(oomTest)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (byteSize) != "undefined") {_RecordType("<474,482,31>",(byteSize)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (s) != "undefined") {_RecordType("<483,484,31>",(s)); Inst22++; } } catch(e) {}
+oomTest(() => byteSize(s));
+

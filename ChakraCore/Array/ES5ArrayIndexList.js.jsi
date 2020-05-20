@@ -1,0 +1,139 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+//
+// Regress Win8 854057
+//
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<405,409,8>",(test)); Inst0++; } } catch(e) {}
+function test(num) {
+try { if (Inst1 <= 1000 && typeof (num) != "undefined") {_RecordType("<410,413,8>",(num)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Array) != "undefined") {_RecordType("<433,438,9>",(Array)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (num) != "undefined") {_RecordType("<439,442,9>",(num)); Inst4++; } } catch(e) {}
+  var arr = new Array(num); // Generate ES5ArrayTypeHandler index map in order
+try { if (Inst2 <= 1000 && typeof (arr) != "undefined") {_RecordType("<423,426,9>",(arr)); Inst2++; } } catch(e) {}
+
+  for (var i = 0; i < num; ++i) {
+try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<508,509,11>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<515,516,11>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (num) != "undefined") {_RecordType("<519,522,11>",(num)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<526,527,11>",(i)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<535,556,12>",(Object.defineProperty)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Object) != "undefined") {_RecordType("<535,541,12>",(Object)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (arr) != "undefined") {_RecordType("<557,560,12>",(arr)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<562,563,12>",(i)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<580,581,13>",(i)); Inst13++; } } catch(e) {}
+    Object.defineProperty(arr, i, {
+      value: i,
+      enumerable: true,
+      writable: false,
+      configurable: true
+    });
+  } // Enumerator triggers generating index list
+
+
+  var i = 0;
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<720,721,21>",(i)); Inst14++; } } catch(e) {}
+
+  for (var p in arr) {
+try { if (Inst15 <= 1000 && typeof (p) != "undefined") {_RecordType("<739,740,23>",(p)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (arr) != "undefined") {_RecordType("<744,747,23>",(arr)); Inst16++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (arr[p]) != "undefined") {_RecordType("<767,773,24>",(arr[p])); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (arr) != "undefined") {_RecordType("<767,770,24>",(arr)); Inst19++; } } catch(e) {}
+    var value = arr[p];
+try { if (Inst17 <= 1000 && typeof (value) != "undefined") {_RecordType("<759,764,24>",(value)); Inst17++; } } catch(e) {}
+
+try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<784,785,26>",(i)); Inst20++; } } catch(e) {}
+    if (i++ > 5) {
+      break;
+    }
+  }
+}
+
+try { if (Inst21 <= 1000 && typeof (oos) != "undefined") {_RecordType("<830,833,32>",(oos)); Inst21++; } } catch(e) {}
+function oos() {
+try { if (Inst23 <= 1000 && typeof (e) != "undefined") {_RecordType("<868,869,35>",(e)); Inst23++; } } catch(e) {}
+  try {
+try { if (Inst22 <= 1000 && typeof (oos) != "undefined") {_RecordType("<850,853,34>",(oos)); Inst22++; } } catch(e) {}
+    oos();
+  } catch (e) {
+    // We just got OOS, now we have limited stack
+try { if (Inst24 <= 1000 && typeof (test) != "undefined") {_RecordType("<927,931,37>",(test)); Inst24++; } } catch(e) {}
+    test(1000000);
+  }
+}
+
+try { if (Inst25 <= 1000 && typeof (oos) != "undefined") {_RecordType("<949,952,41>",(oos)); Inst25++; } } catch(e) {}
+oos(); // Good if we haven't hit hard OOS
+
+try { if (Inst26 <= 1000 && typeof (print) != "undefined") {_RecordType("<992,997,43>",(print)); Inst26++; } } catch(e) {}
+print("pass");
+

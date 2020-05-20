@@ -1,0 +1,128 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --opt
+
+/* Test deopt behaviors when the prototype has elements */
+// reduce
+(function () {
+  var array = [, 3];
+try { if (Inst0 <= 1000 && typeof (array) != "undefined") {_RecordType("<297,302,9>",(array)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (accumulate) != "undefined") {_RecordType("<324,334,11>",(accumulate)); Inst1++; } } catch(e) {}
+  function accumulate(prev, cur, curIdx, arr) {
+try { if (Inst2 <= 1000 && typeof (prev) != "undefined") {_RecordType("<335,339,11>",(prev)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (cur) != "undefined") {_RecordType("<341,344,11>",(cur)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (curIdx) != "undefined") {_RecordType("<346,352,11>",(curIdx)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (arr) != "undefined") {_RecordType("<354,357,11>",(arr)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (cur) != "undefined") {_RecordType("<379,382,12>",(cur)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (prev) != "undefined") {_RecordType("<385,389,12>",(prev)); Inst9++; } } catch(e) {}
+    arr[curIdx] = cur + prev;
+try { if (Inst6 <= 1000 && typeof (arr[curIdx]) != "undefined") {_RecordType("<365,376,12>",(arr[curIdx])); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (arr) != "undefined") {_RecordType("<365,368,12>",(arr)); Inst7++; } } catch(e) {}
+  }
+
+try { if (Inst10 <= 1000 && typeof (reduce) != "undefined") {_RecordType("<407,413,15>",(reduce)); Inst10++; } } catch(e) {}
+  function reduce() {
+try { if (Inst11 <= 1000 && typeof (array.reduce) != "undefined") {_RecordType("<422,434,16>",(array.reduce)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (array) != "undefined") {_RecordType("<422,427,16>",(array)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (accumulate) != "undefined") {_RecordType("<435,445,16>",(accumulate)); Inst13++; } } catch(e) {}
+    array.reduce(accumulate);
+  }
+
+try { if (Inst14 <= 1000 && typeof (reduce) != "undefined") {_RecordType("<455,461,19>",(reduce)); Inst14++; } } catch(e) {}
+  reduce();
+try { if (Inst15 <= 1000 && typeof (reduce) != "undefined") {_RecordType("<467,473,20>",(reduce)); Inst15++; } } catch(e) {}
+  reduce();
+try { if (Inst16 <= 1000 && typeof (reduce) != "undefined") {_RecordType("<479,485,21>",(reduce)); Inst16++; } } catch(e) {}
+  reduce();
+try { if (Inst17 <= 1000 && typeof (array) != "undefined") {_RecordType("<491,496,22>",(array)); Inst17++; } } catch(e) {}
+  array;
+  [, 3];
+
+try { if (Inst18 <= 1000 && typeof (array.__proto__.push) != "undefined") {_RecordType("<510,530,25>",(array.__proto__.push)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (array.__proto__) != "undefined") {_RecordType("<510,525,25>",(array.__proto__)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (array) != "undefined") {_RecordType("<510,515,25>",(array)); Inst20++; } } catch(e) {}
+  array.__proto__.push(3); // deopt
+
+
+try { if (Inst21 <= 1000 && typeof (reduce) != "undefined") {_RecordType("<548,554,28>",(reduce)); Inst21++; } } catch(e) {}
+  reduce();
+try { if (Inst22 <= 1000 && typeof (array) != "undefined") {_RecordType("<560,565,29>",(array)); Inst22++; } } catch(e) {}
+  array;
+  [, 6];
+try { if (Inst23 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<578,609,31>",(Object.getOwnPropertyDescriptor)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (Object) != "undefined") {_RecordType("<578,584,31>",(Object)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (array) != "undefined") {_RecordType("<610,615,31>",(array)); Inst25++; } } catch(e) {}
+  Object.getOwnPropertyDescriptor(array, 0);
+try { if (Inst26 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<623,632,32>",(undefined)); Inst26++; } } catch(e) {}
+  undefined;
+})();
+

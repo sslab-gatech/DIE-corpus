@@ -1,0 +1,114 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- tab-width: 2; indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+   File Name:     delete-001.js
+   Section:       regress
+   Description:
+
+   Regression test for
+   http://scopus.mcom.com/bugsplat/show_bug.cgi?id=108736
+
+   Author:             christine@netscape.com
+   Date:               12 november 1997
+*/
+var SECTION = "JS1_2";
+try { if (Inst0 <= 1000 && typeof (SECTION) != "undefined") {_RecordType("<531,538,18>",(SECTION)); Inst0++; } } catch(e) {}
+var TITLE = "The variable statement";
+try { if (Inst1 <= 1000 && typeof (TITLE) != "undefined") {_RecordType("<554,559,19>",(TITLE)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (writeHeaderToLog) != "undefined") {_RecordType("<588,604,20>",(writeHeaderToLog)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (SECTION) != "undefined") {_RecordType("<605,612,20>",(SECTION)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (TITLE) != "undefined") {_RecordType("<621,626,20>",(TITLE)); Inst4++; } } catch(e) {}
+writeHeaderToLog(SECTION + " " + TITLE); // delete all properties of the global object
+// per ecma, this does not affect variables in the global object declared
+// with var or functions
+
+for (p in this) {
+try { if (Inst5 <= 1000 && typeof (p) != "undefined") {_RecordType("<780,781,24>",(p)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (p) != "undefined") {_RecordType("<802,803,25>",(p)); Inst6++; } } catch(e) {}
+  delete p;
+}
+
+var result = "";
+try { if (Inst7 <= 1000 && typeof (result) != "undefined") {_RecordType("<812,818,28>",(result)); Inst7++; } } catch(e) {}
+
+for (p in this) {
+try { if (Inst8 <= 1000 && typeof (p) != "undefined") {_RecordType("<831,832,30>",(p)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (String) != "undefined") {_RecordType("<856,862,31>",(String)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (p) != "undefined") {_RecordType("<863,864,31>",(p)); Inst11++; } } catch(e) {}
+  result += String(p);
+try { if (Inst9 <= 1000 && typeof (result) != "undefined") {_RecordType("<846,852,31>",(result)); Inst9++; } } catch(e) {}
+} // not too picky here... just want to make sure we didn't crash or something
+
+
+try { if (Inst12 <= 1000 && typeof (TestCase) != "undefined") {_RecordType("<952,960,35>",(TestCase)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (result) != "undefined") {_RecordType("<1017,1023,35>",(result)); Inst13++; } } catch(e) {}
+new TestCase("delete all properties of the global object", "PASSED", result == "" ? "FAILED" : "PASSED");
+try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<1054,1058,36>",(test)); Inst14++; } } catch(e) {}
+test();
+

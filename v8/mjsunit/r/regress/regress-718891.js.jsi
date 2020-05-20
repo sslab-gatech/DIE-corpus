@@ -1,0 +1,183 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --expose-gc
+try { if (Inst0 <= 1000 && typeof (Data) != "undefined") {_RecordType("<221,225,5>",(Data)); Inst0++; } } catch(e) {}
+function Data() {
+  ;
+}
+
+Data.prototype = {
+  x: 1
+};
+try { if (Inst1 <= 1000 && typeof (Data.prototype) != "undefined") {_RecordType("<237,251,9>",(Data.prototype)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Data) != "undefined") {_RecordType("<237,241,9>",(Data)); Inst2++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (TriggerDeopt) != "undefined") {_RecordType("<276,288,13>",(TriggerDeopt)); Inst3++; } } catch(e) {}
+function TriggerDeopt() {
+  Data.prototype = {
+    x: 2
+  };
+try { if (Inst4 <= 1000 && typeof (Data.prototype) != "undefined") {_RecordType("<295,309,14>",(Data.prototype)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Data) != "undefined") {_RecordType("<295,299,14>",(Data)); Inst5++; } } catch(e) {}
+}
+
+try { if (Inst6 <= 1000 && typeof (TestDontSelfHealWithDeoptedCode) != "undefined") {_RecordType("<340,371,19>",(TestDontSelfHealWithDeoptedCode)); Inst6++; } } catch(e) {}
+function TestDontSelfHealWithDeoptedCode(run_unoptimized, ClosureFactory) {
+try { if (Inst7 <= 1000 && typeof (run_unoptimized) != "undefined") {_RecordType("<372,387,19>",(run_unoptimized)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (ClosureFactory) != "undefined") {_RecordType("<389,403,19>",(ClosureFactory)); Inst8++; } } catch(e) {}
+  // Create some function closures which don't have
+  // optimized code.
+try { if (Inst10 <= 1000 && typeof (ClosureFactory) != "undefined") {_RecordType("<508,522,22>",(ClosureFactory)); Inst10++; } } catch(e) {}
+  var unoptimized_closure = ClosureFactory();
+try { if (Inst9 <= 1000 && typeof (unoptimized_closure) != "undefined") {_RecordType("<486,505,22>",(unoptimized_closure)); Inst9++; } } catch(e) {}
+
+try { if (Inst11 <= 1000 && typeof (run_unoptimized) != "undefined") {_RecordType("<533,548,24>",(run_unoptimized)); Inst11++; } } catch(e) {}
+  if (run_unoptimized) {
+try { if (Inst12 <= 1000 && typeof (unoptimized_closure) != "undefined") {_RecordType("<556,575,25>",(unoptimized_closure)); Inst12++; } } catch(e) {}
+    unoptimized_closure();
+  } // Run and optimize the code (do this in a separate function
+  // so that the closure doesn't leak in a dead register).
+
+
+  (() => {
+try { if (Inst14 <= 1000 && typeof (ClosureFactory) != "undefined") {_RecordType("<744,758,31>",(ClosureFactory)); Inst14++; } } catch(e) {}
+    var optimized_closure = ClosureFactory(); // Use .call to avoid the CallIC retaining the JSFunction in the
+try { if (Inst13 <= 1000 && typeof (optimized_closure) != "undefined") {_RecordType("<724,741,31>",(optimized_closure)); Inst13++; } } catch(e) {}
+    // feedback vector via a weak map, which would mean it wouldn't be
+    // collected in the minor gc below.
+
+try { if (Inst15 <= 1000 && typeof (optimized_closure.call) != "undefined") {_RecordType("<943,965,35>",(optimized_closure.call)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (optimized_closure) != "undefined") {_RecordType("<943,960,35>",(optimized_closure)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<966,975,35>",(undefined)); Inst17++; } } catch(e) {}
+    optimized_closure.call(undefined);
+try { if (Inst18 <= 1000 && typeof (optimized_closure.call) != "undefined") {_RecordType("<982,1004,36>",(optimized_closure.call)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (optimized_closure) != "undefined") {_RecordType("<982,999,36>",(optimized_closure)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1005,1014,36>",(undefined)); Inst20++; } } catch(e) {}
+    optimized_closure.call(undefined);
+  })(); // Optimize a dummy function, just so it gets linked into the
+  // Contexts optimized_functions list head, which is in the old
+  // space, and the link from to the optimized_closure's JSFunction
+  // moves to the inline link in dummy's JSFunction in the new space,
+  // otherwise optimized_closure's JSFunction will be retained by the
+  // old->new remember set.
+
+
+  (() => {
+    var dummy = function () {
+      return 1;
+    };
+try { if (Inst21 <= 1000 && typeof (dummy) != "undefined") {_RecordType("<1409,1414,46>",(dummy)); Inst21++; } } catch(e) {}
+
+try { if (Inst22 <= 1000 && typeof (dummy) != "undefined") {_RecordType("<1459,1464,50>",(dummy)); Inst22++; } } catch(e) {}
+    dummy();
+  })(); // GC the optimized closure with a minor GC - the optimized
+  // code will remain in the feedback vector.
+
+
+try { if (Inst23 <= 1000 && typeof (gc) != "undefined") {_RecordType("<1586,1588,55>",(gc)); Inst23++; } } catch(e) {}
+  gc(true); // Trigger deoptimization by changing the prototype of Data. This
+  // will mark the code for deopt, but since no live JSFunction has
+  // optimized code, we won't clear the feedback vector.
+
+try { if (Inst24 <= 1000 && typeof (TriggerDeopt) != "undefined") {_RecordType("<1790,1802,59>",(TriggerDeopt)); Inst24++; } } catch(e) {}
+  TriggerDeopt(); // Call pre-existing functions, these will try to self-heal with the
+  // optimized code in the feedback vector op, but should bail-out
+  // since the code is marked for deoptimization.
+
+try { if (Inst25 <= 1000 && typeof (unoptimized_closure) != "undefined") {_RecordType("<1995,2014,63>",(unoptimized_closure)); Inst25++; } } catch(e) {}
+  unoptimized_closure();
+} // Run with the unoptimized closure both uncomplied and compiled for the
+// interpreter initially, to test self healing on both CompileLazy and
+// the InterpreterEntryTrampoline respectively.
+
+
+try { if (Inst26 <= 1000 && typeof (TestDontSelfHealWithDeoptedCode) != "undefined") {_RecordType("<2214,2245,69>",(TestDontSelfHealWithDeoptedCode)); Inst26++; } } catch(e) {}
+TestDontSelfHealWithDeoptedCode(false, () => {
+  return () => {
+try { if (Inst27 <= 1000 && typeof (Data) != "undefined") {_RecordType("<2293,2297,71>",(Data)); Inst27++; } } catch(e) {}
+    return new Data();
+  };
+});
+try { if (Inst28 <= 1000 && typeof (TestDontSelfHealWithDeoptedCode) != "undefined") {_RecordType("<2310,2341,74>",(TestDontSelfHealWithDeoptedCode)); Inst28++; } } catch(e) {}
+TestDontSelfHealWithDeoptedCode(true, () => {
+  return () => {
+try { if (Inst29 <= 1000 && typeof (Data) != "undefined") {_RecordType("<2388,2392,76>",(Data)); Inst29++; } } catch(e) {}
+    return new Data();
+  };
+});
+

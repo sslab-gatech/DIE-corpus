@@ -1,0 +1,88 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//Bug 818620
+(function () {
+try { if (Inst0 <= 1000 && typeof (Math.max) != "undefined") {_RecordType("<30,38,3>",(Math.max)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Math) != "undefined") {_RecordType("<30,34,3>",(Math)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<39,42,3>",(NaN)); Inst2++; } } catch(e) {}
+  Math.max(NaN, {
+    valueOf: function () {
+try { if (Inst3 <= 1000 && typeof (Error) != "undefined") {_RecordType("<89,94,5>",(Error)); Inst3++; } } catch(e) {}
+      throw new Error();
+    }
+  });
+})();
+
+try { if (Inst4 <= 1000 && typeof (Error) != "undefined") {_RecordType("<117,122,10>",(Error)); Inst4++; } } catch(e) {}
+Error;
+
+(function () {
+try { if (Inst5 <= 1000 && typeof (Math.min) != "undefined") {_RecordType("<142,150,13>",(Math.min)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Math) != "undefined") {_RecordType("<142,146,13>",(Math)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<151,154,13>",(NaN)); Inst7++; } } catch(e) {}
+  Math.min(NaN, {
+    valueOf: function () {
+try { if (Inst8 <= 1000 && typeof (Error) != "undefined") {_RecordType("<201,206,15>",(Error)); Inst8++; } } catch(e) {}
+      throw new Error();
+    }
+  });
+})();
+
+try { if (Inst9 <= 1000 && typeof (Error) != "undefined") {_RecordType("<229,234,20>",(Error)); Inst9++; } } catch(e) {}
+Error;
+

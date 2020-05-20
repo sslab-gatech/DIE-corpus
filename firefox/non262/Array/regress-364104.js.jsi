@@ -1,0 +1,224 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = "364104";
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<346,355,7>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "Array.prototype.indexOf, Array.prototype.lastIndexOf issues " + "with the optional second fromIndex argument";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<372,379,8>",(summary)); Inst1++; } } catch(e) {}
+var actual, expect;
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<498,504,9>",(actual)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<506,512,9>",(expect)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<514,528,10>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<529,538,10>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<541,552,11>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<553,560,11>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+var failed = false;
+try { if (Inst8 <= 1000 && typeof (failed) != "undefined") {_RecordType("<617,623,16>",(failed)); Inst8++; } } catch(e) {}
+
+try { if (Inst28 <= 1000 && typeof (e) != "undefined") {_RecordType("<2799,2800,96>",(e)); Inst28++; } } catch(e) {}
+try {
+  // indexOf
+try { if (Inst9 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<659,670,20>",([2].indexOf)); Inst9++; } } catch(e) {}
+  if ([2].indexOf(2) != 0) {
+    throw "indexOf: not finding 2!?";
+  }
+
+try { if (Inst10 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<731,742,24>",([2].indexOf)); Inst10++; } } catch(e) {}
+  if ([2].indexOf(2, 0) != 0) {
+    throw "indexOf: not interpreting explicit second argument 0!";
+  }
+
+try { if (Inst11 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<835,846,28>",([2].indexOf)); Inst11++; } } catch(e) {}
+  if ([2].indexOf(2, 1) != -1) {
+    throw "indexOf: ignoring second argument with value equal to array length!";
+  }
+
+try { if (Inst12 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<954,965,32>",([2].indexOf)); Inst12++; } } catch(e) {}
+  if ([2].indexOf(2, 2) != -1) {
+    throw "indexOf: ignoring second argument greater than array length!";
+  }
+
+try { if (Inst13 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<1066,1077,36>",([2].indexOf)); Inst13++; } } catch(e) {}
+  if ([2].indexOf(2, 17) != -1) {
+    throw "indexOf: ignoring large second argument!";
+  }
+
+try { if (Inst14 <= 1000 && typeof ([2].indexOf) != "undefined") {_RecordType("<1159,1170,40>",([2].indexOf)); Inst14++; } } catch(e) {}
+  if ([2].indexOf(2, -5) != 0) {
+    throw "indexOf: calculated fromIndex < 0, should search entire array!";
+  }
+
+try { if (Inst15 <= 1000 && typeof ([2, 3].indexOf) != "undefined") {_RecordType("<1273,1287,44>",([2, 3].indexOf)); Inst15++; } } catch(e) {}
+  if ([2, 3].indexOf(2, -1) != -1) {
+    throw "indexOf: not handling index == (-1 + 2), element 2 correctly!";
+  }
+
+try { if (Inst16 <= 1000 && typeof ([2, 3].indexOf) != "undefined") {_RecordType("<1390,1404,48>",([2, 3].indexOf)); Inst16++; } } catch(e) {}
+  if ([2, 3].indexOf(3, -1) != 1) {
+    throw "indexOf: not handling index == (-1 + 2), element 3 correctly!";
+  } // lastIndexOf
+
+
+try { if (Inst17 <= 1000 && typeof ([2].lastIndexOf) != "undefined") {_RecordType("<1522,1537,53>",([2].lastIndexOf)); Inst17++; } } catch(e) {}
+  if ([2].lastIndexOf(2) != 0) {
+    throw "lastIndexOf: not finding 2!?";
+  }
+
+try { if (Inst18 <= 1000 && typeof ([2].lastIndexOf) != "undefined") {_RecordType("<1602,1617,57>",([2].lastIndexOf)); Inst18++; } } catch(e) {}
+  if ([2].lastIndexOf(2, 1) != 0) {
+    throw "lastIndexOf: not interpreting explicit second argument 1!?";
+  }
+
+try { if (Inst19 <= 1000 && typeof ([2].lastIndexOf) != "undefined") {_RecordType("<1715,1730,61>",([2].lastIndexOf)); Inst19++; } } catch(e) {}
+  if ([2].lastIndexOf(2, 17) != 0) {
+    throw "lastIndexOf: should have searched entire array!";
+  }
+
+try { if (Inst20 <= 1000 && typeof ([2].lastIndexOf) != "undefined") {_RecordType("<1818,1833,65>",([2].lastIndexOf)); Inst20++; } } catch(e) {}
+  if ([2].lastIndexOf(2, -5) != -1) {
+    throw "lastIndexOf: -5 + 1 < 0, so array shouldn't be searched!";
+  }
+
+try { if (Inst21 <= 1000 && typeof ([2].lastIndexOf) != "undefined") {_RecordType("<1931,1946,69>",([2].lastIndexOf)); Inst21++; } } catch(e) {}
+  if ([2].lastIndexOf(2, -2) != -1) {
+    throw "lastIndexOf: -2 + 1 < 0, so array shouldn't be searched!";
+  }
+
+try { if (Inst22 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2044,2062,73>",([2, 3].lastIndexOf)); Inst22++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(2, -1) != 0) {
+    throw "lastIndexOf: not handling index == (-1 + 2), element 2 correctly!";
+  }
+
+try { if (Inst23 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2168,2186,77>",([2, 3].lastIndexOf)); Inst23++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(3, -1) != 1) {
+    throw "lastIndexOf: not handling index == (-1 + 2), element 3 correctly!";
+  }
+
+try { if (Inst24 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2292,2310,81>",([2, 3].lastIndexOf)); Inst24++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(2, -2) != 0) {
+    throw "lastIndexOf: not handling index == (-2 + 2), element 2 correctly!";
+  }
+
+try { if (Inst25 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2416,2434,85>",([2, 3].lastIndexOf)); Inst25++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(3, -2) != -1) {
+    throw "lastIndexOf: not handling index == (-2 + 2), element 3 correctly!";
+  }
+
+try { if (Inst26 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2541,2559,89>",([2, 3].lastIndexOf)); Inst26++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(2, -3) != -1) {
+    throw "lastIndexOf: calculated fromIndex < 0, shouldn't search array for 2!";
+  }
+
+try { if (Inst27 <= 1000 && typeof ([2, 3].lastIndexOf) != "undefined") {_RecordType("<2669,2687,93>",([2, 3].lastIndexOf)); Inst27++; } } catch(e) {}
+  if ([2, 3].lastIndexOf(3, -3) != -1) {
+    throw "lastIndexOf: calculated fromIndex < 0, shouldn't search array for 3!";
+  }
+} catch (e) {
+try { if (Inst30 <= 1000 && typeof (e) != "undefined") {_RecordType("<2815,2816,97>",(e)); Inst30++; } } catch(e) {}
+  failed = e;
+try { if (Inst29 <= 1000 && typeof (failed) != "undefined") {_RecordType("<2806,2812,97>",(failed)); Inst29++; } } catch(e) {}
+}
+
+expect = false;
+try { if (Inst31 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2821,2827,100>",(expect)); Inst31++; } } catch(e) {}
+try { if (Inst33 <= 1000 && typeof (failed) != "undefined") {_RecordType("<2846,2852,101>",(failed)); Inst33++; } } catch(e) {}
+actual = failed;
+try { if (Inst32 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2837,2843,101>",(actual)); Inst32++; } } catch(e) {}
+try { if (Inst34 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2854,2867,102>",(reportCompare)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2868,2874,102>",(expect)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2876,2882,102>",(actual)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (summary) != "undefined") {_RecordType("<2884,2891,102>",(summary)); Inst37++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

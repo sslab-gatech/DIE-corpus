@@ -1,0 +1,113 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<9,12,1>",(foo)); Inst0++; } } catch(e) {}
+function foo() {
+  // If the structure check hoister is overzealous, it will hoist the structure check of
+  // S3 up to the assignment of o, where the structure is actually S1. Doing so will cause
+  // this function to OSR exit every time.
+  var o = {}; // This will create an object with structure S1.
+try { if (Inst1 <= 1000 && typeof (o) != "undefined") {_RecordType("<246,247,5>",(o)); Inst1++; } } catch(e) {}
+
+  o.f = 42; // This will check for S1, and then transition to S2.
+try { if (Inst2 <= 1000 && typeof (o.f) != "undefined") {_RecordType("<306,309,7>",(o.f)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (o) != "undefined") {_RecordType("<306,307,7>",(o)); Inst3++; } } catch(e) {}
+
+  o.g = 43; // This will check for S2, and then transition to S3.
+try { if (Inst4 <= 1000 && typeof (o.g) != "undefined") {_RecordType("<373,376,9>",(o.g)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (o) != "undefined") {_RecordType("<373,374,9>",(o)); Inst5++; } } catch(e) {}
+
+  for (var i = 0; i < 5; ++i) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<449,450,11>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<456,457,11>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<465,466,11>",(i)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (o.g) != "undefined") {_RecordType("<474,477,12>",(o.g)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (o) != "undefined") {_RecordType("<474,475,12>",(o)); Inst10++; } } catch(e) {}
+    o.g++;
+  } // This will have a structure check on structure S3, which the structure check hoister will want to hoist.
+
+
+try { if (Inst11 <= 1000 && typeof (o) != "undefined") {_RecordType("<603,604,16>",(o)); Inst11++; } } catch(e) {}
+  return o;
+}
+
+var result = 0;
+try { if (Inst12 <= 1000 && typeof (result) != "undefined") {_RecordType("<613,619,19>",(result)); Inst12++; } } catch(e) {}
+
+for (var i = 0; i < 100000; ++i) {
+try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<635,636,21>",(i)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<642,643,21>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<656,657,21>",(i)); Inst15++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (foo().g) != "undefined") {_RecordType("<673,680,22>",(foo().g)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (foo) != "undefined") {_RecordType("<673,676,22>",(foo)); Inst18++; } } catch(e) {}
+  result += foo().g;
+try { if (Inst16 <= 1000 && typeof (result) != "undefined") {_RecordType("<663,669,22>",(result)); Inst16++; } } catch(e) {}
+}
+
+try { if (Inst19 <= 1000 && typeof (result) != "undefined") {_RecordType("<689,695,25>",(result)); Inst19++; } } catch(e) {}
+if (result != 4800000) {
+try { if (Inst20 <= 1000 && typeof (result) != "undefined") {_RecordType("<742,748,26>",(result)); Inst20++; } } catch(e) {}
+  throw "Error: bad result: " + result;
+}
+

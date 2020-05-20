@@ -1,0 +1,163 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!xulRuntime.shell) -- needs evaluate()
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+// Check references to someVar, both as a variable and on |this|, in
+// various evaluation contexts.
+var someVar = 1; // Top level.
+try { if (Inst0 <= 1000 && typeof (someVar) != "undefined") {_RecordType("<270,277,6>",(someVar)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (someVar) != "undefined") {_RecordType("<298,305,8>",(someVar)); Inst1++; } } catch(e) {}
+someVar;
+1;
+try { if (Inst2 <= 1000 && typeof (this.someVar) != "undefined") {_RecordType("<310,322,10>",(this.someVar)); Inst2++; } } catch(e) {}
+this.someVar;
+1;
+// Inside evaluate.
+try { if (Inst3 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<347,355,13>",(evaluate)); Inst3++; } } catch(e) {}
+evaluate("assertEq(someVar, 1);");
+try { if (Inst4 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<382,390,14>",(evaluate)); Inst4++; } } catch(e) {}
+evaluate("assertEq(this.someVar, 1);"); // With an object on the scope, no shadowing.
+
+var someObject = {
+  someOtherField: 2
+};
+try { if (Inst5 <= 1000 && typeof (someObject) != "undefined") {_RecordType("<473,483,16>",(someObject)); Inst5++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (someObject) != "undefined") {_RecordType("<545,555,20>",(someObject)); Inst7++; } } catch(e) {}
+var evalOpt = {
+  envChainObject: someObject
+};
+try { if (Inst6 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<515,522,19>",(evalOpt)); Inst6++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<559,567,22>",(evaluate)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<593,600,22>",(evalOpt)); Inst9++; } } catch(e) {}
+evaluate("assertEq(someVar, 1);", evalOpt);
+try { if (Inst10 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<603,611,23>",(evaluate)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<650,657,23>",(evalOpt)); Inst11++; } } catch(e) {}
+evaluate("assertEq(this.someVar, undefined);", evalOpt); // With an object on the scope, shadowing global.
+
+someObject = {
+  someVar: 2
+};
+try { if (Inst12 <= 1000 && typeof (someObject) != "undefined") {_RecordType("<711,721,25>",(someObject)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (someObject) != "undefined") {_RecordType("<772,782,29>",(someObject)); Inst14++; } } catch(e) {}
+evalOpt = {
+  envChainObject: someObject
+};
+try { if (Inst13 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<742,749,28>",(evalOpt)); Inst13++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (someObject) != "undefined") {_RecordType("<807,817,31>",(someObject)); Inst16++; } } catch(e) {}
+var alsoSomeObject = someObject;
+try { if (Inst15 <= 1000 && typeof (alsoSomeObject) != "undefined") {_RecordType("<790,804,31>",(alsoSomeObject)); Inst15++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<819,827,32>",(evaluate)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<853,860,32>",(evalOpt)); Inst18++; } } catch(e) {}
+evaluate("assertEq(someVar, 2);", evalOpt);
+try { if (Inst19 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<863,871,33>",(evaluate)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<902,909,33>",(evalOpt)); Inst20++; } } catch(e) {}
+evaluate("assertEq(this.someVar, 2);", evalOpt);
+try { if (Inst21 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<912,920,34>",(evaluate)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<956,963,34>",(evalOpt)); Inst22++; } } catch(e) {}
+evaluate("assertEq(this, alsoSomeObject);", evalOpt); // With an object on the scope, inside a function.
+
+try { if (Inst23 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<1018,1026,36>",(evaluate)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<1070,1077,36>",(evalOpt)); Inst24++; } } catch(e) {}
+evaluate("(function() { assertEq(someVar, 2);})()", evalOpt);
+try { if (Inst25 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<1080,1088,37>",(evaluate)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<1151,1158,37>",(evalOpt)); Inst26++; } } catch(e) {}
+evaluate("(function() { assertEq(this !== alsoSomeObject, true);})()", evalOpt);
+try { if (Inst27 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<1161,1169,38>",(evaluate)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (evalOpt) != "undefined") {_RecordType("<1218,1225,38>",(evalOpt)); Inst28++; } } catch(e) {}
+evaluate("(function() { assertEq(this.someVar, 1);})()", evalOpt);
+var globalEvalOpt = {
+  envChainObject: this
+};
+try { if (Inst29 <= 1000 && typeof (globalEvalOpt) != "undefined") {_RecordType("<1232,1245,39>",(globalEvalOpt)); Inst29++; } } catch(e) {}
+
+try { if (Inst33 <= 1000 && typeof (e) != "undefined") {_RecordType("<1430,1431,46>",(e)); Inst33++; } } catch(e) {}
+try {
+try { if (Inst30 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<1285,1293,44>",(evaluate)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (globalEvalOpt) != "undefined") {_RecordType("<1319,1332,44>",(globalEvalOpt)); Inst31++; } } catch(e) {}
+  evaluate("assertEq(someVar, 1);", globalEvalOpt);
+try { if (Inst32 <= 1000 && typeof (Error) != "undefined") {_RecordType("<1347,1352,45>",(Error)); Inst32++; } } catch(e) {}
+  throw new Error("Globals aren't allowed as a envChainObject argument to evaluate");
+} catch (e) {
+  ;
+}
+
+try { if (Inst34 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1442,1455,50>",(reportCompare)); Inst34++; } } catch(e) {}
+reportCompare(true, true);
+

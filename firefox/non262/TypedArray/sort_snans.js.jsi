@@ -1,0 +1,332 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+var Inst125 = 0;
+var Inst126 = 0;
+var Inst127 = 0;
+var Inst128 = 0;
+var Inst129 = 0;
+var Inst130 = 0;
+var Inst131 = 0;
+var Inst132 = 0;
+var Inst133 = 0;
+var Inst134 = 0;
+var Inst135 = 0;
+var Inst136 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Ensure that signaling NaN's don't cause problems while sorting
+try { if (Inst0 <= 1000 && typeof (getNaNArray) != "undefined") {_RecordType("<75,86,2>",(getNaNArray)); Inst0++; } } catch(e) {}
+function getNaNArray(length) {
+try { if (Inst1 <= 1000 && typeof (length) != "undefined") {_RecordType("<87,93,2>",(length)); Inst1++; } } catch(e) {}
+  let a = [];
+try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<103,104,3>",(a)); Inst2++; } } catch(e) {}
+
+  for (let i = 0; i < length; i++) {
+try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<123,124,5>",(i)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<130,131,5>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (length) != "undefined") {_RecordType("<134,140,5>",(length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<142,143,5>",(i)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (a.push) != "undefined") {_RecordType("<153,159,6>",(a.push)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<153,154,6>",(a)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<160,163,6>",(NaN)); Inst9++; } } catch(e) {}
+    a.push(NaN);
+  }
+
+try { if (Inst10 <= 1000 && typeof (a) != "undefined") {_RecordType("<180,181,9>",(a)); Inst10++; } } catch(e) {}
+  return a;
+} // Test every skipNth value in some range n, where start <= n <= end
+// and start/stop should be 32-bit integers with bit patterns that
+// form Float32 NaNs.
+
+
+try { if (Inst11 <= 1000 && typeof (testFloat32NaNRanges) != "undefined") {_RecordType("<354,374,15>",(testFloat32NaNRanges)); Inst11++; } } catch(e) {}
+function testFloat32NaNRanges(start, end) {
+try { if (Inst12 <= 1000 && typeof (start) != "undefined") {_RecordType("<375,380,15>",(start)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (end) != "undefined") {_RecordType("<382,385,15>",(end)); Inst13++; } } catch(e) {}
+  let skipN = 10e3; // sample the space of possible NaNs to save time
+try { if (Inst14 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<395,400,16>",(skipN)); Inst14++; } } catch(e) {}
+
+try { if (Inst16 <= 1000 && typeof (Math.floor) != "undefined") {_RecordType("<479,489,18>",(Math.floor)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Math) != "undefined") {_RecordType("<479,483,18>",(Math)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (end) != "undefined") {_RecordType("<491,494,18>",(end)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (start) != "undefined") {_RecordType("<497,502,18>",(start)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<506,511,18>",(skipN)); Inst20++; } } catch(e) {}
+  let sampleSize = Math.floor((end - start) / skipN);
+try { if (Inst15 <= 1000 && typeof (sampleSize) != "undefined") {_RecordType("<466,476,18>",(sampleSize)); Inst15++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Float32Array) != "undefined") {_RecordType("<535,547,19>",(Float32Array)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (getNaNArray) != "undefined") {_RecordType("<548,559,19>",(getNaNArray)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (sampleSize) != "undefined") {_RecordType("<560,570,19>",(sampleSize)); Inst24++; } } catch(e) {}
+  let NaNArray = new Float32Array(getNaNArray(sampleSize));
+try { if (Inst21 <= 1000 && typeof (NaNArray) != "undefined") {_RecordType("<520,528,19>",(NaNArray)); Inst21++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<593,604,20>",(ArrayBuffer)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (sampleSize) != "undefined") {_RecordType("<609,619,20>",(sampleSize)); Inst27++; } } catch(e) {}
+  let buffer = new ArrayBuffer(4 * sampleSize);
+try { if (Inst25 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<580,586,20>",(buffer)); Inst25++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (Uint32Array) != "undefined") {_RecordType("<643,654,21>",(Uint32Array)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<655,661,21>",(buffer)); Inst30++; } } catch(e) {}
+  let uintView = new Uint32Array(buffer);
+try { if (Inst28 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<628,636,21>",(uintView)); Inst28++; } } catch(e) {}
+try { if (Inst32 <= 1000 && typeof (Float32Array) != "undefined") {_RecordType("<686,698,22>",(Float32Array)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<699,705,22>",(buffer)); Inst33++; } } catch(e) {}
+  let floatView = new Float32Array(buffer);
+try { if (Inst31 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<670,679,22>",(floatView)); Inst31++; } } catch(e) {}
+try { if (Inst36 <= 1000 && typeof (start) != "undefined") {_RecordType("<724,729,23>",(start)); Inst36++; } } catch(e) {}
+  uintView[0] = start;
+try { if (Inst34 <= 1000 && typeof (uintView[0]) != "undefined") {_RecordType("<710,721,23>",(uintView[0])); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<710,718,23>",(uintView)); Inst35++; } } catch(e) {}
+
+  for (let i = 1; i < sampleSize; i++) {
+try { if (Inst37 <= 1000 && typeof (i) != "undefined") {_RecordType("<743,744,25>",(i)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (i) != "undefined") {_RecordType("<750,751,25>",(i)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (sampleSize) != "undefined") {_RecordType("<754,764,25>",(sampleSize)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (i) != "undefined") {_RecordType("<766,767,25>",(i)); Inst40++; } } catch(e) {}
+try { if (Inst43 <= 1000 && typeof (uintView[0]) != "undefined") {_RecordType("<791,802,26>",(uintView[0])); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<791,799,26>",(uintView)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (i) != "undefined") {_RecordType("<805,806,26>",(i)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<809,814,26>",(skipN)); Inst46++; } } catch(e) {}
+    uintView[i] = uintView[0] + i * skipN;
+try { if (Inst41 <= 1000 && typeof (uintView[i]) != "undefined") {_RecordType("<777,788,26>",(uintView[i])); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<777,785,26>",(uintView)); Inst42++; } } catch(e) {}
+  }
+
+try { if (Inst47 <= 1000 && typeof (floatView.sort) != "undefined") {_RecordType("<823,837,29>",(floatView.sort)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<823,832,29>",(floatView)); Inst48++; } } catch(e) {}
+  floatView.sort();
+try { if (Inst49 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<843,852,30>",(floatView)); Inst49++; } } catch(e) {}
+  floatView;
+try { if (Inst50 <= 1000 && typeof (NaNArray) != "undefined") {_RecordType("<856,864,31>",(NaNArray)); Inst50++; } } catch(e) {}
+  NaNArray;
+} // Test every skipNth value in some range n, where start <= n <= end
+// and startHi, startLow and endHi, endLow should be 32-bit integers which,
+// when combined (Hi + Low), form Float64 NaNs.
+
+
+try { if (Inst51 <= 1000 && typeof (testFloat64NaNRanges) != "undefined") {_RecordType("<1072,1092,37>",(testFloat64NaNRanges)); Inst51++; } } catch(e) {}
+function testFloat64NaNRanges(startHi, startLow, endHi, endLow) {
+try { if (Inst52 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<1093,1100,37>",(startHi)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (startLow) != "undefined") {_RecordType("<1102,1110,37>",(startLow)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (endHi) != "undefined") {_RecordType("<1112,1117,37>",(endHi)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (endLow) != "undefined") {_RecordType("<1119,1125,37>",(endLow)); Inst55++; } } catch(e) {}
+  // Swap on big endian platforms
+try { if (Inst56 <= 1000 && typeof (new Uint32Array(new Uint8Array([1, 2, 3, 4]).buffer)[0]) != "undefined") {_RecordType("<1169,1224,39>",(new Uint32Array(new Uint8Array([1, 2, 3, 4]).buffer)[0])); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (Uint32Array) != "undefined") {_RecordType("<1173,1184,39>",(Uint32Array)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (new Uint8Array([1, 2, 3, 4]).buffer) != "undefined") {_RecordType("<1185,1220,39>",(new Uint8Array([1, 2, 3, 4]).buffer)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (Uint8Array) != "undefined") {_RecordType("<1189,1199,39>",(Uint8Array)); Inst59++; } } catch(e) {}
+  if (new Uint32Array(new Uint8Array([1, 2, 3, 4]).buffer)[0] === 0x01020304) {
+try { if (Inst62 <= 1000 && typeof (startLow) != "undefined") {_RecordType("<1270,1278,40>",(startLow)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<1280,1287,40>",(startHi)); Inst63++; } } catch(e) {}
+    [startHi, startLow] = [startLow, startHi];
+try { if (Inst60 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<1248,1255,40>",(startHi)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (startLow) != "undefined") {_RecordType("<1257,1265,40>",(startLow)); Inst61++; } } catch(e) {}
+try { if (Inst66 <= 1000 && typeof (endLow) != "undefined") {_RecordType("<1313,1319,41>",(endLow)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (endHi) != "undefined") {_RecordType("<1321,1326,41>",(endHi)); Inst67++; } } catch(e) {}
+    [endHi, endLow] = [endLow, endHi];
+try { if (Inst64 <= 1000 && typeof (endHi) != "undefined") {_RecordType("<1295,1300,41>",(endHi)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (endLow) != "undefined") {_RecordType("<1302,1308,41>",(endLow)); Inst65++; } } catch(e) {}
+  }
+
+  let skipN = 10e6;
+try { if (Inst68 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<1340,1345,44>",(skipN)); Inst68++; } } catch(e) {}
+try { if (Inst70 <= 1000 && typeof (Math.floor) != "undefined") {_RecordType("<1375,1385,45>",(Math.floor)); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1375,1379,45>",(Math)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (endHi) != "undefined") {_RecordType("<1387,1392,45>",(endHi)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<1395,1402,45>",(startHi)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<1406,1411,45>",(skipN)); Inst74++; } } catch(e) {}
+  let sampleSizeHi = Math.floor((endHi - startHi) / skipN);
+try { if (Inst69 <= 1000 && typeof (sampleSizeHi) != "undefined") {_RecordType("<1360,1372,45>",(sampleSizeHi)); Inst69++; } } catch(e) {}
+try { if (Inst76 <= 1000 && typeof (Math.floor) != "undefined") {_RecordType("<1436,1446,46>",(Math.floor)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1436,1440,46>",(Math)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (endLow) != "undefined") {_RecordType("<1448,1454,46>",(endLow)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (startLow) != "undefined") {_RecordType("<1457,1465,46>",(startLow)); Inst79++; } } catch(e) {}try { if (Inst80 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<1469,1474,46>",(skipN)); Inst80++; } } catch(e) {}
+  let sampleSizeLow = Math.floor((endLow - startLow) / skipN);
+try { if (Inst75 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1420,1433,46>",(sampleSizeLow)); Inst75++; } } catch(e) {}
+try { if (Inst82 <= 1000 && typeof (Float64Array) != "undefined") {_RecordType("<1498,1510,47>",(Float64Array)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (getNaNArray) != "undefined") {_RecordType("<1511,1522,47>",(getNaNArray)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (sampleSizeHi) != "undefined") {_RecordType("<1523,1535,47>",(sampleSizeHi)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1538,1551,47>",(sampleSizeLow)); Inst85++; } } catch(e) {}
+  let NaNArray = new Float64Array(getNaNArray(sampleSizeHi + sampleSizeLow));
+try { if (Inst81 <= 1000 && typeof (NaNArray) != "undefined") {_RecordType("<1483,1491,47>",(NaNArray)); Inst81++; } } catch(e) {}
+try { if (Inst87 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<1574,1585,48>",(ArrayBuffer)); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (sampleSizeHi) != "undefined") {_RecordType("<1591,1603,48>",(sampleSizeHi)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1606,1619,48>",(sampleSizeLow)); Inst89++; } } catch(e) {}
+  let buffer = new ArrayBuffer(8 * (sampleSizeHi + sampleSizeLow));
+try { if (Inst86 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1561,1567,48>",(buffer)); Inst86++; } } catch(e) {}
+try { if (Inst91 <= 1000 && typeof (Uint32Array) != "undefined") {_RecordType("<1644,1655,49>",(Uint32Array)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1656,1662,49>",(buffer)); Inst92++; } } catch(e) {}
+  let uintView = new Uint32Array(buffer);
+try { if (Inst90 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<1629,1637,49>",(uintView)); Inst90++; } } catch(e) {}
+try { if (Inst94 <= 1000 && typeof (Float64Array) != "undefined") {_RecordType("<1687,1699,50>",(Float64Array)); Inst94++; } } catch(e) {}try { if (Inst95 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1700,1706,50>",(buffer)); Inst95++; } } catch(e) {}
+  let floatView = new Float64Array(buffer); // Fill in all of the low bits first.
+try { if (Inst93 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<1671,1680,50>",(floatView)); Inst93++; } } catch(e) {}
+
+  for (let i = 0; i <= sampleSizeLow; i++) {
+try { if (Inst96 <= 1000 && typeof (i) != "undefined") {_RecordType("<1759,1760,52>",(i)); Inst96++; } } catch(e) {}try { if (Inst97 <= 1000 && typeof (i) != "undefined") {_RecordType("<1766,1767,52>",(i)); Inst97++; } } catch(e) {}try { if (Inst98 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1771,1784,52>",(sampleSizeLow)); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (i) != "undefined") {_RecordType("<1786,1787,52>",(i)); Inst99++; } } catch(e) {}
+try { if (Inst103 <= 1000 && typeof (startLow) != "undefined") {_RecordType("<1815,1823,53>",(startLow)); Inst103++; } } catch(e) {}try { if (Inst104 <= 1000 && typeof (i) != "undefined") {_RecordType("<1826,1827,53>",(i)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<1830,1835,53>",(skipN)); Inst105++; } } catch(e) {}
+    uintView[i * 2] = startLow + i * skipN;
+try { if (Inst100 <= 1000 && typeof (uintView[i * 2]) != "undefined") {_RecordType("<1797,1812,53>",(uintView[i * 2])); Inst100++; } } catch(e) {}try { if (Inst101 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<1797,1805,53>",(uintView)); Inst101++; } } catch(e) {}try { if (Inst102 <= 1000 && typeof (i) != "undefined") {_RecordType("<1806,1807,53>",(i)); Inst102++; } } catch(e) {}
+try { if (Inst109 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<1863,1870,54>",(startHi)); Inst109++; } } catch(e) {}
+    uintView[i * 2 + 1] = startHi;
+try { if (Inst106 <= 1000 && typeof (uintView[i * 2 + 1]) != "undefined") {_RecordType("<1841,1860,54>",(uintView[i * 2 + 1])); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<1841,1849,54>",(uintView)); Inst107++; } } catch(e) {}try { if (Inst108 <= 1000 && typeof (i) != "undefined") {_RecordType("<1850,1851,54>",(i)); Inst108++; } } catch(e) {}
+  } // Then the high bits.
+
+
+  for (let i = sampleSizeLow; i <= sampleSizeLow + sampleSizeHi; i++) {
+try { if (Inst110 <= 1000 && typeof (i) != "undefined") {_RecordType("<1912,1913,58>",(i)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1916,1929,58>",(sampleSizeLow)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (i) != "undefined") {_RecordType("<1931,1932,58>",(i)); Inst112++; } } catch(e) {}try { if (Inst113 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<1936,1949,58>",(sampleSizeLow)); Inst113++; } } catch(e) {}try { if (Inst114 <= 1000 && typeof (sampleSizeHi) != "undefined") {_RecordType("<1952,1964,58>",(sampleSizeHi)); Inst114++; } } catch(e) {}try { if (Inst115 <= 1000 && typeof (i) != "undefined") {_RecordType("<1966,1967,58>",(i)); Inst115++; } } catch(e) {}
+try { if (Inst119 <= 1000 && typeof (endLow) != "undefined") {_RecordType("<1995,2001,59>",(endLow)); Inst119++; } } catch(e) {}
+    uintView[i * 2] = endLow;
+try { if (Inst116 <= 1000 && typeof (uintView[i * 2]) != "undefined") {_RecordType("<1977,1992,59>",(uintView[i * 2])); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<1977,1985,59>",(uintView)); Inst117++; } } catch(e) {}try { if (Inst118 <= 1000 && typeof (i) != "undefined") {_RecordType("<1986,1987,59>",(i)); Inst118++; } } catch(e) {}
+try { if (Inst123 <= 1000 && typeof (startHi) != "undefined") {_RecordType("<2029,2036,60>",(startHi)); Inst123++; } } catch(e) {}try { if (Inst124 <= 1000 && typeof (i) != "undefined") {_RecordType("<2040,2041,60>",(i)); Inst124++; } } catch(e) {}try { if (Inst125 <= 1000 && typeof (sampleSizeLow) != "undefined") {_RecordType("<2044,2057,60>",(sampleSizeLow)); Inst125++; } } catch(e) {}try { if (Inst126 <= 1000 && typeof (skipN) != "undefined") {_RecordType("<2061,2066,60>",(skipN)); Inst126++; } } catch(e) {}
+    uintView[i * 2 + 1] = startHi + (i - sampleSizeLow) * skipN;
+try { if (Inst120 <= 1000 && typeof (uintView[i * 2 + 1]) != "undefined") {_RecordType("<2007,2026,60>",(uintView[i * 2 + 1])); Inst120++; } } catch(e) {}try { if (Inst121 <= 1000 && typeof (uintView) != "undefined") {_RecordType("<2007,2015,60>",(uintView)); Inst121++; } } catch(e) {}try { if (Inst122 <= 1000 && typeof (i) != "undefined") {_RecordType("<2016,2017,60>",(i)); Inst122++; } } catch(e) {}
+  }
+
+try { if (Inst127 <= 1000 && typeof (floatView.sort) != "undefined") {_RecordType("<2075,2089,63>",(floatView.sort)); Inst127++; } } catch(e) {}try { if (Inst128 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<2075,2084,63>",(floatView)); Inst128++; } } catch(e) {}
+  floatView.sort();
+try { if (Inst129 <= 1000 && typeof (floatView) != "undefined") {_RecordType("<2095,2104,64>",(floatView)); Inst129++; } } catch(e) {}
+  floatView;
+try { if (Inst130 <= 1000 && typeof (NaNArray) != "undefined") {_RecordType("<2108,2116,65>",(NaNArray)); Inst130++; } } catch(e) {}
+  NaNArray;
+} // Float32 Signaling NaN ranges
+
+
+try { if (Inst131 <= 1000 && typeof (testFloat32NaNRanges) != "undefined") {_RecordType("<2154,2174,69>",(testFloat32NaNRanges)); Inst131++; } } catch(e) {}
+testFloat32NaNRanges(0x7F800001, 0x7FBFFFFF);
+try { if (Inst132 <= 1000 && typeof (testFloat32NaNRanges) != "undefined") {_RecordType("<2200,2220,70>",(testFloat32NaNRanges)); Inst132++; } } catch(e) {}
+testFloat32NaNRanges(0xFF800001, 0xFFBFFFFF); // Float64 Signaling NaN ranges
+
+try { if (Inst133 <= 1000 && typeof (testFloat64NaNRanges) != "undefined") {_RecordType("<2279,2299,72>",(testFloat64NaNRanges)); Inst133++; } } catch(e) {}
+testFloat64NaNRanges(0x7FF00000, 0x00000001, 0x7FF7FFFF, 0xFFFFFFFF);
+try { if (Inst134 <= 1000 && typeof (testFloat64NaNRanges) != "undefined") {_RecordType("<2349,2369,73>",(testFloat64NaNRanges)); Inst134++; } } catch(e) {}
+testFloat64NaNRanges(0xFFF00000, 0x00000001, 0xFFF7FFFF, 0xFFFFFFFF);
+
+try { if (Inst135 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2431,2444,75>",(reportCompare)); Inst135++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst136 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2465,2478,76>",(reportCompare)); Inst136++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

@@ -1,0 +1,89 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Tests the getCanonicalLocales function for overridden set().
+try { if (Inst0 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<321,342,7>",(Object.defineProperty)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Object) != "undefined") {_RecordType("<321,327,7>",(Object)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<343,358,7>",(Array.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Array) != "undefined") {_RecordType("<343,348,7>",(Array)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (set) != "undefined") {_RecordType("<367,370,8>",(set)); Inst4++; } } catch(e) {}
+Object.defineProperty(Array.prototype, 0, {
+  set() {
+    throw 42;
+  }
+
+}); // must not throw 42, might if push is used
+
+try { if (Inst6 <= 1000 && typeof (Intl.getCanonicalLocales) != "undefined") {_RecordType("<453,477,14>",(Intl.getCanonicalLocales)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<453,457,14>",(Intl)); Inst7++; } } catch(e) {}
+var arr = Intl.getCanonicalLocales(["en-US"]);
+try { if (Inst5 <= 1000 && typeof (arr) != "undefined") {_RecordType("<447,450,14>",(arr)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (arr) != "undefined") {_RecordType("<490,493,15>",(arr)); Inst8++; } } catch(e) {}
+arr;
+["en-US"];
+
+try { if (Inst9 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<518,531,18>",(reportCompare)); Inst9++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst10 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<552,565,19>",(reportCompare)); Inst10++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

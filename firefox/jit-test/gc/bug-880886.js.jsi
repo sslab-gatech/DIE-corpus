@@ -1,0 +1,95 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: too much recursion
+try { if (Inst0 <= 1000 && typeof (testUniqueness) != "undefined") {_RecordType("<49,63,2>",(testUniqueness)); Inst0++; } } catch(e) {}
+function testUniqueness(asmJSModule) {
+try { if (Inst1 <= 1000 && typeof (asmJSModule) != "undefined") {_RecordType("<64,75,2>",(asmJSModule)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (asmJSModule) != "undefined") {_RecordType("<89,100,3>",(asmJSModule)); Inst3++; } } catch(e) {}
+  var f = asmJSModule();
+try { if (Inst2 <= 1000 && typeof (f) != "undefined") {_RecordType("<85,86,3>",(f)); Inst2++; } } catch(e) {}
+}
+
+try { if (Inst4 <= 1000 && typeof (lambda) != "undefined") {_RecordType("<116,122,6>",(lambda)); Inst4++; } } catch(e) {}
+function lambda() {
+try { if (Inst6 <= 1000 && typeof (inner) != "undefined") {_RecordType("<146,151,7>",(inner)); Inst6++; } } catch(e) {}
+  var x = function inner() {
+    "use asm";
+
+try { if (Inst7 <= 1000 && typeof (g) != "undefined") {_RecordType("<185,186,10>",(g)); Inst7++; } } catch(e) {}
+    function g() {
+      ;
+    }
+
+try { if (Inst8 <= 1000 && typeof (g) != "undefined") {_RecordType("<217,218,14>",(g)); Inst8++; } } catch(e) {}
+    return g;
+  };
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<133,134,7>",(x)); Inst5++; } } catch(e) {}
+
+try { if (Inst9 <= 1000 && typeof (lambda) != "undefined") {_RecordType("<235,241,17>",(lambda)); Inst9++; } } catch(e) {}
+  return lambda();
+}
+
+try { if (Inst10 <= 1000 && typeof (testUniqueness) != "undefined") {_RecordType("<248,262,20>",(testUniqueness)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (lambda) != "undefined") {_RecordType("<263,269,20>",(lambda)); Inst11++; } } catch(e) {}
+testUniqueness(lambda);
+

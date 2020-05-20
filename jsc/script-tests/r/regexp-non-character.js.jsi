@@ -1,0 +1,98 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log('Test for regular expressions with non-character values in them, specifically in character classes.');
+try { if (Inst2 <= 1000 && typeof ("F".match) != "undefined") {_RecordType("<115,124,2>",("F".match)); Inst2++; } } catch(e) {}
+"F".match(/[\uD7FF]/);
+try { if (Inst3 <= 1000 && typeof ("0".match) != "undefined") {_RecordType("<138,147,3>",("0".match)); Inst3++; } } catch(e) {}
+"0".match(/[\uD800]/);
+try { if (Inst4 <= 1000 && typeof ("F".match) != "undefined") {_RecordType("<161,170,4>",("F".match)); Inst4++; } } catch(e) {}
+"F".match(/[\uDFFF]/);
+try { if (Inst5 <= 1000 && typeof ("E".match) != "undefined") {_RecordType("<184,193,5>",("E".match)); Inst5++; } } catch(e) {}
+"E".match(/[\uE000]/);
+try { if (Inst6 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<207,216,6>",("y".match)); Inst6++; } } catch(e) {}
+"y".match(/[\uFDBF]/);
+try { if (Inst7 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<230,239,7>",("y".match)); Inst7++; } } catch(e) {}
+"y".match(/[\uFDD0]/);
+try { if (Inst8 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<253,262,8>",("y".match)); Inst8++; } } catch(e) {}
+"y".match(/[\uFDEF]/);
+try { if (Inst9 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<276,285,9>",("y".match)); Inst9++; } } catch(e) {}
+"y".match(/[\uFDF0]/);
+try { if (Inst10 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<299,308,10>",("y".match)); Inst10++; } } catch(e) {}
+"y".match(/[\uFEFF]/);
+try { if (Inst11 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<322,331,11>",("y".match)); Inst11++; } } catch(e) {}
+"y".match(/[\uFEFF]/);
+try { if (Inst12 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<345,354,12>",("y".match)); Inst12++; } } catch(e) {}
+"y".match(/[\uFFFE]/);
+try { if (Inst13 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<368,377,13>",("y".match)); Inst13++; } } catch(e) {}
+"y".match(/[\uFFFF]/);
+try { if (Inst14 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<391,400,14>",("y".match)); Inst14++; } } catch(e) {}
+"y".match(/[\u10FFFF]/);
+try { if (Inst15 <= 1000 && typeof ("y".match) != "undefined") {_RecordType("<416,425,15>",("y".match)); Inst15++; } } catch(e) {}
+"y".match(/[\u110000]/);
+

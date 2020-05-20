@@ -1,0 +1,165 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+"foo: if (true) do { continue foo } while (false)";
+try { if (Inst0 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<219,230,5>",(SyntaxError)); Inst0++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) while (false) { continue foo }";
+try { if (Inst1 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<281,292,7>",(SyntaxError)); Inst1++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) for (; false; ) { continue foo }";
+try { if (Inst2 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<345,356,9>",(SyntaxError)); Inst2++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) for (let x of []) { continue foo }";
+try { if (Inst3 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<411,422,11>",(SyntaxError)); Inst3++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) for (let x in []) { continue foo }";
+try { if (Inst4 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<477,488,13>",(SyntaxError)); Inst4++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) { do { continue foo } while (false) }";
+try { if (Inst5 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<546,557,15>",(SyntaxError)); Inst5++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) { while (false) { continue foo } }";
+try { if (Inst6 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<612,623,17>",(SyntaxError)); Inst6++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) { for (; false; ) { continue foo } }";
+try { if (Inst7 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<680,691,19>",(SyntaxError)); Inst7++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) { for (let x of []) { continue foo } }";
+try { if (Inst8 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<750,761,21>",(SyntaxError)); Inst8++; } } catch(e) {}
+SyntaxError;
+"foo: if (true) { for (let x in []) { continue foo } }";
+try { if (Inst9 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<820,831,23>",(SyntaxError)); Inst9++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) do { continue foo } while (false)";
+try { if (Inst10 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<890,901,25>",(SyntaxError)); Inst10++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) while (false) { continue foo }";
+try { if (Inst11 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<957,968,27>",(SyntaxError)); Inst11++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) for (; false; ) { continue foo }";
+try { if (Inst12 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1026,1037,29>",(SyntaxError)); Inst12++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) for (let x of []) { continue foo }";
+try { if (Inst13 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1097,1108,31>",(SyntaxError)); Inst13++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) for (let x in []) { continue foo }";
+try { if (Inst14 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1168,1179,33>",(SyntaxError)); Inst14++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) { do { continue foo } while (false) }";
+try { if (Inst15 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1242,1253,35>",(SyntaxError)); Inst15++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) { while (false) { continue foo } }";
+try { if (Inst16 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1313,1324,37>",(SyntaxError)); Inst16++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) { for (; false; ) { continue foo } }";
+try { if (Inst17 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1386,1397,39>",(SyntaxError)); Inst17++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) { for (let x of []) { continue foo } }";
+try { if (Inst18 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1461,1472,41>",(SyntaxError)); Inst18++; } } catch(e) {}
+SyntaxError;
+"foo: goo: if (true) { for (let x in []) { continue foo } }";
+try { if (Inst19 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1536,1547,43>",(SyntaxError)); Inst19++; } } catch(e) {}
+SyntaxError;
+"if (true) foo: goo: do { continue foo } while (false)";
+"if (true) foo: goo: while (false) { continue foo }";
+"if (true) foo: goo: for (; false; ) { continue foo }";
+"if (true) foo: goo: for (let x of []) { continue foo }";
+"if (true) foo: goo: for (let x in []) { continue foo }";
+"if (true) foo: goo: { do { continue foo } while (false) }";
+try { if (Inst20 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1893,1904,50>",(SyntaxError)); Inst20++; } } catch(e) {}
+SyntaxError;
+"if (true) foo: goo: { while (false) { continue foo } }";
+try { if (Inst21 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<1964,1975,52>",(SyntaxError)); Inst21++; } } catch(e) {}
+SyntaxError;
+"if (true) foo: goo: { for (; false; ) { continue foo } }";
+try { if (Inst22 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<2037,2048,54>",(SyntaxError)); Inst22++; } } catch(e) {}
+SyntaxError;
+"if (true) foo: goo: { for (let x of []) { continue foo } }";
+try { if (Inst23 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<2112,2123,56>",(SyntaxError)); Inst23++; } } catch(e) {}
+SyntaxError;
+"if (true) foo: goo: { for (let x in []) { continue foo } }";
+try { if (Inst24 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<2187,2198,58>",(SyntaxError)); Inst24++; } } catch(e) {}
+SyntaxError;
+"if (true) { foo: goo: do { continue foo } while (false) }";
+"if (true) { foo: goo: while (false) { continue foo } }";
+"if (true) { foo: goo: for (; false; ) { continue foo } }";
+"if (true) { foo: goo: for (let x of []) { continue foo } }";
+"if (true) { foo: goo: for (let x in []) { continue foo } }";
+

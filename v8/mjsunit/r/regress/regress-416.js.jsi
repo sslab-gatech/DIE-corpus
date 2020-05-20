@@ -1,0 +1,120 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2009 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Test of invalid Date construction, and TimeClip function.
+// See http://code.google.com/p/v8/issues/detail?id=416
+try { if (Inst0 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1714,1719,29>",(isNaN)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (new Date(1e81).getTime) != "undefined") {_RecordType("<1720,1742,29>",(new Date(1e81).getTime)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1724,1728,29>",(Date)); Inst2++; } } catch(e) {}
+isNaN(new Date(1e81).getTime());
+"new Date(1e81)";
+try { if (Inst3 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1765,1770,31>",(isNaN)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (new Date(-1e81).getTime) != "undefined") {_RecordType("<1771,1794,31>",(new Date(-1e81).getTime)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1775,1779,31>",(Date)); Inst5++; } } catch(e) {}
+isNaN(new Date(-1e81).getTime());
+"new Date(-1e81)";
+try { if (Inst6 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1818,1823,33>",(isNaN)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (new Date(1e81, "").getTime) != "undefined") {_RecordType("<1824,1850,33>",(new Date(1e81, "").getTime)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1828,1832,33>",(Date)); Inst8++; } } catch(e) {}
+isNaN(new Date(1e81, "").getTime());
+"new Date(1e81, \"\")";
+try { if (Inst9 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1879,1884,35>",(isNaN)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (new Date(-1e81, "").getTime) != "undefined") {_RecordType("<1885,1912,35>",(new Date(-1e81, "").getTime)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1889,1893,35>",(Date)); Inst11++; } } catch(e) {}
+isNaN(new Date(-1e81, "").getTime());
+"new Date(-1e81, \"\")";
+try { if (Inst12 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1942,1947,37>",(isNaN)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (new Date(Number.NaN).getTime) != "undefined") {_RecordType("<1948,1976,37>",(new Date(Number.NaN).getTime)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1952,1956,37>",(Date)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Number.NaN) != "undefined") {_RecordType("<1957,1967,37>",(Number.NaN)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Number) != "undefined") {_RecordType("<1957,1963,37>",(Number)); Inst16++; } } catch(e) {}
+isNaN(new Date(Number.NaN).getTime());
+"new Date(Number.NaN)";
+try { if (Inst17 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<2005,2010,39>",(isNaN)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (new Date(Number.NaN, "").getTime) != "undefined") {_RecordType("<2011,2043,39>",(new Date(Number.NaN, "").getTime)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Date) != "undefined") {_RecordType("<2015,2019,39>",(Date)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Number.NaN) != "undefined") {_RecordType("<2020,2030,39>",(Number.NaN)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Number) != "undefined") {_RecordType("<2020,2026,39>",(Number)); Inst21++; } } catch(e) {}
+isNaN(new Date(Number.NaN, "").getTime());
+"new Date(Number.NaN, \"\")";
+

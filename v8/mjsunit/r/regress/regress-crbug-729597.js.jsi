@@ -1,0 +1,99 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --verify-heap
+try { if (Inst0 <= 1000 && typeof (__f_3) != "undefined") {_RecordType("<200,205,5>",(__f_3)); Inst0++; } } catch(e) {}
+function __f_3(f) {
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<206,207,5>",(f)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (arguments.__defineGetter__) != "undefined") {_RecordType("<213,239,6>",(arguments.__defineGetter__)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<213,222,6>",(arguments)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (f) != "undefined") {_RecordType("<250,251,6>",(f)); Inst4++; } } catch(e) {}
+  arguments.__defineGetter__('length', f);
+
+try { if (Inst5 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<264,273,8>",(arguments)); Inst5++; } } catch(e) {}
+  return arguments;
+}
+
+try { if (Inst6 <= 1000 && typeof (__f_4) != "undefined") {_RecordType("<287,292,11>",(__f_4)); Inst6++; } } catch(e) {}
+function __f_4() {
+  return "boom";
+}
+
+__v_4 = [];
+try { if (Inst7 <= 1000 && typeof (__v_4) != "undefined") {_RecordType("<317,322,15>",(__v_4)); Inst7++; } } catch(e) {}
+__v_13 = "";
+try { if (Inst8 <= 1000 && typeof (__v_13) != "undefined") {_RecordType("<329,335,16>",(__v_13)); Inst8++; } } catch(e) {}
+
+for (var i = 0; i < 12800; ++i) {
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<352,353,18>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<359,360,18>",(i)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<372,373,18>",(i)); Inst11++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (__f_3) != "undefined") {_RecordType("<407,412,19>",(__f_3)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (__f_4) != "undefined") {_RecordType("<413,418,19>",(__f_4)); Inst16++; } } catch(e) {}
+  __v_13 += __v_4.__proto__ = __f_3(__f_4);
+try { if (Inst12 <= 1000 && typeof (__v_13) != "undefined") {_RecordType("<379,385,19>",(__v_13)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (__v_4.__proto__) != "undefined") {_RecordType("<389,404,19>",(__v_4.__proto__)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (__v_4) != "undefined") {_RecordType("<389,394,19>",(__v_4)); Inst14++; } } catch(e) {}
+}
+

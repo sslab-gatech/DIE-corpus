@@ -1,0 +1,132 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+try { if (Inst0 <= 1000 && typeof (TestWithNullPrototype) != "undefined") {_RecordType("<210,231,5>",(TestWithNullPrototype)); Inst0++; } } catch(e) {}
+(function TestWithNullPrototype() {
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<247,248,6>",(f)); Inst1++; } } catch(e) {}
+  function f() {
+try { if (Inst2 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<264,277,7>",(Object.create)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<264,270,7>",(Object)); Inst3++; } } catch(e) {}
+    return Object.create(null);
+  }
+
+try { if (Inst4 <= 1000 && typeof (f) != "undefined") {_RecordType("<292,293,10>",(f)); Inst4++; } } catch(e) {}
+  f();
+try { if (Inst5 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<299,308,11>",(undefined)); Inst5++; } } catch(e) {}
+  undefined;
+try { if (Inst6 <= 1000 && typeof (f().foo) != "undefined") {_RecordType("<312,319,12>",(f().foo)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (f) != "undefined") {_RecordType("<312,313,12>",(f)); Inst7++; } } catch(e) {}
+  f().foo;
+})();
+
+try { if (Inst8 <= 1000 && typeof (TestWithCustomPrototype) != "undefined") {_RecordType("<338,361,15>",(TestWithCustomPrototype)); Inst8++; } } catch(e) {}
+(function TestWithCustomPrototype() {
+  const x = {
+    foo: 42
+  }; // This must be defined here for context specialization.
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<374,375,16>",(x)); Inst9++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<466,467,20>",(f)); Inst10++; } } catch(e) {}
+  function f() {
+try { if (Inst11 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<483,496,21>",(Object.create)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Object) != "undefined") {_RecordType("<483,489,21>",(Object)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<497,498,21>",(x)); Inst13++; } } catch(e) {}
+    return Object.create(x);
+  }
+
+try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<508,509,24>",(f)); Inst14++; } } catch(e) {}
+  f();
+  42;
+try { if (Inst15 <= 1000 && typeof (f().foo) != "undefined") {_RecordType("<521,528,26>",(f().foo)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<521,522,26>",(f)); Inst16++; } } catch(e) {}
+  f().foo;
+})();
+
+try { if (Inst17 <= 1000 && typeof (TestWithObjectPrototype) != "undefined") {_RecordType("<547,570,29>",(TestWithObjectPrototype)); Inst17++; } } catch(e) {}
+(function TestWithObjectPrototype() {
+try { if (Inst18 <= 1000 && typeof (f) != "undefined") {_RecordType("<586,587,30>",(f)); Inst18++; } } catch(e) {}
+  function f() {
+try { if (Inst19 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<603,616,31>",(Object.create)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Object) != "undefined") {_RecordType("<603,609,31>",(Object)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<617,633,31>",(Object.prototype)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Object) != "undefined") {_RecordType("<617,623,31>",(Object)); Inst22++; } } catch(e) {}
+    return Object.create(Object.prototype);
+  }
+
+try { if (Inst23 <= 1000 && typeof (f) != "undefined") {_RecordType("<643,644,34>",(f)); Inst23++; } } catch(e) {}
+  f();
+  "[object Object]";
+try { if (Inst24 <= 1000 && typeof (f().toString) != "undefined") {_RecordType("<671,683,36>",(f().toString)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (f) != "undefined") {_RecordType("<671,672,36>",(f)); Inst25++; } } catch(e) {}
+  f().toString();
+})();
+

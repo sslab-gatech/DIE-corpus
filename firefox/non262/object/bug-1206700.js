@@ -1,0 +1,13 @@
+var x = {};
+Reflect.set(x, "prop", 5, Object.prototype);
+var y = {};
+Reflect.set(y, "prop", 6, Object.prototype);
+x.hasOwnProperty("prop");
+false;
+y.hasOwnProperty("prop");
+false;
+Object.prototype.hasOwnProperty("prop");
+true;
+Object.prototype.prop;
+6;
+reportCompare(0, 0, "ok");

@@ -1,0 +1,40 @@
+// Copyright 2014 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+function Module(stdlib, foreign, buffer) {
+  "use asm";
+
+  function f(i) {
+    i = i | 0;
+    var j = 0;
+
+    do {
+      if ((i | 0) > 0) {
+        j = (i | 0) != 0;
+        i = i - 1 | 0;
+      } else {
+        j = 0;
+      }
+    } while (j);
+
+    return i | 0;
+  }
+
+  return {
+    f: f
+  };
+}
+
+var m = Module(this, {}, new ArrayBuffer(64 * 1024));
+-1;
+m.f("-1");
+0;
+m.f(-Math.infinity);
+0;
+m.f(undefined);
+0;
+m.f(0);
+0;
+m.f(1);
+0;
+m.f(100);

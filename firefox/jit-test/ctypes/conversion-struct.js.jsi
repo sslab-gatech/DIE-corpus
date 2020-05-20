@@ -1,0 +1,173 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Type conversion error should report its type.
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<58,62,2>",(test)); Inst0++; } } catch(e) {}
+function test() {
+try { if (Inst2 <= 1000 && typeof (ctypes.StructType) != "undefined") {_RecordType("<87,104,3>",(ctypes.StructType)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<87,93,3>",(ctypes)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<132,146,4>",(ctypes.int32_t)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<132,138,4>",(ctypes)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<165,179,6>",(ctypes.int32_t)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<165,171,6>",(ctypes)); Inst7++; } } catch(e) {}
+  let test_struct = ctypes.StructType("test_struct", [{
+    "x": ctypes.int32_t
+  }, {
+    "bar": ctypes.int32_t
+  }]); // constructor
+try { if (Inst1 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<73,84,3>",(test_struct)); Inst1++; } } catch(e) {}
+
+  (() => {
+try { if (Inst8 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<222,233,10>",(test_struct)); Inst8++; } } catch(e) {}
+    new test_struct("foo");
+  })();
+
+  "can't convert the string \"foo\" to the type test_struct";
+
+  (() => {
+try { if (Inst9 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<333,344,16>",(test_struct)); Inst9++; } } catch(e) {}
+    new test_struct("foo", "x");
+  })();
+
+  "can't convert the string \"foo\" to the 'x' field (int32_t) of test_struct";
+
+  (() => {
+try { if (Inst10 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<467,478,22>",(test_struct)); Inst10++; } } catch(e) {}
+    new test_struct({
+      "x": "foo",
+      "bar": 1
+    });
+  })();
+
+  "can't convert the string \"foo\" to the 'x' field (int32_t) of test_struct";
+
+  (() => {
+try { if (Inst11 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<631,642,31>",(test_struct)); Inst11++; } } catch(e) {}
+    new test_struct({
+      0: 1,
+      "bar": 1
+    });
+  })();
+
+  "property name the number 0 of the object ({0:1, bar:1}) is not a string";
+  // field setter
+try { if (Inst13 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<803,814,39>",(test_struct)); Inst13++; } } catch(e) {}
+  let struct_val = test_struct();
+try { if (Inst12 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<790,800,39>",(struct_val)); Inst12++; } } catch(e) {}
+
+  (() => {
+    struct_val.x = "foo";
+try { if (Inst14 <= 1000 && typeof (struct_val.x) != "undefined") {_RecordType("<834,846,42>",(struct_val.x)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<834,844,42>",(struct_val)); Inst15++; } } catch(e) {}
+  })();
+
+  "can't convert the string \"foo\" to the 'x' field (int32_t) of test_struct";
+
+  (() => {
+    struct_val.bar = "foo";
+try { if (Inst16 <= 1000 && typeof (struct_val.bar) != "undefined") {_RecordType("<961,975,48>",(struct_val.bar)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<961,971,48>",(struct_val)); Inst17++; } } catch(e) {}
+  })();
+
+  "can't convert the string \"foo\" to the 'bar' field (int32_t) of test_struct";
+
+  (() => {
+    struct_val.value = {
+      "x": "foo"
+    };
+try { if (Inst18 <= 1000 && typeof (struct_val.value) != "undefined") {_RecordType("<1092,1108,54>",(struct_val.value)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<1092,1102,54>",(struct_val)); Inst19++; } } catch(e) {}
+  })();
+
+  "property count of the object ({x:\"foo\"}) does not match to field count of the type test_struct (expected 2, got 1)";
+
+  (() => {
+    struct_val.value = {
+      "x": "foo",
+      "bar": 1
+    };
+try { if (Inst20 <= 1000 && typeof (struct_val.value) != "undefined") {_RecordType("<1284,1300,62>",(struct_val.value)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<1284,1294,62>",(struct_val)); Inst21++; } } catch(e) {}
+  })();
+
+  "can't convert the string \"foo\" to the 'x' field (int32_t) of test_struct";
+
+  (() => {
+    struct_val.value = "foo";
+try { if (Inst22 <= 1000 && typeof (struct_val.value) != "undefined") {_RecordType("<1450,1466,71>",(struct_val.value)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<1450,1460,71>",(struct_val)); Inst23++; } } catch(e) {}
+  })();
+
+  "can't convert the string \"foo\" to the type test_struct";
+}
+
+try { if (Inst24 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1561,1567,77>",(ctypes)); Inst24++; } } catch(e) {}
+if (typeof ctypes === "object") {
+try { if (Inst25 <= 1000 && typeof (test) != "undefined") {_RecordType("<1586,1590,78>",(test)); Inst25++; } } catch(e) {}
+  test();
+}
+

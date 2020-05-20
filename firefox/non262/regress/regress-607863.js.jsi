@@ -1,0 +1,94 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| fails-if(!xulRuntime.shell)
+
+/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+try { if (Inst1 <= 1000 && typeof (evalcx) != "undefined") {_RecordType("<249,255,9>",(evalcx)); Inst1++; } } catch(e) {}
+var sandbox = evalcx('');
+try { if (Inst0 <= 1000 && typeof (sandbox) != "undefined") {_RecordType("<239,246,9>",(sandbox)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (evalcx) != "undefined") {_RecordType("<275,281,10>",(evalcx)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (sandbox) != "undefined") {_RecordType("<344,351,10>",(sandbox)); Inst4++; } } catch(e) {}
+var foreign = evalcx('({ get f() { return this; }, set x(v) { result = this } })', sandbox);
+try { if (Inst2 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<265,272,10>",(foreign)); Inst2++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<366,379,11>",(Object.create)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Object) != "undefined") {_RecordType("<366,372,11>",(Object)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<380,387,11>",(foreign)); Inst8++; } } catch(e) {}
+var local = Object.create(foreign);
+try { if (Inst5 <= 1000 && typeof (local) != "undefined") {_RecordType("<358,363,11>",(local)); Inst5++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<390,403,12>",(reportCompare)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (local) != "undefined") {_RecordType("<404,409,12>",(local)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (local.f) != "undefined") {_RecordType("<411,418,12>",(local.f)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (local) != "undefined") {_RecordType("<411,416,12>",(local)); Inst12++; } } catch(e) {}
+reportCompare(local, local.f, "this should be set correctly in getters");
+local.x = 42;
+try { if (Inst13 <= 1000 && typeof (local.x) != "undefined") {_RecordType("<464,471,13>",(local.x)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (local) != "undefined") {_RecordType("<464,469,13>",(local)); Inst14++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<478,491,14>",(reportCompare)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (local) != "undefined") {_RecordType("<492,497,14>",(local)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (sandbox.result) != "undefined") {_RecordType("<499,513,14>",(sandbox.result)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (sandbox) != "undefined") {_RecordType("<499,506,14>",(sandbox)); Inst18++; } } catch(e) {}
+reportCompare(local, sandbox.result, "this should be set correctly in setters");
+

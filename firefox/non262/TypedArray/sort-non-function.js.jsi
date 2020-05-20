@@ -1,0 +1,109 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// %TypedArray%.prototype.sort throws if the comparator is neither undefined nor
+// a callable object.
+// Use a zero length typed array, so we can provide any kind of callable object
+// without worrying that the function is actually a valid comparator function.
+try { if (Inst1 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<285,295,5>",(Int32Array)); Inst1++; } } catch(e) {}
+const typedArray = new Int32Array(0); // Throws if the comparator is neither undefined nor callable.
+try { if (Inst0 <= 1000 && typeof (typedArray) != "undefined") {_RecordType("<268,278,5>",(typedArray)); Inst0++; } } catch(e) {}
+
+for (let invalidComparator of [null, 0, true, Symbol(), {}, []]) {
+try { if (Inst2 <= 1000 && typeof (invalidComparator) != "undefined") {_RecordType("<373,390,7>",(invalidComparator)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<410,416,7>",(Symbol)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (typedArray.sort) != "undefined") {_RecordType("<440,455,8>",(typedArray.sort)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (typedArray) != "undefined") {_RecordType("<440,450,8>",(typedArray)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (invalidComparator) != "undefined") {_RecordType("<456,473,8>",(invalidComparator)); Inst6++; } } catch(e) {}
+  (() => typedArray.sort(invalidComparator))();
+
+try { if (Inst7 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<482,491,10>",(TypeError)); Inst7++; } } catch(e) {}
+  TypeError;
+} // Doesn't throw if the comparator is undefined or a callable object.
+
+
+for (let validComparator of [undefined, () => {
+  ;
+}, Math.max, class {}, new Proxy(function () {
+  ;
+}, {})]) {
+try { if (Inst8 <= 1000 && typeof (validComparator) != "undefined") {_RecordType("<576,591,14>",(validComparator)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<596,605,14>",(undefined)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Math.max) != "undefined") {_RecordType("<622,630,16>",(Math.max)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Math) != "undefined") {_RecordType("<622,626,16>",(Math)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<646,651,16>",(Proxy)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (typedArray.sort) != "undefined") {_RecordType("<683,698,19>",(typedArray.sort)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (typedArray) != "undefined") {_RecordType("<683,693,19>",(typedArray)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (validComparator) != "undefined") {_RecordType("<699,714,19>",(validComparator)); Inst15++; } } catch(e) {}
+  typedArray.sort(validComparator);
+} // Also doesn't throw if no comparator was provided at all.
+
+
+try { if (Inst16 <= 1000 && typeof (typedArray.sort) != "undefined") {_RecordType("<781,796,23>",(typedArray.sort)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (typedArray) != "undefined") {_RecordType("<781,791,23>",(typedArray)); Inst17++; } } catch(e) {}
+typedArray.sort();
+
+try { if (Inst18 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<812,825,25>",(reportCompare)); Inst18++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst19 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<846,859,26>",(reportCompare)); Inst19++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

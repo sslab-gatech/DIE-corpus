@@ -1,0 +1,238 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2008 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Test that setter accessors added to the prototype chain are called
+// when setting properties.
+// Test that accessors added to the prototype chain are called
+// eventhough there are inline caches for setting the property
+try { if (Inst0 <= 1000 && typeof (F) != "undefined") {_RecordType("<1830,1831,31>",(F)); Inst0++; } } catch(e) {}
+function F() {
+  this.x = 42;
+try { if (Inst1 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<1838,1844,32>",(this.x)); Inst1++; } } catch(e) {}
+  this.y = 87;
+try { if (Inst2 <= 1000 && typeof (this.y) != "undefined") {_RecordType("<1853,1859,33>",(this.y)); Inst2++; } } catch(e) {}
+} // Force the inline caches to monomorphic state.
+
+
+try { if (Inst3 <= 1000 && typeof (F) != "undefined") {_RecordType("<1923,1924,37>",(F)); Inst3++; } } catch(e) {}
+new F();
+try { if (Inst4 <= 1000 && typeof (F) != "undefined") {_RecordType("<1932,1933,38>",(F)); Inst4++; } } catch(e) {}
+new F(); // Add a setter for x to Object.prototype and make sure it gets
+// called.
+
+var result_x;
+try { if (Inst5 <= 1000 && typeof (result_x) != "undefined") {_RecordType("<2017,2025,41>",(result_x)); Inst5++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (Object.prototype.__defineSetter__) != "undefined") {_RecordType("<2028,2061,43>",(Object.prototype.__defineSetter__)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<2028,2044,43>",(Object.prototype)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2028,2034,43>",(Object)); Inst8++; } } catch(e) {}
+Object.prototype.__defineSetter__('x', function (value) {
+try { if (Inst9 <= 1000 && typeof (value) != "undefined") {_RecordType("<2077,2082,43>",(value)); Inst9++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (value) != "undefined") {_RecordType("<2099,2104,44>",(value)); Inst11++; } } catch(e) {}
+  result_x = value;
+try { if (Inst10 <= 1000 && typeof (result_x) != "undefined") {_RecordType("<2088,2096,44>",(result_x)); Inst10++; } } catch(e) {}
+});
+
+try { if (Inst13 <= 1000 && typeof (F) != "undefined") {_RecordType("<2123,2124,47>",(F)); Inst13++; } } catch(e) {}
+var f = new F();
+try { if (Inst12 <= 1000 && typeof (f) != "undefined") {_RecordType("<2115,2116,47>",(f)); Inst12++; } } catch(e) {}
+42;
+try { if (Inst14 <= 1000 && typeof (result_x) != "undefined") {_RecordType("<2132,2140,49>",(result_x)); Inst14++; } } catch(e) {}
+result_x;
+try { if (Inst15 <= 1000 && typeof (f.x) != "undefined") {_RecordType("<2149,2152,50>",(f.x)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<2149,2150,50>",(f)); Inst16++; } } catch(e) {}
+typeof f.x == 'undefined';
+// Add a setter for y by changing the prototype of f and make sure
+// that gets called too.
+var result_y;
+try { if (Inst17 <= 1000 && typeof (result_y) != "undefined") {_RecordType("<2265,2273,53>",(result_y)); Inst17++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2291,2297,54>",(Object)); Inst19++; } } catch(e) {}
+var proto = new Object();
+try { if (Inst18 <= 1000 && typeof (proto) != "undefined") {_RecordType("<2279,2284,54>",(proto)); Inst18++; } } catch(e) {}
+
+try { if (Inst20 <= 1000 && typeof (proto.__defineSetter__) != "undefined") {_RecordType("<2302,2324,56>",(proto.__defineSetter__)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (proto) != "undefined") {_RecordType("<2302,2307,56>",(proto)); Inst21++; } } catch(e) {}
+proto.__defineSetter__('y', function (value) {
+try { if (Inst22 <= 1000 && typeof (value) != "undefined") {_RecordType("<2340,2345,56>",(value)); Inst22++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (value) != "undefined") {_RecordType("<2362,2367,57>",(value)); Inst24++; } } catch(e) {}
+  result_y = value;
+try { if (Inst23 <= 1000 && typeof (result_y) != "undefined") {_RecordType("<2351,2359,57>",(result_y)); Inst23++; } } catch(e) {}
+});
+
+try { if (Inst26 <= 1000 && typeof (F) != "undefined") {_RecordType("<2386,2387,60>",(F)); Inst26++; } } catch(e) {}
+var f = new F();
+try { if (Inst25 <= 1000 && typeof (f) != "undefined") {_RecordType("<2378,2379,60>",(f)); Inst25++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<2397,2406,61>",(undefined)); Inst29++; } } catch(e) {}
+f.y = undefined;
+try { if (Inst27 <= 1000 && typeof (f.y) != "undefined") {_RecordType("<2391,2394,61>",(f.y)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (f) != "undefined") {_RecordType("<2391,2392,61>",(f)); Inst28++; } } catch(e) {}
+try { if (Inst32 <= 1000 && typeof (proto) != "undefined") {_RecordType("<2422,2427,62>",(proto)); Inst32++; } } catch(e) {}
+f.__proto__ = proto;
+try { if (Inst30 <= 1000 && typeof (f.__proto__) != "undefined") {_RecordType("<2408,2419,62>",(f.__proto__)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (f) != "undefined") {_RecordType("<2408,2409,62>",(f)); Inst31++; } } catch(e) {}
+try { if (Inst33 <= 1000 && typeof (F.call) != "undefined") {_RecordType("<2429,2435,63>",(F.call)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (F) != "undefined") {_RecordType("<2429,2430,63>",(F)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (f) != "undefined") {_RecordType("<2436,2437,63>",(f)); Inst35++; } } catch(e) {}
+F.call(f);
+87;
+try { if (Inst36 <= 1000 && typeof (result_y) != "undefined") {_RecordType("<2444,2452,65>",(result_y)); Inst36++; } } catch(e) {}
+result_y;
+try { if (Inst37 <= 1000 && typeof (f.y) != "undefined") {_RecordType("<2461,2464,66>",(f.y)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (f) != "undefined") {_RecordType("<2461,2462,66>",(f)); Inst38++; } } catch(e) {}
+typeof f.y == 'undefined';
+// Test the same issue in the runtime system.  Make sure that
+// accessors added to the prototype chain are called instead of
+// following map transitions.
+//
+// Create two objects.
+var result_z;
+try { if (Inst39 <= 1000 && typeof (result_z) != "undefined") {_RecordType("<2667,2675,72>",(result_z)); Inst39++; } } catch(e) {}
+try { if (Inst41 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2690,2696,73>",(Object)); Inst41++; } } catch(e) {}
+var o1 = new Object();
+try { if (Inst40 <= 1000 && typeof (o1) != "undefined") {_RecordType("<2681,2683,73>",(o1)); Inst40++; } } catch(e) {}
+try { if (Inst43 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2713,2719,74>",(Object)); Inst43++; } } catch(e) {}
+var o2 = new Object(); // Add a z property to o1 to create a map transition.
+try { if (Inst42 <= 1000 && typeof (o2) != "undefined") {_RecordType("<2704,2706,74>",(o2)); Inst42++; } } catch(e) {}
+
+o1.z = 32; // Add a z accessor in the prototype chain for o1 and o2.
+try { if (Inst44 <= 1000 && typeof (o1.z) != "undefined") {_RecordType("<2778,2782,76>",(o1.z)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (o1) != "undefined") {_RecordType("<2778,2780,76>",(o1)); Inst45++; } } catch(e) {}
+
+try { if (Inst46 <= 1000 && typeof (Object.prototype.__defineSetter__) != "undefined") {_RecordType("<2848,2881,78>",(Object.prototype.__defineSetter__)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<2848,2864,78>",(Object.prototype)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2848,2854,78>",(Object)); Inst48++; } } catch(e) {}
+Object.prototype.__defineSetter__('z', function (value) {
+try { if (Inst49 <= 1000 && typeof (value) != "undefined") {_RecordType("<2897,2902,78>",(value)); Inst49++; } } catch(e) {}
+try { if (Inst51 <= 1000 && typeof (value) != "undefined") {_RecordType("<2919,2924,79>",(value)); Inst51++; } } catch(e) {}
+  result_z = value;
+try { if (Inst50 <= 1000 && typeof (result_z) != "undefined") {_RecordType("<2908,2916,79>",(result_z)); Inst50++; } } catch(e) {}
+}); // The accessor should be called for o2.
+
+
+o2.z = 27;
+try { if (Inst52 <= 1000 && typeof (o2.z) != "undefined") {_RecordType("<2973,2977,83>",(o2.z)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (o2) != "undefined") {_RecordType("<2973,2975,83>",(o2)); Inst53++; } } catch(e) {}
+27;
+try { if (Inst54 <= 1000 && typeof (result_z) != "undefined") {_RecordType("<2988,2996,85>",(result_z)); Inst54++; } } catch(e) {}
+result_z;
+try { if (Inst55 <= 1000 && typeof (o2.z) != "undefined") {_RecordType("<3005,3009,86>",(o2.z)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (o2) != "undefined") {_RecordType("<3005,3007,86>",(o2)); Inst56++; } } catch(e) {}
+typeof o2.z == 'undefined';
+

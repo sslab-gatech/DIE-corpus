@@ -1,0 +1,14 @@
+var ws = new WeakSet();
+var bar = {};
+ws.add(bar);
+ws;
+var foo = {};
+var a = ws.add(foo);
+a;
+ws;
+a.has(bar);
+true;
+a.has(foo);
+true;
+WeakSet.prototype.add.call(ws, {});
+ws;

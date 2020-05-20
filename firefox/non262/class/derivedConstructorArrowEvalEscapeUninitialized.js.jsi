@@ -1,0 +1,140 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+let superArrow;
+try { if (Inst0 <= 1000 && typeof (superArrow) != "undefined") {_RecordType("<4,14,1>",(superArrow)); Inst0++; } } catch(e) {}
+let thisArrow;
+try { if (Inst1 <= 1000 && typeof (thisArrow) != "undefined") {_RecordType("<20,29,2>",(thisArrow)); Inst1++; } } catch(e) {}
+let thisStash;
+try { if (Inst2 <= 1000 && typeof (thisStash) != "undefined") {_RecordType("<35,44,3>",(thisStash)); Inst2++; } } catch(e) {}
+
+class base {
+  constructor() {
+    // We run this constructor twice as part of the double init check
+try { if (Inst4 <= 1000 && typeof (thisStash) != "undefined") {_RecordType("<157,166,8>",(thisStash)); Inst4++; } } catch(e) {}
+    if (!thisStash) {
+      thisStash = {
+        prop: 45
+      };
+try { if (Inst5 <= 1000 && typeof (thisStash) != "undefined") {_RecordType("<176,185,9>",(thisStash)); Inst5++; } } catch(e) {}
+    }
+
+try { if (Inst6 <= 1000 && typeof (thisStash) != "undefined") {_RecordType("<234,243,14>",(thisStash)); Inst6++; } } catch(e) {}
+    return thisStash;
+  }
+
+}
+try { if (Inst3 <= 1000 && typeof (base) != "undefined") {_RecordType("<53,57,5>",(base)); Inst3++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (base) != "undefined") {_RecordType("<271,275,19>",(base)); Inst10++; } } catch(e) {}
+class foo extends base {
+  constructor() {
+    superArrow = () => super();
+try { if (Inst8 <= 1000 && typeof (superArrow) != "undefined") {_RecordType("<300,310,21>",(superArrow)); Inst8++; } } catch(e) {}
+
+    thisArrow = () => this;
+try { if (Inst9 <= 1000 && typeof (thisArrow) != "undefined") {_RecordType("<333,342,23>",(thisArrow)); Inst9++; } } catch(e) {}
+  }
+
+} // Populate the arrow function saves. Since we never invoke super(), we throw
+try { if (Inst7 <= 1000 && typeof (foo) != "undefined") {_RecordType("<259,262,19>",(foo)); Inst7++; } } catch(e) {}
+
+
+try { if (Inst11 <= 1000 && typeof (foo) != "undefined") {_RecordType("<455,458,29>",(foo)); Inst11++; } } catch(e) {}
+(() => new foo())();
+
+try { if (Inst12 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<466,480,31>",(ReferenceError)); Inst12++; } } catch(e) {}
+ReferenceError;
+try { if (Inst13 <= 1000 && typeof (thisArrow) != "undefined") {_RecordType("<482,491,32>",(thisArrow)); Inst13++; } } catch(e) {}
+thisArrow;
+try { if (Inst14 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<493,507,33>",(ReferenceError)); Inst14++; } } catch(e) {}
+ReferenceError;
+// call super()
+try { if (Inst15 <= 1000 && typeof (superArrow) != "undefined") {_RecordType("<525,535,35>",(superArrow)); Inst15++; } } catch(e) {}
+superArrow(); // Can't call it twice
+
+try { if (Inst16 <= 1000 && typeof (superArrow) != "undefined") {_RecordType("<563,573,37>",(superArrow)); Inst16++; } } catch(e) {}
+superArrow;
+try { if (Inst17 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<575,589,38>",(ReferenceError)); Inst17++; } } catch(e) {}
+ReferenceError;
+try { if (Inst18 <= 1000 && typeof (thisArrow) != "undefined") {_RecordType("<591,600,39>",(thisArrow)); Inst18++; } } catch(e) {}
+thisArrow();
+try { if (Inst19 <= 1000 && typeof (thisStash) != "undefined") {_RecordType("<604,613,40>",(thisStash)); Inst19++; } } catch(e) {}
+thisStash;
+
+try { if (Inst20 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<627,640,42>",(reportCompare)); Inst20++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst21 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<661,674,43>",(reportCompare)); Inst21++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

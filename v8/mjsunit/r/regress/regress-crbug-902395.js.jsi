@@ -1,0 +1,122 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+try { if (Inst0 <= 1000 && typeof (opt) != "undefined") {_RecordType("<209,212,5>",(opt)); Inst0++; } } catch(e) {}
+function opt() {
+  try {
+try { if (Inst1 <= 1000 && typeof (Object.seal) != "undefined") {_RecordType("<229,240,7>",(Object.seal)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<229,235,7>",(Object)); Inst2++; } } catch(e) {}
+    Object.seal({});
+  } finally {
+    try {
+      // Carefully crafted by clusterfuzz to alias the temporary object literal
+      // register with the below dead try block's context register.
+try { if (Inst3 <= 1000 && typeof (({
+        toString() {
+          ;
+        }
+
+      }).apply(-1).x) != "undefined") {_RecordType("<424,491,12>",(({
+        toString() {
+          ;
+        }
+
+      }).apply(-1).x)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (({
+        toString() {
+          ;
+        }
+
+      }).apply) != "undefined") {_RecordType("<424,485,12>",(({
+        toString() {
+          ;
+        }
+
+      }).apply)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (toString) != "undefined") {_RecordType("<435,443,13>",(toString)); Inst5++; } } catch(e) {}
+      ({
+        toString() {
+          ;
+        }
+
+      }).apply(-1).x();
+    } finally {
+      if (2.2) {
+        return;
+      } // This code should be dead.
+
+
+      try {
+try { if (Inst6 <= 1000 && typeof (Reflect.construct) != "undefined") {_RecordType("<603,620,25>",(Reflect.construct)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Reflect) != "undefined") {_RecordType("<603,610,25>",(Reflect)); Inst7++; } } catch(e) {}
+        Reflect.construct;
+      } finally {
+        ;
+      }
+    }
+  }
+}
+
+try { if (Inst8 <= 1000 && typeof (opt) != "undefined") {_RecordType("<671,674,33>",(opt)); Inst8++; } } catch(e) {}
+opt();
+try { if (Inst9 <= 1000 && typeof (opt) != "undefined") {_RecordType("<678,681,34>",(opt)); Inst9++; } } catch(e) {}
+opt();
+

@@ -1,0 +1,14 @@
+var x = -false;
+var y = -0;
+-x === x;
+true;
+-x === y;
+true;
+-y !== y;
+false;
+-x == x;
+true;
+-x == y;
+true;
+-y != y;
+false;

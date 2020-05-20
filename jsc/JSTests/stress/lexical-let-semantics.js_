@@ -1,0 +1,532 @@
+"use strict";
+
+function truth() {
+  return true;
+}
+
+noInline(truth);
+
+function assert(cond) {
+  ;
+}
+
+noInline(assert); // ========== tests below ===========
+
+const NUM_LOOPS = 1000;
+let globalLet = "helloWorld";
+globalLet === "helloWorld";
+
+function captureGlobalLet() {
+  return globalLet;
+}
+
+globalLet === captureGlobalLet();
+
+let globalFunction = function () {
+  return 20;
+};
+
+globalFunction() === 20;
+(function () {
+  return globalFunction();
+})() === 20;
+let globalNumber = 20;
+globalNumber === 20;
+globalNumber++;
+globalNumber === 21;
+globalNumber += 40;
+globalNumber === 61;
+globalNumber = "hello";
+globalNumber === "hello";
+let globalNumberCaptured = 20;
+
+let retGlobalNumberCaptured = function () {
+  return globalNumberCaptured;
+};
+
+let setGlobalNumberCaptured = function (x) {
+  globalNumberCaptured = x;
+};
+
+retGlobalNumberCaptured() === globalNumberCaptured;
+globalNumberCaptured++;
+retGlobalNumberCaptured() === globalNumberCaptured;
+globalNumberCaptured === 21;
+setGlobalNumberCaptured(100);
+retGlobalNumberCaptured() === globalNumberCaptured;
+globalNumberCaptured === 100;
+setGlobalNumberCaptured(retGlobalNumberCaptured);
+retGlobalNumberCaptured() === retGlobalNumberCaptured;
+globalNumberCaptured === retGlobalNumberCaptured;
+var arrOfFuncs = [];
+
+for (var i = 0; i < NUM_LOOPS; i++) {
+  let globalLet = "inner";
+  globalLet === "inner";
+  let inner = i;
+  arrOfFuncs.push(function () {
+    return inner;
+  });
+}
+
+globalLet === "helloWorld";
+
+for (var i = 0; i < arrOfFuncs.length; i++) {
+  arrOfFuncs[i]() === i;
+}
+
+var globalVar = 100;
+globalVar === 100;
+;
+
+(function () {
+  globalVar === 100;
+
+  if (truth()) {
+    let globalVar = 20;
+    globalVar === 20;
+  }
+
+  globalVar === 100;
+})();
+
+globalVar === 100;
+;
+
+(function () {
+  let globalVar = 10;
+  globalVar === 10;
+
+  if (truth()) {
+    let globalVar = 20;
+    globalVar === 20;
+  }
+
+  globalVar === 10;
+})();
+
+globalVar === 100;
+;
+
+(function () {
+  function foo() {
+    let x = 20;
+
+    if (truth()) {
+      let thingy = function () {
+        x = 200;
+        return x;
+      };
+
+      noInline(thingy);
+      thingy();
+    }
+
+    return x;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo() === 200;
+  }
+})();
+
+;
+
+(function () {
+  var arr = [];
+
+  function foo(i) {
+    var num = i;
+
+    if (truth()) {
+      let num = i;
+      arr.push(function () {
+        return num;
+      });
+    }
+
+    var oldFunc = arr[arr.length - 1];
+
+    arr[arr.length - 1] = function () {
+      return oldFunc() + num;
+    };
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo(i);
+  }
+
+  for (var i = 0; i < arr.length; i++) {
+    arr[i]() === i + i;
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x = 20;
+    let y = 40;
+    x === 20;
+    y === 40;
+
+    if (truth()) {
+      let x = 50;
+      let y = 60;
+      x === 50;
+      y === 60;
+    }
+
+    x === 20;
+    y === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    function captureX() {
+      return x;
+    }
+
+    let x = 20;
+    let y = 40;
+    x === 20;
+    y === 40;
+
+    if (truth()) {
+      let x = 50;
+      let y = 60;
+      x === 50;
+      y === 60;
+    }
+
+    x === 20;
+    y === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x = 20;
+    let y = 40;
+
+    function captureAll() {
+      return x + y;
+    }
+
+    noInline(captureAll);
+    x === 20;
+    y === 40;
+    captureAll() === 60;
+
+    if (truth()) {
+      let x = 50;
+      x + y === 90;
+      captureAll() === 60;
+    }
+
+    x === 20;
+    y === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    var captureAll = function () {
+      return x + y;
+    };
+
+    let x = 20;
+    let {
+      _y: y,
+      z
+    } = {
+      _y: 40,
+      z: 100
+    };
+    x === 20;
+    y === 40;
+    z === 100;
+    captureAll() === 60;
+
+    if (truth()) {
+      let x = 50;
+      x + y === 90;
+      y === 40;
+      captureAll() === 60;
+    }
+
+    x === 20;
+    y === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    var captureAll = function () {
+      return x + y;
+    };
+
+    let x = 20;
+    let y = 40;
+    x === 20;
+    y === 40;
+    captureAll() === 60;
+
+    if (truth()) {
+      let x = 50;
+
+      let secondCaptureAll = function () {
+        return x + y;
+      };
+
+      x + y === 90;
+      secondCaptureAll() === 90;
+    }
+
+    x === 20;
+    y === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x, y, z;
+    x === undefined;
+    y === undefined;
+    z === undefined;
+  }
+
+  function bar() {
+    let x, y, z;
+
+    if (truth()) {
+      let x = 20,
+          y = 40;
+      x === 20;
+      y === 40;
+    }
+
+    function capture() {
+      return x + z;
+    }
+
+    x === undefined;
+    y === undefined;
+    z === undefined;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+    bar();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x,
+        y,
+        z = "z",
+        t = undefined;
+    cap() === undefined;
+    x === undefined;
+    y === undefined;
+    t === undefined;
+    z === "z";
+
+    function cap() {
+      return x;
+    }
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let {
+      x: baz
+    } = {
+      x: 20
+    };
+    let {
+      x: bar
+    } = {
+      x: 200
+    };
+
+    function cap() {
+      return baz;
+    }
+
+    baz === 20;
+    bar === 200;
+    cap() === 20;
+    baz = 40;
+    baz === 40;
+    cap() === 40;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x = 20;
+    let y = 50;
+    y === 50;
+    eval("y = 25; let x = 40; x;") === 40;
+    x === 20;
+    y === 25;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo() {
+    let x = 20;
+    let y = 50;
+    y === 50;
+
+    if (truth()) {
+      let y = 30;
+      y === 30;
+      eval("y = 25; let x = 40; x;") === 40;
+      y === 25;
+      x === 20;
+
+      if (truth()) {
+        let y = 100;
+        y === 100;
+        x = 1;
+      }
+
+      x === 1;
+      y === 25;
+    }
+
+    x === 1;
+    y === 50;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo();
+  }
+})();
+
+;
+
+(function () {
+  function foo(x) {
+    let y = 50;
+    let result = null;
+
+    switch (x) {
+      case 10:
+        let y = 40;
+        y === 40;
+
+      case 20:
+        y += 1;
+        y === 41;
+        result = y;
+        break;
+
+      default:
+        result = x;
+        break;
+    }
+
+    y === 50;
+    return result;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo(10) === 41;
+  }
+
+  foo("hello") === "hello";
+})();
+
+;
+
+(function () {
+  function foo(x) {
+    let y = 50;
+    let result = null;
+
+    switch (x) {
+      case 10:
+        let y = 40;
+        y === 40;
+
+      case 20:
+        y += 1;
+        y === 41;
+
+        result = function () {
+          return y;
+        };
+
+        break;
+
+      default:
+        result = x;
+        break;
+    }
+
+    y === 50;
+    return result;
+  }
+
+  for (var i = 0; i < NUM_LOOPS; i++) {
+    foo(10)() === 41;
+  }
+
+  foo("hello") === "hello";
+})();

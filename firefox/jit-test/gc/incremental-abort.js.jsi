@@ -1,0 +1,170 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| skip-if: !getBuildConfiguration()['has-gczeal']
+// Test aborting an incremental GC in all possible states
+try { if (Inst0 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<120,126,3>",(gczeal)); Inst0++; } } catch(e) {}
+gczeal(0);
+try { if (Inst1 <= 1000 && typeof (gc) != "undefined") {_RecordType("<131,133,4>",(gc)); Inst1++; } } catch(e) {}
+gc();
+
+try { if (Inst2 <= 1000 && typeof (testAbort) != "undefined") {_RecordType("<147,156,6>",(testAbort)); Inst2++; } } catch(e) {}
+function testAbort(zoneCount, objectCount, sliceCount, abortState) {
+try { if (Inst3 <= 1000 && typeof (zoneCount) != "undefined") {_RecordType("<157,166,6>",(zoneCount)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (objectCount) != "undefined") {_RecordType("<168,179,6>",(objectCount)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (sliceCount) != "undefined") {_RecordType("<181,191,6>",(sliceCount)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (abortState) != "undefined") {_RecordType("<193,203,6>",(abortState)); Inst6++; } } catch(e) {}
+  // Allocate objectCount objects in zoneCount zones and run a incremental
+  // shrinking GC.
+  var zones = [];
+try { if (Inst7 <= 1000 && typeof (zones) != "undefined") {_RecordType("<307,312,9>",(zones)); Inst7++; } } catch(e) {}
+
+  for (var i = 0; i < zoneCount; i++) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<331,332,11>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<338,339,11>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (zoneCount) != "undefined") {_RecordType("<342,351,11>",(zoneCount)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<353,354,11>",(i)); Inst11++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<375,384,12>",(newGlobal)); Inst13++; } } catch(e) {}
+    var zone = newGlobal({
+      newCompartment: true
+    });
+try { if (Inst12 <= 1000 && typeof (zone) != "undefined") {_RecordType("<368,372,12>",(zone)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<426,434,15>",(evaluate)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (zone) != "undefined") {_RecordType("<624,628,16>",(zone)); Inst15++; } } catch(e) {}
+    evaluate("var objects; " + "function makeObjectGraph(objectCount) { " + "    objects = []; " + "    for (var i = 0; i < objectCount; i++) " + "        objects.push({i: i}); " + "}", {
+      global: zone
+    });
+try { if (Inst16 <= 1000 && typeof (zone.makeObjectGraph) != "undefined") {_RecordType("<641,661,18>",(zone.makeObjectGraph)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (zone) != "undefined") {_RecordType("<641,645,18>",(zone)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (objectCount) != "undefined") {_RecordType("<662,673,18>",(objectCount)); Inst18++; } } catch(e) {}
+    zone.makeObjectGraph(objectCount);
+try { if (Inst19 <= 1000 && typeof (zones.push) != "undefined") {_RecordType("<680,690,19>",(zones.push)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (zones) != "undefined") {_RecordType("<680,685,19>",(zones)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (zone) != "undefined") {_RecordType("<691,695,19>",(zone)); Inst21++; } } catch(e) {}
+    zones.push(zone);
+  }
+
+  var didAbort = false;
+try { if (Inst22 <= 1000 && typeof (didAbort) != "undefined") {_RecordType("<709,717,22>",(didAbort)); Inst22++; } } catch(e) {}
+
+try { if (Inst23 <= 1000 && typeof (gcstate) != "undefined") {_RecordType("<737,744,24>",(gcstate)); Inst23++; } } catch(e) {}
+  while (gcstate() !== "NotActive") {
+try { if (Inst25 <= 1000 && typeof (gcstate) != "undefined") {_RecordType("<782,789,25>",(gcstate)); Inst25++; } } catch(e) {}
+    var state = gcstate();
+try { if (Inst24 <= 1000 && typeof (state) != "undefined") {_RecordType("<774,779,25>",(state)); Inst24++; } } catch(e) {}
+
+try { if (Inst26 <= 1000 && typeof (state) != "undefined") {_RecordType("<802,807,27>",(state)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (abortState) != "undefined") {_RecordType("<811,821,27>",(abortState)); Inst27++; } } catch(e) {}
+    if (state == abortState) {
+      didAbort = true;
+try { if (Inst28 <= 1000 && typeof (didAbort) != "undefined") {_RecordType("<831,839,28>",(didAbort)); Inst28++; } } catch(e) {}
+      break;
+    }
+
+try { if (Inst29 <= 1000 && typeof (gcslice) != "undefined") {_RecordType("<872,879,32>",(gcslice)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (sliceCount) != "undefined") {_RecordType("<880,890,32>",(sliceCount)); Inst30++; } } catch(e) {}
+    gcslice(sliceCount);
+  }
+
+try { if (Inst31 <= 1000 && typeof (gcstate) != "undefined") {_RecordType("<900,907,35>",(gcstate)); Inst31++; } } catch(e) {}
+  gcstate();
+  "NotActive";
+
+try { if (Inst32 <= 1000 && typeof (abortState) != "undefined") {_RecordType("<933,943,38>",(abortState)); Inst32++; } } catch(e) {}
+  if (abortState) {
+try { if (Inst33 <= 1000 && typeof (didAbort) != "undefined") {_RecordType("<951,959,39>",(didAbort)); Inst33++; } } catch(e) {}
+    didAbort;
+    true;
+  }
+
+try { if (Inst34 <= 1000 && typeof (zones) != "undefined") {_RecordType("<985,990,43>",(zones)); Inst34++; } } catch(e) {}
+  return zones;
+}
+
+try { if (Inst35 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<995,1001,46>",(gczeal)); Inst35++; } } catch(e) {}
+gczeal(0);
+try { if (Inst36 <= 1000 && typeof (testAbort) != "undefined") {_RecordType("<1006,1015,47>",(testAbort)); Inst36++; } } catch(e) {}
+testAbort(10, 10000, 10000);
+try { if (Inst37 <= 1000 && typeof (testAbort) != "undefined") {_RecordType("<1035,1044,48>",(testAbort)); Inst37++; } } catch(e) {}
+testAbort(10, 10000, 10000, "Mark");
+try { if (Inst38 <= 1000 && typeof (testAbort) != "undefined") {_RecordType("<1072,1081,49>",(testAbort)); Inst38++; } } catch(e) {}
+testAbort(10, 10000, 10000, "Sweep");
+try { if (Inst39 <= 1000 && typeof (testAbort) != "undefined") {_RecordType("<1110,1119,50>",(testAbort)); Inst39++; } } catch(e) {}
+testAbort(10, 10000, 10000, "Compact"); // Note: we do not yield automatically before Finalize or Decommit, as they yield internally.
+// Thus, we may not witness an incremental state in this phase and cannot test it explicitly.
+

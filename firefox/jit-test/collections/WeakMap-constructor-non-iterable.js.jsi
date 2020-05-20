@@ -1,0 +1,92 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// WeakMap should throw if argument is not iterable object.
+var non_iterable1 = {};
+try { if (Inst0 <= 1000 && typeof (non_iterable1) != "undefined") {_RecordType("<64,77,2>",(non_iterable1)); Inst0++; } } catch(e) {}
+non_iterable1[Symbol.iterator] = {};
+try { if (Inst1 <= 1000 && typeof (non_iterable1[Symbol.iterator]) != "undefined") {_RecordType("<84,114,3>",(non_iterable1[Symbol.iterator])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (non_iterable1) != "undefined") {_RecordType("<84,97,3>",(non_iterable1)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<98,113,3>",(Symbol.iterator)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<98,104,3>",(Symbol)); Inst4++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (WeakMap) != "undefined") {_RecordType("<133,140,5>",(WeakMap)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (non_iterable1) != "undefined") {_RecordType("<141,154,5>",(non_iterable1)); Inst6++; } } catch(e) {}
+(() => new WeakMap(non_iterable1))();
+
+try { if (Inst7 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<161,170,7>",(TypeError)); Inst7++; } } catch(e) {}
+TypeError;
+var non_iterable2 = {};
+try { if (Inst8 <= 1000 && typeof (non_iterable2) != "undefined") {_RecordType("<176,189,8>",(non_iterable2)); Inst8++; } } catch(e) {}
+
+non_iterable2[Symbol.iterator] = function () {
+  ;
+};
+try { if (Inst9 <= 1000 && typeof (non_iterable2[Symbol.iterator]) != "undefined") {_RecordType("<197,227,10>",(non_iterable2[Symbol.iterator])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (non_iterable2) != "undefined") {_RecordType("<197,210,10>",(non_iterable2)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<211,226,10>",(Symbol.iterator)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<211,217,10>",(Symbol)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (WeakMap) != "undefined") {_RecordType("<263,270,14>",(WeakMap)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (non_iterable2) != "undefined") {_RecordType("<271,284,14>",(non_iterable2)); Inst14++; } } catch(e) {}
+(() => new WeakMap(non_iterable2))();
+
+try { if (Inst15 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<291,300,16>",(TypeError)); Inst15++; } } catch(e) {}
+TypeError;
+

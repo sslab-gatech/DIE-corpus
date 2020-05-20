@@ -1,0 +1,67 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --icu-timezone-data
+// Environment Variables: TZ=Australia/Lord_Howe LC_ALL=en
+"Mon Jan 01 1990 11:00:00 GMT+1100 (Lord Howe Daylight Time)";
+try { if (Inst0 <= 1000 && typeof (new Date("1990-01-01").toString) != "undefined") {_RecordType("<319,350,7>",(new Date("1990-01-01").toString)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Date) != "undefined") {_RecordType("<323,327,7>",(Date)); Inst1++; } } catch(e) {}
+new Date("1990-01-01").toString();
+"Fri Jun 01 1990 10:30:00 GMT+1030 (Lord Howe Standard Time)";
+try { if (Inst2 <= 1000 && typeof (new Date("1990-06-01").toString) != "undefined") {_RecordType("<417,448,9>",(new Date("1990-06-01").toString)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Date) != "undefined") {_RecordType("<421,425,9>",(Date)); Inst3++; } } catch(e) {}
+new Date("1990-06-01").toString();
+

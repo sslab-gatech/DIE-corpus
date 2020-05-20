@@ -1,0 +1,77 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Bug 1031632 - Map.prototype.set, WeakMap.prototype.set and
+// Set.prototype.add should be chainable
+try { if (Inst1 <= 1000 && typeof (Set) != "undefined") {_RecordType("<115,118,3>",(Set)); Inst1++; } } catch(e) {}
+var s = new Set();
+try { if (Inst0 <= 1000 && typeof (s) != "undefined") {_RecordType("<107,108,3>",(s)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (s.add) != "undefined") {_RecordType("<122,127,4>",(s.add)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (s) != "undefined") {_RecordType("<122,123,4>",(s)); Inst3++; } } catch(e) {}
+s.add('BAR');
+try { if (Inst4 <= 1000 && typeof (s) != "undefined") {_RecordType("<136,137,5>",(s)); Inst4++; } } catch(e) {}
+s;
+try { if (Inst6 <= 1000 && typeof (s.add('foo').has) != "undefined") {_RecordType("<147,163,6>",(s.add('foo').has)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (s.add) != "undefined") {_RecordType("<147,152,6>",(s.add)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (s) != "undefined") {_RecordType("<147,148,6>",(s)); Inst8++; } } catch(e) {}
+var b = s.add('foo').has('foo');
+try { if (Inst5 <= 1000 && typeof (b) != "undefined") {_RecordType("<143,144,6>",(b)); Inst5++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (b) != "undefined") {_RecordType("<172,173,7>",(b)); Inst9++; } } catch(e) {}
+b;
+true;
+

@@ -1,0 +1,96 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// A map iterator can cope with removing the next entry.
+try { if (Inst1 <= 1000 && typeof (Map) != "undefined") {_RecordType("<71,74,2>",(Map)); Inst1++; } } catch(e) {}
+var map = new Map([['a', 0], ['b', 1], ['c', 2], ['d', 3]]);
+try { if (Inst0 <= 1000 && typeof (map) != "undefined") {_RecordType("<61,64,2>",(map)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (map[Symbol.iterator]) != "undefined") {_RecordType("<129,149,3>",(map[Symbol.iterator])); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (map) != "undefined") {_RecordType("<129,132,3>",(map)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<133,148,3>",(Symbol.iterator)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<133,139,3>",(Symbol)); Inst6++; } } catch(e) {}
+var iter = map[Symbol.iterator]();
+try { if (Inst2 <= 1000 && typeof (iter) != "undefined") {_RecordType("<122,126,3>",(iter)); Inst2++; } } catch(e) {}
+var log = '';
+try { if (Inst7 <= 1000 && typeof (log) != "undefined") {_RecordType("<157,160,4>",(log)); Inst7++; } } catch(e) {}
+
+for (let [k, v] of iter) {
+try { if (Inst8 <= 1000 && typeof (k) != "undefined") {_RecordType("<178,179,6>",(k)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (v) != "undefined") {_RecordType("<181,182,6>",(v)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (iter) != "undefined") {_RecordType("<187,191,6>",(iter)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (k) != "undefined") {_RecordType("<204,205,7>",(k)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (v) != "undefined") {_RecordType("<208,209,7>",(v)); Inst13++; } } catch(e) {}
+  log += k + v;
+try { if (Inst11 <= 1000 && typeof (log) != "undefined") {_RecordType("<197,200,7>",(log)); Inst11++; } } catch(e) {}
+
+try { if (Inst14 <= 1000 && typeof (k) != "undefined") {_RecordType("<218,219,9>",(k)); Inst14++; } } catch(e) {}
+  if (k === 'b') {
+try { if (Inst15 <= 1000 && typeof (map.delete) != "undefined") {_RecordType("<235,245,10>",(map.delete)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (map) != "undefined") {_RecordType("<235,238,10>",(map)); Inst16++; } } catch(e) {}
+    map.delete('c');
+  }
+}
+
+try { if (Inst17 <= 1000 && typeof (log) != "undefined") {_RecordType("<259,262,14>",(log)); Inst17++; } } catch(e) {}
+log;
+'a0b1d3';
+

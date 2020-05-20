@@ -1,0 +1,105 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- tab-width: 8; indent-tabs-mode: nil; js-indent-level: 4 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+var BUGNUMBER = 23346;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<276,285,5>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var CALL_CALLED = "PASSED";
+try { if (Inst1 <= 1000 && typeof (CALL_CALLED) != "undefined") {_RecordType("<299,310,6>",(CALL_CALLED)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (test) != "undefined") {_RecordType("<323,327,7>",(test)); Inst2++; } } catch(e) {}
+test();
+
+try { if (Inst3 <= 1000 && typeof (f) != "undefined") {_RecordType("<341,342,9>",(f)); Inst3++; } } catch(e) {}
+function f(x) {
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<343,344,9>",(x)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<354,355,10>",(x)); Inst5++; } } catch(e) {}
+  if (x) {
+try { if (Inst6 <= 1000 && typeof (call) != "undefined") {_RecordType("<370,374,11>",(call)); Inst6++; } } catch(e) {}
+    return call();
+  }
+
+  return "FAILED!";
+}
+
+try { if (Inst7 <= 1000 && typeof (call) != "undefined") {_RecordType("<415,419,17>",(call)); Inst7++; } } catch(e) {}
+function call() {
+try { if (Inst8 <= 1000 && typeof (CALL_CALLED) != "undefined") {_RecordType("<433,444,18>",(CALL_CALLED)); Inst8++; } } catch(e) {}
+  return CALL_CALLED;
+}
+
+try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<458,462,21>",(test)); Inst9++; } } catch(e) {}
+function test() {
+try { if (Inst10 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<469,480,22>",(printStatus)); Inst10++; } } catch(e) {}
+  printStatus("ECMA Section: 10.1.3: Variable Instantiation.");
+try { if (Inst11 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<533,547,23>",(printBugNumber)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<548,557,23>",(BUGNUMBER)); Inst12++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst13 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<562,575,24>",(reportCompare)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<586,587,24>",(f)); Inst14++; } } catch(e) {}
+  reportCompare("PASSED", f(true), "Unqualified reference should not see Function.prototype");
+}
+

@@ -1,0 +1,115 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ * Date: 15 Feb 2001
+ *
+ * SUMMARY: var self = global JS object, outside any eval, is DontDelete
+ *
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=68498
+ * See http://bugzilla.mozilla.org/showattachment.cgi?attach_id=25251
+ *
+ * Brendan:
+ *
+ * "Demonstrate that variable statement outside any eval creates a
+ *   DontDelete property of the global object"
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 68498;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<713,722,21>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Testing that variable statement outside any eval creates' + ' a DontDelete property of the global object'; // To be pedantic, use a variable named 'self' to capture the global object -
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<736,743,22>",(summary)); Inst1++; } } catch(e) {}
+// conflicts with window.self in browsers
+
+var _self = this;
+try { if (Inst2 <= 1000 && typeof (_self) != "undefined") {_RecordType("<979,984,25>",(_self)); Inst2++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (_self) != "undefined") {_RecordType("<1014,1019,27>",(_self)); Inst4++; } } catch(e) {}
+var actual = delete _self;
+try { if (Inst3 <= 1000 && typeof (actual) != "undefined") {_RecordType("<998,1004,27>",(actual)); Inst3++; } } catch(e) {}
+var expect = false; //-----------------------------------------------------------------------------
+try { if (Inst5 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1025,1031,28>",(expect)); Inst5++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (test) != "undefined") {_RecordType("<1122,1126,30>",(test)); Inst6++; } } catch(e) {}
+test(); //-----------------------------------------------------------------------------
+
+try { if (Inst7 <= 1000 && typeof (test) != "undefined") {_RecordType("<1220,1224,32>",(test)); Inst7++; } } catch(e) {}
+function test() {
+try { if (Inst8 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<1231,1245,33>",(printBugNumber)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<1246,1255,33>",(BUGNUMBER)); Inst9++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst10 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<1260,1271,34>",(printStatus)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1272,1279,34>",(summary)); Inst11++; } } catch(e) {}
+  printStatus(summary);
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1284,1297,35>",(reportCompare)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1298,1304,35>",(expect)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1306,1312,35>",(actual)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1314,1321,35>",(summary)); Inst15++; } } catch(e) {}
+  reportCompare(expect, actual, summary);
+}
+

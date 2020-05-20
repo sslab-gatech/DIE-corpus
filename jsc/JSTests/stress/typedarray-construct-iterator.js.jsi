@@ -1,0 +1,226 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test a bunch of things about typed array constructors with iterators.
+// Test that the dfg actually respects iterators.
+let foo = [1, 2, 3, 4];
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<127,130,3>",(foo)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<157,165,5>",(iterator)); Inst1++; } } catch(e) {}
+function iterator() {
+  return {
+    i: 0,
+    next: function () {
+try { if (Inst2 <= 1000 && typeof (this.i) != "undefined") {_RecordType("<225,231,9>",(this.i)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (foo.length) != "undefined") {_RecordType("<234,244,9>",(foo.length)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (foo) != "undefined") {_RecordType("<234,237,9>",(foo)); Inst4++; } } catch(e) {}
+      if (this.i < foo.length / 2) {
+try { if (Inst5 <= 1000 && typeof (foo[this.i++]) != "undefined") {_RecordType("<309,322,12>",(foo[this.i++])); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (foo) != "undefined") {_RecordType("<309,312,12>",(foo)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (this.i) != "undefined") {_RecordType("<313,319,12>",(this.i)); Inst7++; } } catch(e) {}
+        return {
+          done: false,
+          value: foo[this.i++]
+        };
+      }
+
+      return {
+        done: true
+      };
+    }
+  };
+}
+
+try { if (Inst12 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<423,431,23>",(iterator)); Inst12++; } } catch(e) {}
+foo[Symbol.iterator] = iterator;
+try { if (Inst8 <= 1000 && typeof (foo[Symbol.iterator]) != "undefined") {_RecordType("<400,420,23>",(foo[Symbol.iterator])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (foo) != "undefined") {_RecordType("<400,403,23>",(foo)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<404,419,23>",(Symbol.iterator)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<404,410,23>",(Symbol)); Inst11++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (body) != "undefined") {_RecordType("<444,448,25>",(body)); Inst13++; } } catch(e) {}
+(function body() {
+  for (var i = 1; i < 100000; i++) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<464,465,26>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<471,472,26>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<483,484,26>",(i)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (new Int32Array(foo).length) != "undefined") {_RecordType("<498,524,27>",(new Int32Array(foo).length)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<502,512,27>",(Int32Array)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (foo) != "undefined") {_RecordType("<513,516,27>",(foo)); Inst19++; } } catch(e) {}
+    if (new Int32Array(foo).length !== 2) {
+      throw "iterator did not run";
+    }
+  }
+})(); // Test that the optimizations used for iterators during construction is valid.
+
+
+foo = {
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3
+};
+try { if (Inst20 <= 1000 && typeof (foo) != "undefined") {_RecordType("<668,671,34>",(foo)); Inst20++; } } catch(e) {}
+count = 4;
+try { if (Inst21 <= 1000 && typeof (count) != "undefined") {_RecordType("<710,715,40>",(count)); Inst21++; } } catch(e) {}
+
+try { if (Inst22 <= 1000 && typeof (foo.__defineGetter__) != "undefined") {_RecordType("<722,742,42>",(foo.__defineGetter__)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (foo) != "undefined") {_RecordType("<722,725,42>",(foo)); Inst23++; } } catch(e) {}
+foo.__defineGetter__("length", function () {
+try { if (Inst24 <= 1000 && typeof (count) != "undefined") {_RecordType("<776,781,43>",(count)); Inst24++; } } catch(e) {}
+  return count--;
+});
+
+try { if (Inst29 <= 1000 && typeof (Array.prototype[Symbol.iterator]) != "undefined") {_RecordType("<813,845,46>",(Array.prototype[Symbol.iterator])); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<813,828,46>",(Array.prototype)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (Array) != "undefined") {_RecordType("<813,818,46>",(Array)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<829,844,46>",(Symbol.iterator)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<829,835,46>",(Symbol)); Inst33++; } } catch(e) {}
+foo[Symbol.iterator] = Array.prototype[Symbol.iterator];
+try { if (Inst25 <= 1000 && typeof (foo[Symbol.iterator]) != "undefined") {_RecordType("<790,810,46>",(foo[Symbol.iterator])); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (foo) != "undefined") {_RecordType("<790,793,46>",(foo)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<794,809,46>",(Symbol.iterator)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<794,800,46>",(Symbol)); Inst28++; } } catch(e) {}
+
+try { if (Inst34 <= 1000 && typeof (new Int32Array(foo).length) != "undefined") {_RecordType("<852,878,48>",(new Int32Array(foo).length)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<856,866,48>",(Int32Array)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (foo) != "undefined") {_RecordType("<867,870,48>",(foo)); Inst36++; } } catch(e) {}
+if (new Int32Array(foo).length !== 2) {
+  throw "iterator did not run";
+} // Test that we handle length is unset... whoops.
+
+
+foo = {
+  0: 0,
+  2: 2,
+  3: 3
+};
+try { if (Inst37 <= 1000 && typeof (foo) != "undefined") {_RecordType("<974,977,53>",(foo)); Inst37++; } } catch(e) {}
+
+try { if (Inst38 <= 1000 && typeof (new Int32Array(foo).length) != "undefined") {_RecordType("<1013,1039,59>",(new Int32Array(foo).length)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<1017,1027,59>",(Int32Array)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1028,1031,59>",(foo)); Inst40++; } } catch(e) {}
+if (new Int32Array(foo).length !== 0) {
+  throw "did not handle object with unset length";
+} // Test that we handle prototypes with accessors.
+
+
+foo = {
+  0: 0,
+  2: 2,
+  3: 3
+};
+try { if (Inst41 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1154,1157,64>",(foo)); Inst41++; } } catch(e) {}
+try { if (Inst46 <= 1000 && typeof (Array.prototype[Symbol.iterator]) != "undefined") {_RecordType("<1211,1243,69>",(Array.prototype[Symbol.iterator])); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1211,1226,69>",(Array.prototype)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1211,1216,69>",(Array)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<1227,1242,69>",(Symbol.iterator)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1227,1233,69>",(Symbol)); Inst50++; } } catch(e) {}
+foo[Symbol.iterator] = Array.prototype[Symbol.iterator];
+try { if (Inst42 <= 1000 && typeof (foo[Symbol.iterator]) != "undefined") {_RecordType("<1188,1208,69>",(foo[Symbol.iterator])); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1188,1191,69>",(foo)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<1192,1207,69>",(Symbol.iterator)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1192,1198,69>",(Symbol)); Inst45++; } } catch(e) {}
+foo.length = 4;
+try { if (Inst51 <= 1000 && typeof (foo.length) != "undefined") {_RecordType("<1245,1255,70>",(foo.length)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1245,1248,70>",(foo)); Inst52++; } } catch(e) {}
+bar = {};
+try { if (Inst53 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1261,1264,71>",(bar)); Inst53++; } } catch(e) {}
+
+try { if (Inst54 <= 1000 && typeof (bar.__defineGetter__) != "undefined") {_RecordType("<1272,1292,73>",(bar.__defineGetter__)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1272,1275,73>",(bar)); Inst55++; } } catch(e) {}
+bar.__defineGetter__("1", function () {
+  foo.length = 0;
+try { if (Inst56 <= 1000 && typeof (foo.length) != "undefined") {_RecordType("<1314,1324,74>",(foo.length)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1314,1317,74>",(foo)); Inst57++; } } catch(e) {}
+  return 1;
+});
+
+try { if (Inst60 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1363,1366,78>",(bar)); Inst60++; } } catch(e) {}
+foo.__proto__ = bar;
+try { if (Inst58 <= 1000 && typeof (foo.__proto__) != "undefined") {_RecordType("<1347,1360,78>",(foo.__proto__)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1347,1350,78>",(foo)); Inst59++; } } catch(e) {}
+
+try { if (Inst61 <= 1000 && typeof (new Int32Array(foo).length) != "undefined") {_RecordType("<1373,1399,80>",(new Int32Array(foo).length)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<1377,1387,80>",(Int32Array)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1388,1391,80>",(foo)); Inst63++; } } catch(e) {}
+if (new Int32Array(foo).length !== 2) {
+  throw "did not handle object with accessor on prototype";
+}
+

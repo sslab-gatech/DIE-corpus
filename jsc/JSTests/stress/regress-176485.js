@@ -1,0 +1,13 @@
+var exception;
+
+try {
+  a2 = {}; //some method ok//what ever object//Date()
+
+  Object.defineProperty(a2, "length", {
+    get: Int32Array
+  }); //Int32Array here wrong,need a function
+
+  new Int32Array(this.a2);
+} catch (e) {
+  exception = e;
+}

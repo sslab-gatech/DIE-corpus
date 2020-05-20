@@ -1,0 +1,132 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// Test case for Blue bug 379253
+// Construct a json object string with the given number of properties
+try { if (Inst0 <= 1000 && typeof (GetJSONString) != "undefined") {_RecordType("<479,492,7>",(GetJSONString)); Inst0++; } } catch(e) {}
+function GetJSONString(prefix, count) {
+try { if (Inst1 <= 1000 && typeof (prefix) != "undefined") {_RecordType("<493,499,7>",(prefix)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (count) != "undefined") {_RecordType("<501,506,7>",(count)); Inst2++; } } catch(e) {}
+  var buffer = [];
+try { if (Inst3 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<516,522,8>",(buffer)); Inst3++; } } catch(e) {}
+
+  for (var i = 0; i < count; i++) {
+try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<541,542,10>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<548,549,10>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (count) != "undefined") {_RecordType("<552,557,10>",(count)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<559,560,10>",(i)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (buffer.push) != "undefined") {_RecordType("<570,581,11>",(buffer.push)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<570,576,11>",(buffer)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (prefix) != "undefined") {_RecordType("<588,594,11>",(prefix)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<597,598,11>",(i)); Inst11++; } } catch(e) {}
+    buffer.push('"' + prefix + i + '": true');
+  }
+
+try { if (Inst12 <= 1000 && typeof (buffer.join) != "undefined") {_RecordType("<634,645,14>",(buffer.join)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<634,640,14>",(buffer)); Inst13++; } } catch(e) {}
+  return "{ " + buffer.join(',') + " }";
+}
+
+try { if (Inst15 <= 1000 && typeof (GetJSONString) != "undefined") {_RecordType("<676,689,17>",(GetJSONString)); Inst15++; } } catch(e) {}
+var string1 = GetJSONString("prop", 100);
+try { if (Inst14 <= 1000 && typeof (string1) != "undefined") {_RecordType("<666,673,17>",(string1)); Inst14++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (GetJSONString) != "undefined") {_RecordType("<718,731,18>",(GetJSONString)); Inst17++; } } catch(e) {}
+var string2 = GetJSONString("drop", 550); // Create a JSON object with a 100 properties
+try { if (Inst16 <= 1000 && typeof (string2) != "undefined") {_RecordType("<708,715,18>",(string2)); Inst16++; } } catch(e) {}
+
+try { if (Inst19 <= 1000 && typeof (JSON.parse) != "undefined") {_RecordType("<807,817,20>",(JSON.parse)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<807,811,20>",(JSON)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (string1) != "undefined") {_RecordType("<818,825,20>",(string1)); Inst21++; } } catch(e) {}
+var object1 = JSON.parse(string1); // Clear reference to that object to make its properties eligible for collection
+try { if (Inst18 <= 1000 && typeof (object1) != "undefined") {_RecordType("<797,804,20>",(object1)); Inst18++; } } catch(e) {}
+
+object1 = null; // Parse a second JSON object, this time with a large number of properties
+try { if (Inst22 <= 1000 && typeof (object1) != "undefined") {_RecordType("<910,917,22>",(object1)); Inst22++; } } catch(e) {}
+// This parse has a reviver passed in too to cause an enumeration to occur after parse
+
+var k = 0;
+try { if (Inst23 <= 1000 && typeof (k) != "undefined") {_RecordType("<1093,1094,25>",(k)); Inst23++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (JSON.parse) != "undefined") {_RecordType("<1114,1124,26>",(JSON.parse)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<1114,1118,26>",(JSON)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (string2) != "undefined") {_RecordType("<1125,1132,26>",(string2)); Inst27++; } } catch(e) {}
+var object2 = JSON.parse(string2, function (key, value) {
+try { if (Inst28 <= 1000 && typeof (key) != "undefined") {_RecordType("<1144,1147,26>",(key)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (value) != "undefined") {_RecordType("<1149,1154,26>",(value)); Inst29++; } } catch(e) {}
+try { if (Inst30 <= 1000 && typeof (k) != "undefined") {_RecordType("<1167,1168,27>",(k)); Inst30++; } } catch(e) {}
+  return k++;
+});
+try { if (Inst24 <= 1000 && typeof (object2) != "undefined") {_RecordType("<1104,1111,26>",(object2)); Inst24++; } } catch(e) {}
+try { if (Inst31 <= 1000 && typeof (print) != "undefined") {_RecordType("<1176,1181,29>",(print)); Inst31++; } } catch(e) {}
+print("pass");
+

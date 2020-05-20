@@ -1,0 +1,94 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (shouldBe) != "undefined") {_RecordType("<9,17,1>",(shouldBe)); Inst0++; } } catch(e) {}
+function shouldBe(actual, expected) {
+try { if (Inst1 <= 1000 && typeof (actual) != "undefined") {_RecordType("<18,24,1>",(actual)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (expected) != "undefined") {_RecordType("<26,34,1>",(expected)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (actual) != "undefined") {_RecordType("<44,50,2>",(actual)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (expected) != "undefined") {_RecordType("<55,63,2>",(expected)); Inst4++; } } catch(e) {}
+  if (actual !== expected) {
+try { if (Inst5 <= 1000 && typeof (Error) != "undefined") {_RecordType("<81,86,3>",(Error)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (actual) != "undefined") {_RecordType("<103,109,3>",(actual)); Inst6++; } } catch(e) {}
+    throw new Error('bad value: ' + actual);
+  }
+}
+
+try { if (Inst9 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<148,155,7>",(Promise)); Inst9++; } } catch(e) {}
+class DerivedPromise extends Promise {
+  static get [Symbol.species]() {
+try { if (Inst8 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<203,210,9>",(Promise)); Inst8++; } } catch(e) {}
+    return Promise;
+  }
+
+}
+try { if (Inst7 <= 1000 && typeof (DerivedPromise) != "undefined") {_RecordType("<125,139,7>",(DerivedPromise)); Inst7++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (shouldBe) != "undefined") {_RecordType("<220,228,14>",(shouldBe)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (DerivedPromise.all) != "undefined") {_RecordType("<229,247,14>",(DerivedPromise.all)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (DerivedPromise) != "undefined") {_RecordType("<229,243,14>",(DerivedPromise)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (DerivedPromise) != "undefined") {_RecordType("<270,284,14>",(DerivedPromise)); Inst13++; } } catch(e) {}
+shouldBe(DerivedPromise.all([1, 2, 3]) instanceof DerivedPromise, true);
+try { if (Inst14 <= 1000 && typeof (shouldBe) != "undefined") {_RecordType("<293,301,15>",(shouldBe)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (DerivedPromise.race) != "undefined") {_RecordType("<302,321,15>",(DerivedPromise.race)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (DerivedPromise) != "undefined") {_RecordType("<302,316,15>",(DerivedPromise)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (DerivedPromise) != "undefined") {_RecordType("<344,358,15>",(DerivedPromise)); Inst17++; } } catch(e) {}
+shouldBe(DerivedPromise.race([1, 2, 3]) instanceof DerivedPromise, true);
+

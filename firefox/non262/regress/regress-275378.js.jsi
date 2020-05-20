@@ -1,0 +1,141 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+// testcase by Martin Zvieger <martin.zvieger@sphinx.at>
+// if fails, will fail to run in browser due to syntax error
+var BUGNUMBER = 275378;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<464,473,9>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Literal RegExp in case block should not give syntax error';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<488,495,10>",(summary)); Inst1++; } } catch(e) {}
+var actual = '';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<563,569,11>",(actual)); Inst2++; } } catch(e) {}
+var expect = '';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<580,586,12>",(expect)); Inst3++; } } catch(e) {}
+var status;
+try { if (Inst4 <= 1000 && typeof (status) != "undefined") {_RecordType("<597,603,13>",(status)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<605,619,14>",(printBugNumber)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<620,629,14>",(BUGNUMBER)); Inst6++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst7 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<632,643,15>",(printStatus)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (summary) != "undefined") {_RecordType("<644,651,15>",(summary)); Inst8++; } } catch(e) {}
+printStatus(summary);
+var tmpString = "XYZ"; // works
+try { if (Inst9 <= 1000 && typeof (tmpString) != "undefined") {_RecordType("<658,667,16>",(tmpString)); Inst9++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (/ABC/.test) != "undefined") {_RecordType("<687,697,18>",(/ABC/.test)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (tmpString) != "undefined") {_RecordType("<698,707,18>",(tmpString)); Inst11++; } } catch(e) {}
+/ABC/.test(tmpString);
+var tmpVal = 1;
+try { if (Inst12 <= 1000 && typeof (tmpVal) != "undefined") {_RecordType("<714,720,19>",(tmpVal)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (tmpVal) != "undefined") {_RecordType("<731,737,21>",(tmpVal)); Inst13++; } } catch(e) {}
+if (tmpVal == 1) {
+  // works
+try { if (Inst14 <= 1000 && typeof (/ABC/.test) != "undefined") {_RecordType("<759,769,23>",(/ABC/.test)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (tmpString) != "undefined") {_RecordType("<770,779,23>",(tmpString)); Inst15++; } } catch(e) {}
+  /ABC/.test(tmpString);
+}
+
+try { if (Inst16 <= 1000 && typeof (tmpVal) != "undefined") {_RecordType("<793,799,26>",(tmpVal)); Inst16++; } } catch(e) {}
+switch (tmpVal) {
+  case 1:
+    {
+      // works
+try { if (Inst17 <= 1000 && typeof (/ABC/.test) != "undefined") {_RecordType("<840,850,30>",(/ABC/.test)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (tmpString) != "undefined") {_RecordType("<851,860,30>",(tmpString)); Inst18++; } } catch(e) {}
+      /ABC/.test(tmpString);
+    }
+    break;
+}
+
+try { if (Inst19 <= 1000 && typeof (tmpVal) != "undefined") {_RecordType("<891,897,35>",(tmpVal)); Inst19++; } } catch(e) {}
+switch (tmpVal) {
+  case 1:
+    // fails with syntax error
+try { if (Inst20 <= 1000 && typeof (/ABC/.test) != "undefined") {_RecordType("<946,956,38>",(/ABC/.test)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (tmpString) != "undefined") {_RecordType("<957,966,38>",(tmpString)); Inst21++; } } catch(e) {}
+    /ABC/.test(tmpString);
+    break;
+}
+
+expect = actual = 'no error';
+try { if (Inst22 <= 1000 && typeof (expect) != "undefined") {_RecordType("<983,989,42>",(expect)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (actual) != "undefined") {_RecordType("<992,998,42>",(actual)); Inst23++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1013,1026,43>",(reportCompare)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1027,1033,43>",(expect)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1035,1041,43>",(actual)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (status) != "undefined") {_RecordType("<1043,1049,43>",(status)); Inst27++; } } catch(e) {}
+reportCompare(expect, actual, status);
+

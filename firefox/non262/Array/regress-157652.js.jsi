@@ -1,0 +1,222 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64|aarch64|ppc64|ppc64le|s390x/)||Android) -- No test results
+
+/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ *
+ * Date:    16 July 2002
+ * SUMMARY: Testing that Array.sort() doesn't crash on very large arrays
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=157652
+ *
+ * How large can a JavaScript array be?
+ * ECMA-262 Ed.3 Final, Section 15.4.2.2 : new Array(len)
+ *
+ * This states that |len| must be a a uint32_t (unsigned 32-bit integer).
+ * Note the UBound for uint32's is 2^32 -1 = 0xFFFFFFFF = 4,294,967,295.
+ *
+ * Check:
+ *              js> var arr = new Array(0xFFFFFFFF)
+ *              js> arr.length
+ *              4294967295
+ *
+ *              js> var arr = new Array(0x100000000)
+ *              RangeError: invalid array length
+ *
+ *
+ * We'll try the largest possible array first, then a couple others.
+ * We're just testing that we don't crash on Array.sort().
+ *
+ * Try to be good about memory by nulling each array variable after it is
+ * used. This will tell the garbage collector the memory is no longer needed.
+ *
+ * As of 2002-08-13, the JS shell runs out of memory no matter what we do,
+ * when trying to sort such large arrays.
+ *
+ * We only want to test that we don't CRASH on the sort. So it will be OK
+ * if we get the JS "out of memory" error. Note this terminates the test
+ * with exit code 3. Therefore we put
+ *
+ *                       |expectExitCode(3);|
+ *
+ * The only problem will arise if the JS shell ever DOES have enough memory
+ * to do the sort. Then this test will terminate with the normal exit code 0
+ * and fail.
+ *
+ * Right now, I can't see any other way to do this, because "out of memory"
+ * is not a catchable error: it cannot be trapped with try...catch.
+ *
+ *
+ * FURTHER HEADACHE: Rhino can't seem to handle the largest array: it hangs.
+ * So we skip this case in Rhino. Here is correspondence with Igor Bukanov.
+ * He explains that Rhino isn't actually hanging; it's doing the huge sort:
+ *
+ * Philip Schwartau wrote:
+ *
+ * > Hi,
+ * >
+ * > I'm getting a graceful OOM message on trying to sort certain large
+ * > arrays. But if the array is too big, Rhino simply hangs. Note that ECMA
+ * > allows array lengths to be anything less than Math.pow(2,32), so the
+ * > arrays I'm sorting are legal.
+ * >
+ * > Note below, I'm getting an instantaneous OOM error on arr.sort() for LEN
+ * > = Math.pow(2, 30). So shouldn't I also get one for every LEN between
+ * > that and Math.pow(2, 32)? For some reason, I start to hang with 100% CPU
+ * > as LEN hits, say, Math.pow(2, 31) and higher. SpiderMonkey gives OOM
+ * > messages for all of these. Should I file a bug on this?
+ *
+ *   Igor Bukanov wrote:
+ *
+ * This is due to different sorting algorithm Rhino uses when sorting
+ * arrays with length > Integer.MAX_VALUE. If length can fit Java int,
+ * Rhino first copies internal spare array to a temporary buffer, and then
+ * sorts it, otherwise it sorts array directly. In case of very spare
+ * arrays, that Array(big_number) generates, it is rather inefficient and
+ * generates OutOfMemory if length fits int. It may be worth in your case
+ * to optimize sorting to take into account array spareness, but then it
+ * would be a good idea to file a bug about ineficient sorting of spare
+ * arrays both in case of Rhino and SpiderMonkey as SM always uses a
+ * temporary buffer.
+ *
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 157652;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<3706,3715,87>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "Testing that Array.sort() doesn't crash on very large arrays";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<3730,3737,88>",(summary)); Inst1++; } } catch(e) {}
+var expect = 'No Crash';
+try { if (Inst2 <= 1000 && typeof (expect) != "undefined") {_RecordType("<3808,3814,89>",(expect)); Inst2++; } } catch(e) {}
+var actual = 'No Crash';
+try { if (Inst3 <= 1000 && typeof (actual) != "undefined") {_RecordType("<3833,3839,90>",(actual)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<3854,3868,91>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<3869,3878,91>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<3881,3892,92>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<3893,3900,92>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary);
+try { if (Inst8 <= 1000 && typeof (expectExitCode) != "undefined") {_RecordType("<3903,3917,93>",(expectExitCode)); Inst8++; } } catch(e) {}
+expectExitCode(0);
+try { if (Inst9 <= 1000 && typeof (expectExitCode) != "undefined") {_RecordType("<3922,3936,94>",(expectExitCode)); Inst9++; } } catch(e) {}
+expectExitCode(5);
+
+try { if (Inst25 <= 1000 && typeof (ex) != "undefined") {_RecordType("<4129,4131,106>",(ex)); Inst25++; } } catch(e) {}
+try {
+try { if (Inst11 <= 1000 && typeof (Array) != "undefined") {_RecordType("<3959,3964,97>",(Array)); Inst11++; } } catch(e) {}
+  var a1 = Array(0xFFFFFFFF);
+try { if (Inst10 <= 1000 && typeof (a1) != "undefined") {_RecordType("<3954,3956,97>",(a1)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (a1.sort) != "undefined") {_RecordType("<3980,3987,98>",(a1.sort)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (a1) != "undefined") {_RecordType("<3980,3982,98>",(a1)); Inst13++; } } catch(e) {}
+  a1.sort();
+  a1 = null;
+try { if (Inst14 <= 1000 && typeof (a1) != "undefined") {_RecordType("<3993,3995,99>",(a1)); Inst14++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (Array) != "undefined") {_RecordType("<4015,4020,100>",(Array)); Inst16++; } } catch(e) {}
+  var a2 = Array(0x40000000);
+try { if (Inst15 <= 1000 && typeof (a2) != "undefined") {_RecordType("<4010,4012,100>",(a2)); Inst15++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (a2.sort) != "undefined") {_RecordType("<4036,4043,101>",(a2.sort)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (a2) != "undefined") {_RecordType("<4036,4038,101>",(a2)); Inst18++; } } catch(e) {}
+  a2.sort();
+  a2 = null;
+try { if (Inst19 <= 1000 && typeof (a2) != "undefined") {_RecordType("<4049,4051,102>",(a2)); Inst19++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (Array) != "undefined") {_RecordType("<4071,4076,103>",(Array)); Inst21++; } } catch(e) {}
+  var a3 = Array(0x10000000 / 4);
+try { if (Inst20 <= 1000 && typeof (a3) != "undefined") {_RecordType("<4066,4068,103>",(a3)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (a3.sort) != "undefined") {_RecordType("<4096,4103,104>",(a3.sort)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (a3) != "undefined") {_RecordType("<4096,4098,104>",(a3)); Inst23++; } } catch(e) {}
+  a3.sort();
+  a3 = null;
+try { if (Inst24 <= 1000 && typeof (a3) != "undefined") {_RecordType("<4109,4111,105>",(a3)); Inst24++; } } catch(e) {}
+} catch (ex) {
+  // handle changed 1.9 branch behavior. see bug 422348
+  expect = 'InternalError: allocation size overflow';
+try { if (Inst26 <= 1000 && typeof (expect) != "undefined") {_RecordType("<4193,4199,108>",(expect)); Inst26++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (ex) != "undefined") {_RecordType("<4256,4258,109>",(ex)); Inst28++; } } catch(e) {}
+  actual = ex + '';
+try { if (Inst27 <= 1000 && typeof (actual) != "undefined") {_RecordType("<4247,4253,109>",(actual)); Inst27++; } } catch(e) {}
+}
+
+try { if (Inst29 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4268,4281,112>",(reportCompare)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (expect) != "undefined") {_RecordType("<4282,4288,112>",(expect)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (actual) != "undefined") {_RecordType("<4290,4296,112>",(actual)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (summary) != "undefined") {_RecordType("<4298,4305,112>",(summary)); Inst32++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

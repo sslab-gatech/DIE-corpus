@@ -1,0 +1,399 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+var Inst125 = 0;
+var Inst126 = 0;
+var Inst127 = 0;
+var Inst128 = 0;
+var Inst129 = 0;
+var Inst130 = 0;
+var Inst131 = 0;
+var Inst132 = 0;
+var Inst133 = 0;
+var Inst134 = 0;
+var Inst135 = 0;
+var Inst136 = 0;
+var Inst137 = 0;
+var Inst138 = 0;
+var Inst139 = 0;
+var Inst140 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+let kMinHeapSize = 4096;
+try { if (Inst0 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<204,216,5>",(kMinHeapSize)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (TestLeftRight) != "undefined") {_RecordType("<236,249,7>",(TestLeftRight)); Inst1++; } } catch(e) {}
+(function TestLeftRight() {
+try { if (Inst2 <= 1000 && typeof (Module) != "undefined") {_RecordType("<265,271,8>",(Module)); Inst2++; } } catch(e) {}
+  function Module(stdlib, foreign, heap) {
+try { if (Inst3 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<272,278,8>",(stdlib)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<280,287,8>",(foreign)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (heap) != "undefined") {_RecordType("<289,293,8>",(heap)); Inst5++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst7 <= 1000 && typeof (stdlib.Int32Array) != "undefined") {_RecordType("<334,351,11>",(stdlib.Int32Array)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<334,340,11>",(stdlib)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (heap) != "undefined") {_RecordType("<352,356,11>",(heap)); Inst9++; } } catch(e) {}
+    var HEAP32 = new stdlib.Int32Array(heap);
+try { if (Inst6 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<321,327,11>",(HEAP32)); Inst6++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<373,374,13>",(f)); Inst10++; } } catch(e) {}
+    function f(i) {
+try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<375,376,13>",(i)); Inst11++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<390,391,14>",(i)); Inst13++; } } catch(e) {}
+      i = i | 0;
+try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<386,387,14>",(i)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (HEAP32[i << 2 >> 2]) != "undefined") {_RecordType("<410,429,15>",(HEAP32[i << 2 >> 2])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<410,416,15>",(HEAP32)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<417,418,15>",(i)); Inst16++; } } catch(e) {}
+      return HEAP32[i << 2 >> 2] | 0;
+    }
+
+try { if (Inst17 <= 1000 && typeof (f) != "undefined") {_RecordType("<464,465,19>",(f)); Inst17++; } } catch(e) {}
+    return {
+      f: f
+    };
+  }
+
+try { if (Inst19 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<497,508,23>",(ArrayBuffer)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<509,521,23>",(kMinHeapSize)); Inst20++; } } catch(e) {}
+  var buffer = new ArrayBuffer(kMinHeapSize);
+try { if (Inst18 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<484,490,23>",(buffer)); Inst18++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Module) != "undefined") {_RecordType("<543,549,24>",(Module)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<560,566,24>",(buffer)); Inst23++; } } catch(e) {}
+  var module = new Module(this, {}, buffer);
+try { if (Inst21 <= 1000 && typeof (module) != "undefined") {_RecordType("<530,536,24>",(module)); Inst21++; } } catch(e) {}
+  new Int32Array(buffer)[42] = 23;
+try { if (Inst24 <= 1000 && typeof (new Int32Array(buffer)[42]) != "undefined") {_RecordType("<571,597,25>",(new Int32Array(buffer)[42])); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<575,585,25>",(Int32Array)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<586,592,25>",(buffer)); Inst26++; } } catch(e) {}
+  23;
+try { if (Inst27 <= 1000 && typeof (module.f) != "undefined") {_RecordType("<612,620,27>",(module.f)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (module) != "undefined") {_RecordType("<612,618,27>",(module)); Inst28++; } } catch(e) {}
+  module.f(42);
+})();
+
+try { if (Inst29 <= 1000 && typeof (TestRightRight) != "undefined") {_RecordType("<643,657,30>",(TestRightRight)); Inst29++; } } catch(e) {}
+(function TestRightRight() {
+try { if (Inst30 <= 1000 && typeof (Module) != "undefined") {_RecordType("<673,679,31>",(Module)); Inst30++; } } catch(e) {}
+  function Module(stdlib, foreign, heap) {
+try { if (Inst31 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<680,686,31>",(stdlib)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<688,695,31>",(foreign)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (heap) != "undefined") {_RecordType("<697,701,31>",(heap)); Inst33++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst35 <= 1000 && typeof (stdlib.Int32Array) != "undefined") {_RecordType("<742,759,34>",(stdlib.Int32Array)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<742,748,34>",(stdlib)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (heap) != "undefined") {_RecordType("<760,764,34>",(heap)); Inst37++; } } catch(e) {}
+    var HEAP32 = new stdlib.Int32Array(heap);
+try { if (Inst34 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<729,735,34>",(HEAP32)); Inst34++; } } catch(e) {}
+
+try { if (Inst38 <= 1000 && typeof (f) != "undefined") {_RecordType("<781,782,36>",(f)); Inst38++; } } catch(e) {}
+    function f(i) {
+try { if (Inst39 <= 1000 && typeof (i) != "undefined") {_RecordType("<783,784,36>",(i)); Inst39++; } } catch(e) {}
+try { if (Inst41 <= 1000 && typeof (i) != "undefined") {_RecordType("<798,799,37>",(i)); Inst41++; } } catch(e) {}
+      i = i | 0;
+try { if (Inst40 <= 1000 && typeof (i) != "undefined") {_RecordType("<794,795,37>",(i)); Inst40++; } } catch(e) {}
+try { if (Inst42 <= 1000 && typeof (HEAP32[i >> 2 >> 2]) != "undefined") {_RecordType("<818,837,38>",(HEAP32[i >> 2 >> 2])); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<818,824,38>",(HEAP32)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (i) != "undefined") {_RecordType("<825,826,38>",(i)); Inst44++; } } catch(e) {}
+      return HEAP32[i >> 2 >> 2] | 0;
+    }
+
+try { if (Inst45 <= 1000 && typeof (f) != "undefined") {_RecordType("<872,873,42>",(f)); Inst45++; } } catch(e) {}
+    return {
+      f: f
+    };
+  }
+
+try { if (Inst47 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<905,916,46>",(ArrayBuffer)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<917,929,46>",(kMinHeapSize)); Inst48++; } } catch(e) {}
+  var buffer = new ArrayBuffer(kMinHeapSize);
+try { if (Inst46 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<892,898,46>",(buffer)); Inst46++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (Module) != "undefined") {_RecordType("<951,957,47>",(Module)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<968,974,47>",(buffer)); Inst51++; } } catch(e) {}
+  var module = new Module(this, {}, buffer);
+try { if (Inst49 <= 1000 && typeof (module) != "undefined") {_RecordType("<938,944,47>",(module)); Inst49++; } } catch(e) {}
+  new Int32Array(buffer)[42 >> 4] = 23;
+try { if (Inst52 <= 1000 && typeof (new Int32Array(buffer)[42 >> 4]) != "undefined") {_RecordType("<979,1010,48>",(new Int32Array(buffer)[42 >> 4])); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<983,993,48>",(Int32Array)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<994,1000,48>",(buffer)); Inst54++; } } catch(e) {}
+  23;
+try { if (Inst55 <= 1000 && typeof (module.f) != "undefined") {_RecordType("<1025,1033,50>",(module.f)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (module) != "undefined") {_RecordType("<1025,1031,50>",(module)); Inst56++; } } catch(e) {}
+  module.f(42);
+})();
+
+try { if (Inst57 <= 1000 && typeof (TestRightLeft) != "undefined") {_RecordType("<1056,1069,53>",(TestRightLeft)); Inst57++; } } catch(e) {}
+(function TestRightLeft() {
+try { if (Inst58 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1085,1091,54>",(Module)); Inst58++; } } catch(e) {}
+  function Module(stdlib, foreign, heap) {
+try { if (Inst59 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1092,1098,54>",(stdlib)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<1100,1107,54>",(foreign)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (heap) != "undefined") {_RecordType("<1109,1113,54>",(heap)); Inst61++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst63 <= 1000 && typeof (stdlib.Int32Array) != "undefined") {_RecordType("<1154,1171,57>",(stdlib.Int32Array)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1154,1160,57>",(stdlib)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (heap) != "undefined") {_RecordType("<1172,1176,57>",(heap)); Inst65++; } } catch(e) {}
+    var HEAP32 = new stdlib.Int32Array(heap);
+try { if (Inst62 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<1141,1147,57>",(HEAP32)); Inst62++; } } catch(e) {}
+
+try { if (Inst66 <= 1000 && typeof (f) != "undefined") {_RecordType("<1193,1194,59>",(f)); Inst66++; } } catch(e) {}
+    function f(i) {
+try { if (Inst67 <= 1000 && typeof (i) != "undefined") {_RecordType("<1195,1196,59>",(i)); Inst67++; } } catch(e) {}
+try { if (Inst69 <= 1000 && typeof (i) != "undefined") {_RecordType("<1210,1211,60>",(i)); Inst69++; } } catch(e) {}
+      i = i | 0;
+try { if (Inst68 <= 1000 && typeof (i) != "undefined") {_RecordType("<1206,1207,60>",(i)); Inst68++; } } catch(e) {}
+try { if (Inst70 <= 1000 && typeof (HEAP32[i >> 2 << 2]) != "undefined") {_RecordType("<1230,1249,61>",(HEAP32[i >> 2 << 2])); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<1230,1236,61>",(HEAP32)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (i) != "undefined") {_RecordType("<1237,1238,61>",(i)); Inst72++; } } catch(e) {}
+      return HEAP32[i >> 2 << 2] | 0;
+    }
+
+try { if (Inst73 <= 1000 && typeof (f) != "undefined") {_RecordType("<1284,1285,65>",(f)); Inst73++; } } catch(e) {}
+    return {
+      f: f
+    };
+  }
+
+try { if (Inst75 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<1317,1328,69>",(ArrayBuffer)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<1329,1341,69>",(kMinHeapSize)); Inst76++; } } catch(e) {}
+  var buffer = new ArrayBuffer(kMinHeapSize);
+try { if (Inst74 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1304,1310,69>",(buffer)); Inst74++; } } catch(e) {}
+try { if (Inst78 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1363,1369,70>",(Module)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1380,1386,70>",(buffer)); Inst79++; } } catch(e) {}
+  var module = new Module(this, {}, buffer);
+try { if (Inst77 <= 1000 && typeof (module) != "undefined") {_RecordType("<1350,1356,70>",(module)); Inst77++; } } catch(e) {}
+  new Int32Array(buffer)[42 & 0xfc] = 23;
+try { if (Inst80 <= 1000 && typeof (new Int32Array(buffer)[42 & 0xfc]) != "undefined") {_RecordType("<1391,1424,71>",(new Int32Array(buffer)[42 & 0xfc])); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<1395,1405,71>",(Int32Array)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1406,1412,71>",(buffer)); Inst82++; } } catch(e) {}
+  23;
+try { if (Inst83 <= 1000 && typeof (module.f) != "undefined") {_RecordType("<1439,1447,73>",(module.f)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (module) != "undefined") {_RecordType("<1439,1445,73>",(module)); Inst84++; } } catch(e) {}
+  module.f(42);
+})();
+
+try { if (Inst85 <= 1000 && typeof (TestRightButNotImmediate) != "undefined") {_RecordType("<1470,1494,76>",(TestRightButNotImmediate)); Inst85++; } } catch(e) {}
+(function TestRightButNotImmediate() {
+try { if (Inst86 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1510,1516,77>",(Module)); Inst86++; } } catch(e) {}
+  function Module(stdlib, foreign, heap) {
+try { if (Inst87 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1517,1523,77>",(stdlib)); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<1525,1532,77>",(foreign)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (heap) != "undefined") {_RecordType("<1534,1538,77>",(heap)); Inst89++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst91 <= 1000 && typeof (stdlib.Int32Array) != "undefined") {_RecordType("<1579,1596,80>",(stdlib.Int32Array)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1579,1585,80>",(stdlib)); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (heap) != "undefined") {_RecordType("<1597,1601,80>",(heap)); Inst93++; } } catch(e) {}
+    var HEAP32 = new stdlib.Int32Array(heap);
+try { if (Inst90 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<1566,1572,80>",(HEAP32)); Inst90++; } } catch(e) {}
+
+try { if (Inst94 <= 1000 && typeof (f) != "undefined") {_RecordType("<1618,1619,82>",(f)); Inst94++; } } catch(e) {}
+    function f(i) {
+try { if (Inst95 <= 1000 && typeof (i) != "undefined") {_RecordType("<1620,1621,82>",(i)); Inst95++; } } catch(e) {}
+try { if (Inst97 <= 1000 && typeof (i) != "undefined") {_RecordType("<1635,1636,83>",(i)); Inst97++; } } catch(e) {}
+      i = i | 0;
+try { if (Inst96 <= 1000 && typeof (i) != "undefined") {_RecordType("<1631,1632,83>",(i)); Inst96++; } } catch(e) {}
+try { if (Inst98 <= 1000 && typeof (HEAP32[i >> 2 + 1]) != "undefined") {_RecordType("<1655,1673,84>",(HEAP32[i >> 2 + 1])); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<1655,1661,84>",(HEAP32)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (i) != "undefined") {_RecordType("<1662,1663,84>",(i)); Inst100++; } } catch(e) {}
+      return HEAP32[i >> 2 + 1] | 0;
+    }
+
+try { if (Inst101 <= 1000 && typeof (f) != "undefined") {_RecordType("<1708,1709,88>",(f)); Inst101++; } } catch(e) {}
+    return {
+      f: f
+    };
+  }
+
+try { if (Inst103 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<1741,1752,92>",(ArrayBuffer)); Inst103++; } } catch(e) {}try { if (Inst104 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<1753,1765,92>",(kMinHeapSize)); Inst104++; } } catch(e) {}
+  var buffer = new ArrayBuffer(kMinHeapSize);
+try { if (Inst102 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1728,1734,92>",(buffer)); Inst102++; } } catch(e) {}
+try { if (Inst106 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1787,1793,93>",(Module)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1804,1810,93>",(buffer)); Inst107++; } } catch(e) {}
+  var module = new Module(this, {}, buffer);
+try { if (Inst105 <= 1000 && typeof (module) != "undefined") {_RecordType("<1774,1780,93>",(module)); Inst105++; } } catch(e) {}
+  new Int32Array(buffer)[42 >> 3] = 23;
+try { if (Inst108 <= 1000 && typeof (new Int32Array(buffer)[42 >> 3]) != "undefined") {_RecordType("<1815,1846,94>",(new Int32Array(buffer)[42 >> 3])); Inst108++; } } catch(e) {}try { if (Inst109 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<1819,1829,94>",(Int32Array)); Inst109++; } } catch(e) {}try { if (Inst110 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1830,1836,94>",(buffer)); Inst110++; } } catch(e) {}
+  23;
+try { if (Inst111 <= 1000 && typeof (module.f) != "undefined") {_RecordType("<1861,1869,96>",(module.f)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (module) != "undefined") {_RecordType("<1861,1867,96>",(module)); Inst112++; } } catch(e) {}
+  module.f(42);
+})();
+
+try { if (Inst113 <= 1000 && typeof (TestLeftOnly) != "undefined") {_RecordType("<1892,1904,99>",(TestLeftOnly)); Inst113++; } } catch(e) {}
+(function TestLeftOnly() {
+try { if (Inst114 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1920,1926,100>",(Module)); Inst114++; } } catch(e) {}
+  function Module(stdlib, foreign, heap) {
+try { if (Inst115 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1927,1933,100>",(stdlib)); Inst115++; } } catch(e) {}try { if (Inst116 <= 1000 && typeof (foreign) != "undefined") {_RecordType("<1935,1942,100>",(foreign)); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (heap) != "undefined") {_RecordType("<1944,1948,100>",(heap)); Inst117++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst119 <= 1000 && typeof (stdlib.Int32Array) != "undefined") {_RecordType("<1989,2006,103>",(stdlib.Int32Array)); Inst119++; } } catch(e) {}try { if (Inst120 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1989,1995,103>",(stdlib)); Inst120++; } } catch(e) {}try { if (Inst121 <= 1000 && typeof (heap) != "undefined") {_RecordType("<2007,2011,103>",(heap)); Inst121++; } } catch(e) {}
+    var HEAP32 = new stdlib.Int32Array(heap);
+try { if (Inst118 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<1976,1982,103>",(HEAP32)); Inst118++; } } catch(e) {}
+
+try { if (Inst122 <= 1000 && typeof (f) != "undefined") {_RecordType("<2028,2029,105>",(f)); Inst122++; } } catch(e) {}
+    function f(i) {
+try { if (Inst123 <= 1000 && typeof (i) != "undefined") {_RecordType("<2030,2031,105>",(i)); Inst123++; } } catch(e) {}
+try { if (Inst125 <= 1000 && typeof (i) != "undefined") {_RecordType("<2045,2046,106>",(i)); Inst125++; } } catch(e) {}
+      i = i | 0;
+try { if (Inst124 <= 1000 && typeof (i) != "undefined") {_RecordType("<2041,2042,106>",(i)); Inst124++; } } catch(e) {}
+try { if (Inst126 <= 1000 && typeof (HEAP32[i << 2]) != "undefined") {_RecordType("<2065,2079,107>",(HEAP32[i << 2])); Inst126++; } } catch(e) {}try { if (Inst127 <= 1000 && typeof (HEAP32) != "undefined") {_RecordType("<2065,2071,107>",(HEAP32)); Inst127++; } } catch(e) {}try { if (Inst128 <= 1000 && typeof (i) != "undefined") {_RecordType("<2072,2073,107>",(i)); Inst128++; } } catch(e) {}
+      return HEAP32[i << 2] | 0;
+    }
+
+try { if (Inst129 <= 1000 && typeof (f) != "undefined") {_RecordType("<2114,2115,111>",(f)); Inst129++; } } catch(e) {}
+    return {
+      f: f
+    };
+  }
+
+try { if (Inst131 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<2147,2158,115>",(ArrayBuffer)); Inst131++; } } catch(e) {}try { if (Inst132 <= 1000 && typeof (kMinHeapSize) != "undefined") {_RecordType("<2159,2171,115>",(kMinHeapSize)); Inst132++; } } catch(e) {}
+  var buffer = new ArrayBuffer(kMinHeapSize);
+try { if (Inst130 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<2134,2140,115>",(buffer)); Inst130++; } } catch(e) {}
+try { if (Inst134 <= 1000 && typeof (Module) != "undefined") {_RecordType("<2193,2199,116>",(Module)); Inst134++; } } catch(e) {}try { if (Inst135 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<2210,2216,116>",(buffer)); Inst135++; } } catch(e) {}
+  var module = new Module(this, {}, buffer);
+try { if (Inst133 <= 1000 && typeof (module) != "undefined") {_RecordType("<2180,2186,116>",(module)); Inst133++; } } catch(e) {}
+  new Int32Array(buffer)[42 << 2] = 23;
+try { if (Inst136 <= 1000 && typeof (new Int32Array(buffer)[42 << 2]) != "undefined") {_RecordType("<2221,2252,117>",(new Int32Array(buffer)[42 << 2])); Inst136++; } } catch(e) {}try { if (Inst137 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<2225,2235,117>",(Int32Array)); Inst137++; } } catch(e) {}try { if (Inst138 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<2236,2242,117>",(buffer)); Inst138++; } } catch(e) {}
+  23;
+try { if (Inst139 <= 1000 && typeof (module.f) != "undefined") {_RecordType("<2267,2275,119>",(module.f)); Inst139++; } } catch(e) {}try { if (Inst140 <= 1000 && typeof (module) != "undefined") {_RecordType("<2267,2273,119>",(module)); Inst140++; } } catch(e) {}
+  module.f(42);
+})();
+

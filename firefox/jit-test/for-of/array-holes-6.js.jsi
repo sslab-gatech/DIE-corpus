@@ -1,0 +1,76 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// for-of visits each hole in an array full of holes.
+var n = 0;
+try { if (Inst0 <= 1000 && typeof (n) != "undefined") {_RecordType("<58,59,2>",(n)); Inst0++; } } catch(e) {}
+
+for (var x of Array(5)) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<75,76,4>",(x)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Array) != "undefined") {_RecordType("<80,85,4>",(Array)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<94,95,5>",(x)); Inst3++; } } catch(e) {}
+  x;
+try { if (Inst4 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<99,108,6>",(undefined)); Inst4++; } } catch(e) {}
+  undefined;
+try { if (Inst5 <= 1000 && typeof (n) != "undefined") {_RecordType("<112,113,7>",(n)); Inst5++; } } catch(e) {}
+  n++;
+}
+
+try { if (Inst6 <= 1000 && typeof (n) != "undefined") {_RecordType("<120,121,10>",(n)); Inst6++; } } catch(e) {}
+n;
+5;
+

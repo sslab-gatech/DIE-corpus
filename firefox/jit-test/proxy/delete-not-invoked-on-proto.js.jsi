@@ -1,0 +1,85 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Create Proxy that throws for everything.
+try { if (Inst2 <= 1000 && typeof (Proxy.revocable) != "undefined") {_RecordType("<72,87,5>",(Proxy.revocable)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<72,77,5>",(Proxy)); Inst3++; } } catch(e) {}
+var {
+  proxy,
+  revoke
+} = Proxy.revocable({}, {});
+try { if (Inst0 <= 1000 && typeof (proxy) != "undefined") {_RecordType("<52,57,3>",(proxy)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (revoke) != "undefined") {_RecordType("<61,67,4>",(revoke)); Inst1++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (proxy) != "undefined") {_RecordType("<122,127,7>",(proxy)); Inst5++; } } catch(e) {}
+var obj = {
+  __proto__: proxy,
+  a: 1
+}; // This revokes the proxy, so every operation on it THROWS.
+try { if (Inst4 <= 1000 && typeof (obj) != "undefined") {_RecordType("<101,104,6>",(obj)); Inst4++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (revoke) != "undefined") {_RecordType("<200,206,11>",(revoke)); Inst6++; } } catch(e) {}
+revoke();
+try { if (Inst7 <= 1000 && typeof (obj.a) != "undefined") {_RecordType("<217,222,12>",(obj.a)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (obj) != "undefined") {_RecordType("<217,220,12>",(obj)); Inst8++; } } catch(e) {}
+delete obj.a;
+true;
+try { if (Inst9 <= 1000 && typeof (obj.b) != "undefined") {_RecordType("<237,242,14>",(obj.b)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (obj) != "undefined") {_RecordType("<237,240,14>",(obj)); Inst10++; } } catch(e) {}
+delete obj.b;
+true;
+

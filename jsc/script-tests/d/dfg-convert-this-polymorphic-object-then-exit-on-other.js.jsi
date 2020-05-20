@@ -1,0 +1,115 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Tests that a convert_this optimized for the case where this is an object with polymorphic structure behaves correctly when you then pass null.");
+
+try { if (Inst2 <= 1000 && typeof (foo) != "undefined") {_RecordType("<169,172,3>",(foo)); Inst2++; } } catch(e) {}
+function foo() {
+try { if (Inst3 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<186,192,4>",(this.x)); Inst3++; } } catch(e) {}
+  return this.x;
+}
+
+x = 42;
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<197,198,7>",(x)); Inst4++; } } catch(e) {}
+silentTestPass = true;
+try { if (Inst5 <= 1000 && typeof (silentTestPass) != "undefined") {_RecordType("<205,219,8>",(silentTestPass)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<228,236,9>",(noInline)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (foo) != "undefined") {_RecordType("<237,240,9>",(foo)); Inst7++; } } catch(e) {}
+noInline(foo);
+
+for (var i = 0; i < 1000; i++) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<253,254,11>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<260,261,11>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<270,271,11>",(i)); Inst10++; } } catch(e) {}
+  // i = dfgIncrement({f:foo, i:i + 1, n:500})) {
+  var me;
+try { if (Inst11 <= 1000 && typeof (me) != "undefined") {_RecordType("<333,335,13>",(me)); Inst11++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<344,345,15>",(i)); Inst12++; } } catch(e) {}
+  if (i < 150) {
+    me = this;
+try { if (Inst13 <= 1000 && typeof (me) != "undefined") {_RecordType("<359,361,16>",(me)); Inst13++; } } catch(e) {}
+  } else {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<389,390,18>",(i)); Inst14++; } } catch(e) {}
+    if (i < 950) {
+      me = {
+        x: 42,
+        y: 62
+      };
+try { if (Inst15 <= 1000 && typeof (me) != "undefined") {_RecordType("<406,408,19>",(me)); Inst15++; } } catch(e) {}
+    } else {
+      me = null;
+try { if (Inst16 <= 1000 && typeof (me) != "undefined") {_RecordType("<470,472,24>",(me)); Inst16++; } } catch(e) {}
+    }
+  }
+
+try { if (Inst17 <= 1000 && typeof (foo.call) != "undefined") {_RecordType("<494,502,28>",(foo.call)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (foo) != "undefined") {_RecordType("<494,497,28>",(foo)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (me) != "undefined") {_RecordType("<503,505,28>",(me)); Inst19++; } } catch(e) {}
+  foo.call(me);
+}
+

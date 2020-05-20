@@ -1,0 +1,130 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test for one annoying case of the EliminateUnreachableCode
+// optimization.  Here the dominators change and also phis are
+// eliminated.
+try { if (Inst0 <= 1000 && typeof (test1) != "undefined") {_RecordType("<149,154,4>",(test1)); Inst0++; } } catch(e) {}
+function test1(v) {
+try { if (Inst1 <= 1000 && typeof (v) != "undefined") {_RecordType("<155,156,4>",(v)); Inst1++; } } catch(e) {}
+  var i = 0;
+try { if (Inst2 <= 1000 && typeof (i) != "undefined") {_RecordType("<166,167,5>",(i)); Inst2++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (v) != "undefined") {_RecordType("<180,181,7>",(v)); Inst3++; } } catch(e) {}
+  if (v) {
+try { if (Inst4 <= 1000 && typeof (v) != "undefined") {_RecordType("<193,194,8>",(v)); Inst4++; } } catch(e) {}
+    if (v) {
+      i += 1;
+try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<204,205,9>",(i)); Inst5++; } } catch(e) {}
+    } else {
+      i += 10;
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<231,232,11>",(i)); Inst6++; } } catch(e) {}
+    }
+
+    i += 100;
+try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<251,252,14>",(i)); Inst7++; } } catch(e) {}
+  } else {
+try { if (Inst8 <= 1000 && typeof (v) != "undefined") {_RecordType("<280,281,16>",(v)); Inst8++; } } catch(e) {}
+    if (v) {
+      i += 1000;
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<291,292,17>",(i)); Inst9++; } } catch(e) {}
+    } else {
+      i += 10000;
+try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<321,322,19>",(i)); Inst10++; } } catch(e) {}
+    }
+
+    i += 100000;
+try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<344,345,22>",(i)); Inst11++; } } catch(e) {}
+  }
+
+  i += 1000000;
+try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<364,365,25>",(i)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<387,388,26>",(i)); Inst13++; } } catch(e) {}
+  return i;
+}
+
+try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<402,406,29>",(test)); Inst14++; } } catch(e) {}
+function test() {
+try { if (Inst15 <= 1000 && typeof (test1) != "undefined") {_RecordType("<413,418,30>",(test1)); Inst15++; } } catch(e) {}
+  test1(true);
+  1000101;
+try { if (Inst16 <= 1000 && typeof (test1) != "undefined") {_RecordType("<439,444,32>",(test1)); Inst16++; } } catch(e) {}
+  test1(false);
+  1110000;
+}
+
+for (var i = 0; i < 100; i++) {
+try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<476,477,36>",(i)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<483,484,36>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<492,493,36>",(i)); Inst19++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (test) != "undefined") {_RecordType("<501,505,37>",(test)); Inst20++; } } catch(e) {}
+  test();
+}
+

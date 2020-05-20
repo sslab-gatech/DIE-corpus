@@ -1,0 +1,145 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 635389;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<196,205,6>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Infinite recursion via [].{toString,toLocaleString,join}';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<220,227,7>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<290,295,8>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<296,305,8>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<315,322,8>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst13 <= 1000 && typeof (e) != "undefined") {_RecordType("<492,493,18>",(e)); Inst13++; } } catch(e) {}
+try {
+  var x = [];
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<387,388,14>",(x)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Array.prototype.toString) != "undefined") {_RecordType("<406,430,15>",(Array.prototype.toString)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<406,421,15>",(Array.prototype)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Array) != "undefined") {_RecordType("<406,411,15>",(Array)); Inst10++; } } catch(e) {}
+  x.join = Array.prototype.toString;
+try { if (Inst6 <= 1000 && typeof (x.join) != "undefined") {_RecordType("<397,403,15>",(x.join)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<397,398,15>",(x)); Inst7++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (x) != "undefined") {_RecordType("<439,440,16>",(x)); Inst11++; } } catch(e) {}
+  "" + x;
+try { if (Inst12 <= 1000 && typeof (Error) != "undefined") {_RecordType("<454,459,17>",(Error)); Inst12++; } } catch(e) {}
+  throw new Error("should have thrown");
+} catch (e) {
+try { if (Inst14 <= 1000 && typeof (e) != "undefined") {_RecordType("<499,500,19>",(e)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<512,525,19>",(InternalError)); Inst15++; } } catch(e) {}
+  e instanceof InternalError;
+  true;
+  "should have thrown for over-recursion";
+}
+
+try { if (Inst25 <= 1000 && typeof (e) != "undefined") {_RecordType("<739,740,31>",(e)); Inst25++; } } catch(e) {}
+try {
+try { if (Inst17 <= 1000 && typeof (Array.prototype.toString) != "undefined") {_RecordType("<613,637,26>",(Array.prototype.toString)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<613,628,26>",(Array.prototype)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Array) != "undefined") {_RecordType("<613,618,26>",(Array)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Array.prototype.toString) != "undefined") {_RecordType("<649,673,27>",(Array.prototype.toString)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<649,664,27>",(Array.prototype)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Array) != "undefined") {_RecordType("<649,654,27>",(Array)); Inst22++; } } catch(e) {}
+  var x = {
+    toString: Array.prototype.toString,
+    join: Array.prototype.toString
+  };
+try { if (Inst16 <= 1000 && typeof (x) != "undefined") {_RecordType("<593,594,25>",(x)); Inst16++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (x) != "undefined") {_RecordType("<686,687,29>",(x)); Inst23++; } } catch(e) {}
+  "" + x;
+try { if (Inst24 <= 1000 && typeof (Error) != "undefined") {_RecordType("<701,706,30>",(Error)); Inst24++; } } catch(e) {}
+  throw new Error("should have thrown");
+} catch (e) {
+try { if (Inst26 <= 1000 && typeof (e) != "undefined") {_RecordType("<746,747,32>",(e)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<759,772,32>",(InternalError)); Inst27++; } } catch(e) {}
+  e instanceof InternalError;
+  true;
+  "should have thrown for over-recursion";
+}
+/******************************************************************************/
+
+
+try { if (Inst28 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<921,934,39>",(reportCompare)); Inst28++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst29 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<955,968,40>",(reportCompare)); Inst29++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst30 <= 1000 && typeof (print) != "undefined") {_RecordType("<985,990,43>",(print)); Inst30++; } } catch(e) {}
+print("All tests passed!");
+

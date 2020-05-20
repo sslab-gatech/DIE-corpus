@@ -1,0 +1,570 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function t1() {
+  var value;
+  var obj = {
+    m() {
+        value = super.value();
+    }
+
+  };
+  console.log(undefined, value);
+  obj.m();
+  console.log(undefined, value);
+  Object.setPrototypeOf(obj, {
+    value: "super"
+  });
+  obj.m();
+  value;
+}
+
+t1();
+
+function t2() {
+  var value;
+  var obj = {
+    m() {
+      value = "identifier";
+      super.prop;
+    },
+
+    n() {
+      value = "expression";
+      super["prop"];
+    }
+
+  };
+  Object.setPrototypeOf(obj, null);
+
+  try {
+    obj.m;
+  } catch (e) {
+    ;
+  }
+
+  try {
+    obj.n;
+  } catch (e) {
+    ;
+  }
+}
+
+t2();
+
+function t3() {
+  "use strict";
+
+  var obj0 = {
+    m() {
+      super.prop = "identifier";
+      Object.freeze(obj0);
+      super.prop = "super";
+    }
+
+  };
+  var obj1 = {
+    m() {
+      super['prop'] = "expression";
+      Object.freeze(obj1);
+      super['prop'] = "super";
+    }
+
+  };
+  var base = {};
+  Object.setPrototypeOf(obj0, base);
+  Object.setPrototypeOf(obj1, base);
+
+  try {
+    obj0.m();
+  } catch (e) {
+    ;
+  }
+
+  obj0.prop;
+
+  try {
+    obj1.m();
+  } catch (e) {
+    ;
+  }
+
+  obj1.prop;
+}
+
+t3();
+
+function t4() {
+  var obj = {
+    m() {
+      super.x = 17;
+    },
+
+    n() {
+      'use strict';
+
+      super.x = 19;
+    }
+
+  };
+  var bar = {
+    x: 11
+  };
+  obj.m.call(bar);
+  console.log(17, bar.x);
+  obj.n.call(bar);
+  console.log(19, bar.x);
+  obj.m.call(42); // noop in non-strict mode
+
+  try {
+    obj.n.call(42);
+  } catch (e) {
+    ;
+  }
+}
+
+t4();
+
+function t5() {
+  class A {
+    m() {
+      super.prop = "identifier";
+      Object.freeze(A.prototype);
+      super.prop = "super";
+    }
+
+    test() {
+      try {
+        A.prototype.m();
+      } catch (e) {
+        ;
+      }
+
+      A.prototype.prop;
+    }
+
+  }
+
+  A.prototype.test();
+
+  class B {
+    m() {
+      super['prop'] = "expression";
+      Object.freeze(B.prototype);
+      super['prop'] = "super";
+    }
+
+    test() {
+      try {
+        B.prototype.m();
+      } catch (e) {
+        ;
+      }
+
+      B.prototype.prop;
+    }
+
+  }
+
+  B.prototype.test();
+}
+
+t5();
+
+function t6() {
+  var valuex, valuey, valuez, valuet;
+  var a = {
+    x: 'a',
+    y: 'a',
+    z: 'a',
+    t: 'a'
+  };
+  var b = {
+    y: 'b',
+    t: 'b'
+  };
+  Object.setPrototypeOf(b, a);
+  var obj = {
+    x: 'obj',
+    y: 'obj',
+    z: 'obj',
+    t: 'obj',
+
+    m() {
+      valuex = eval('super.x');
+      valuey = eval('super.y');
+    },
+
+    n() {
+      valuez = eval('super["z"]');
+      valuet = eval('super["t"]');
+    }
+
+  };
+  Object.setPrototypeOf(obj, b);
+  obj.m();
+  console.log("a", valuex);
+  console.log("b", valuey);
+  obj.n();
+  console.log("a", valuez);
+  console.log("b", valuet);
+}
+
+t6();
+
+function t7() {
+  var value = undefined;
+
+  try {
+    eval('super[value = 0]');
+  } catch (e) {
+    ;
+  }
+
+  console.log(0, value);
+}
+
+t7();
+
+function t8() {
+  var value = undefined;
+
+  class A extends Object {
+    constructor() {
+      super(value = 1);
+    }
+
+  }
+
+  Object.setPrototypeOf(A, toString);
+
+  try {
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  console.log(undefined, value);
+}
+
+t8();
+
+function t9() {
+  try {
+    class A extends Object {
+      constructor() {
+        delete super.prop;
+      }
+
+    }
+
+    new A();
+  } catch (e) {
+    ;
+  }
+}
+
+t9();
+
+function t10() {
+  var value = 0;
+
+  try {
+    class A extends null {
+      constructor() {
+        value++;
+        super();
+        value++;
+      }
+
+    }
+
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  console.log(1, value);
+}
+
+t10();
+
+function t11() {
+  var count = 0;
+
+  try {
+    class A {
+      constructor() {
+        eval("count++; super();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A {
+      constructor() {
+        (() => eval("count++; super();"))();
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A {
+      constructor() {
+        (() => {
+          (() => eval("count++; super();"))();
+        })();
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A {
+      constructor() {
+        eval("eval(\"count++; super();\");");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A {
+      constructor() {
+        eval("(()=>{count++; super();})();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A {
+      constructor() {
+        eval("(()=>eval(\"count++; super();\"))();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  console.log(0, count);
+
+  try {
+    class A extends Object {
+      constructor() {
+        eval("count++; super();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Object {
+      constructor() {
+        (() => eval("count++; super();"))();
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Object {
+      constructor() {
+        (() => {
+          (() => eval("count++; super();"))();
+        })();
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Object {
+      constructor() {
+        eval("eval(\"count++; super();\");");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Object {
+      constructor() {
+        eval("(()=>{count++; super();})();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Object {
+      constructor() {
+        eval("(()=>eval(\"count++; super();\"))();");
+      }
+
+    }
+
+    ;
+    new A();
+  } catch (e) {
+    ;
+  }
+
+  console.log(6, count);
+}
+
+t11();
+
+function t12() {
+  function A() {
+    ;
+  }
+
+  let s;
+
+  class B extends A {
+    constructor() {
+      s = super();
+    }
+
+  }
+
+  const b = new B();
+  console.log(b, s);
+}
+
+t12();
+
+function t13() {
+  class A {}
+
+  let s;
+
+  class B extends A {
+    constructor() {
+      s = super();
+    }
+
+  }
+
+  const b = new B();
+  console.log(b, s);
+}
+
+t13();
+
+function t14() {
+  function A() {
+    return 4;
+  }
+
+  let s;
+
+  class B extends A {
+    constructor() {
+      s = super();
+    }
+
+  }
+
+  const b = new B();
+  console.log(b, s);
+}
+
+t14();
+
+function t15() {
+  function A() {
+    return {
+      a: 1
+    };
+  }
+
+  let s;
+
+  class B extends A {
+    constructor() {
+      s = super();
+    }
+
+  }
+
+  const b = new B();
+  console.log(b, s);
+  console.log(1, b.a);
+}
+
+t15();
+
+function t16() {
+  let s;
+
+  class B extends Uint32Array {
+    constructor() {
+      s = super();
+    }
+
+  }
+
+  const b = new B();
+  console.log(b, s);
+}
+
+t16();

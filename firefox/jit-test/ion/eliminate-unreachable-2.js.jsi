@@ -1,0 +1,120 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test for one annoying case of the EliminateUnreachableCode
+// optimization.  Here the dominator of print("Goodbye") changes to be
+// the print("Hello") after optimization.
+try { if (Inst0 <= 1000 && typeof (test1) != "undefined") {_RecordType("<184,189,4>",(test1)); Inst0++; } } catch(e) {}
+function test1(v) {
+try { if (Inst1 <= 1000 && typeof (v) != "undefined") {_RecordType("<190,191,4>",(v)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (v) != "undefined") {_RecordType("<201,202,5>",(v)); Inst2++; } } catch(e) {}
+  if (v) {
+try { if (Inst3 <= 1000 && typeof (v) != "undefined") {_RecordType("<214,215,6>",(v)); Inst3++; } } catch(e) {}
+    if (v) {
+try { if (Inst4 <= 1000 && typeof (v) != "undefined") {_RecordType("<225,226,7>",(v)); Inst4++; } } catch(e) {}
+      v;
+try { if (Inst5 <= 1000 && typeof (v) != "undefined") {_RecordType("<234,235,8>",(v)); Inst5++; } } catch(e) {}
+      v;
+    } else {
+      0;
+      1;
+    }
+  } else {
+try { if (Inst6 <= 1000 && typeof (v) != "undefined") {_RecordType("<293,294,14>",(v)); Inst6++; } } catch(e) {}
+    if (v) {
+      0;
+      1;
+    } else {
+try { if (Inst7 <= 1000 && typeof (v) != "undefined") {_RecordType("<335,336,18>",(v)); Inst7++; } } catch(e) {}
+      v;
+try { if (Inst8 <= 1000 && typeof (v) != "undefined") {_RecordType("<344,345,19>",(v)); Inst8++; } } catch(e) {}
+      v;
+    }
+  }
+
+try { if (Inst9 <= 1000 && typeof (v) != "undefined") {_RecordType("<360,361,23>",(v)); Inst9++; } } catch(e) {}
+  v;
+try { if (Inst10 <= 1000 && typeof (v) != "undefined") {_RecordType("<365,366,24>",(v)); Inst10++; } } catch(e) {}
+  v;
+}
+
+try { if (Inst11 <= 1000 && typeof (test) != "undefined") {_RecordType("<380,384,27>",(test)); Inst11++; } } catch(e) {}
+function test() {
+try { if (Inst12 <= 1000 && typeof (test1) != "undefined") {_RecordType("<391,396,28>",(test1)); Inst12++; } } catch(e) {}
+  test1(true);
+try { if (Inst13 <= 1000 && typeof (test1) != "undefined") {_RecordType("<406,411,29>",(test1)); Inst13++; } } catch(e) {}
+  test1(false);
+}
+
+for (var i = 0; i < 100; i++) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<432,433,32>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<439,440,32>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<448,449,32>",(i)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (test) != "undefined") {_RecordType("<457,461,33>",(test)); Inst17++; } } catch(e) {}
+  test();
+}
+

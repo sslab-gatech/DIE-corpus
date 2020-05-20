@@ -1,0 +1,106 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+//-----------------------------------------------------------------------------
+var gTestfile = "arrow-function-in-for-statement-head.js";
+try { if (Inst0 <= 1000 && typeof (gTestfile) != "undefined") {_RecordType("<189,198,4>",(gTestfile)); Inst0++; } } catch(e) {}
+var BUGNUMBER = 1163851;
+try { if (Inst1 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<248,257,5>",(BUGNUMBER)); Inst1++; } } catch(e) {}
+var summary = "|for (x => 0 in 1;;) break;| must be a syntax error per ES6, not an " + "elaborate nop";
+try { if (Inst2 <= 1000 && typeof (summary) != "undefined") {_RecordType("<273,280,6>",(summary)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<373,378,7>",(print)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<379,388,7>",(BUGNUMBER)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (summary) != "undefined") {_RecordType("<398,405,7>",(summary)); Inst5++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst8 <= 1000 && typeof (e) != "undefined") {_RecordType("<550,551,15>",(e)); Inst8++; } } catch(e) {}
+try {
+try { if (Inst6 <= 1000 && typeof (Function) != "undefined") {_RecordType("<466,474,13>",(Function)); Inst6++; } } catch(e) {}
+  Function("for (x => 0 in 1;;) break;");
+try { if (Inst7 <= 1000 && typeof (Error) != "undefined") {_RecordType("<518,523,14>",(Error)); Inst7++; } } catch(e) {}
+  throw new Error("didn't throw");
+} catch (e) {
+try { if (Inst9 <= 1000 && typeof (e) != "undefined") {_RecordType("<557,558,16>",(e)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<570,581,16>",(SyntaxError)); Inst10++; } } catch(e) {}
+  e instanceof SyntaxError;
+  true;
+try { if (Inst11 <= 1000 && typeof (e) != "undefined") {_RecordType("<625,626,18>",(e)); Inst11++; } } catch(e) {}
+  "expected syntax error, got " + e;
+}
+/******************************************************************************/
+
+
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<724,737,23>",(reportCompare)); Inst12++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst13 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<758,771,24>",(reportCompare)); Inst13++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst14 <= 1000 && typeof (print) != "undefined") {_RecordType("<788,793,27>",(print)); Inst14++; } } catch(e) {}
+print("Tests complete");
+

@@ -1,0 +1,129 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ * Contributor:
+ *   Jeff Walden <jwalden+code@mit.edu>
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 880591;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<252,261,8>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "Assertion redefining length property of a frozen dictionary-mode array";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<276,283,9>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<360,365,10>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<366,375,10>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<385,392,10>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst5 <= 1000 && typeof (convertToDictionaryMode) != "undefined") {_RecordType("<454,477,15>",(convertToDictionaryMode)); Inst5++; } } catch(e) {}
+function convertToDictionaryMode(arr) {
+try { if (Inst6 <= 1000 && typeof (arr) != "undefined") {_RecordType("<478,481,15>",(arr)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<487,508,16>",(Object.defineProperty)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object) != "undefined") {_RecordType("<487,493,16>",(Object)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arr) != "undefined") {_RecordType("<509,512,16>",(arr)); Inst9++; } } catch(e) {}
+  Object.defineProperty(arr, 0, {
+    configurable: true
+  });
+try { if (Inst10 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<550,571,19>",(Object.defineProperty)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Object) != "undefined") {_RecordType("<550,556,19>",(Object)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (arr) != "undefined") {_RecordType("<572,575,19>",(arr)); Inst12++; } } catch(e) {}
+  Object.defineProperty(arr, 1, {
+    configurable: true
+  });
+try { if (Inst13 <= 1000 && typeof (arr[0]) != "undefined") {_RecordType("<620,626,22>",(arr[0])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (arr) != "undefined") {_RecordType("<620,623,22>",(arr)); Inst14++; } } catch(e) {}
+  delete arr[0];
+}
+
+var arr = [];
+try { if (Inst15 <= 1000 && typeof (arr) != "undefined") {_RecordType("<635,638,25>",(arr)); Inst15++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (convertToDictionaryMode) != "undefined") {_RecordType("<645,668,26>",(convertToDictionaryMode)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (arr) != "undefined") {_RecordType("<669,672,26>",(arr)); Inst17++; } } catch(e) {}
+convertToDictionaryMode(arr);
+try { if (Inst18 <= 1000 && typeof (Object.freeze) != "undefined") {_RecordType("<675,688,27>",(Object.freeze)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Object) != "undefined") {_RecordType("<675,681,27>",(Object)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (arr) != "undefined") {_RecordType("<689,692,27>",(arr)); Inst20++; } } catch(e) {}
+Object.freeze(arr);
+try { if (Inst21 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<695,716,28>",(Object.defineProperty)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Object) != "undefined") {_RecordType("<695,701,28>",(Object)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (arr) != "undefined") {_RecordType("<717,720,28>",(arr)); Inst23++; } } catch(e) {}
+Object.defineProperty(arr, "length", {});
+/******************************************************************************/
+
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<830,843,31>",(reportCompare)); Inst24++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst25 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<864,877,32>",(reportCompare)); Inst25++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst26 <= 1000 && typeof (print) != "undefined") {_RecordType("<894,899,35>",(print)); Inst26++; } } catch(e) {}
+print("Tests complete");
+

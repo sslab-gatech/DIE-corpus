@@ -1,0 +1,319 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var x0 = 0;
+
+(function () {
+  var x1 = 1;
+
+  function f1() {
+    var x11 = 11;
+    print(x0, x1, x11, typeof f1);
+  }
+
+  f1();
+
+  function f2(a2) {
+    print(a2, arguments[0], typeof arguments, typeof f1);
+  }
+
+  f2("a2");
+})();
+
+(function (a0) {
+  var x1 = 1;
+
+  function f1() {
+    print(x0, x1, a0, typeof f1);
+  }
+
+  f1();
+})("a0");
+
+(function f(a0) {
+  var x1 = 1;
+
+  function f1() {
+    print(typeof f, x0, x1, a0, typeof f1);
+  }
+
+  f1();
+})("a0");
+
+(function f(a0, f) {
+  var x1 = 1;
+
+  function f1() {
+    print(typeof f, x0, x1, a0, typeof f1);
+  }
+
+  f1();
+})("a0");
+
+(function f0() {
+  var x1 = 1;
+
+  function f1() {
+    var x11 = 11;
+    print(x0, x1, x11, typeof f1, typeof f0);
+  }
+
+  f1();
+
+  function f2(a2) {
+    print(a2, arguments[0], typeof arguments, typeof f1, typeof f0);
+  }
+
+  f2("a2");
+})();
+
+(function f0(a0) {
+  var x1 = 1;
+
+  function f1() {
+    print(x0, x1, a0, typeof f1, typeof f0);
+  }
+
+  f1();
+})("a0");
+
+(function f0(a0, a1) {
+  eval("x1 = 1; var x3 = 3");
+  var x2 = 2;
+
+  function f1() {
+    print(x0, x1, x2, x3, a0, a1, typeof f1, typeof f0);
+  }
+
+  f1();
+})("a0", "a1");
+
+(function f0(a0, a1) {
+  eval("x1 = 1");
+  var x2 = 2;
+
+  function f1(af1) {
+    function f2() {
+      print(x0, x1, x2, a0, a1, af1, typeof f1, typeof f0);
+    }
+
+    f2();
+  }
+
+  f1("af1");
+})("a0", "a1");
+
+(function f0(a0, a1) {
+  eval("x1 = 1");
+  var x2 = 2;
+
+  (function () {
+    (function () {
+      function f3() {
+        print(x0, x1, x2, a0, a1, typeof f0);
+      }
+
+      f3();
+    })();
+  })();
+})("a0", "a1");
+
+(function () {
+  function foo(a, b) {
+    print(arguments, typeof bar);
+
+    function bar() {
+      ;
+    }
+  }
+
+  foo(1, 2);
+})();
+
+var a = "global";
+var b = "global";
+var x = {
+  a: "with"
+};
+
+with (x) {
+  var f1 = function () {
+    function f2() {
+      print(a, b);
+    }
+
+    f2();
+  };
+
+  f1();
+}
+
+(function () {
+  function f0() {
+    with (x) {
+      var f1 = function () {
+        print(a, b);
+      };
+
+      f1();
+    }
+  }
+
+  f0();
+})();
+
+(function () {
+  var a = "local";
+  var b = "local";
+
+  function f0() {
+    with (x) {
+      print(a, b);
+    }
+  }
+
+  f0();
+})();
+
+(function () {
+  var obj = {};
+
+  function foo() {
+    ;
+  }
+
+  function bar() {
+    with (obj) {
+      foo();
+    }
+  }
+
+  bar();
+})();
+
+(function () {
+  var i = 0;
+
+  function foo() {
+    i++;
+
+    if (i > 0) {
+      return;
+    }
+
+    with (x) {
+      foo();
+    }
+  }
+
+  foo();
+})();
+
+(function () {
+  try {
+    print(no_such_var);
+  } catch (e) {
+    // This is inside catch, should not be deferred.
+    (0, function () {
+      print(e);
+    })();
+  }
+})();
+
+(function () {
+  function f0() {
+    try {
+      print(no_such_var);
+    } catch (e) {
+      print(no_such_var);
+    } // This can be deferred
+
+
+    (0, function () {
+      ;
+    })();
+  }
+
+  try {
+    f0();
+  } catch (e) {
+    print(e);
+  }
+})();
+
+(function () {
+  function f0() {
+
+    try {
+      print(no_such_var);
+    } catch (e) {
+      print(no_such_var);
+    } // This can be deferred
+
+
+    (0, function () {
+      ;
+    })();
+  }
+
+  try {
+    f0();
+  } catch (e) {
+    print(e);
+  }
+})();
+
+(function () {
+  function foo() {
+    function unwrapArguments(arguments) {
+      for (var i = 0; i < arguments.length; i++) {
+        print(arguments[i]);
+      }
+    }
+
+    function bar() {
+      unwrapArguments();
+    }
+
+    bar();
+  }
+
+  try {
+    foo();
+  } catch (e) {
+    print(e);
+  }
+})();
+
+(function () {
+  function foo(x, x, x, x, x, x) {
+    function bar() {
+      ;
+    }
+
+    ;
+    eval('print("x:", x)'); // eval
+  }
+
+  foo(0);
+  foo(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+})();
+
+(function () {
+  function foo(x, x, x, x, x, x) {
+    function bar() {
+      ;
+    }
+
+    ;
+    print(x);
+
+    for (var i = 0; i < arguments.length; i++) {
+      print(arguments[i]);
+    }
+  }
+
+  foo(0);
+  foo(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+})();

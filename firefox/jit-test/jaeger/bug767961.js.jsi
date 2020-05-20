@@ -1,0 +1,67 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (C) != "undefined") {_RecordType("<9,10,1>",(C)); Inst0++; } } catch(e) {}
+function C() {
+try { if (Inst2 <= 1000 && typeof (this[this.y = "foo"]) != "undefined") {_RecordType("<26,46,2>",(this[this.y = "foo"])); Inst2++; } } catch(e) {}
+  this.x = this[this.y = "foo"]--;
+try { if (Inst1 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<17,23,2>",(this.x)); Inst1++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (this.y) != "undefined") {_RecordType("<31,37,2>",(this.y)); Inst3++; } } catch(e) {}
+} // Don't crash.
+
+
+try { if (Inst4 <= 1000 && typeof (C) != "undefined") {_RecordType("<74,75,6>",(C)); Inst4++; } } catch(e) {}
+new C();
+

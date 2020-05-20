@@ -1,0 +1,102 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(Android)
+
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ * Contributors: Gary Kwong and Nicholas Nethercote
+ */
+try { if (Inst0 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<206,212,8>",(gczeal)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (gc) != "undefined") {_RecordType("<238,240,8>",(gc)); Inst1++; } } catch(e) {}
+if (typeof gczeal != 'undefined' && typeof gc != 'undefined') {
+try { if (Inst9 <= 1000 && typeof (ex) != "undefined") {_RecordType("<394,396,18>",(ex)); Inst9++; } } catch(e) {}
+  try {
+try { if (Inst4 <= 1000 && typeof (e) != "undefined") {_RecordType("<323,324,12>",(e)); Inst4++; } } catch(e) {}
+    try {
+try { if (Inst2 <= 1000 && typeof (__defineGetter__) != "undefined") {_RecordType("<283,299,11>",(__defineGetter__)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (gc) != "undefined") {_RecordType("<305,307,11>",(gc)); Inst3++; } } catch(e) {}
+      __defineGetter__("x", gc);
+    } catch (e) {
+      ;
+    }
+
+try { if (Inst5 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<347,353,16>",(gczeal)); Inst5++; } } catch(e) {}
+    gczeal(1);
+try { if (Inst6 <= 1000 && typeof (print) != "undefined") {_RecordType("<362,367,17>",(print)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<368,369,17>",(x)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Array) != "undefined") {_RecordType("<371,376,17>",(Array)); Inst8++; } } catch(e) {}
+    print(x)(Array(-8));
+  } catch (ex) {
+    ;
+  }
+} // Reset gczeal.
+
+
+try { if (Inst10 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<442,448,24>",(gczeal)); Inst10++; } } catch(e) {}
+if (typeof gczeal !== 'undefined') {
+try { if (Inst11 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<470,476,25>",(gczeal)); Inst11++; } } catch(e) {}
+  gczeal(0);
+}
+
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<484,497,28>",(reportCompare)); Inst12++; } } catch(e) {}
+reportCompare("no assertion failure", "no assertion failure", "bug 563210");
+

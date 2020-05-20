@@ -1,0 +1,188 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --opt --noalways-opt
+// Test that JSResolvePromise takes a proper stability dependency
+// on the resolutions map if the infer receiver maps are unreliable
+// (as is the case for HeapConstants).
+(function () {
+  // We need an object literal which gets a stable map initially.
+try { if (Inst0 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<486,509,10>",(makeObjectWithStableMap)); Inst0++; } } catch(e) {}
+  function makeObjectWithStableMap() {
+    return {
+      a: 1,
+      b: 1,
+      c: 1
+    };
+  }
+
+try { if (Inst2 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<586,609,18>",(makeObjectWithStableMap)); Inst2++; } } catch(e) {}
+  const a = makeObjectWithStableMap();
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<582,583,18>",(a)); Inst1++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (foo) != "undefined") {_RecordType("<625,628,20>",(foo)); Inst3++; } } catch(e) {}
+  function foo() {
+try { if (Inst4 <= 1000 && typeof (Promise.resolve) != "undefined") {_RecordType("<644,659,21>",(Promise.resolve)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<644,651,21>",(Promise)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<660,661,21>",(a)); Inst6++; } } catch(e) {}
+    return Promise.resolve(a);
+  }
+
+try { if (Inst7 <= 1000 && typeof (foo) != "undefined") {_RecordType("<671,674,24>",(foo)); Inst7++; } } catch(e) {}
+  foo();
+try { if (Inst8 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<680,687,25>",(Promise)); Inst8++; } } catch(e) {}
+  Promise;
+try { if (Inst9 <= 1000 && typeof (foo) != "undefined") {_RecordType("<691,694,26>",(foo)); Inst9++; } } catch(e) {}
+  foo();
+try { if (Inst10 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<700,707,27>",(Promise)); Inst10++; } } catch(e) {}
+  Promise;
+try { if (Inst11 <= 1000 && typeof (foo) != "undefined") {_RecordType("<711,714,28>",(foo)); Inst11++; } } catch(e) {}
+  foo();
+try { if (Inst12 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<720,727,29>",(Promise)); Inst12++; } } catch(e) {}
+  Promise;
+try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<731,734,30>",(foo)); Inst13++; } } catch(e) {}
+  foo();
+  // Now invalidate the stability of a's map.
+try { if (Inst15 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<796,819,32>",(makeObjectWithStableMap)); Inst15++; } } catch(e) {}
+  const b = makeObjectWithStableMap();
+try { if (Inst14 <= 1000 && typeof (b) != "undefined") {_RecordType("<792,793,32>",(b)); Inst14++; } } catch(e) {}
+  b.d = 1; // This should deoptimize foo.
+try { if (Inst16 <= 1000 && typeof (b.d) != "undefined") {_RecordType("<825,828,33>",(b.d)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (b) != "undefined") {_RecordType("<825,826,33>",(b)); Inst17++; } } catch(e) {}
+
+try { if (Inst18 <= 1000 && typeof (foo) != "undefined") {_RecordType("<868,871,35>",(foo)); Inst18++; } } catch(e) {}
+  foo();
+})(); // Same test with async functions.
+
+
+(function () {
+  // We need an object literal which gets a stable map initially,
+  // it needs to be different from the above, otherwise the map
+  // is already not stable when we get here.
+try { if (Inst19 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<1119,1142,43>",(makeObjectWithStableMap)); Inst19++; } } catch(e) {}
+  function makeObjectWithStableMap() {
+    return {
+      x: 1,
+      y: 1
+    };
+  }
+
+try { if (Inst21 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<1207,1230,50>",(makeObjectWithStableMap)); Inst21++; } } catch(e) {}
+  const a = makeObjectWithStableMap();
+try { if (Inst20 <= 1000 && typeof (a) != "undefined") {_RecordType("<1203,1204,50>",(a)); Inst20++; } } catch(e) {}
+
+try { if (Inst22 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1252,1255,52>",(foo)); Inst22++; } } catch(e) {}
+  async function foo() {
+try { if (Inst23 <= 1000 && typeof (a) != "undefined") {_RecordType("<1271,1272,53>",(a)); Inst23++; } } catch(e) {}
+    return a;
+  }
+
+try { if (Inst24 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1281,1284,56>",(foo)); Inst24++; } } catch(e) {}
+  foo();
+try { if (Inst25 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<1290,1297,57>",(Promise)); Inst25++; } } catch(e) {}
+  Promise;
+try { if (Inst26 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1301,1304,58>",(foo)); Inst26++; } } catch(e) {}
+  foo();
+try { if (Inst27 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<1310,1317,59>",(Promise)); Inst27++; } } catch(e) {}
+  Promise;
+try { if (Inst28 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1321,1324,60>",(foo)); Inst28++; } } catch(e) {}
+  foo();
+try { if (Inst29 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<1330,1337,61>",(Promise)); Inst29++; } } catch(e) {}
+  Promise;
+try { if (Inst30 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1341,1344,62>",(foo)); Inst30++; } } catch(e) {}
+  foo();
+  // Now invalidate the stability of a's map.
+try { if (Inst32 <= 1000 && typeof (makeObjectWithStableMap) != "undefined") {_RecordType("<1406,1429,64>",(makeObjectWithStableMap)); Inst32++; } } catch(e) {}
+  const b = makeObjectWithStableMap();
+try { if (Inst31 <= 1000 && typeof (b) != "undefined") {_RecordType("<1402,1403,64>",(b)); Inst31++; } } catch(e) {}
+  b.z = 1; // This should deoptimize foo.
+try { if (Inst33 <= 1000 && typeof (b.z) != "undefined") {_RecordType("<1435,1438,65>",(b.z)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (b) != "undefined") {_RecordType("<1435,1436,65>",(b)); Inst34++; } } catch(e) {}
+
+try { if (Inst35 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1478,1481,67>",(foo)); Inst35++; } } catch(e) {}
+  foo();
+})();
+

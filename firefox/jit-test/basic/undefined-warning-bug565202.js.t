@@ -1,0 +1,1 @@
+[null,{"type":"Void"},{"type":"Void"},{"type":"Object","extra":{"shape":[]}},null,{"type":"Void"},null,{"type":"Object","extra":{"shape":[]}},{"type":"Immutable"},{"type":"Void"},{"type":"Void"},{"type":"Boolean"},null,{"type":"Boolean"}]

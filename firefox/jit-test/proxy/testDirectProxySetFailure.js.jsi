@@ -1,0 +1,171 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test handling of false return from a handler.set() hook.
+var obj = {
+  x: 1
+};
+try { if (Inst0 <= 1000 && typeof (obj) != "undefined") {_RecordType("<64,67,2>",(obj)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<94,99,5>",(Proxy)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (obj) != "undefined") {_RecordType("<100,103,5>",(obj)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (set) != "undefined") {_RecordType("<109,112,6>",(set)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (target) != "undefined") {_RecordType("<113,119,6>",(target)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (key) != "undefined") {_RecordType("<121,124,6>",(key)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (value) != "undefined") {_RecordType("<126,131,6>",(value)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<133,141,6>",(receiver)); Inst8++; } } catch(e) {}
+var p = new Proxy(obj, {
+  set(target, key, value, receiver) {
+    return false;
+  }
+
+}); // Failing to set a property is a no-op in non-strict code.
+try { if (Inst1 <= 1000 && typeof (p) != "undefined") {_RecordType("<86,87,5>",(p)); Inst1++; } } catch(e) {}
+
+p.x = 2;
+try { if (Inst9 <= 1000 && typeof (p.x) != "undefined") {_RecordType("<233,236,12>",(p.x)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (p) != "undefined") {_RecordType("<233,234,12>",(p)); Inst10++; } } catch(e) {}
+2;
+try { if (Inst11 <= 1000 && typeof (obj.x) != "undefined") {_RecordType("<245,250,14>",(obj.x)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (obj) != "undefined") {_RecordType("<245,248,14>",(obj)); Inst12++; } } catch(e) {}
+obj.x;
+1;
+
+(() => {
+  "use strict";
+
+  p.x = 2;
+try { if (Inst13 <= 1000 && typeof (p.x) != "undefined") {_RecordType("<284,287,20>",(p.x)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (p) != "undefined") {_RecordType("<284,285,20>",(p)); Inst14++; } } catch(e) {}
+})();
+
+try { if (Inst15 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<300,309,23>",(TypeError)); Inst15++; } } catch(e) {}
+TypeError;
+try { if (Inst16 <= 1000 && typeof (obj.x) != "undefined") {_RecordType("<311,316,24>",(obj.x)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (obj) != "undefined") {_RecordType("<311,314,24>",(obj)); Inst17++; } } catch(e) {}
+obj.x;
+1;
+
+(() => {
+  "use strict";
+
+  p.x = 1;
+try { if (Inst18 <= 1000 && typeof (p.x) != "undefined") {_RecordType("<350,353,30>",(p.x)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (p) != "undefined") {_RecordType("<350,351,30>",(p)); Inst19++; } } catch(e) {}
+})();
+
+try { if (Inst20 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<366,375,33>",(TypeError)); Inst20++; } } catch(e) {}
+TypeError;
+try { if (Inst21 <= 1000 && typeof (obj.x) != "undefined") {_RecordType("<377,382,34>",(obj.x)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (obj) != "undefined") {_RecordType("<377,380,34>",(obj)); Inst22++; } } catch(e) {}
+obj.x;
+1;
+
+(() => {
+  "use strict";
+
+  p.z = 1;
+try { if (Inst23 <= 1000 && typeof (p.z) != "undefined") {_RecordType("<416,419,40>",(p.z)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (p) != "undefined") {_RecordType("<416,417,40>",(p)); Inst24++; } } catch(e) {}
+})();
+
+try { if (Inst25 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<432,441,43>",(TypeError)); Inst25++; } } catch(e) {}
+TypeError;
+try { if (Inst26 <= 1000 && typeof (obj) != "undefined") {_RecordType("<450,453,44>",(obj)); Inst26++; } } catch(e) {}
+"z" in obj;
+false;
+// [].sort() mutates its operand only by doing strict [[Set]] calls.
+var arr = ["not", "already", "in", "order"];
+try { if (Inst27 <= 1000 && typeof (arr) != "undefined") {_RecordType("<535,538,47>",(arr)); Inst27++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<589,594,48>",(Proxy)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (arr) != "undefined") {_RecordType("<595,598,48>",(arr)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (set) != "undefined") {_RecordType("<604,607,49>",(set)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (target) != "undefined") {_RecordType("<608,614,49>",(target)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (key) != "undefined") {_RecordType("<616,619,49>",(key)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (value) != "undefined") {_RecordType("<621,626,49>",(value)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<628,636,49>",(receiver)); Inst35++; } } catch(e) {}
+var p2 = new Proxy(arr, {
+  set(target, key, value, receiver) {
+    return false;
+  }
+
+});
+try { if (Inst28 <= 1000 && typeof (p2) != "undefined") {_RecordType("<580,582,48>",(p2)); Inst28++; } } catch(e) {}
+
+try { if (Inst36 <= 1000 && typeof (p2.sort) != "undefined") {_RecordType("<675,682,55>",(p2.sort)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (p2) != "undefined") {_RecordType("<675,677,55>",(p2)); Inst37++; } } catch(e) {}
+(() => p2.sort())();
+
+try { if (Inst38 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<690,699,57>",(TypeError)); Inst38++; } } catch(e) {}
+TypeError;
+try { if (Inst39 <= 1000 && typeof (arr) != "undefined") {_RecordType("<701,704,58>",(arr)); Inst39++; } } catch(e) {}
+arr;
+["not", "already", "in", "order"];
+

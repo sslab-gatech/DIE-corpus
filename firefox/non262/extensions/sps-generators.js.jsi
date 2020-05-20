@@ -1,0 +1,136 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!xulRuntime.shell)
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 822041;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<229,238,5>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "Live generators should not cache Gecko Profiler state";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<253,260,6>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<320,325,7>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<326,335,7>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<345,352,7>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+
+try { if (Inst5 <= 1000 && typeof (gen) != "undefined") {_RecordType("<366,369,9>",(gen)); Inst5++; } } catch(e) {}
+function* gen() {
+try { if (Inst7 <= 1000 && typeof (turnoff) != "undefined") {_RecordType("<390,397,10>",(turnoff)); Inst7++; } } catch(e) {}
+  var x = yield turnoff();
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<380,381,10>",(x)); Inst6++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (x) != "undefined") {_RecordType("<409,410,11>",(x)); Inst8++; } } catch(e) {}
+  yield x;
+  yield 'bye';
+}
+
+try { if (Inst9 <= 1000 && typeof (turnoff) != "undefined") {_RecordType("<439,446,15>",(turnoff)); Inst9++; } } catch(e) {}
+function turnoff() {
+try { if (Inst10 <= 1000 && typeof (print) != "undefined") {_RecordType("<453,458,16>",(print)); Inst10++; } } catch(e) {}
+  print("Turning off profiler\n");
+  return 'hi';
+}
+
+for (var slowAsserts of [true, false]) {
+try { if (Inst11 <= 1000 && typeof (slowAsserts) != "undefined") {_RecordType("<513,524,20>",(slowAsserts)); Inst11++; } } catch(e) {}
+  // The slowAssertions setting is not expected to matter
+try { if (Inst12 <= 1000 && typeof (slowAsserts) != "undefined") {_RecordType("<609,620,22>",(slowAsserts)); Inst12++; } } catch(e) {}
+  if (slowAsserts) {
+    ;
+  } else {
+    ;
+  }
+
+try { if (Inst14 <= 1000 && typeof (gen) != "undefined") {_RecordType("<658,661,28>",(gen)); Inst14++; } } catch(e) {}
+  g = gen();
+try { if (Inst13 <= 1000 && typeof (g) != "undefined") {_RecordType("<654,655,28>",(g)); Inst13++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (g.next().value) != "undefined") {_RecordType("<667,681,29>",(g.next().value)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (g.next) != "undefined") {_RecordType("<667,673,29>",(g.next)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (g) != "undefined") {_RecordType("<667,668,29>",(g)); Inst17++; } } catch(e) {}
+  g.next().value;
+  'hi';
+try { if (Inst18 <= 1000 && typeof (g.next('gurgitating...').value) != "undefined") {_RecordType("<693,723,31>",(g.next('gurgitating...').value)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (g.next) != "undefined") {_RecordType("<693,699,31>",(g.next)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (g) != "undefined") {_RecordType("<693,694,31>",(g)); Inst20++; } } catch(e) {}
+  g.next('gurgitating...').value;
+  'gurgitating...';
+
+  for (var x of g) {
+try { if (Inst21 <= 1000 && typeof (x) != "undefined") {_RecordType("<757,758,34>",(x)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (g) != "undefined") {_RecordType("<762,763,34>",(g)); Inst22++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (x) != "undefined") {_RecordType("<771,772,35>",(x)); Inst23++; } } catch(e) {}
+    x;
+    'bye';
+  }
+} // This is really a crashtest
+
+
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<823,836,41>",(reportCompare)); Inst24++; } } catch(e) {}
+reportCompare(0, 0, 'ok');
+

@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --expose-externalize-string
+// Calculate string so that it isn't internalized.
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<294,295,6>",(a)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (b) != "undefined") {_RecordType("<297,298,6>",(b)); Inst2++; } } catch(e) {}
+var string = ((a, b) => {
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<314,315,7>",(a)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<318,319,7>",(b)); Inst4++; } } catch(e) {}
+  return a + b;
+})('foo', 'bar'); // Then internalize it by using it as a keyed property name
+try { if (Inst0 <= 1000 && typeof (string) != "undefined") {_RecordType("<283,289,6>",(string)); Inst0++; } } catch(e) {}
+// to turn it a thin string.
+
+
+var obj = {};
+try { if (Inst5 <= 1000 && typeof (obj) != "undefined") {_RecordType("<434,437,12>",(obj)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (obj[string]) != "undefined") {_RecordType("<444,455,13>",(obj[string])); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (obj) != "undefined") {_RecordType("<444,447,13>",(obj)); Inst7++; } } catch(e) {}
+obj[string]; // Perform a string concatination.
+
+try { if (Inst8 <= 1000 && typeof (string) != "undefined") {_RecordType("<499,505,15>",(string)); Inst8++; } } catch(e) {}
+'"' + string + '"';
+'"foobar"';
+

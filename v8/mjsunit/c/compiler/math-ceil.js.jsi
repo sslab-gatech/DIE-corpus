@@ -1,0 +1,146 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+// Ensure that the typing rule for Math.ceil deals correctly with
+// inputs in the range (-1.0,0.0), which are mapped to -0.
+(function () {
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<351,354,8>",(foo)); Inst0++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<355,356,8>",(x)); Inst1++; } } catch(e) {}
+    // Arrange x such that TurboFan infers type PlainNumber \/ NaN.
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<437,438,10>",(x)); Inst3++; } } catch(e) {}
+    x = +x;
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<432,433,10>",(x)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (Math.abs) != "undefined") {_RecordType("<448,456,11>",(Math.abs)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Math) != "undefined") {_RecordType("<448,452,11>",(Math)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<457,458,11>",(x)); Inst7++; } } catch(e) {}
+    x = Math.abs(x) - 1.0;
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<444,445,11>",(x)); Inst4++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Object.is) != "undefined") {_RecordType("<478,487,12>",(Object.is)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<478,484,12>",(Object)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Math.ceil) != "undefined") {_RecordType("<492,501,12>",(Math.ceil)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Math) != "undefined") {_RecordType("<492,496,12>",(Math)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<502,503,12>",(x)); Inst12++; } } catch(e) {}
+    return Object.is(-0, Math.ceil(x));
+  }
+
+try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<514,517,15>",(foo)); Inst13++; } } catch(e) {}
+  foo(1.5);
+try { if (Inst14 <= 1000 && typeof (foo) != "undefined") {_RecordType("<526,529,16>",(foo)); Inst14++; } } catch(e) {}
+  foo(0.5);
+try { if (Inst15 <= 1000 && typeof (foo) != "undefined") {_RecordType("<538,541,17>",(foo)); Inst15++; } } catch(e) {}
+  foo(1.5);
+try { if (Inst16 <= 1000 && typeof (foo) != "undefined") {_RecordType("<550,553,18>",(foo)); Inst16++; } } catch(e) {}
+  foo(0.5);
+})(); // Ensure that the typing rule for Math.ceil deals correctly with
+// NaN inputs, which are mapped to NaN.
+
+
+(function () {
+try { if (Inst17 <= 1000 && typeof (foo) != "undefined") {_RecordType("<700,703,24>",(foo)); Inst17++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst18 <= 1000 && typeof (x) != "undefined") {_RecordType("<704,705,24>",(x)); Inst18++; } } catch(e) {}
+    // Arrange x such that TurboFan infers type PlainNumber \/ NaN.
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<786,787,26>",(x)); Inst20++; } } catch(e) {}
+    x = +x;
+try { if (Inst19 <= 1000 && typeof (x) != "undefined") {_RecordType("<781,782,26>",(x)); Inst19++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Math.abs) != "undefined") {_RecordType("<797,805,27>",(Math.abs)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Math) != "undefined") {_RecordType("<797,801,27>",(Math)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (x) != "undefined") {_RecordType("<806,807,27>",(x)); Inst24++; } } catch(e) {}
+    x = Math.abs(x) - 1.0;
+try { if (Inst21 <= 1000 && typeof (x) != "undefined") {_RecordType("<793,794,27>",(x)); Inst21++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (Object.is) != "undefined") {_RecordType("<827,836,28>",(Object.is)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Object) != "undefined") {_RecordType("<827,833,28>",(Object)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<837,840,28>",(NaN)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Math.ceil) != "undefined") {_RecordType("<842,851,28>",(Math.ceil)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Math) != "undefined") {_RecordType("<842,846,28>",(Math)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (x) != "undefined") {_RecordType("<852,853,28>",(x)); Inst30++; } } catch(e) {}
+    return Object.is(NaN, Math.ceil(x));
+  }
+
+try { if (Inst31 <= 1000 && typeof (foo) != "undefined") {_RecordType("<864,867,31>",(foo)); Inst31++; } } catch(e) {}
+  foo(1.5);
+try { if (Inst32 <= 1000 && typeof (foo) != "undefined") {_RecordType("<876,879,32>",(foo)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<880,883,32>",(NaN)); Inst33++; } } catch(e) {}
+  foo(NaN);
+try { if (Inst34 <= 1000 && typeof (foo) != "undefined") {_RecordType("<888,891,33>",(foo)); Inst34++; } } catch(e) {}
+  foo(1.5);
+try { if (Inst35 <= 1000 && typeof (foo) != "undefined") {_RecordType("<900,903,34>",(foo)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<904,907,34>",(NaN)); Inst36++; } } catch(e) {}
+  foo(NaN);
+})();
+

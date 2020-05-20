@@ -1,0 +1,114 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ * Contributor:
+ *   Jeff Walden <jwalden+code@mit.edu>
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 518663;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<252,261,8>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Object.getOwnPropertyNames should play nicely with enumerator caching';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<276,283,9>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<359,364,10>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<365,374,10>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<384,391,10>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+for (var p in JSON) {
+try { if (Inst5 <= 1000 && typeof (p) != "undefined") {_RecordType("<453,454,15>",(p)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<458,462,15>",(JSON)); Inst6++; } } catch(e) {}
+  ;
+}
+
+try { if (Inst8 <= 1000 && typeof (Object.getOwnPropertyNames) != "undefined") {_RecordType("<485,511,19>",(Object.getOwnPropertyNames)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<485,491,19>",(Object)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<512,516,19>",(JSON)); Inst10++; } } catch(e) {}
+var names = Object.getOwnPropertyNames(JSON);
+try { if (Inst7 <= 1000 && typeof (names) != "undefined") {_RecordType("<477,482,19>",(names)); Inst7++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (names.length) != "undefined") {_RecordType("<519,531,20>",(names.length)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (names) != "undefined") {_RecordType("<519,524,20>",(names)); Inst12++; } } catch(e) {}
+names.length >= 2;
+true;
+try { if (Inst13 <= 1000 && typeof (names) != "undefined") {_RecordType("<583,588,22>",(names)); Inst13++; } } catch(e) {}
+"wrong number of property names?  [" + names + "]";
+try { if (Inst14 <= 1000 && typeof (names.indexOf) != "undefined") {_RecordType("<596,609,23>",(names.indexOf)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (names) != "undefined") {_RecordType("<596,601,23>",(names)); Inst15++; } } catch(e) {}
+names.indexOf("parse") >= 0;
+true;
+try { if (Inst16 <= 1000 && typeof (names.indexOf) != "undefined") {_RecordType("<631,644,25>",(names.indexOf)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (names) != "undefined") {_RecordType("<631,636,25>",(names)); Inst17++; } } catch(e) {}
+names.indexOf("stringify") >= 0;
+true;
+
+/******************************************************************************/
+try { if (Inst18 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<752,765,29>",(reportCompare)); Inst18++; } } catch(e) {}
+reportCompare(true, true);
+try { if (Inst19 <= 1000 && typeof (print) != "undefined") {_RecordType("<779,784,30>",(print)); Inst19++; } } catch(e) {}
+print("All tests passed!");
+

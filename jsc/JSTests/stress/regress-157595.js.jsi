@@ -1,0 +1,107 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that an overridden global on a RegExp object doesn't cause an infinite loop
+// in String.match(). Instead it should eventually throw an Out of Memory exception.
+// Skipping until the test doesn't timeout on the bots - <https://bugs.webkit.org/show_bug.cgi?id=157903>
+//@ skip
+try { if (Inst3 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<307,313,5>",(RegExp)); Inst3++; } } catch(e) {}
+class MyRegExp extends RegExp {
+  constructor(pattern) {
+try { if (Inst1 <= 1000 && typeof (pattern) != "undefined") {_RecordType("<330,337,6>",(pattern)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (pattern) != "undefined") {_RecordType("<351,358,7>",(pattern)); Inst2++; } } catch(e) {}
+    super(pattern, "");
+  }
+
+  get global() {
+    return true;
+  }
+
+}
+try { if (Inst0 <= 1000 && typeof (MyRegExp) != "undefined") {_RecordType("<290,298,5>",(MyRegExp)); Inst0++; } } catch(e) {}
+
+;
+
+try { if (Inst4 <= 1000 && typeof (test) != "undefined") {_RecordType("<424,428,18>",(test)); Inst4++; } } catch(e) {}
+function test() {
+try { if (Inst6 <= 1000 && typeof (MyRegExp) != "undefined") {_RecordType("<447,455,19>",(MyRegExp)); Inst6++; } } catch(e) {}
+  let r = new MyRegExp(".");
+try { if (Inst5 <= 1000 && typeof (r) != "undefined") {_RecordType("<439,440,19>",(r)); Inst5++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof ("abc".match) != "undefined") {_RecordType("<471,482,20>",("abc".match)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (r) != "undefined") {_RecordType("<483,484,20>",(r)); Inst8++; } } catch(e) {}
+  return "abc".match(r);
+}
+
+try { if (Inst10 <= 1000 && typeof (e) != "undefined") {_RecordType("<515,516,25>",(e)); Inst10++; } } catch(e) {}
+try {
+try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<498,502,24>",(test)); Inst9++; } } catch(e) {}
+  test();
+} catch (e) {
+try { if (Inst11 <= 1000 && typeof (e.message) != "undefined") {_RecordType("<526,535,26>",(e.message)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (e) != "undefined") {_RecordType("<526,527,26>",(e)); Inst12++; } } catch(e) {}
+  if (e.message != "Out of memory") {
+try { if (Inst13 <= 1000 && typeof (e) != "undefined") {_RecordType("<586,587,27>",(e)); Inst13++; } } catch(e) {}
+    throw "Wrong error: " + e;
+  }
+}
+

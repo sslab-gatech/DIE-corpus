@@ -1,0 +1,100 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Complicated whitebox test for bug 487845.
+try { if (Inst0 <= 1000 && typeof (testGlobalShapeChangeAfterDeepBail) != "undefined") {_RecordType("<54,88,2>",(testGlobalShapeChangeAfterDeepBail)); Inst0++; } } catch(e) {}
+function testGlobalShapeChangeAfterDeepBail() {
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<104,105,3>",(f)); Inst1++; } } catch(e) {}
+  function f(name) {
+try { if (Inst2 <= 1000 && typeof (name) != "undefined") {_RecordType("<106,110,3>",(name)); Inst2++; } } catch(e) {}
+    this[name] = 1; // may change global shape
+try { if (Inst3 <= 1000 && typeof (this[name]) != "undefined") {_RecordType("<118,128,4>",(this[name])); Inst3++; } } catch(e) {}
+
+    for (var i = 0; i < 4; i++) {
+try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<175,176,6>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<182,183,6>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<189,190,6>",(i)); Inst6++; } } catch(e) {}
+      ;
+    } // MonitorLoopEdge eventually triggers assertion
+
+  } // When i==3, deep-bail, then change global shape enough times to exhaust
+  // the array of GlobalStates.
+
+
+  var arr = [[], [], [], ["bug0", "bug1", "bug2", "bug3", "bug4"]];
+try { if (Inst7 <= 1000 && typeof (arr) != "undefined") {_RecordType("<378,381,14>",(arr)); Inst7++; } } catch(e) {}
+
+  for (var i = 0; i < arr.length; i++) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<452,453,16>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<459,460,16>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<463,473,16>",(arr.length)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (arr) != "undefined") {_RecordType("<463,466,16>",(arr)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<475,476,16>",(i)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (arr[i].forEach) != "undefined") {_RecordType("<486,500,17>",(arr[i].forEach)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (arr[i]) != "undefined") {_RecordType("<486,492,17>",(arr[i])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (arr) != "undefined") {_RecordType("<486,489,17>",(arr)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<501,502,17>",(f)); Inst16++; } } catch(e) {}
+    arr[i].forEach(f);
+  }
+}
+
+try { if (Inst17 <= 1000 && typeof (testGlobalShapeChangeAfterDeepBail) != "undefined") {_RecordType("<512,546,21>",(testGlobalShapeChangeAfterDeepBail)); Inst17++; } } catch(e) {}
+testGlobalShapeChangeAfterDeepBail();
+

@@ -1,0 +1,86 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var h = {
+  apply: function () {
+    return "ponies";
+  }
+};
+try { if (Inst0 <= 1000 && typeof (h) != "undefined") {_RecordType("<4,5,1>",(h)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<71,72,7>",(f)); Inst1++; } } catch(e) {}
+function f() {
+  var x = 3;
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<83,84,8>",(x)); Inst2++; } } catch(e) {}
+
+  g = function () {
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<124,125,11>",(x)); Inst4++; } } catch(e) {}
+    return ++x;
+  };
+try { if (Inst3 <= 1000 && typeof (g) != "undefined") {_RecordType("<93,94,10>",(g)); Inst3++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (h.apply) != "undefined") {_RecordType("<142,149,14>",(h.apply)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (h) != "undefined") {_RecordType("<142,143,14>",(h)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<156,165,14>",(arguments)); Inst7++; } } catch(e) {}
+  return h.apply(null, arguments);
+}
+
+try { if (Inst8 <= 1000 && typeof (f) != "undefined") {_RecordType("<171,172,17>",(f)); Inst8++; } } catch(e) {}
+f();
+"ponies";
+

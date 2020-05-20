@@ -1,0 +1,138 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2011 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+// Test that LApplyArguments lithium instruction restores context after the call.
+try { if (Inst0 <= 1000 && typeof (X) != "undefined") {_RecordType("<1721,1722,29>",(X)); Inst0++; } } catch(e) {}
+function X() {
+  var slot = "foo";
+try { if (Inst1 <= 1000 && typeof (slot) != "undefined") {_RecordType("<1733,1737,30>",(slot)); Inst1++; } } catch(e) {}
+  return function (a) {
+try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<1766,1767,31>",(a)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (slot) != "undefined") {_RecordType("<1782,1786,32>",(slot)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<1791,1792,32>",(a)); Inst4++; } } catch(e) {}
+    return slot === a;
+  };
+}
+
+try { if (Inst5 <= 1000 && typeof (Y) != "undefined") {_RecordType("<1811,1812,36>",(Y)); Inst5++; } } catch(e) {}
+function Y(x) {
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<1813,1814,36>",(x)); Inst6++; } } catch(e) {}
+  var slot = "bar";
+try { if (Inst7 <= 1000 && typeof (slot) != "undefined") {_RecordType("<1824,1828,37>",(slot)); Inst7++; } } catch(e) {}
+  return function (a) {
+try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<1857,1858,38>",(a)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (x.apply) != "undefined") {_RecordType("<1866,1873,39>",(x.apply)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<1866,1867,39>",(x)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<1880,1889,39>",(arguments)); Inst11++; } } catch(e) {}
+    x.apply(this, arguments);
+try { if (Inst12 <= 1000 && typeof (slot) != "undefined") {_RecordType("<1903,1907,40>",(slot)); Inst12++; } } catch(e) {}
+    return slot === 'bar';
+  };
+}
+
+try { if (Inst14 <= 1000 && typeof (Y) != "undefined") {_RecordType("<1935,1936,44>",(Y)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (X) != "undefined") {_RecordType("<1937,1938,44>",(X)); Inst15++; } } catch(e) {}
+var y = Y(X());
+try { if (Inst13 <= 1000 && typeof (y) != "undefined") {_RecordType("<1931,1932,44>",(y)); Inst13++; } } catch(e) {}
+
+for (var i = 0; i < 5; i++) {
+try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<1953,1954,46>",(i)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<1960,1961,46>",(i)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<1967,1968,46>",(i)); Inst18++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (y) != "undefined") {_RecordType("<1976,1977,47>",(y)); Inst19++; } } catch(e) {}
+  y("foo");
+}
+
+try { if (Inst20 <= 1000 && typeof (y) != "undefined") {_RecordType("<1989,1990,50>",(y)); Inst20++; } } catch(e) {}
+y("foo");
+

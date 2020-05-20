@@ -1,0 +1,128 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// - 'a' is considered a field since it's used by a nested function
+// - 'a' is hoisted out of the outermost loop
+// - At 'a |= 1', the hoisted stack sym for 'a' is int-specialized
+// - At the first 'test0a()", 'a' is killed but we are lazy on killing the corresponding stack sym and the field value
+// - The use of 'a' in 'i = a' in the innermost loop is hoistable out of the innermost loop, this is the first use of 'a' after
+//   it was killed, and whether it's hoisted out of the innermost loop or not, the specialized stack sym and the field value are
+//   no longer valid at the landing pad of the innermost loop. So, they must be killed at this point in the loop prepass.
+try { if (Inst0 <= 1000 && typeof (test0) != "undefined") {_RecordType("<1055,1060,12>",(test0)); Inst0++; } } catch(e) {}
+function test0() {
+  var a = 1;
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<1071,1072,13>",(a)); Inst1++; } } catch(e) {}
+  var o = [0];
+try { if (Inst2 <= 1000 && typeof (o) != "undefined") {_RecordType("<1084,1085,14>",(o)); Inst2++; } } catch(e) {}
+
+  for (var i = 0; (a |= 1) && i < 1; ++i) {
+try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<1105,1106,16>",(i)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<1113,1114,16>",(a)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<1124,1125,16>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<1133,1134,16>",(i)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (test0a) != "undefined") {_RecordType("<1142,1148,17>",(test0a)); Inst7++; } } catch(e) {}
+    test0a();
+
+    for (var j = 0; j < 1; ++j) {
+try { if (Inst8 <= 1000 && typeof (j) != "undefined") {_RecordType("<1166,1167,19>",(j)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (j) != "undefined") {_RecordType("<1173,1174,19>",(j)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (j) != "undefined") {_RecordType("<1182,1183,19>",(j)); Inst10++; } } catch(e) {}
+      for (var k = 0; k < 1; ++k) {
+try { if (Inst11 <= 1000 && typeof (k) != "undefined") {_RecordType("<1202,1203,20>",(k)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (k) != "undefined") {_RecordType("<1209,1210,20>",(k)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (k) != "undefined") {_RecordType("<1218,1219,20>",(k)); Inst13++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (a) != "undefined") {_RecordType("<1235,1236,21>",(a)); Inst15++; } } catch(e) {}
+        i = a;
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<1231,1232,21>",(i)); Inst14++; } } catch(e) {}
+      }
+
+try { if (Inst16 <= 1000 && typeof (test0a) != "undefined") {_RecordType("<1253,1259,24>",(test0a)); Inst16++; } } catch(e) {}
+      test0a();
+    }
+
+try { if (Inst18 <= 1000 && typeof (a) != "undefined") {_RecordType("<1278,1279,27>",(a)); Inst18++; } } catch(e) {}
+    i = a;
+try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<1274,1275,27>",(i)); Inst17++; } } catch(e) {}
+  }
+
+try { if (Inst19 <= 1000 && typeof (test0a) != "undefined") {_RecordType("<1297,1303,30>",(test0a)); Inst19++; } } catch(e) {}
+  function test0a() {
+try { if (Inst20 <= 1000 && typeof (a) != "undefined") {_RecordType("<1312,1313,31>",(a)); Inst20++; } } catch(e) {}
+    a;
+  }
+}
+
+;
+try { if (Inst21 <= 1000 && typeof (test0) != "undefined") {_RecordType("<1324,1329,36>",(test0)); Inst21++; } } catch(e) {}
+test0();
+try { if (Inst22 <= 1000 && typeof (print) != "undefined") {_RecordType("<1333,1338,37>",(print)); Inst22++; } } catch(e) {}
+print("pass");
+

@@ -1,0 +1,106 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// Tests that bug 56025 is fixed in the minimal repro case with "with" object property usage.
+// http://bugcheck/bugs/WindowsBlueBugs/56026
+try { if (Inst9 <= 1000 && typeof (ex) != "undefined") {_RecordType("<746,748,25>",(ex)); Inst9++; } } catch(e) {}
+try {
+try { if (Inst0 <= 1000 && typeof (TestFunc) != "undefined") {_RecordType("<525,533,8>",(TestFunc)); Inst0++; } } catch(e) {}
+  (function TestFunc() {
+    var a;
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<546,547,9>",(a)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (outer) != "undefined") {_RecordType("<564,569,11>",(outer)); Inst2++; } } catch(e) {}
+    (function outer() {
+try { if (Inst3 <= 1000 && typeof (inner) != "undefined") {_RecordType("<590,595,12>",(inner)); Inst3++; } } catch(e) {}
+      (function inner() {
+try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<608,609,13>",(a)); Inst4++; } } catch(e) {}
+        a;
+      })();
+
+      var o = {
+        p1: 1
+      };
+try { if (Inst5 <= 1000 && typeof (o) != "undefined") {_RecordType("<634,635,16>",(o)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (o) != "undefined") {_RecordType("<675,676,19>",(o)); Inst6++; } } catch(e) {}
+      with (o) {
+try { if (Inst7 <= 1000 && typeof (outer) != "undefined") {_RecordType("<688,693,20>",(outer)); Inst7++; } } catch(e) {}
+        outer();
+try { if (Inst8 <= 1000 && typeof (p1) != "undefined") {_RecordType("<705,707,21>",(p1)); Inst8++; } } catch(e) {}
+        p1++;
+      }
+    })();
+  })();
+} catch (ex) {
+try { if (Inst10 <= 1000 && typeof (ex.message) != "undefined") {_RecordType("<758,768,26>",(ex.message)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (ex) != "undefined") {_RecordType("<758,760,26>",(ex)); Inst11++; } } catch(e) {}
+  if (ex.message == "Out of stack space") {
+try { if (Inst12 <= 1000 && typeof (print) != "undefined") {_RecordType("<800,805,27>",(print)); Inst12++; } } catch(e) {}
+    print("PASSED");
+  }
+}
+

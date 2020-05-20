@@ -1,0 +1,100 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Return the trap result
+try { if (Inst1 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<38,51,2>",(Object.create)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<38,44,2>",(Object)); Inst2++; } } catch(e) {}
+var proto = Object.create(null, {
+  'foo': {
+    configurable: true
+  }
+});
+try { if (Inst0 <= 1000 && typeof (proto) != "undefined") {_RecordType("<30,35,2>",(proto)); Inst0++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<115,128,7>",(Object.create)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Object) != "undefined") {_RecordType("<115,121,7>",(Object)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (proto) != "undefined") {_RecordType("<129,134,7>",(proto)); Inst6++; } } catch(e) {}
+var target = Object.create(proto, {
+  'bar': {
+    configurable: true
+  }
+});
+try { if (Inst3 <= 1000 && typeof (target) != "undefined") {_RecordType("<106,112,7>",(target)); Inst3++; } } catch(e) {}
+var handler = {
+  has: () => false
+};
+try { if (Inst7 <= 1000 && typeof (handler) != "undefined") {_RecordType("<184,191,12>",(handler)); Inst7++; } } catch(e) {}
+
+for (let p of [new Proxy(target, handler), Proxy.revocable(target, handler).proxy]) {
+try { if (Inst8 <= 1000 && typeof (p) != "undefined") {_RecordType("<228,229,16>",(p)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<238,243,16>",(Proxy)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (target) != "undefined") {_RecordType("<244,250,16>",(target)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (handler) != "undefined") {_RecordType("<252,259,16>",(handler)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Proxy.revocable(target, handler).proxy) != "undefined") {_RecordType("<262,300,16>",(Proxy.revocable(target, handler).proxy)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Proxy.revocable) != "undefined") {_RecordType("<262,277,16>",(Proxy.revocable)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<262,267,16>",(Proxy)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (target) != "undefined") {_RecordType("<278,284,16>",(target)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (handler) != "undefined") {_RecordType("<286,293,16>",(handler)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (p) != "undefined") {_RecordType("<316,317,17>",(p)); Inst17++; } } catch(e) {}
+  'foo' in p;
+  false;
+try { if (Inst18 <= 1000 && typeof (p) != "undefined") {_RecordType("<339,340,19>",(p)); Inst18++; } } catch(e) {}
+  'bar' in p;
+  false;
+}
+

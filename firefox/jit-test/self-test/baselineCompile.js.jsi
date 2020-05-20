@@ -1,0 +1,90 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| test-also=--fuzzing-safe
+// Check that the help text for baselineCompile() is accurate.
+try { if (Inst0 <= 1000 && typeof (inJit) != "undefined") {_RecordType("<113,118,3>",(inJit)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (baselineCompile) != "undefined") {_RecordType("<143,158,3>",(baselineCompile)); Inst1++; } } catch(e) {}
+if (typeof inJit == "function" && typeof baselineCompile == "function") {
+try { if (Inst2 <= 1000 && typeof (inJit) != "undefined") {_RecordType("<183,188,4>",(inJit)); Inst2++; } } catch(e) {}
+  if (!inJit()) {
+try { if (Inst4 <= 1000 && typeof (baselineCompile) != "undefined") {_RecordType("<208,223,5>",(baselineCompile)); Inst4++; } } catch(e) {}
+    var res = baselineCompile(); // compile the current script
+try { if (Inst3 <= 1000 && typeof (res) != "undefined") {_RecordType("<202,205,5>",(res)); Inst3++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (inJit) != "undefined") {_RecordType("<262,267,7>",(inJit)); Inst5++; } } catch(e) {}
+    inJit();
+    false;
+    "We have compiled this script to baseline jitcode, but shouldn't " + "be running it yet, according to the help text for baselineCompile() " + "in TestingFunctions.cpp. If you fail this assertion, nice work, and " + "please update the help text!";
+
+    for (var i = 0; i < 1; i++) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<547,548,11>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<554,555,11>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<561,562,11>",(i)); Inst8++; } } catch(e) {}
+      ;
+    } // exact boilerplate suggested by the help text
+
+
+try { if (Inst9 <= 1000 && typeof (res) != "undefined") {_RecordType("<643,646,16>",(res)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (inJit) != "undefined") {_RecordType("<661,666,16>",(inJit)); Inst10++; } } catch(e) {}
+    typeof res != "string" ? inJit() : true;
+    true;
+    "help text in TestingFunctions.cpp claims the above loop causes " + "the interpreter to start running the new baseline jitcode";
+  }
+}
+

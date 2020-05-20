@@ -1,0 +1,419 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+var Inst125 = 0;
+var Inst126 = 0;
+var Inst127 = 0;
+var Inst128 = 0;
+var Inst129 = 0;
+var Inst130 = 0;
+var Inst131 = 0;
+var Inst132 = 0;
+var Inst133 = 0;
+var Inst134 = 0;
+var Inst135 = 0;
+var Inst136 = 0;
+var Inst137 = 0;
+var Inst138 = 0;
+var Inst139 = 0;
+var Inst140 = 0;
+var Inst141 = 0;
+var Inst142 = 0;
+var Inst143 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+try { if (Inst0 <= 1000 && typeof (TestMathCeilReturningFloatish) != "undefined") {_RecordType("<210,239,5>",(TestMathCeilReturningFloatish)); Inst0++; } } catch(e) {}
+(function TestMathCeilReturningFloatish() {
+try { if (Inst1 <= 1000 && typeof (Module) != "undefined") {_RecordType("<255,261,6>",(Module)); Inst1++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst2 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<262,268,6>",(stdlib)); Inst2++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst4 <= 1000 && typeof (stdlib.Math.ceil) != "undefined") {_RecordType("<303,319,9>",(stdlib.Math.ceil)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<303,314,9>",(stdlib.Math)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<303,309,9>",(stdlib)); Inst6++; } } catch(e) {}
+    var ceil = stdlib.Math.ceil;
+try { if (Inst3 <= 1000 && typeof (ceil) != "undefined") {_RecordType("<296,300,9>",(ceil)); Inst3++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<338,356,10>",(stdlib.Math.fround)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<338,349,10>",(stdlib.Math)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<338,344,10>",(stdlib)); Inst10++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst7 <= 1000 && typeof (fround) != "undefined") {_RecordType("<329,335,10>",(fround)); Inst7++; } } catch(e) {}
+
+try { if (Inst11 <= 1000 && typeof (f) != "undefined") {_RecordType("<372,373,12>",(f)); Inst11++; } } catch(e) {}
+    function f(a) {
+try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<374,375,12>",(a)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (fround) != "undefined") {_RecordType("<389,395,13>",(fround)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (a) != "undefined") {_RecordType("<396,397,13>",(a)); Inst15++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst13 <= 1000 && typeof (a) != "undefined") {_RecordType("<385,386,13>",(a)); Inst13++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (ceil) != "undefined") {_RecordType("<413,417,14>",(ceil)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (a) != "undefined") {_RecordType("<418,419,14>",(a)); Inst17++; } } catch(e) {}
+      return ceil(a);
+    }
+
+try { if (Inst18 <= 1000 && typeof (f) != "undefined") {_RecordType("<440,441,17>",(f)); Inst18++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst20 <= 1000 && typeof (Module) != "undefined") {_RecordType("<458,464,20>",(Module)); Inst20++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst19 <= 1000 && typeof (f) != "undefined") {_RecordType("<454,455,20>",(f)); Inst19++; } } catch(e) {}
+  3;
+try { if (Inst21 <= 1000 && typeof (f) != "undefined") {_RecordType("<479,480,22>",(f)); Inst21++; } } catch(e) {}
+  f(2.2);
+})();
+
+try { if (Inst22 <= 1000 && typeof (TestMathFloorReturningFloatish) != "undefined") {_RecordType("<504,534,25>",(TestMathFloorReturningFloatish)); Inst22++; } } catch(e) {}
+(function TestMathFloorReturningFloatish() {
+try { if (Inst23 <= 1000 && typeof (Module) != "undefined") {_RecordType("<550,556,26>",(Module)); Inst23++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst24 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<557,563,26>",(stdlib)); Inst24++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst26 <= 1000 && typeof (stdlib.Math.floor) != "undefined") {_RecordType("<599,616,29>",(stdlib.Math.floor)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<599,610,29>",(stdlib.Math)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<599,605,29>",(stdlib)); Inst28++; } } catch(e) {}
+    var floor = stdlib.Math.floor;
+try { if (Inst25 <= 1000 && typeof (floor) != "undefined") {_RecordType("<591,596,29>",(floor)); Inst25++; } } catch(e) {}
+try { if (Inst30 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<635,653,30>",(stdlib.Math.fround)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<635,646,30>",(stdlib.Math)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<635,641,30>",(stdlib)); Inst32++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst29 <= 1000 && typeof (fround) != "undefined") {_RecordType("<626,632,30>",(fround)); Inst29++; } } catch(e) {}
+
+try { if (Inst33 <= 1000 && typeof (f) != "undefined") {_RecordType("<669,670,32>",(f)); Inst33++; } } catch(e) {}
+    function f(a) {
+try { if (Inst34 <= 1000 && typeof (a) != "undefined") {_RecordType("<671,672,32>",(a)); Inst34++; } } catch(e) {}
+try { if (Inst36 <= 1000 && typeof (fround) != "undefined") {_RecordType("<686,692,33>",(fround)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (a) != "undefined") {_RecordType("<693,694,33>",(a)); Inst37++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst35 <= 1000 && typeof (a) != "undefined") {_RecordType("<682,683,33>",(a)); Inst35++; } } catch(e) {}
+try { if (Inst38 <= 1000 && typeof (floor) != "undefined") {_RecordType("<710,715,34>",(floor)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (a) != "undefined") {_RecordType("<716,717,34>",(a)); Inst39++; } } catch(e) {}
+      return floor(a);
+    }
+
+try { if (Inst40 <= 1000 && typeof (f) != "undefined") {_RecordType("<738,739,37>",(f)); Inst40++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst42 <= 1000 && typeof (Module) != "undefined") {_RecordType("<756,762,40>",(Module)); Inst42++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst41 <= 1000 && typeof (f) != "undefined") {_RecordType("<752,753,40>",(f)); Inst41++; } } catch(e) {}
+  2;
+try { if (Inst43 <= 1000 && typeof (f) != "undefined") {_RecordType("<777,778,42>",(f)); Inst43++; } } catch(e) {}
+  f(2.2);
+})();
+
+try { if (Inst44 <= 1000 && typeof (TestMathSqrtReturningFloatish) != "undefined") {_RecordType("<802,831,45>",(TestMathSqrtReturningFloatish)); Inst44++; } } catch(e) {}
+(function TestMathSqrtReturningFloatish() {
+try { if (Inst45 <= 1000 && typeof (Module) != "undefined") {_RecordType("<847,853,46>",(Module)); Inst45++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst46 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<854,860,46>",(stdlib)); Inst46++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst48 <= 1000 && typeof (stdlib.Math.sqrt) != "undefined") {_RecordType("<895,911,49>",(stdlib.Math.sqrt)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<895,906,49>",(stdlib.Math)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<895,901,49>",(stdlib)); Inst50++; } } catch(e) {}
+    var sqrt = stdlib.Math.sqrt;
+try { if (Inst47 <= 1000 && typeof (sqrt) != "undefined") {_RecordType("<888,892,49>",(sqrt)); Inst47++; } } catch(e) {}
+try { if (Inst52 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<930,948,50>",(stdlib.Math.fround)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<930,941,50>",(stdlib.Math)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<930,936,50>",(stdlib)); Inst54++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst51 <= 1000 && typeof (fround) != "undefined") {_RecordType("<921,927,50>",(fround)); Inst51++; } } catch(e) {}
+
+try { if (Inst55 <= 1000 && typeof (f) != "undefined") {_RecordType("<964,965,52>",(f)); Inst55++; } } catch(e) {}
+    function f(a) {
+try { if (Inst56 <= 1000 && typeof (a) != "undefined") {_RecordType("<966,967,52>",(a)); Inst56++; } } catch(e) {}
+try { if (Inst58 <= 1000 && typeof (fround) != "undefined") {_RecordType("<981,987,53>",(fround)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (a) != "undefined") {_RecordType("<988,989,53>",(a)); Inst59++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst57 <= 1000 && typeof (a) != "undefined") {_RecordType("<977,978,53>",(a)); Inst57++; } } catch(e) {}
+try { if (Inst60 <= 1000 && typeof (sqrt) != "undefined") {_RecordType("<1005,1009,54>",(sqrt)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (a) != "undefined") {_RecordType("<1010,1011,54>",(a)); Inst61++; } } catch(e) {}
+      return sqrt(a);
+    }
+
+try { if (Inst62 <= 1000 && typeof (f) != "undefined") {_RecordType("<1032,1033,57>",(f)); Inst62++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst64 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1050,1056,60>",(Module)); Inst64++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst63 <= 1000 && typeof (f) != "undefined") {_RecordType("<1046,1047,60>",(f)); Inst63++; } } catch(e) {}
+try { if (Inst65 <= 1000 && typeof (Math.sqrt) != "undefined") {_RecordType("<1066,1075,61>",(Math.sqrt)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1066,1070,61>",(Math)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (Math.fround) != "undefined") {_RecordType("<1076,1087,61>",(Math.fround)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1076,1080,61>",(Math)); Inst68++; } } catch(e) {}
+  Math.sqrt(Math.fround(2.2));
+try { if (Inst69 <= 1000 && typeof (f) != "undefined") {_RecordType("<1097,1098,62>",(f)); Inst69++; } } catch(e) {}
+  f(2.2);
+})();
+
+try { if (Inst70 <= 1000 && typeof (TestMathAbsReturningFloatish) != "undefined") {_RecordType("<1122,1150,65>",(TestMathAbsReturningFloatish)); Inst70++; } } catch(e) {}
+(function TestMathAbsReturningFloatish() {
+try { if (Inst71 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1166,1172,66>",(Module)); Inst71++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst72 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1173,1179,66>",(stdlib)); Inst72++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst74 <= 1000 && typeof (stdlib.Math.abs) != "undefined") {_RecordType("<1213,1228,69>",(stdlib.Math.abs)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1213,1224,69>",(stdlib.Math)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1213,1219,69>",(stdlib)); Inst76++; } } catch(e) {}
+    var abs = stdlib.Math.abs;
+try { if (Inst73 <= 1000 && typeof (abs) != "undefined") {_RecordType("<1207,1210,69>",(abs)); Inst73++; } } catch(e) {}
+try { if (Inst78 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<1247,1265,70>",(stdlib.Math.fround)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1247,1258,70>",(stdlib.Math)); Inst79++; } } catch(e) {}try { if (Inst80 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1247,1253,70>",(stdlib)); Inst80++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst77 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1238,1244,70>",(fround)); Inst77++; } } catch(e) {}
+
+try { if (Inst81 <= 1000 && typeof (f) != "undefined") {_RecordType("<1281,1282,72>",(f)); Inst81++; } } catch(e) {}
+    function f(a) {
+try { if (Inst82 <= 1000 && typeof (a) != "undefined") {_RecordType("<1283,1284,72>",(a)); Inst82++; } } catch(e) {}
+try { if (Inst84 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1298,1304,73>",(fround)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (a) != "undefined") {_RecordType("<1305,1306,73>",(a)); Inst85++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst83 <= 1000 && typeof (a) != "undefined") {_RecordType("<1294,1295,73>",(a)); Inst83++; } } catch(e) {}
+try { if (Inst86 <= 1000 && typeof (abs) != "undefined") {_RecordType("<1322,1325,74>",(abs)); Inst86++; } } catch(e) {}try { if (Inst87 <= 1000 && typeof (a) != "undefined") {_RecordType("<1326,1327,74>",(a)); Inst87++; } } catch(e) {}
+      return abs(a);
+    }
+
+try { if (Inst88 <= 1000 && typeof (f) != "undefined") {_RecordType("<1348,1349,77>",(f)); Inst88++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst90 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1366,1372,80>",(Module)); Inst90++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst89 <= 1000 && typeof (f) != "undefined") {_RecordType("<1362,1363,80>",(f)); Inst89++; } } catch(e) {}
+try { if (Inst91 <= 1000 && typeof (Math.fround) != "undefined") {_RecordType("<1382,1393,81>",(Math.fround)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1382,1386,81>",(Math)); Inst92++; } } catch(e) {}
+  Math.fround(2.2);
+try { if (Inst93 <= 1000 && typeof (f) != "undefined") {_RecordType("<1402,1403,82>",(f)); Inst93++; } } catch(e) {}
+  f(-2.2);
+})();
+
+try { if (Inst94 <= 1000 && typeof (TestMathMinReturningFloat) != "undefined") {_RecordType("<1428,1453,85>",(TestMathMinReturningFloat)); Inst94++; } } catch(e) {}
+(function TestMathMinReturningFloat() {
+try { if (Inst95 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1469,1475,86>",(Module)); Inst95++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst96 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1476,1482,86>",(stdlib)); Inst96++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst98 <= 1000 && typeof (stdlib.Math.min) != "undefined") {_RecordType("<1516,1531,89>",(stdlib.Math.min)); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1516,1527,89>",(stdlib.Math)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1516,1522,89>",(stdlib)); Inst100++; } } catch(e) {}
+    var min = stdlib.Math.min;
+try { if (Inst97 <= 1000 && typeof (min) != "undefined") {_RecordType("<1510,1513,89>",(min)); Inst97++; } } catch(e) {}
+try { if (Inst102 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<1550,1568,90>",(stdlib.Math.fround)); Inst102++; } } catch(e) {}try { if (Inst103 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1550,1561,90>",(stdlib.Math)); Inst103++; } } catch(e) {}try { if (Inst104 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1550,1556,90>",(stdlib)); Inst104++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst101 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1541,1547,90>",(fround)); Inst101++; } } catch(e) {}
+
+try { if (Inst105 <= 1000 && typeof (f) != "undefined") {_RecordType("<1584,1585,92>",(f)); Inst105++; } } catch(e) {}
+    function f(a) {
+try { if (Inst106 <= 1000 && typeof (a) != "undefined") {_RecordType("<1586,1587,92>",(a)); Inst106++; } } catch(e) {}
+try { if (Inst108 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1601,1607,93>",(fround)); Inst108++; } } catch(e) {}try { if (Inst109 <= 1000 && typeof (a) != "undefined") {_RecordType("<1608,1609,93>",(a)); Inst109++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst107 <= 1000 && typeof (a) != "undefined") {_RecordType("<1597,1598,93>",(a)); Inst107++; } } catch(e) {}
+try { if (Inst110 <= 1000 && typeof (min) != "undefined") {_RecordType("<1625,1628,94>",(min)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (a) != "undefined") {_RecordType("<1629,1630,94>",(a)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (a) != "undefined") {_RecordType("<1632,1633,94>",(a)); Inst112++; } } catch(e) {}
+      return min(a, a);
+    }
+
+try { if (Inst113 <= 1000 && typeof (f) != "undefined") {_RecordType("<1654,1655,97>",(f)); Inst113++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst115 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1672,1678,100>",(Module)); Inst115++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst114 <= 1000 && typeof (f) != "undefined") {_RecordType("<1668,1669,100>",(f)); Inst114++; } } catch(e) {}
+try { if (Inst116 <= 1000 && typeof (Math.fround) != "undefined") {_RecordType("<1688,1699,101>",(Math.fround)); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1688,1692,101>",(Math)); Inst117++; } } catch(e) {}
+  Math.fround(2.2);
+try { if (Inst118 <= 1000 && typeof (f) != "undefined") {_RecordType("<1708,1709,102>",(f)); Inst118++; } } catch(e) {}
+  f(2.2);
+})();
+
+try { if (Inst119 <= 1000 && typeof (TestMathMaxReturningFloat) != "undefined") {_RecordType("<1733,1758,105>",(TestMathMaxReturningFloat)); Inst119++; } } catch(e) {}
+(function TestMathMaxReturningFloat() {
+try { if (Inst120 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1774,1780,106>",(Module)); Inst120++; } } catch(e) {}
+  function Module(stdlib) {
+try { if (Inst121 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1781,1787,106>",(stdlib)); Inst121++; } } catch(e) {}
+    "use asm";
+
+try { if (Inst123 <= 1000 && typeof (stdlib.Math.max) != "undefined") {_RecordType("<1821,1836,109>",(stdlib.Math.max)); Inst123++; } } catch(e) {}try { if (Inst124 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1821,1832,109>",(stdlib.Math)); Inst124++; } } catch(e) {}try { if (Inst125 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1821,1827,109>",(stdlib)); Inst125++; } } catch(e) {}
+    var max = stdlib.Math.max;
+try { if (Inst122 <= 1000 && typeof (max) != "undefined") {_RecordType("<1815,1818,109>",(max)); Inst122++; } } catch(e) {}
+try { if (Inst127 <= 1000 && typeof (stdlib.Math.fround) != "undefined") {_RecordType("<1855,1873,110>",(stdlib.Math.fround)); Inst127++; } } catch(e) {}try { if (Inst128 <= 1000 && typeof (stdlib.Math) != "undefined") {_RecordType("<1855,1866,110>",(stdlib.Math)); Inst128++; } } catch(e) {}try { if (Inst129 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<1855,1861,110>",(stdlib)); Inst129++; } } catch(e) {}
+    var fround = stdlib.Math.fround;
+try { if (Inst126 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1846,1852,110>",(fround)); Inst126++; } } catch(e) {}
+
+try { if (Inst130 <= 1000 && typeof (f) != "undefined") {_RecordType("<1889,1890,112>",(f)); Inst130++; } } catch(e) {}
+    function f(a) {
+try { if (Inst131 <= 1000 && typeof (a) != "undefined") {_RecordType("<1891,1892,112>",(a)); Inst131++; } } catch(e) {}
+try { if (Inst133 <= 1000 && typeof (fround) != "undefined") {_RecordType("<1906,1912,113>",(fround)); Inst133++; } } catch(e) {}try { if (Inst134 <= 1000 && typeof (a) != "undefined") {_RecordType("<1913,1914,113>",(a)); Inst134++; } } catch(e) {}
+      a = fround(a);
+try { if (Inst132 <= 1000 && typeof (a) != "undefined") {_RecordType("<1902,1903,113>",(a)); Inst132++; } } catch(e) {}
+try { if (Inst135 <= 1000 && typeof (max) != "undefined") {_RecordType("<1930,1933,114>",(max)); Inst135++; } } catch(e) {}try { if (Inst136 <= 1000 && typeof (a) != "undefined") {_RecordType("<1934,1935,114>",(a)); Inst136++; } } catch(e) {}try { if (Inst137 <= 1000 && typeof (a) != "undefined") {_RecordType("<1937,1938,114>",(a)); Inst137++; } } catch(e) {}
+      return max(a, a);
+    }
+
+try { if (Inst138 <= 1000 && typeof (f) != "undefined") {_RecordType("<1959,1960,117>",(f)); Inst138++; } } catch(e) {}
+    return f;
+  }
+
+try { if (Inst140 <= 1000 && typeof (Module) != "undefined") {_RecordType("<1977,1983,120>",(Module)); Inst140++; } } catch(e) {}
+  var f = Module(this);
+try { if (Inst139 <= 1000 && typeof (f) != "undefined") {_RecordType("<1973,1974,120>",(f)); Inst139++; } } catch(e) {}
+try { if (Inst141 <= 1000 && typeof (Math.fround) != "undefined") {_RecordType("<1993,2004,121>",(Math.fround)); Inst141++; } } catch(e) {}try { if (Inst142 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1993,1997,121>",(Math)); Inst142++; } } catch(e) {}
+  Math.fround(2.2);
+try { if (Inst143 <= 1000 && typeof (f) != "undefined") {_RecordType("<2013,2014,122>",(f)); Inst143++; } } catch(e) {}
+  f(2.2);
+})();
+

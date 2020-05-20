@@ -1,0 +1,338 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- tab-width: 8; indent-tabs-mode: nil; js-indent-level: 4 -*-
+ * vim: set ts=8 sts=4 et sw=4 tw=99:
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ * SUMMARY: New properties fileName, lineNumber have been added to Error objects
+ * in SpiderMonkey. These are non-ECMA extensions and do not exist in Rhino.
+ *
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=50447
+ *
+ * 2005-04-05 Modified by bclary to support changes to error reporting
+ *            which set default values for the error's fileName and
+ *            lineNumber properties.
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 50447;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<799,808,18>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Test (non-ECMA) Error object properties fileName, lineNumber'; //-----------------------------------------------------------------------------
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<822,829,19>",(summary)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (test) != "undefined") {_RecordType("<977,981,21>",(test)); Inst2++; } } catch(e) {}
+test(); //-----------------------------------------------------------------------------
+
+try { if (Inst3 <= 1000 && typeof (test) != "undefined") {_RecordType("<1075,1079,23>",(test)); Inst3++; } } catch(e) {}
+function test() {
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<1086,1100,24>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<1101,1110,24>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<1115,1126,25>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1127,1134,25>",(summary)); Inst7++; } } catch(e) {}
+  printStatus(summary);
+try { if (Inst8 <= 1000 && typeof (testRealError) != "undefined") {_RecordType("<1139,1152,26>",(testRealError)); Inst8++; } } catch(e) {}
+  testRealError();
+try { if (Inst9 <= 1000 && typeof (test1) != "undefined") {_RecordType("<1158,1163,27>",(test1)); Inst9++; } } catch(e) {}
+  test1();
+try { if (Inst10 <= 1000 && typeof (test2) != "undefined") {_RecordType("<1169,1174,28>",(test2)); Inst10++; } } catch(e) {}
+  test2();
+try { if (Inst11 <= 1000 && typeof (test3) != "undefined") {_RecordType("<1180,1185,29>",(test3)); Inst11++; } } catch(e) {}
+  test3();
+try { if (Inst12 <= 1000 && typeof (test4) != "undefined") {_RecordType("<1191,1196,30>",(test4)); Inst12++; } } catch(e) {}
+  test4();
+} // Normalize filenames so this test can work on Windows. This 
+// function is also used on strings that contain filenames.
+
+
+try { if (Inst13 <= 1000 && typeof (normalize) != "undefined") {_RecordType("<1336,1345,35>",(normalize)); Inst13++; } } catch(e) {}
+function normalize(filename) {
+try { if (Inst14 <= 1000 && typeof (filename) != "undefined") {_RecordType("<1346,1354,35>",(filename)); Inst14++; } } catch(e) {}
+  // Also convert double-backslash to single-slash to handle
+  // escaped filenames in string literals.
+try { if (Inst15 <= 1000 && typeof (filename.replace) != "undefined") {_RecordType("<1471,1487,38>",(filename.replace)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (filename) != "undefined") {_RecordType("<1471,1479,38>",(filename)); Inst16++; } } catch(e) {}
+  return filename.replace(/\\{1,2}/g, '/');
+}
+
+try { if (Inst17 <= 1000 && typeof (testRealError) != "undefined") {_RecordType("<1518,1531,41>",(testRealError)); Inst17++; } } catch(e) {}
+function testRealError() {
+  /* throw a real error, and see what it looks like */
+try { if (Inst19 <= 1000 && typeof (e) != "undefined") {_RecordType("<1622,1623,45>",(e)); Inst19++; } } catch(e) {}
+  try {
+try { if (Inst18 <= 1000 && typeof (blabla) != "undefined") {_RecordType("<1603,1609,44>",(blabla)); Inst18++; } } catch(e) {}
+    blabla;
+  } catch (e) {
+try { if (Inst20 <= 1000 && typeof (e.fileName.search) != "undefined") {_RecordType("<1635,1652,46>",(e.fileName.search)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (e.fileName) != "undefined") {_RecordType("<1635,1645,46>",(e.fileName)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (e) != "undefined") {_RecordType("<1635,1636,46>",(e)); Inst22++; } } catch(e) {}
+    if (e.fileName.search(/-50447-1\.js$/i) == -1) {
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1686,1699,47>",(reportCompare)); Inst23++; } } catch(e) {}
+      reportCompare('PASS', 'FAIL', "expected fileName to end with '-50447-1.js'");
+    }
+
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1775,1788,50>",(reportCompare)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<1793,1805,50>",(e.lineNumber)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (e) != "undefined") {_RecordType("<1793,1794,50>",(e)); Inst26++; } } catch(e) {}
+    reportCompare(60, e.lineNumber, "lineNumber property returned unexpected value.");
+  }
+}
+
+try { if (Inst27 <= 1000 && typeof (test1) != "undefined") {_RecordType("<1874,1879,54>",(test1)); Inst27++; } } catch(e) {}
+function test1() {
+  /* generate an error with msg, file, and lineno properties */
+try { if (Inst29 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<1962,1975,56>",(InternalError)); Inst29++; } } catch(e) {}
+  var e = new InternalError("msg", "file", 2);
+try { if (Inst28 <= 1000 && typeof (e) != "undefined") {_RecordType("<1954,1955,56>",(e)); Inst28++; } } catch(e) {}
+try { if (Inst30 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1997,2010,57>",(reportCompare)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (e.toSource) != "undefined") {_RecordType("<2056,2066,57>",(e.toSource)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (e) != "undefined") {_RecordType("<2056,2057,57>",(e)); Inst32++; } } catch(e) {}
+  reportCompare("(new InternalError(\"msg\", \"file\", 2))", e.toSource(), "toSource() returned unexpected result.");
+try { if (Inst33 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2115,2128,58>",(reportCompare)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (e.fileName) != "undefined") {_RecordType("<2137,2147,58>",(e.fileName)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (e) != "undefined") {_RecordType("<2137,2138,58>",(e)); Inst35++; } } catch(e) {}
+  reportCompare("file", e.fileName, "fileName property returned unexpected value.");
+try { if (Inst36 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2200,2213,59>",(reportCompare)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<2217,2229,59>",(e.lineNumber)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (e) != "undefined") {_RecordType("<2217,2218,59>",(e)); Inst38++; } } catch(e) {}
+  reportCompare(2, e.lineNumber, "lineNumber property returned unexpected value.");
+}
+
+try { if (Inst39 <= 1000 && typeof (test2) != "undefined") {_RecordType("<2294,2299,62>",(test2)); Inst39++; } } catch(e) {}
+function test2() {
+  /* generate an error with only msg property */
+
+  /* note this test incorporates the path to the
+     test file and assumes the path to the test case
+     is a subdirectory of the directory containing jsDriver.pl
+  */
+  var expectedLine = 106;
+try { if (Inst40 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<2530,2542,69>",(expectedLine)); Inst40++; } } catch(e) {}
+  var expectedFileName = 'non262/extensions/regress-50447-1.js';
+try { if (Inst41 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<2556,2572,70>",(expectedFileName)); Inst41++; } } catch(e) {}
+  var expectedSource = /\(new InternalError\("msg", "([^"]+)", ([0-9]+)\)\)/;
+try { if (Inst42 <= 1000 && typeof (expectedSource) != "undefined") {_RecordType("<2621,2635,71>",(expectedSource)); Inst42++; } } catch(e) {}
+try { if (Inst44 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<2707,2720,72>",(InternalError)); Inst44++; } } catch(e) {}
+  var e = new InternalError("msg");
+try { if (Inst43 <= 1000 && typeof (e) != "undefined") {_RecordType("<2699,2700,72>",(e)); Inst43++; } } catch(e) {}
+try { if (Inst46 <= 1000 && typeof (expectedSource.exec) != "undefined") {_RecordType("<2744,2763,73>",(expectedSource.exec)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (expectedSource) != "undefined") {_RecordType("<2744,2758,73>",(expectedSource)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (e.toSource) != "undefined") {_RecordType("<2764,2774,73>",(e.toSource)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (e) != "undefined") {_RecordType("<2764,2765,73>",(e)); Inst49++; } } catch(e) {}
+  var actual = expectedSource.exec(e.toSource());
+try { if (Inst45 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2735,2741,73>",(actual)); Inst45++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2781,2794,74>",(reportCompare)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (normalize(actual[1]).endsWith) != "undefined") {_RecordType("<2795,2824,74>",(normalize(actual[1]).endsWith)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (normalize) != "undefined") {_RecordType("<2795,2804,74>",(normalize)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (actual[1]) != "undefined") {_RecordType("<2805,2814,74>",(actual[1])); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2805,2811,74>",(actual)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<2825,2841,74>",(expectedFileName)); Inst55++; } } catch(e) {}
+  reportCompare(normalize(actual[1]).endsWith(expectedFileName), true, "toSource() returned unexpected result (filename).");
+try { if (Inst56 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2906,2919,75>",(reportCompare)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (actual[2]) != "undefined") {_RecordType("<2920,2929,75>",(actual[2])); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2920,2926,75>",(actual)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (String) != "undefined") {_RecordType("<2931,2937,75>",(String)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<2938,2950,75>",(expectedLine)); Inst60++; } } catch(e) {}
+  reportCompare(actual[2], String(expectedLine), "toSource() returned unexpected result (line).");
+try { if (Inst61 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<3005,3018,76>",(reportCompare)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (normalize(e.fileName).endsWith) != "undefined") {_RecordType("<3019,3049,76>",(normalize(e.fileName).endsWith)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (normalize) != "undefined") {_RecordType("<3019,3028,76>",(normalize)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (e.fileName) != "undefined") {_RecordType("<3029,3039,76>",(e.fileName)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (e) != "undefined") {_RecordType("<3029,3030,76>",(e)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<3050,3066,76>",(expectedFileName)); Inst66++; } } catch(e) {}
+  reportCompare(normalize(e.fileName).endsWith(expectedFileName), true, "fileName property returned unexpected value.");
+try { if (Inst67 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<3126,3139,77>",(reportCompare)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<3140,3152,77>",(expectedLine)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<3154,3166,77>",(e.lineNumber)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (e) != "undefined") {_RecordType("<3154,3155,77>",(e)); Inst70++; } } catch(e) {}
+  reportCompare(expectedLine, e.lineNumber, "lineNumber property returned unexpected value.");
+}
+
+try { if (Inst71 <= 1000 && typeof (test3) != "undefined") {_RecordType("<3231,3236,80>",(test3)); Inst71++; } } catch(e) {}
+function test3() {
+  /* generate an error with only msg and lineNo properties */
+
+  /* note this test incorporates the path to the
+     test file and assumes the path to the test case
+     is a subdirectory of the directory containing jsDriver.pl
+  */
+  var expectedLine = 10;
+try { if (Inst72 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<3480,3492,87>",(expectedLine)); Inst72++; } } catch(e) {}
+  var expectedFileName = 'non262/extensions/regress-50447-1.js';
+try { if (Inst73 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<3505,3521,88>",(expectedFileName)); Inst73++; } } catch(e) {}
+  var expectedSource = /\(new InternalError\("msg", "([^"]+)", ([0-9]+)\)\)/;
+try { if (Inst74 <= 1000 && typeof (expectedSource) != "undefined") {_RecordType("<3570,3584,89>",(expectedSource)); Inst74++; } } catch(e) {}
+try { if (Inst76 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<3656,3669,90>",(InternalError)); Inst76++; } } catch(e) {}
+  var e = new InternalError("msg");
+try { if (Inst75 <= 1000 && typeof (e) != "undefined") {_RecordType("<3648,3649,90>",(e)); Inst75++; } } catch(e) {}
+try { if (Inst79 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<3695,3707,91>",(expectedLine)); Inst79++; } } catch(e) {}
+  e.lineNumber = expectedLine;
+try { if (Inst77 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<3680,3692,91>",(e.lineNumber)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (e) != "undefined") {_RecordType("<3680,3681,91>",(e)); Inst78++; } } catch(e) {}
+try { if (Inst81 <= 1000 && typeof (expectedSource.exec) != "undefined") {_RecordType("<3724,3743,92>",(expectedSource.exec)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (expectedSource) != "undefined") {_RecordType("<3724,3738,92>",(expectedSource)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (e.toSource) != "undefined") {_RecordType("<3744,3754,92>",(e.toSource)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (e) != "undefined") {_RecordType("<3744,3745,92>",(e)); Inst84++; } } catch(e) {}
+  var actual = expectedSource.exec(e.toSource());
+try { if (Inst80 <= 1000 && typeof (actual) != "undefined") {_RecordType("<3715,3721,92>",(actual)); Inst80++; } } catch(e) {}
+try { if (Inst85 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<3761,3774,93>",(reportCompare)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (normalize(actual[1]).endsWith) != "undefined") {_RecordType("<3775,3804,93>",(normalize(actual[1]).endsWith)); Inst86++; } } catch(e) {}try { if (Inst87 <= 1000 && typeof (normalize) != "undefined") {_RecordType("<3775,3784,93>",(normalize)); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (actual[1]) != "undefined") {_RecordType("<3785,3794,93>",(actual[1])); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (actual) != "undefined") {_RecordType("<3785,3791,93>",(actual)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<3805,3821,93>",(expectedFileName)); Inst90++; } } catch(e) {}
+  reportCompare(normalize(actual[1]).endsWith(expectedFileName), true, "toSource() returned unexpected result (filename).");
+try { if (Inst91 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<3886,3899,94>",(reportCompare)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (actual[2]) != "undefined") {_RecordType("<3900,3909,94>",(actual[2])); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (actual) != "undefined") {_RecordType("<3900,3906,94>",(actual)); Inst93++; } } catch(e) {}try { if (Inst94 <= 1000 && typeof (String) != "undefined") {_RecordType("<3911,3917,94>",(String)); Inst94++; } } catch(e) {}try { if (Inst95 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<3918,3930,94>",(expectedLine)); Inst95++; } } catch(e) {}
+  reportCompare(actual[2], String(expectedLine), "toSource() returned unexpected result (line).");
+try { if (Inst96 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<3985,3998,95>",(reportCompare)); Inst96++; } } catch(e) {}try { if (Inst97 <= 1000 && typeof (normalize(e.fileName).endsWith) != "undefined") {_RecordType("<3999,4029,95>",(normalize(e.fileName).endsWith)); Inst97++; } } catch(e) {}try { if (Inst98 <= 1000 && typeof (normalize) != "undefined") {_RecordType("<3999,4008,95>",(normalize)); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (e.fileName) != "undefined") {_RecordType("<4009,4019,95>",(e.fileName)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (e) != "undefined") {_RecordType("<4009,4010,95>",(e)); Inst100++; } } catch(e) {}try { if (Inst101 <= 1000 && typeof (expectedFileName) != "undefined") {_RecordType("<4030,4046,95>",(expectedFileName)); Inst101++; } } catch(e) {}
+  reportCompare(normalize(e.fileName).endsWith(expectedFileName), true, "fileName property returned unexpected value.");
+try { if (Inst102 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4106,4119,96>",(reportCompare)); Inst102++; } } catch(e) {}try { if (Inst103 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<4120,4132,96>",(expectedLine)); Inst103++; } } catch(e) {}try { if (Inst104 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<4134,4146,96>",(e.lineNumber)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (e) != "undefined") {_RecordType("<4134,4135,96>",(e)); Inst105++; } } catch(e) {}
+  reportCompare(expectedLine, e.lineNumber, "lineNumber property returned unexpected value.");
+}
+
+try { if (Inst106 <= 1000 && typeof (test4) != "undefined") {_RecordType("<4211,4216,99>",(test4)); Inst106++; } } catch(e) {}
+function test4() {
+  /* generate an error with only msg and filename properties */
+  var expectedLine = 161;
+try { if (Inst107 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<4291,4303,101>",(expectedLine)); Inst107++; } } catch(e) {}
+try { if (Inst109 <= 1000 && typeof (InternalError) != "undefined") {_RecordType("<4325,4338,102>",(InternalError)); Inst109++; } } catch(e) {}
+  var e = new InternalError("msg", "file");
+try { if (Inst108 <= 1000 && typeof (e) != "undefined") {_RecordType("<4317,4318,102>",(e)); Inst108++; } } catch(e) {}
+try { if (Inst110 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4357,4370,103>",(reportCompare)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<4414,4426,103>",(expectedLine)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (e.toSource) != "undefined") {_RecordType("<4435,4445,103>",(e.toSource)); Inst112++; } } catch(e) {}try { if (Inst113 <= 1000 && typeof (e) != "undefined") {_RecordType("<4435,4436,103>",(e)); Inst113++; } } catch(e) {}
+  reportCompare("(new InternalError(\"msg\", \"file\", " + expectedLine + "))", e.toSource(), "toSource() returned unexpected result.");
+try { if (Inst114 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4494,4507,104>",(reportCompare)); Inst114++; } } catch(e) {}try { if (Inst115 <= 1000 && typeof (e.fileName) != "undefined") {_RecordType("<4516,4526,104>",(e.fileName)); Inst115++; } } catch(e) {}try { if (Inst116 <= 1000 && typeof (e) != "undefined") {_RecordType("<4516,4517,104>",(e)); Inst116++; } } catch(e) {}
+  reportCompare("file", e.fileName, "fileName property returned unexpected value.");
+try { if (Inst117 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4579,4592,105>",(reportCompare)); Inst117++; } } catch(e) {}try { if (Inst118 <= 1000 && typeof (expectedLine) != "undefined") {_RecordType("<4593,4605,105>",(expectedLine)); Inst118++; } } catch(e) {}try { if (Inst119 <= 1000 && typeof (e.lineNumber) != "undefined") {_RecordType("<4607,4619,105>",(e.lineNumber)); Inst119++; } } catch(e) {}try { if (Inst120 <= 1000 && typeof (e) != "undefined") {_RecordType("<4607,4608,105>",(e)); Inst120++; } } catch(e) {}
+  reportCompare(expectedLine, e.lineNumber, "lineNumber property returned unexpected value.");
+}
+

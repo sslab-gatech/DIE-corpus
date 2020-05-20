@@ -1,0 +1,113 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2016 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --turbo-escape
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<224,225,5>",(f)); Inst0++; } } catch(e) {}
+function f(str) {
+try { if (Inst1 <= 1000 && typeof (str) != "undefined") {_RecordType("<226,229,5>",(str)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (str) != "undefined") {_RecordType("<257,260,6>",(str)); Inst3++; } } catch(e) {}
+  var s = "We turn {" + str + "} into a ConsString now";
+try { if (Inst2 <= 1000 && typeof (s) != "undefined") {_RecordType("<239,240,6>",(s)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (s.length) != "undefined") {_RecordType("<299,307,7>",(s.length)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (s) != "undefined") {_RecordType("<299,300,7>",(s)); Inst5++; } } catch(e) {}
+  return s.length;
+}
+
+33;
+try { if (Inst6 <= 1000 && typeof (f) != "undefined") {_RecordType("<316,317,11>",(f)); Inst6++; } } catch(e) {}
+f("a");
+33;
+try { if (Inst7 <= 1000 && typeof (f) != "undefined") {_RecordType("<328,329,13>",(f)); Inst7++; } } catch(e) {}
+f("b");
+33;
+try { if (Inst8 <= 1000 && typeof (f) != "undefined") {_RecordType("<340,341,15>",(f)); Inst8++; } } catch(e) {}
+f("c");
+
+try { if (Inst9 <= 1000 && typeof (g) != "undefined") {_RecordType("<358,359,17>",(g)); Inst9++; } } catch(e) {}
+function g(str) {
+try { if (Inst10 <= 1000 && typeof (str) != "undefined") {_RecordType("<360,363,17>",(str)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (str) != "undefined") {_RecordType("<409,412,18>",(str)); Inst12++; } } catch(e) {}
+  var s = "We also try to materalize {" + str + "} when deopting";
+try { if (Inst11 <= 1000 && typeof (s) != "undefined") {_RecordType("<373,374,18>",(s)); Inst11++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (s.length) != "undefined") {_RecordType("<443,451,19>",(s.length)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (s) != "undefined") {_RecordType("<443,444,19>",(s)); Inst14++; } } catch(e) {}
+  return s.length;
+}
+
+43;
+try { if (Inst15 <= 1000 && typeof (g) != "undefined") {_RecordType("<460,461,23>",(g)); Inst15++; } } catch(e) {}
+g("a");
+43;
+try { if (Inst16 <= 1000 && typeof (g) != "undefined") {_RecordType("<472,473,25>",(g)); Inst16++; } } catch(e) {}
+g("b");
+43;
+try { if (Inst17 <= 1000 && typeof (g) != "undefined") {_RecordType("<484,485,27>",(g)); Inst17++; } } catch(e) {}
+g("c");
+

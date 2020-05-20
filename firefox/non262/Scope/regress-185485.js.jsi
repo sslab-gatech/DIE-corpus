@@ -1,0 +1,320 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ *
+ * Date:    16 Dec 2002
+ * SUMMARY: Testing |with (x) {function f() {}}| when |x.f| already exists
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=185485
+ *
+ * The idea is this: if |x| does not already have a property named |f|,
+ * a |with| statement cannot be used to define one. See, for example,
+ *
+ *       http://bugzilla.mozilla.org/show_bug.cgi?id=159849#c11
+ *       http://bugzilla.mozilla.org/show_bug.cgi?id=184107
+ *
+ *
+ * However, if |x| already has a property |f|, a |with| statement can be
+ * used to modify the value it contains:
+ *
+ *                 with (x) {f = 1;}
+ *
+ * This should work even if we use a |var| statement, like this:
+ *
+ *                 with (x) {var f = 1;}
+ *
+ * However, it should NOT work if we use a |function| statement, like this:
+ *
+ *                 with (x) {function f() {}}
+ *
+ * Instead, this should newly define a function f in global scope.
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=185485
+ *
+ */
+//-----------------------------------------------------------------------------
+var UBound = 0;
+try { if (Inst0 <= 1000 && typeof (UBound) != "undefined") {_RecordType("<1317,1323,38>",(UBound)); Inst0++; } } catch(e) {}
+var BUGNUMBER = 185485;
+try { if (Inst1 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<1333,1342,39>",(BUGNUMBER)); Inst1++; } } catch(e) {}
+var summary = 'Testing |with (x) {function f() {}}| when |x.f| already exists';
+try { if (Inst2 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1357,1364,40>",(summary)); Inst2++; } } catch(e) {}
+var status = '';
+try { if (Inst3 <= 1000 && typeof (status) != "undefined") {_RecordType("<1437,1443,41>",(status)); Inst3++; } } catch(e) {}
+var statusitems = [];
+try { if (Inst4 <= 1000 && typeof (statusitems) != "undefined") {_RecordType("<1454,1465,42>",(statusitems)); Inst4++; } } catch(e) {}
+var actual = '';
+try { if (Inst5 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1476,1482,43>",(actual)); Inst5++; } } catch(e) {}
+var actualvalues = [];
+try { if (Inst6 <= 1000 && typeof (actualvalues) != "undefined") {_RecordType("<1493,1505,44>",(actualvalues)); Inst6++; } } catch(e) {}
+var expect = '';
+try { if (Inst7 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1516,1522,45>",(expect)); Inst7++; } } catch(e) {}
+var expectedvalues = [];
+try { if (Inst8 <= 1000 && typeof (expectedvalues) != "undefined") {_RecordType("<1533,1547,46>",(expectedvalues)); Inst8++; } } catch(e) {}
+var x = {
+  f: 0,
+  g: 0
+};
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<1558,1559,47>",(x)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<1588,1589,51>",(x)); Inst10++; } } catch(e) {}
+with (x) {
+  f = 1;
+try { if (Inst11 <= 1000 && typeof (f) != "undefined") {_RecordType("<1595,1596,52>",(f)); Inst11++; } } catch(e) {}
+}
+try { if (Inst13 <= 1000 && typeof (inSection) != "undefined") {_RecordType("<1613,1622,54>",(inSection)); Inst13++; } } catch(e) {}
+status = inSection(1);
+try { if (Inst12 <= 1000 && typeof (status) != "undefined") {_RecordType("<1604,1610,54>",(status)); Inst12++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (x.f) != "undefined") {_RecordType("<1636,1639,55>",(x.f)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (x) != "undefined") {_RecordType("<1636,1637,55>",(x)); Inst16++; } } catch(e) {}
+actual = x.f;
+try { if (Inst14 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1627,1633,55>",(actual)); Inst14++; } } catch(e) {}
+expect = 1;
+try { if (Inst17 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1641,1647,56>",(expect)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<1653,1660,57>",(addThis)); Inst18++; } } catch(e) {}
+addThis();
+try { if (Inst19 <= 1000 && typeof (x) != "undefined") {_RecordType("<1670,1671,58>",(x)); Inst19++; } } catch(e) {}
+with (x) {
+  var f = 2;
+try { if (Inst20 <= 1000 && typeof (f) != "undefined") {_RecordType("<1681,1682,59>",(f)); Inst20++; } } catch(e) {}
+}
+try { if (Inst22 <= 1000 && typeof (inSection) != "undefined") {_RecordType("<1699,1708,61>",(inSection)); Inst22++; } } catch(e) {}
+status = inSection(2);
+try { if (Inst21 <= 1000 && typeof (status) != "undefined") {_RecordType("<1690,1696,61>",(status)); Inst21++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (x.f) != "undefined") {_RecordType("<1722,1725,62>",(x.f)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (x) != "undefined") {_RecordType("<1722,1723,62>",(x)); Inst25++; } } catch(e) {}
+actual = x.f;
+try { if (Inst23 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1713,1719,62>",(actual)); Inst23++; } } catch(e) {}
+expect = 2;
+try { if (Inst26 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1727,1733,63>",(expect)); Inst26++; } } catch(e) {}
+try { if (Inst27 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<1739,1746,64>",(addThis)); Inst27++; } } catch(e) {}
+addThis();
+/*
+ * Use of a function statement under the with-block should not affect
+ * the local property |f|, but define a function |f| in global scope -
+ */
+
+try { if (Inst28 <= 1000 && typeof (x) != "undefined") {_RecordType("<1905,1906,70>",(x)); Inst28++; } } catch(e) {}
+with (x) {
+try { if (Inst29 <= 1000 && typeof (f) != "undefined") {_RecordType("<1921,1922,71>",(f)); Inst29++; } } catch(e) {}
+  function f() {
+    ;
+  }
+}
+try { if (Inst31 <= 1000 && typeof (inSection) != "undefined") {_RecordType("<1948,1957,75>",(inSection)); Inst31++; } } catch(e) {}
+status = inSection(3);
+try { if (Inst30 <= 1000 && typeof (status) != "undefined") {_RecordType("<1939,1945,75>",(status)); Inst30++; } } catch(e) {}
+try { if (Inst33 <= 1000 && typeof (x.f) != "undefined") {_RecordType("<1971,1974,76>",(x.f)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (x) != "undefined") {_RecordType("<1971,1972,76>",(x)); Inst34++; } } catch(e) {}
+actual = x.f;
+try { if (Inst32 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1962,1968,76>",(actual)); Inst32++; } } catch(e) {}
+expect = 2;
+try { if (Inst35 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1976,1982,77>",(expect)); Inst35++; } } catch(e) {}
+try { if (Inst36 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<1988,1995,78>",(addThis)); Inst36++; } } catch(e) {}
+addThis();
+try { if (Inst38 <= 1000 && typeof (inSection) != "undefined") {_RecordType("<2008,2017,79>",(inSection)); Inst38++; } } catch(e) {}
+status = inSection(4);
+try { if (Inst37 <= 1000 && typeof (status) != "undefined") {_RecordType("<1999,2005,79>",(status)); Inst37++; } } catch(e) {}
+try { if (Inst40 <= 1000 && typeof (this.f) != "undefined") {_RecordType("<2038,2044,80>",(this.f)); Inst40++; } } catch(e) {}
+actual = typeof this.f;
+try { if (Inst39 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2022,2028,80>",(actual)); Inst39++; } } catch(e) {}
+expect = 'function';
+try { if (Inst41 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2046,2052,81>",(expect)); Inst41++; } } catch(e) {}
+try { if (Inst42 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<2067,2074,82>",(addThis)); Inst42++; } } catch(e) {}
+addThis();
+/*
+ * Compare use of function expression instead of function statement.
+ * Note it is important that |x.g| already exists. Otherwise, this
+ * would newly define |g| in global scope -
+ */
+
+try { if (Inst43 <= 1000 && typeof (x) != "undefined") {_RecordType("<2272,2273,89>",(x)); Inst43++; } } catch(e) {}
+with (x) {
+  var g = function () {
+    ;
+  };
+try { if (Inst44 <= 1000 && typeof (g) != "undefined") {_RecordType("<2283,2284,90>",(g)); Inst44++; } } catch(e) {}
+}
+try { if (Inst46 <= 1000 && typeof (inSection) != "undefined") {_RecordType("<2323,2332,94>",(inSection)); Inst46++; } } catch(e) {}
+status = inSection(5);
+try { if (Inst45 <= 1000 && typeof (status) != "undefined") {_RecordType("<2314,2320,94>",(status)); Inst45++; } } catch(e) {}
+try { if (Inst48 <= 1000 && typeof (x.g.toString) != "undefined") {_RecordType("<2346,2358,95>",(x.g.toString)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (x.g) != "undefined") {_RecordType("<2346,2349,95>",(x.g)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (x) != "undefined") {_RecordType("<2346,2347,95>",(x)); Inst50++; } } catch(e) {}
+actual = x.g.toString();
+try { if (Inst47 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2337,2343,95>",(actual)); Inst47++; } } catch(e) {}
+
+try { if (Inst52 <= 1000 && typeof (function () {
+  ;
+}.toString) != "undefined") {_RecordType("<2372,2400,97>",(function () {
+  ;
+}.toString)); Inst52++; } } catch(e) {}
+expect = function () {
+  ;
+}.toString();
+try { if (Inst51 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2363,2369,97>",(expect)); Inst51++; } } catch(e) {}
+
+try { if (Inst53 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<2405,2412,101>",(addThis)); Inst53++; } } catch(e) {}
+addThis(); //-----------------------------------------------------------------------------
+
+try { if (Inst54 <= 1000 && typeof (test) != "undefined") {_RecordType("<2497,2501,103>",(test)); Inst54++; } } catch(e) {}
+test(); //-----------------------------------------------------------------------------
+
+try { if (Inst55 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<2595,2602,105>",(addThis)); Inst55++; } } catch(e) {}
+function addThis() {
+try { if (Inst58 <= 1000 && typeof (status) != "undefined") {_RecordType("<2631,2637,106>",(status)); Inst58++; } } catch(e) {}
+  statusitems[UBound] = status;
+try { if (Inst56 <= 1000 && typeof (statusitems[UBound]) != "undefined") {_RecordType("<2609,2628,106>",(statusitems[UBound])); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (statusitems) != "undefined") {_RecordType("<2609,2620,106>",(statusitems)); Inst57++; } } catch(e) {}
+try { if (Inst61 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2664,2670,107>",(actual)); Inst61++; } } catch(e) {}
+  actualvalues[UBound] = actual;
+try { if (Inst59 <= 1000 && typeof (actualvalues[UBound]) != "undefined") {_RecordType("<2641,2661,107>",(actualvalues[UBound])); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (actualvalues) != "undefined") {_RecordType("<2641,2653,107>",(actualvalues)); Inst60++; } } catch(e) {}
+try { if (Inst64 <= 1000 && typeof (expect) != "undefined") {_RecordType("<2699,2705,108>",(expect)); Inst64++; } } catch(e) {}
+  expectedvalues[UBound] = expect;
+try { if (Inst62 <= 1000 && typeof (expectedvalues[UBound]) != "undefined") {_RecordType("<2674,2696,108>",(expectedvalues[UBound])); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (expectedvalues) != "undefined") {_RecordType("<2674,2688,108>",(expectedvalues)); Inst63++; } } catch(e) {}
+try { if (Inst65 <= 1000 && typeof (UBound) != "undefined") {_RecordType("<2709,2715,109>",(UBound)); Inst65++; } } catch(e) {}
+  UBound++;
+}
+
+try { if (Inst66 <= 1000 && typeof (test) != "undefined") {_RecordType("<2731,2735,112>",(test)); Inst66++; } } catch(e) {}
+function test() {
+try { if (Inst67 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<2742,2756,113>",(printBugNumber)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<2757,2766,113>",(BUGNUMBER)); Inst68++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst69 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<2771,2782,114>",(printStatus)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (summary) != "undefined") {_RecordType("<2783,2790,114>",(summary)); Inst70++; } } catch(e) {}
+  printStatus(summary);
+
+  for (var i = 0; i < UBound; i++) {
+try { if (Inst71 <= 1000 && typeof (i) != "undefined") {_RecordType("<2805,2806,116>",(i)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (i) != "undefined") {_RecordType("<2812,2813,116>",(i)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (UBound) != "undefined") {_RecordType("<2816,2822,116>",(UBound)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (i) != "undefined") {_RecordType("<2824,2825,116>",(i)); Inst74++; } } catch(e) {}
+try { if (Inst75 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2835,2848,117>",(reportCompare)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (expectedvalues[i]) != "undefined") {_RecordType("<2849,2866,117>",(expectedvalues[i])); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (expectedvalues) != "undefined") {_RecordType("<2849,2863,117>",(expectedvalues)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (actualvalues[i]) != "undefined") {_RecordType("<2868,2883,117>",(actualvalues[i])); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (actualvalues) != "undefined") {_RecordType("<2868,2880,117>",(actualvalues)); Inst79++; } } catch(e) {}try { if (Inst80 <= 1000 && typeof (statusitems[i]) != "undefined") {_RecordType("<2885,2899,117>",(statusitems[i])); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (statusitems) != "undefined") {_RecordType("<2885,2896,117>",(statusitems)); Inst81++; } } catch(e) {}
+    reportCompare(expectedvalues[i], actualvalues[i], statusitems[i]);
+  }
+}
+

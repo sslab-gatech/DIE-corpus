@@ -1,0 +1,236 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+// Test language dependent special casing with different language tags.
+for (let locale of ["lt", "LT", "lt-LT", "lt-u-co-phonebk", "lt-x-lietuva"]) {
+try { if (Inst0 <= 1000 && typeof (locale) != "undefined") {_RecordType("<132,138,3>",(locale)); Inst0++; } } catch(e) {}
+try { if (Inst1 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<204,231,4>",("i\u0307".toLocaleUpperCase)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (locale) != "undefined") {_RecordType("<232,238,4>",(locale)); Inst2++; } } catch(e) {}
+  "i\u0307".toLocaleUpperCase(locale);
+  "I";
+try { if (Inst3 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<250,277,6>",("i\u0307".toLocaleUpperCase)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (locale) != "undefined") {_RecordType("<279,285,6>",(locale)); Inst4++; } } catch(e) {}
+  "i\u0307".toLocaleUpperCase([locale]);
+  "I";
+try { if (Inst5 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<298,325,8>",("i\u0307".toLocaleUpperCase)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (locale) != "undefined") {_RecordType("<327,333,8>",(locale)); Inst6++; } } catch(e) {}
+  "i\u0307".toLocaleUpperCase([locale, "und"]);
+  "I";
+try { if (Inst7 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<353,380,10>",("i\u0307".toLocaleUpperCase)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (locale) != "undefined") {_RecordType("<389,395,10>",(locale)); Inst8++; } } catch(e) {}
+  "i\u0307".toLocaleUpperCase(["und", locale]);
+  "I\u0307";
+} // Ensure "lti" (Leti) isn't misrecognized as "lt", even though both share the
+// same prefix.
+
+
+try { if (Inst9 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<511,538,16>",("i\u0307".toLocaleUpperCase)); Inst9++; } } catch(e) {}
+"i\u0307".toLocaleUpperCase("lti");
+"I\u0307";
+try { if (Inst10 <= 1000 && typeof ("i\u0307".toLocaleUpperCase) != "undefined") {_RecordType("<558,585,18>",("i\u0307".toLocaleUpperCase)); Inst10++; } } catch(e) {}
+"i\u0307".toLocaleUpperCase(["lti"]);
+"I\u0307";
+
+// Language tag is always verified.
+for (let locale of ["no_locale", "lt-invalid_ext", ["no_locale"], ["en", "no_locale"]]) {
+try { if (Inst11 <= 1000 && typeof (locale) != "undefined") {_RecordType("<653,659,22>",(locale)); Inst11++; } } catch(e) {}
+  // Empty input string.
+try { if (Inst12 <= 1000 && typeof ("".toLocaleUpperCase) != "undefined") {_RecordType("<768,788,24>",("".toLocaleUpperCase)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (locale) != "undefined") {_RecordType("<789,795,24>",(locale)); Inst13++; } } catch(e) {}
+  (() => "".toLocaleUpperCase(locale))();
+
+try { if (Inst14 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<804,814,26>",(RangeError)); Inst14++; } } catch(e) {}
+  RangeError;
+
+try { if (Inst15 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<826,847,28>",("a".toLocaleUpperCase)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (locale) != "undefined") {_RecordType("<848,854,28>",(locale)); Inst16++; } } catch(e) {}
+  (() => "a".toLocaleUpperCase(locale))();
+
+try { if (Inst17 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<863,873,30>",(RangeError)); Inst17++; } } catch(e) {}
+  RangeError;
+} // The language tag fast-path for String.prototype.toLocaleUpperCase doesn't
+// trip up on three element private-use only language tags.
+
+
+try { if (Inst18 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1016,1037,35>",("a".toLocaleUpperCase)); Inst18++; } } catch(e) {}
+"a".toLocaleUpperCase("x-x");
+"A";
+try { if (Inst19 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1051,1072,37>",("a".toLocaleUpperCase)); Inst19++; } } catch(e) {}
+"a".toLocaleUpperCase("x-0");
+"A";
+try { if (Inst20 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1086,1107,39>",("a".toLocaleUpperCase)); Inst20++; } } catch(e) {}
+"a".toLocaleUpperCase();
+"A";
+try { if (Inst21 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1116,1137,41>",("a".toLocaleUpperCase)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1138,1147,41>",(undefined)); Inst22++; } } catch(e) {}
+"a".toLocaleUpperCase(undefined);
+"A";
+try { if (Inst23 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1155,1176,43>",("a".toLocaleUpperCase)); Inst23++; } } catch(e) {}
+"a".toLocaleUpperCase([]);
+"A";
+try { if (Inst24 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1187,1208,45>",("a".toLocaleUpperCase)); Inst24++; } } catch(e) {}
+"a".toLocaleUpperCase({});
+"A";
+try { if (Inst25 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1219,1240,47>",("a".toLocaleUpperCase)); Inst25++; } } catch(e) {}
+"a".toLocaleUpperCase({
+  length: 0
+});
+"A";
+try { if (Inst26 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1264,1285,51>",("a".toLocaleUpperCase)); Inst26++; } } catch(e) {}
+"a".toLocaleUpperCase({
+  length: -1
+});
+"A";
+
+// Test with incorrect locale type.
+for (let locale of [null, 0, Math.PI, NaN, Infinity, true, false, Symbol()]) {
+try { if (Inst27 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1356,1362,57>",(locale)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Math.PI) != "undefined") {_RecordType("<1376,1383,57>",(Math.PI)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1376,1380,57>",(Math)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<1385,1388,57>",(NaN)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<1390,1398,57>",(Infinity)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1413,1419,57>",(Symbol)); Inst32++; } } catch(e) {}
+  // Empty input string.
+try { if (Inst33 <= 1000 && typeof ("".toLocaleUpperCase) != "undefined") {_RecordType("<1460,1480,59>",("".toLocaleUpperCase)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1482,1488,59>",(locale)); Inst34++; } } catch(e) {}
+  (() => "".toLocaleUpperCase([locale]))();
+
+try { if (Inst35 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1498,1507,61>",(TypeError)); Inst35++; } } catch(e) {}
+  TypeError;
+
+try { if (Inst36 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1519,1540,63>",("a".toLocaleUpperCase)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1542,1548,63>",(locale)); Inst37++; } } catch(e) {}
+  (() => "a".toLocaleUpperCase([locale]))();
+
+try { if (Inst38 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1558,1567,65>",(TypeError)); Inst38++; } } catch(e) {}
+  TypeError;
+} // Primitives are converted with ToObject and then queried for .length property.
+
+
+for (let locale of [null]) {
+try { if (Inst39 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1663,1669,69>",(locale)); Inst39++; } } catch(e) {}
+  // Empty input string.
+try { if (Inst40 <= 1000 && typeof ("".toLocaleUpperCase) != "undefined") {_RecordType("<1717,1737,71>",("".toLocaleUpperCase)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1739,1745,71>",(locale)); Inst41++; } } catch(e) {}
+  (() => "".toLocaleUpperCase([locale]))();
+
+try { if (Inst42 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1755,1764,73>",(TypeError)); Inst42++; } } catch(e) {}
+  TypeError;
+
+try { if (Inst43 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<1776,1797,75>",("a".toLocaleUpperCase)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1799,1805,75>",(locale)); Inst44++; } } catch(e) {}
+  (() => "a".toLocaleUpperCase([locale]))();
+
+try { if (Inst45 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1815,1824,77>",(TypeError)); Inst45++; } } catch(e) {}
+  TypeError;
+} // ToLength(ToObject(<primitive>)) returns 0.
+
+
+for (let locale of [0, Math.PI, NaN, Infinity, true, false, Symbol()]) {
+try { if (Inst46 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1885,1891,81>",(locale)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (Math.PI) != "undefined") {_RecordType("<1899,1906,81>",(Math.PI)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (Math) != "undefined") {_RecordType("<1899,1903,81>",(Math)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<1908,1911,81>",(NaN)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<1913,1921,81>",(Infinity)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1936,1942,81>",(Symbol)); Inst51++; } } catch(e) {}
+  // Empty input string.
+try { if (Inst52 <= 1000 && typeof ("".toLocaleUpperCase) != "undefined") {_RecordType("<1976,1996,83>",("".toLocaleUpperCase)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (locale) != "undefined") {_RecordType("<1997,2003,83>",(locale)); Inst53++; } } catch(e) {}
+  "".toLocaleUpperCase(locale);
+  "";
+try { if (Inst54 <= 1000 && typeof ("a".toLocaleUpperCase) != "undefined") {_RecordType("<2014,2035,85>",("a".toLocaleUpperCase)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (locale) != "undefined") {_RecordType("<2036,2042,85>",(locale)); Inst55++; } } catch(e) {}
+  "a".toLocaleUpperCase(locale);
+  "A";
+}
+
+try { if (Inst56 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2066,2079,89>",(reportCompare)); Inst56++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst57 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2100,2113,90>",(reportCompare)); Inst57++; } } catch(e) {}
+  reportCompare(0, 0, "ok");
+}
+

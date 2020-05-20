@@ -1,0 +1,91 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 412324;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<346,355,7>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Allow function Error(){} for the love of Pete';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<370,377,8>",(summary)); Inst1++; } } catch(e) {}
+var actual = 'No Error';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<433,439,9>",(actual)); Inst2++; } } catch(e) {}
+var expect = 'No Error';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<458,464,10>",(expect)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<479,493,11>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<494,503,11>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<506,517,12>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<518,525,12>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary);
+
+try { if (Inst8 <= 1000 && typeof (Error) != "undefined") {_RecordType("<538,543,14>",(Error)); Inst8++; } } catch(e) {}
+function Error() {
+  ;
+}
+
+try { if (Inst9 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<555,568,18>",(reportCompare)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (expect) != "undefined") {_RecordType("<569,575,18>",(expect)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (actual) != "undefined") {_RecordType("<577,583,18>",(actual)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (summary) != "undefined") {_RecordType("<585,592,18>",(summary)); Inst12++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

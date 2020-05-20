@@ -1,0 +1,870 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var lambdaForGlobalThis = () => this;
+
+function test1() {
+  function bar() {
+    this.o = 'bar';
+  }
+
+  var _this = {
+    o: 'global'
+  };
+  bar.call(_this);
+  _this.o;
+}
+
+test1();
+
+function test2() {
+  console.log(this.o);
+  this.o = 'global';
+  console.log(this.o);
+}
+
+test2();
+
+function test3() {
+  var lambdaCapturesGlobalThis = str => this.o = str;
+
+  this.o = 'global';
+  lambdaCapturesGlobalThis('called at global');
+  console.log(this.o);
+  this.o = 'global';
+
+  function foo() {
+    lambdaCapturesGlobalThis('called from nested function');
+  }
+
+  foo();
+  console.log(this.o);
+  this.o = 'global';
+
+  var globalLambda = () => lambdaCapturesGlobalThis('called from global lambda');
+
+  globalLambda();
+  console.log(this.o);
+  this.o = 'global';
+  lambdaCapturesGlobalThis('called from global eval');
+  console.log(this.o);
+}
+
+test3();
+
+function test4() {
+  function bar() {
+    this.o = "eval bar";
+
+    (() => this.o = 'lambda bar')();
+  }
+
+  var _this = {
+    o: 'global'
+  };
+  bar.call(_this);
+  console.log(_this.o);
+}
+
+test4();
+
+function test5() {
+  function foo() {
+    var count = 0;
+    this.o = 'foo';
+
+    (() => {
+      count++;
+      console.log(this.o);
+    })();
+
+    (() => () => {
+      count++;
+      console.log(this.o);
+    })()();
+
+    return true;
+  }
+
+  foo.call({
+    o: 'test'
+  });
+}
+
+test5();
+
+function test6() {
+  function foo() {
+    this.o = 'foo';
+
+    function bar() {
+        this.o = "eval bar";
+    }
+
+    bar();
+  }
+
+  this.o = 'global';
+  foo();
+  console.log(this.o);
+}
+
+test6();
+
+function test7() {
+  eval('this.o = "global eval"');
+  console.log(this.o);
+
+  (() => this.o = 'global lambda')();
+
+  console.log(this.o);
+
+  function bar() {
+    this.o = 'bar';
+    return this;
+  }
+
+  var _this = bar();
+
+  console.log(this.o);
+  console.log(_this === this);
+
+  function baz() {
+    this.o = 'baz';
+    return this;
+  }
+
+  _this = baz.call({});
+  console.log(this.o);
+  console.log(_this === this);
+
+  function bot(_this) {
+    _this.o = 'bot';
+    return _this;
+  }
+
+  _this = bot(this);
+  console.log(this.o);
+  console.log(_this === this);
+
+  function foo() {
+    console.log(this.o);
+    this.o = 'foo';
+    console.log(this.o);
+
+    function bar() {
+      this.o = 'bar';
+      return this;
+    }
+
+    _this = bar.call(this);
+    console.log(this.o);
+    console.log(_this === this);
+
+    function baz() {
+      this.o = 'baz';
+      return this;
+    }
+
+    _this = baz.call({});
+    console.log(this.o);
+    console.log(_this === this);
+
+    function bot(_this) {
+      _this.o = 'bot';
+      return _this;
+    }
+
+    _this = bot(this);
+    console.log(this.o);
+    console.log(_this === this);
+    return this;
+  }
+
+  this.o = 'global';
+  _this = foo.call(this);
+  console.log(_this === this);
+}
+
+test7();
+
+function test8() {
+  "use strict";
+
+  try {
+    this.o = 'global';
+  } catch (e) {
+    ;
+  }
+
+  function bar() {
+    console.log(this);
+  }
+
+  bar();
+
+  function baz() {
+    this.o = 'baz';
+    return this;
+  }
+
+  var _this = baz.call({});
+
+  console.log(_this === this);
+  console.log(_this.o);
+
+  function foo() {
+    console.log(this !== undefined);
+
+    function bar() {
+      console.log(this);
+    }
+
+    bar();
+  }
+
+  foo.call({});
+}
+
+test8();
+
+function test9() {
+  function foo() {
+    return new.target;
+  }
+
+  console.log(foo === new foo());
+  console.log(undefined === foo());
+
+  function foo2() {
+    var a = () => new.target;
+
+    return a();
+  }
+
+  console.log(foo2 === new foo2());
+  console.log(undefined === foo2());
+
+  function foo3() {
+    return eval('new.target');
+  }
+
+  console.log(foo3 === new foo3());
+  console.log(undefined === foo3());
+
+  function foo4() {
+    var a = () => () => new.target;
+
+    return a()();
+  }
+
+  console.log(foo4 === new foo4());
+  console.log(undefined === foo4());
+
+  function foo5() {
+    return eval("eval('new.target');");
+  }
+
+  console.log(foo5 === new foo5());
+  console.log(undefined === foo5());
+
+  function foo6() {
+    var a = () => eval('new.target');
+
+    return a();
+  }
+
+  console.log(foo6 === new foo6());
+  console.log(undefined === foo6());
+}
+
+test9();
+
+function test10() {
+  class BaseDefault {}
+
+  console.log(BaseDefault === new BaseDefault().constructor);
+
+  class BaseEmpty {
+    constructor() {
+      ;
+    }
+
+  }
+
+  console.log(BaseEmpty === new BaseEmpty().constructor);
+}
+
+test10();
+
+function test11() {
+  class BaseReturnThis {
+    constructor() {
+      return this;
+    }
+
+  }
+
+  console.log(BaseReturnThis === new BaseReturnThis().constructor);
+
+  class BaseReturnThisEval {
+    constructor() {
+      return eval('this');
+    }
+
+  }
+
+  console.log(BaseReturnThisEval === new BaseReturnThisEval().constructor);
+
+  class BaseReturnThisArrow {
+    constructor() {
+      return (() => this)();
+    }
+
+  }
+
+  console.log(BaseReturnThisArrow === new BaseReturnThisArrow().constructor);
+  var called = false;
+
+  class BaseVerifyThis {
+    constructor() {
+      console.log(BaseVerifyThis === this.constructor);
+      called = true;
+    }
+
+  }
+
+  console.log(BaseVerifyThis === new BaseVerifyThis().constructor);
+  console.log(called);
+  called = false;
+
+  class BaseVerifyThisArrow {
+    constructor() {
+      console.log(BaseVerifyThisArrow === (() => this)().constructor);
+      called = true;
+    }
+
+  }
+
+  console.log(BaseVerifyThisArrow === new BaseVerifyThisArrow().constructor);
+  console.log(called);
+}
+
+test11();
+
+function test12() {
+  var called = false;
+
+  class BaseVerifyNewTarget {
+    constructor() {
+      console.log(BaseVerifyNewTarget === new.target);
+      called = true;
+    }
+
+  }
+
+  console.log(BaseVerifyNewTarget === new BaseVerifyNewTarget().constructor);
+  console.log(called);
+  called = false;
+
+  class BaseVerifyNewTargetLambda {
+    constructor() {
+      (() => {
+        console.log(BaseVerifyNewTargetLambda === new.target);
+        called = true;
+      })();
+    }
+
+  }
+
+  console.log(BaseVerifyNewTargetLambda === new BaseVerifyNewTargetLambda().constructor);
+  console.log(called);
+}
+
+test12();
+
+function test13() {
+  class DerivedDefault extends null {}
+
+  try {
+    () => new DerivedDefault();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedSuper extends null {
+    constructor() {
+      super();
+    }
+
+  }
+
+  try {
+    () => new DerivedSuper();
+  } catch (e) {
+    ;
+  }
+}
+
+test13();
+
+function test14() {
+  class Base {}
+
+  class DerivedReturnThis extends Base {
+    constructor() {
+      super();
+      return this;
+    }
+
+  }
+
+  console.log(DerivedReturnThis === new DerivedReturnThis().constructor);
+
+  class DerivedReturnThisEval extends Base {
+    constructor() {
+      super();
+      return eval('this');
+    }
+
+  }
+
+  console.log(DerivedReturnThisEval === new DerivedReturnThisEval().constructor);
+
+  class DerivedReturnThisArrow extends Base {
+    constructor() {
+      super();
+      return (() => this)();
+    }
+
+  }
+
+  console.log(DerivedReturnThisArrow === new DerivedReturnThisArrow().constructor);
+
+  class DerivedReturnThisEvalArrow extends Base {
+    constructor() {
+      super();
+      return eval('(() => this)()');
+    }
+
+  }
+
+  console.log(DerivedReturnThisEvalArrow === new DerivedReturnThisEvalArrow().constructor);
+
+  class DerivedReturnThisArrowEval extends Base {
+    constructor() {
+      super();
+      return (() => eval('this'))();
+    }
+
+  }
+
+  console.log(DerivedReturnThisArrowEval === new DerivedReturnThisArrowEval().constructor);
+}
+
+test14();
+
+function test15() {
+  class Base {}
+
+  var called = false;
+
+  class DerivedVerifyThis extends Base {
+    constructor() {
+      super();
+      console.log(DerivedVerifyThis === this.constructor);
+      called = true;
+    }
+
+  }
+
+  console.log(DerivedVerifyThis === new DerivedVerifyThis().constructor);
+  called = false;
+
+  class DerivedVerifyThisLambda extends Base {
+    constructor() {
+      super();
+
+      (() => {
+        console.log(DerivedVerifyThisLambda === this.constructor);
+        called = true;
+      })();
+    }
+
+  }
+
+  console.log(DerivedVerifyThisLambda === new DerivedVerifyThisLambda().constructor);
+}
+
+test15();
+
+function test16() {
+  function SloppyModeCapture() {
+    console.log('object' === typeof this);
+    this.o = 'SloppyModeCapture';
+  }
+
+  SloppyModeCapture();
+
+  function StrictModeSanity() {
+    'use strict';
+
+    console.log(undefined === this);
+  }
+
+  StrictModeSanity();
+  lambdaForGlobalThis().o = 'global';
+
+  function StrictModeCapture() {
+    'use strict';
+
+    console.log('object' === typeof this);
+  }
+
+  StrictModeCapture.call({
+    o: 'StrictModeCapture'
+  });
+}
+
+test16();
+
+function test17() {
+  var key_bar = 'bar';
+  var key_foo = 'foo';
+
+  function verifyThis() {
+    console.log(obj === this);
+    return 'bar';
+  }
+
+  var obj = {
+    callSuperMethodViaDot() {
+      return super.bar();
+    },
+
+    callSuperMethodViaDotArrow() {
+      return (() => super.bar())();
+    },
+
+    getSuperPropertyViaDot() {
+      return super.foo;
+    },
+
+    getSuperPropertyViaDotArrow() {
+      return (() => super.foo)();
+    },
+
+    callSuperMethodViaIndex() {
+      return super[key_bar]();
+    },
+
+    callSuperMethodViaIndexArrow() {
+      return (() => super[key_bar]())();
+    },
+
+    getSuperPropertyViaIndex() {
+      return super[key_foo];
+    },
+
+    getSuperPropertyViaIndexArrow() {
+      return (() => super[key_foo])();
+    },
+
+    assignSuperPropertyViaDot() {
+      super.foo = 'something';
+      return super.foo;
+    },
+
+    assignSuperPropertyViaDotArrow() {
+      (() => super.foo = 'something')();
+
+      return super.foo;
+    },
+
+    assignSuperPropertyViaIndex() {
+      super[key_foo] = 'something';
+      return super.foo;
+    },
+
+    assignSuperPropertyViaIndexArrow() {
+      (() => super[key_foo] = 'something')();
+
+      return super.foo;
+    },
+
+    deleteSuperPropertyViaDot() {
+      delete super.foo;
+    },
+
+    deleteSuperPropertyViaDotArrow() {
+      (() => delete super.foo)();
+    }
+
+  };
+  var proto = {
+    bar: verifyThis,
+    foo: 'foo'
+  };
+  Object.setPrototypeOf(obj, proto);
+  console.log('bar' === obj.callSuperMethodViaDot());
+  console.log('bar' === obj.callSuperMethodViaDotArrow());
+  console.log('foo' === obj.getSuperPropertyViaDot());
+  console.log('foo' === obj.getSuperPropertyViaDotArrow());
+  console.log('bar' === obj.callSuperMethodViaIndex());
+  console.log('bar' === obj.callSuperMethodViaIndexArrow());
+  console.log('foo' === obj.getSuperPropertyViaIndex());
+  console.log('foo' === obj.getSuperPropertyViaIndexArrow());
+  console.log('foo' === obj.assignSuperPropertyViaDot());
+  console.log('foo' === obj.assignSuperPropertyViaDotArrow());
+  console.log('something' === obj.assignSuperPropertyViaIndex());
+  console.log('something' === obj.assignSuperPropertyViaIndexArrow());
+
+  try {
+    () => obj.deleteSuperPropertyViaDot();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    () => obj.deleteSuperPropertyViaDotArrow();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    () => obj.deleteSuperPropertyViaDotEval();
+  } catch (e) {
+    ;
+  }
+}
+
+test17();
+
+function test18() {
+  function f1({
+    a: a
+  }, c = eval("a")) {
+    return c;
+  }
+
+  console.log(f1({
+    a: 'ok'
+  }));
+
+  function f2({
+    a: a
+  }, c = eval('this')) {
+    return c;
+  }
+
+  var _this = {};
+  console.log(_this === f2.call(_this, {}));
+
+  function f3({
+    a: a
+  }, c = eval('new.target')) {
+    return c;
+  }
+
+  console.log(f3 === new f3({}));
+
+  class base {
+    prop() {
+      console.log(c1 === this.constructor);
+      return 'prop';
+    }
+
+    returnThis() {
+      console.log(c2 === this.constructor);
+      return this;
+    }
+
+  }
+
+  var prop_name = 'prop';
+
+  class c1 extends base {
+    constructor({
+      a: a
+    }, c = eval('super()')) {
+      console.log(c1 === new.target);
+      console.log(this === c);
+      console.log('prop' === super.prop());
+    }
+
+    doSuperRefViaDot({
+      a: a
+    }, c = eval('super.prop()')) {
+      return c;
+    }
+
+    doSuperRefViaIndex({
+      a: a
+    }, c = eval('super[prop_name]()')) {
+      return c;
+    }
+
+  }
+
+  var inst = new c1({});
+  console.log(c1 === inst.constructor);
+  console.log('prop' === inst.doSuperRefViaDot({}));
+  console.log('prop' === inst.doSuperRefViaIndex({}));
+
+  class c2 extends base {
+    constructor({
+      a: a
+    }, c = eval('super(); super.returnThis();')) {
+      console.log(c2 === new.target);
+      console.log(this === c);
+    }
+
+  }
+
+  var inst = new c2({});
+  console.log(c2 === inst.constructor);
+}
+
+test18();
+
+function test19() {
+  function foo(arguments) {
+    console.log('arguments' === arguments);
+    console.log('arguments' === (() => arguments)());
+    console.log('arguments' === eval('arguments'));
+  }
+
+  foo('arguments');
+}
+
+test19();
+
+function test20() {
+  var _this = {};
+
+  function foo(a = this) {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+  }
+
+  foo.call(_this);
+
+  function bar(a = this) {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+  }
+
+  bar.call(_this);
+
+  function baz(a = this, c = function () {
+    return 'c';
+  }) {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+    console.log('c' === c());
+  }
+
+  baz.call(_this);
+
+  function baz2(a = this, c = function () {
+    function nested() {
+      return 'c';
+    }
+
+    ;
+    return nested;
+  }) {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+    console.log('c' === c()());
+  }
+
+  baz2.call(_this);
+
+  function baz3(c = function () {
+    return 'c';
+  }, a = this) {
+    eval('');
+    console.log(_this, a, "Correct default value was assigned");
+    console.log(_this, this, "Regular 'this' binding is correct");
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b', b(), "Nested functions are bound to the correct slot");
+    console.log('c', c(), "Function expression in param scope default argument is bound to the correct slot");
+  }
+
+  baz3.call(_this);
+
+  function bat(a = this, c = () => 'c') {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+    console.log('c' === c());
+  }
+
+  bat.call(_this);
+
+  function bat2(a = this, c = () => () => 'c') {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+    console.log('c' === c()());
+  }
+
+  bat2.call(_this);
+
+  function bat3(c = () => () => 'c', a = this) {
+    eval('');
+    console.log(_this === a);
+    console.log(_this === this);
+
+    function b() {
+      return 'b';
+    }
+
+    console.log('b' === b());
+    console.log('c' === c()());
+  }
+
+  bat3.call(_this);
+}
+
+test20();

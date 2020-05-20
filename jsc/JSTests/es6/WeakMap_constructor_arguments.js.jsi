@@ -1,0 +1,91 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<9,13,1>",(test)); Inst0++; } } catch(e) {}
+function test() {
+  var key1 = {};
+try { if (Inst1 <= 1000 && typeof (key1) != "undefined") {_RecordType("<24,28,2>",(key1)); Inst1++; } } catch(e) {}
+  var key2 = {};
+try { if (Inst2 <= 1000 && typeof (key2) != "undefined") {_RecordType("<41,45,3>",(key2)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (WeakMap) != "undefined") {_RecordType("<72,79,4>",(WeakMap)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (key1) != "undefined") {_RecordType("<82,86,4>",(key1)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (key2) != "undefined") {_RecordType("<95,99,4>",(key2)); Inst6++; } } catch(e) {}
+  var weakmap = new WeakMap([[key1, 123], [key2, 456]]);
+try { if (Inst3 <= 1000 && typeof (weakmap) != "undefined") {_RecordType("<58,65,4>",(weakmap)); Inst3++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (weakmap.has) != "undefined") {_RecordType("<118,129,5>",(weakmap.has)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (weakmap) != "undefined") {_RecordType("<118,125,5>",(weakmap)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (key1) != "undefined") {_RecordType("<130,134,5>",(key1)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (weakmap.get) != "undefined") {_RecordType("<139,150,5>",(weakmap.get)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (weakmap) != "undefined") {_RecordType("<139,146,5>",(weakmap)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (key1) != "undefined") {_RecordType("<151,155,5>",(key1)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (weakmap.has) != "undefined") {_RecordType("<168,179,5>",(weakmap.has)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (weakmap) != "undefined") {_RecordType("<168,175,5>",(weakmap)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (key2) != "undefined") {_RecordType("<180,184,5>",(key2)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (weakmap.get) != "undefined") {_RecordType("<189,200,5>",(weakmap.get)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (weakmap) != "undefined") {_RecordType("<189,196,5>",(weakmap)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (key2) != "undefined") {_RecordType("<201,205,5>",(key2)); Inst18++; } } catch(e) {}
+  return weakmap.has(key1) && weakmap.get(key1) === 123 && weakmap.has(key2) && weakmap.get(key2) === 456;
+}
+
+try { if (Inst19 <= 1000 && typeof (test) != "undefined") {_RecordType("<224,228,8>",(test)); Inst19++; } } catch(e) {}
+if (!test()) {
+try { if (Inst20 <= 1000 && typeof (Error) != "undefined") {_RecordType("<246,251,9>",(Error)); Inst20++; } } catch(e) {}
+  throw new Error("Test failed");
+}
+

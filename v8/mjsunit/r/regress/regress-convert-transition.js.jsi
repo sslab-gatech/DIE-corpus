@@ -1,0 +1,128 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2012 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+var input = '{ "a1":1, "a2":1, "a3":1, "a4":1, "a5":1, "a6":1, "a7":1,\
+               "a8":1, "a9":1, "a10":1, "a11":1, "a12":1, "a13":1}';
+try { if (Inst0 <= 1000 && typeof (input) != "undefined") {_RecordType("<1601,1606,27>",(input)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (JSON.parse) != "undefined") {_RecordType("<1746,1756,29>",(JSON.parse)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<1746,1750,29>",(JSON)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (input) != "undefined") {_RecordType("<1757,1762,29>",(input)); Inst4++; } } catch(e) {}
+var a = JSON.parse(input);
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<1742,1743,29>",(a)); Inst1++; } } catch(e) {}
+
+a.a = function () {
+  return 10;
+}; // Force conversion of field to slow mode.
+try { if (Inst5 <= 1000 && typeof (a.a) != "undefined") {_RecordType("<1766,1769,31>",(a.a)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<1766,1767,31>",(a)); Inst6++; } } catch(e) {}
+
+
+try { if (Inst8 <= 1000 && typeof (JSON.parse) != "undefined") {_RecordType("<1855,1865,36>",(JSON.parse)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<1855,1859,36>",(JSON)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (input) != "undefined") {_RecordType("<1866,1871,36>",(input)); Inst10++; } } catch(e) {}
+var b = JSON.parse(input);
+try { if (Inst7 <= 1000 && typeof (b) != "undefined") {_RecordType("<1851,1852,36>",(b)); Inst7++; } } catch(e) {}
+b.a = 10; // Add another property to the object that would transition to a.
+try { if (Inst11 <= 1000 && typeof (b.a) != "undefined") {_RecordType("<1874,1877,37>",(b.a)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (b) != "undefined") {_RecordType("<1874,1875,37>",(b)); Inst12++; } } catch(e) {}
+
+try { if (Inst14 <= 1000 && typeof (JSON.parse) != "undefined") {_RecordType("<1959,1969,39>",(JSON.parse)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<1959,1963,39>",(JSON)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (input) != "undefined") {_RecordType("<1970,1975,39>",(input)); Inst16++; } } catch(e) {}
+var c = JSON.parse(input);
+try { if (Inst13 <= 1000 && typeof (c) != "undefined") {_RecordType("<1955,1956,39>",(c)); Inst13++; } } catch(e) {}
+c.x = 10;
+try { if (Inst17 <= 1000 && typeof (c.x) != "undefined") {_RecordType("<1978,1981,40>",(c.x)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (c) != "undefined") {_RecordType("<1978,1979,40>",(c)); Inst18++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1988,1997,41>",(undefined)); Inst19++; } } catch(e) {}
+undefined;
+try { if (Inst20 <= 1000 && typeof (c.a) != "undefined") {_RecordType("<1999,2002,42>",(c.a)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (c) != "undefined") {_RecordType("<1999,2000,42>",(c)); Inst21++; } } catch(e) {}
+c.a;
+

@@ -1,0 +1,898 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var globalObject = this;
+var globalVar = 123;
+
+var globalLambdaThis = () => this;
+
+var globalLambdaThisProperty = () => this.globalVar;
+
+var globalLambdaEvalThis = () => eval('this');
+
+var globalLambdaEvalThisProperty = () => eval('this.globalVar');
+
+var globalEvalLambdaThis = eval('() => this');
+var globalEvalLambdaThisProperty = eval('() => this.globalVar');
+
+var globalLambdaEvalLambdaThis = () => eval('() => this');
+
+var globalLambdaEvalLambdaThisCall = globalLambdaEvalLambdaThis();
+
+var globalLambdaEvalLambdaThisProperty = () => eval('() => this.globalVar');
+
+var globalLambdaEvalLambdaThisPropertyCall = globalLambdaEvalLambdaThisProperty();
+var globalEvalLambdaEvalThis = eval('() => eval("this")');
+var globalEvalLambdaEvalThisProperty = eval('() => eval("this.globalVar")');
+var globalEvalLambdaThisWithNestedEval = eval('eval(""); () => this');
+var globalEvalNestedEvalLambdaThis = eval('eval("() => this")');
+var globalEvalNestedEvalLambdaThisWithNestedEval = eval('eval("eval(\'\'); () => this")');
+
+function t1() {
+  var empty = () => {
+    ;
+  };
+
+  var product = (x, y) => {
+    return x * y;
+  };
+
+  var nil = x => {
+    var x;
+  };
+
+  var twox = x => x + x;
+
+  var manyformals = (a, b, c, d, e, f) => {
+    return '' + a + b + c + d + e + f;
+  }; // These nested forms add coverage for bug BLUE 513592
+
+
+  var nested = x => () => x;
+
+  var nestedoverride = x => x => x;
+
+  var nestedblock = x => {
+    return () => x;
+  };
+
+  var nestedblockoverride = x => {
+    return x => x;
+  };
+
+  console.log(undefined, empty());
+  console.log(6, product(2, 3));
+  console.log(undefined, nil(0));
+  console.log(2, twox(1));
+  console.log('123456', manyformals(1, 2, 3, 4, 5, 6));
+  console.log('abc', nested('abc')('123'));
+  console.log('123', nestedoverride('abc')('123'));
+  console.log('abc', nestedblock('abc')('123'));
+  console.log('123', nestedblockoverride('abc')('123'));
+}
+
+t1();
+
+function t2() {
+  var empty = () => {
+    ;
+  };
+
+  var simple = x => x;
+
+  var multi = (x, y, z) => x + y + z;
+
+  var nested = x => () => x;
+
+  var block = (x, y) => {
+    return x + y;
+  };
+
+  var blocknested = () => {
+    return () => {
+      return this;
+    };
+  };
+
+  try {
+    new empty();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new simple(0);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new multi(2, 3, 4);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new nested('');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new block(null, 0);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new blocknested();
+  } catch (e) {
+    ;
+  }
+
+  console.log(empty.hasOwnProperty('prototype'));
+  console.log(simple.hasOwnProperty('prototype'));
+  console.log(multi.hasOwnProperty('prototype'));
+  console.log(nested.hasOwnProperty('prototype'));
+  console.log(block.hasOwnProperty('prototype'));
+  console.log(blocknested.hasOwnProperty('prototype'));
+}
+
+t2();
+
+function t3() {
+  console.log(globalObject, globalLambdaThis());
+  console.log(globalVar, globalLambdaThisProperty());
+  var fake = {
+    steal: globalLambdaThis
+  };
+  var fake2 = {
+    globalVar: 'abc',
+    steal: globalLambdaThisProperty
+  };
+  console.log(fake, fake.steal());
+  console.log(fake2.globalVar, fake2.steal());
+  console.log(globalObject, fake.steal());
+  console.log(globalVar, fake2.steal());
+}
+
+t3();
+
+function t4() {
+  // ''=>'' has only lexical ''this'', no dynamic ''this''
+  var obj = {
+    method: function () {
+      return () => this;
+    }
+  };
+  console.log(obj, obj.method()());
+  var fake = {
+    steal: obj.method()
+  };
+  console.log(obj, fake.steal()); // But ''function'' still has dynamic ''this'' of course
+
+  var real = {
+    borrow: obj.method
+  };
+  console.log(real, real.borrow()()); // type of scope (e.g. ActivationObject) should not affect binding of ''this''
+
+  obj = {
+    method: function () {
+      eval('');
+      return () => this;
+    }
+  };
+  console.log(obj, obj.method()());
+  fake = {
+    steal: obj.method()
+  };
+  console.log(obj, fake.steal()); // But ''function'' still has dynamic ''this'' of course
+
+  real = {
+    borrow: obj.method
+  };
+  console.log(real, real.borrow()());
+}
+
+t4();
+
+function t5() {
+  var obj = {
+    a: 5,
+    b: 10,
+    method: function () {
+      return () => this.a + this.b;
+    }
+  };
+  console.log(15, obj.method()());
+}
+
+t5();
+
+function t6() {
+  var f = function () {
+    var x = 'outer';
+
+    var lambda = () => {
+      console.log(undefined, x);
+      var x = 'lambda';
+      return function () {
+        console.log('lambda', x);
+      };
+    };
+
+    console.log('outer', x);
+    return lambda;
+  }();
+
+  f()();
+}
+
+t6();
+
+function t8() {
+  console.log("() => { }", (() => {
+    ;
+  }).toString());
+  console.log("x => { }", (x => {
+    ;
+  }).toString());
+  console.log("x => x", (x => x).toString());
+  console.log("(a, b) => { return a * b; }", ((a, b) => {
+    return a * b;
+  }).toString());
+  console.log("(a, b) => a - 2*b", ((a, b) => a - 2 * b).toString());
+}
+
+t8();
+
+function t9() {
+  var arguments = 'not arguments object';
+  console.log(arguments, (() => arguments)());
+
+  function f(x, y, z) {
+    return () => [this, x, y, z, arguments];
+  }
+
+  function g(x, y, z) {
+    eval('');
+    return () => [this, x, y, z, arguments];
+  }
+
+  function verify(f, n) {
+    let e = ['_this_', '_x_', '_y_', '_z_', '[object Arguments]'];
+    let r = f.call('_this_', '_x_', '_y_', '_z_')();
+    console.log(e.length, r.length);
+
+    for (let i = 0; i < e.length; i += 1) {
+      console.log(e[i], r[i] + '');
+    }
+  }
+
+  verify(f, 'f');
+  verify(g, 'g');
+
+  function h() {
+    return () => {
+      console.log(5, arguments.length);
+      console.log(h, arguments.callee);
+      console.log(1, arguments[0]);
+      console.log(2, arguments[1]);
+      console.log(3, arguments[2]);
+      console.log('abc', arguments[3]);
+      console.log(null, arguments[4]);
+    };
+  }
+
+  h(1, 2, 3, 'abc', null)();
+
+  function i() {
+    return () => () => {
+      return () => arguments;
+    };
+  }
+
+  var args = i('a', 'b', 'c', 123, undefined)()()();
+  console.log(5, args.length);
+  console.log(i, args.callee);
+  console.log('a', args[0]);
+  console.log('b', args[1]);
+  console.log('c', args[2]);
+  console.log(123, args[3]);
+  console.log(undefined, args[4]);
+
+  function j() {
+    var arguments = 'not an arguments object';
+    return () => arguments;
+  }
+
+  console.log('not an arguments object', j()());
+
+  function k(arguments) {
+    return () => arguments;
+  }
+
+  console.log('foo', k('foo')());
+}
+
+t9();
+
+function t10() {
+  eval("var a = 10;");
+
+  var lambda1 = () => a;
+
+  console.log(10, lambda1());
+  var lambdaobj1 = {
+    method: function () {
+      return () => {
+        a;
+        return this;
+      };
+    }
+  };
+  console.log(lambdaobj1, lambdaobj1.method()());
+  var obj = {
+    b: 20
+  };
+  with (obj) {
+    let lambda2 = () => b;
+
+    console.log(20, lambda2());
+    var lambdaobj2 = {
+      method: function () {
+        return () => {
+          b;
+          return this;
+        };
+      }
+    };
+    console.log(lambdaobj2, lambdaobj2.method()());
+  }
+}
+
+t10();
+
+function t11() {
+  var a = eval => eval + 1;
+
+  var b = arguments => arguments + 2;
+
+  var c = (eval, arguments) => eval + arguments;
+
+  console.log(2, a(1));
+  console.log(3, b(1));
+  console.log(5, c(2, 3));
+
+  try {
+    eval("eval => { 'use strict'; return eval + 1; }");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval("arguments => { 'use strict'; return arguments + 2; }");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval("(eval, a) => { 'use strict'; return eval + a; }");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval("(e, arguments) => { 'use strict'; return e + arguments; }");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval("eval => eval + 1");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval("arguments => arguments + 2");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval("(eval, a) => eval + a");
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval("(e, arguments) => e + arguments");
+  } catch (e) {
+    ;
+  }
+}
+
+t11();
+
+function t12() {
+  try {
+    eval('(x, x) => { }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(a, b, a) => { }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(a, b, ...a) => { }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(x, x) => { "use strict"; }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(a, b, a) => { "use strict"; }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(a, b, ...a) => { "use strict"; }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval('(x, x) => { }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval('(a, b, a) => { }');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    "use strict";
+
+    eval('(a, b, ...a) => { }');
+  } catch (e) {
+    ;
+  }
+}
+
+t12();
+
+function t14() {
+  console.log(10, function (x) {
+    return x => x;
+  }(20)(10));
+  console.log(10, function () {
+    var x = 20;
+    return x => x;
+  }()(10));
+  console.log(10, function () {
+    let x = 20;
+    return x => x;
+  }()(10));
+  console.log(10, function () {
+    const x = 20;
+    return x => x;
+  }()(10));
+}
+
+t14();
+
+function t15() {
+  var thisVal = {
+    localVar: 456
+  };
+
+  function test() {
+    var localLambdaEvalThis = () => eval('this');
+
+    var localLambdaEvalThisProperty = () => eval('this.localVar');
+
+    var localEvalLambdaThis = eval('() => this');
+    var localEvalLambdaThisProperty = eval('() => this.localVar');
+
+    var localLambdaEvalLambdaThis = () => eval('() => this');
+
+    var localLambdaEvalLambdaThisCall = localLambdaEvalLambdaThis();
+
+    var localLambdaEvalLambdaThisProperty = () => eval('() => this.localVar');
+
+    var localLambdaEvalLambdaThisPropertyCall = localLambdaEvalLambdaThisProperty();
+    var localEvalLambdaEvalThis = eval('() => eval("this")');
+    var localEvalLambdaEvalThisProperty = eval('() => eval("this.localVar")');
+    var localEvalLambdaNested3This = eval('() => () => () => this');
+
+    var localLambdaNested3EvalThis = () => () => () => eval('this');
+
+    var localEvalLambdaThisWithNestedEval = eval('eval(""); () => this');
+    var localEvalNestedEvalLambdaThis = eval('eval("() => this")');
+    var localEvalNestedEvalLambdaThisWithNestedEval = eval('eval("eval(\'\'); () => this")');
+    console.log(this, localLambdaEvalThis());
+    console.log(this.localVar, localLambdaEvalThisProperty());
+    console.log(this, localEvalLambdaThis());
+    console.log(this.localVar, localEvalLambdaThisProperty());
+    console.log(this, localLambdaEvalLambdaThis()());
+    console.log(this, localLambdaEvalLambdaThisCall());
+    console.log(this.localVar, localLambdaEvalLambdaThisProperty()());
+    console.log(this.localVar, localLambdaEvalLambdaThisPropertyCall());
+    console.log(this, localEvalLambdaEvalThis());
+    console.log(this.localVar, localEvalLambdaEvalThisProperty());
+    console.log(this, localEvalLambdaNested3This()()());
+    console.log(this, localLambdaNested3EvalThis()()());
+    console.log(this, localEvalLambdaThisWithNestedEval());
+    console.log(this, localEvalNestedEvalLambdaThis());
+    console.log(this, localEvalNestedEvalLambdaThisWithNestedEval()); // Global equivalents
+
+    console.log(globalObject, globalLambdaEvalThis());
+    console.log(globalVar, globalLambdaEvalThisProperty());
+    console.log(globalObject, globalEvalLambdaThis());
+    console.log(globalVar, globalEvalLambdaThisProperty());
+    console.log(globalObject, globalLambdaEvalLambdaThis()());
+    console.log(globalObject, globalLambdaEvalLambdaThisCall());
+    console.log(globalVar, globalLambdaEvalLambdaThisProperty()());
+    console.log(globalVar, globalLambdaEvalLambdaThisPropertyCall());
+    console.log(globalObject, globalEvalLambdaEvalThis());
+    console.log(globalVar, globalEvalLambdaEvalThisProperty());
+    console.log(globalObject, globalEvalLambdaThisWithNestedEval());
+    console.log(globalObject, globalEvalNestedEvalLambdaThis());
+    console.log(globalObject, globalEvalNestedEvalLambdaThisWithNestedEval());
+    this.x = 10;
+    with ({
+      x: 100
+    }) {
+      lambdaInsideWithEval = s => eval(s);
+
+      console.log(10, lambdaInsideWithEval("this.x"));
+      console.log(100, x);
+    }
+  }
+
+  test.call(thisVal);
+}
+
+t15();
+
+function t16() {
+  try {
+    eval('x \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = x \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(x) \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = (x) \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('() \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = () \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('x \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = x \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('(x) \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = (x) \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('() \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = () \n => { return d };');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = {}; a.x \n => d;');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    eval('var a = {}; a\n.x => d;');
+  } catch (e) {
+    ;
+  }
+}
+
+t16();
+
+function t17() {
+  var l = () => 123;
+
+  console.log('() => (123)', '' + l);
+
+  var l = () => '๏บบ';
+
+  console.log("() => (('๏บบ'))", '' + l);
+  var s = "() => ('\u{20ac}')";
+  var l = eval(s);
+  console.log(s, '' + l);
+
+  var l = async () => ({});
+
+  console.log('async() => ({})', '' + l);
+
+  var l = () => () => 123;
+
+  console.log('() => (() => (123))', '' + l);
+
+  var l = async () => async () => 'str';
+
+  console.log("async() => (async() => ('str'))", '' + l);
+}
+
+t17();
+
+function t18() {
+  var l = () => a = 123;
+
+  console.log('() => a = (123)', '' + l);
+
+  var l = () => a = '๏บบ';
+
+  console.log("() => a = (('๏บบ'))", '' + l);
+  var s = "() => a = ('\u{20ac}')";
+  var l = eval(s);
+  console.log(s, '' + l);
+
+  var l = async () => a = {};
+
+  console.log('async() => a = ({})', '' + l);
+
+  var l = () => a = () => b = 123;
+
+  console.log('() => a = (() => b = (123))', '' + l);
+
+  var l = async () => a = async () => b = 'str';
+
+  console.log("async() => a = (async() => b = ('str'))", '' + l);
+}
+
+t18();
+
+function t19() {
+  try {
+    eval('--par=>');
+  } catch (e) {
+    ;
+  }
+}
+
+t19();
+
+function t20() {
+  var l = () => true ? 1 : 0;
+
+  console.log('() => true ? 1 : (0)', '' + l);
+
+  var l = () => true ? 1 : '๏บบ';
+
+  console.log("() => true ? 1 : ('๏บบ')", '' + l);
+  var s = "() => true ? 1 : ('\u{20ac}')";
+  var l = eval(s);
+  console.log(s, '' + l);
+
+  var l = async () => true ? 1 : 0;
+
+  console.log('async() => true ? 1 : (0)', '' + l);
+
+  var l = () => true ? 1 : () => false ? 1 : 0;
+
+  console.log('() => true ? 1 : (() => false ? 1 : (0))', '' + l);
+
+  var l = async () => true ? 1 : () => false ? 1 : 0;
+
+  console.log("async() => true ? 1 : (() => false ? 1 : (0))", '' + l);
+}
+
+t20();
+
+function t21() {
+  var l = () => new Boolean();
+
+  console.log('() => new (Boolean)', '' + l);
+
+  var l = async () => new Boolean();
+
+  console.log('async () => new (Boolean)', '' + l);
+}
+
+t21();
+
+function t22() {
+  var l = async () => await 5;
+
+  console.log('async () => await (5)', '' + l);
+
+  var l = () => await(5);
+
+  console.log('() => await (5)', '' + l);
+}
+
+t22();
+
+function t23() {
+  function f1(a) {
+    b = () => eval("arguments[0]");
+
+    console.log(b(), 1);
+  }
+
+  f1(1);
+
+  function f2(a) {
+    b = (x = eval("arguments[0]")) => x;
+
+    console.log(b(), 2);
+  }
+
+  f2(2);
+
+  function f3(arguments = [3]) {
+    b = () => eval("arguments[0]");
+
+    console.log(b(), 3);
+  }
+
+  f3();
+
+  function f4() {
+    var arguments = [4];
+
+    b = () => eval("arguments[0]");
+
+    console.log(b(), 4);
+  }
+
+  f4(100);
+
+  function f5() {
+    b = () => {
+      return eval("arguments()");
+    };
+
+    console.log(b()[0], 5);
+
+    function arguments() {
+      return [5];
+    }
+  }
+
+  f5();
+
+  function f6() {
+    b = () => {
+      return eval("arguments");
+    };
+
+    console.log(b()[0], 6);
+    {
+      function arguments() {
+        return [100];
+      }
+    }
+  }
+
+  f6(6);
+
+  function f7() {
+    b = () => eval("arguments[0]");
+
+    console.log(b(), 7);
+    var arguments = [100];
+  }
+
+  f7(7);
+
+  function f8() {
+    b = (arguments = [8]) => eval("arguments");
+
+    console.log(b()[0], 8);
+  }
+
+  f8(100);
+
+  function f9() {
+    b = (arguments = [9], c = eval("arguments")) => c;
+
+    console.log(b()[0], 9);
+  }
+
+  f9();
+
+  function f10() {
+    b = () => {
+      console.log(eval("arguments"), undefined);
+      var arguments = 100;
+    };
+  }
+
+  f10(100);
+
+  function f11() {
+    arguments;
+
+    b = () => {
+      console.log(eval("arguments"), undefined);
+      var arguments = 100;
+    };
+  }
+
+  f11(100);
+}
+
+t23();

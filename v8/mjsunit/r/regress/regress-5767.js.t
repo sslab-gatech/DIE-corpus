@@ -1,0 +1,1 @@
+[null,null,null,{"type":"Void"},{"type":"String"},{"type":"Function","extra":{"args":{"type":"Args","extra":{"args":[]}},"ret":{"type":"String"}}},{"type":"Number"},{"type":"Constructor","extra":{"name":"Number","ret":{"type":"Number"}}},{"type":"Immutable"},{"type":"Immutable"},{"type":"Number"}]

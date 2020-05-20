@@ -1,0 +1,99 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+var gTestfile = 'array-pop-proxy.js';
+try { if (Inst0 <= 1000 && typeof (gTestfile) != "undefined") {_RecordType("<116,125,5>",(gTestfile)); Inst0++; } } catch(e) {}
+var BUGNUMBER = 858381;
+try { if (Inst1 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<154,163,6>",(BUGNUMBER)); Inst1++; } } catch(e) {}
+var summary = "Behavior of [].pop on proxies";
+try { if (Inst2 <= 1000 && typeof (summary) != "undefined") {_RecordType("<178,185,7>",(summary)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<221,226,8>",(print)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<227,236,8>",(BUGNUMBER)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (summary) != "undefined") {_RecordType("<246,253,8>",(summary)); Inst5++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst7 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<318,323,13>",(Proxy)); Inst7++; } } catch(e) {}
+var p = new Proxy([0, 1, 2], {});
+try { if (Inst6 <= 1000 && typeof (p) != "undefined") {_RecordType("<310,311,13>",(p)); Inst6++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Array.prototype.pop.call) != "undefined") {_RecordType("<340,364,14>",(Array.prototype.pop.call)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Array.prototype.pop) != "undefined") {_RecordType("<340,359,14>",(Array.prototype.pop)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<340,355,14>",(Array.prototype)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Array) != "undefined") {_RecordType("<340,345,14>",(Array)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (p) != "undefined") {_RecordType("<365,366,14>",(p)); Inst12++; } } catch(e) {}
+Array.prototype.pop.call(p);
+/******************************************************************************/
+
+try { if (Inst13 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<462,475,17>",(reportCompare)); Inst13++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst14 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<496,509,18>",(reportCompare)); Inst14++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst15 <= 1000 && typeof (print) != "undefined") {_RecordType("<526,531,21>",(print)); Inst15++; } } catch(e) {}
+print("Tests complete");
+

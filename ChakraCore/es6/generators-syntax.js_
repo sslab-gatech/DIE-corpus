@@ -1,0 +1,211 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+
+// ES6 Generators Syntax tests -- verifies function* and yield syntax spec conformance
+
+function t1() {
+try { eval("function* gf() { }"); } catch(e) {}
+try { eval("var gfe = function* () { }"); } catch(e) {}
+try { eval("var gfe = function* rgfe() { }"); } catch(e) {}
+try { eval("class C { *gm() { } }"); } catch(e) {}
+try { eval("var o = { *gcf() { } }"); } catch(e) {}
+
+try { eval("function* gf() { yield; }"); } catch(e) {}
+try { eval("function* gf() { yield }"); } catch(e) {}
+try { eval("function* gf() { var a = yield; }"); } catch(e) {}
+try { eval("function* gf() { foo(yield); }"); } catch(e) {}
+try { eval("function* gf() { foo[yield]; }"); } catch(e) {}
+try { eval("function* gf() { yield, 10; }"); } catch(e) {}
+try { eval("function* gf() { switch (1) { case yield: break; } }"); } catch(e) {}
+try { eval("var gfe = function* () { switch (1) { case yield: break; } }"); } catch(e) {}
+try { eval("var gfe = function* rgfe() { switch (1) { case yield: break; } }"); } catch(e) {}
+try { eval("var o = { *gf() { switch (1) { case yield: break; } } }"); } catch(e) {}
+try { eval("class C { *gf() { switch (1) { case yield: break; } } }"); } catch(e) {}
+
+try { eval("function* gf() { yield 'foo'; }"); } catch(e) {}
+try { eval("function* gf() { yield 'foo' }"); } catch(e) {}
+try { eval("function* gf() { var a = yield 'foo'; }"); } catch(e) {}
+try { eval("function* gf() { foo(yield 'foo'); }"); } catch(e) {}
+try { eval("function* gf() { foo[yield 'foo']; }"); } catch(e) {}
+try { eval("function* gf() { yield 'foo', 10; }"); } catch(e) {}
+try { eval("function* gf() { switch (1) { case yield 'foo': break; } }"); } catch(e) {}
+try { eval("var gfe = function* () { switch (1) { case yield 'foo': break; } }"); } catch(e) {}
+try { eval("var gfe = function* rgfe() { switch (1) { case yield 'foo': break; } }"); } catch(e) {}
+try { eval("var o = { *gf() { switch (1) { case yield 'foo': break; } } }"); } catch(e) {}
+try { eval("class C { *gf() { switch (1) { case yield 'foo': break; } } }"); } catch(e) {}
+
+try { eval("function* gf() { yield* 'foo'; }"); } catch(e) {}
+try { eval("function* gf() { yield* 'foo' }"); } catch(e) {}
+try { eval("function* gf() { var a = yield* 'foo'; }"); } catch(e) {}
+try { eval("function* gf() { foo(yield* 'foo'); }"); } catch(e) {}
+try { eval("function* gf() { foo[yield* 'foo']; }"); } catch(e) {}
+try { eval("function* gf() { yield* 'foo', 10; }"); } catch(e) {}
+try { eval("function* gf() { switch (1) { case yield* 'foo': break; } }"); } catch(e) {}
+try { eval("var gfe = function* () { switch (1) { case yield* 'foo': break; } }"); } catch(e) {}
+try { eval("var gfe = function* rgfe() { switch (1) { case yield* 'foo': break; } }"); } catch(e) {}
+try { eval("var o = { *gf() { yield* 'foo'; } }"); } catch(e) {}
+try { eval("class C { *gf() { switch (1) { case yield* 'foo': break; } } }"); } catch(e) {}
+}
+t1();
+
+function t2() {
+try { eval("class C { gm*() { } }"); } catch(e) {}
+}
+t2();
+
+function t3() {
+try { eval("function* gf() { 1 + yield; }"); } catch(e) {}
+try { eval("function* gf() { 1 + yield 2; }"); } catch(e) {}
+try { eval("function* gf() { 1 + yield* 'foo'; }"); } catch(e) {}
+
+try { eval("function* gf() { +yield; }"); } catch(e) {}
+try { eval("function* gf() { +yield 2; }"); } catch(e) {}
+try { eval("function* gf() { +yield* 'foo'; }"); } catch(e) {}
+
+try { eval("function* gf() { yield++; }"); } catch(e) {}
+}
+},
+{
+function t4() {
+try { eval('function* gf() { (yield) = 10; }'); var g = gf(); g.next(); g.next(); } catch(e) {}
+try { eval('function* gf() { ++(yield); }'); var g = gf(); g.next(); g.next(); } catch(e) {}
+try { eval('function* gf() { (yield)++; }'); var g = gf(); g.next(); g.next(); } catch(e) {}
+}
+},
+{
+function t5() {
+try { eval("let gfe = function* yield() { }"); } catch(e) {}
+
+try { eval("function* gf() { var yield; }"); } catch(e) {}
+try { eval("function* gf() { let yield; }"); } catch(e) {}
+try { eval("function* gf() { const yield = 10; }"); } catch(e) {}
+
+try { eval("function* gf() { function yield() { } }"); } catch(e) {}
+try { eval("function* gf() { function* yield() { } }"); } catch(e) {}
+try { eval("function* gf() { var gfe = function* yield() { } }"); } catch(e) {}
+
+try { eval("function* gf() { class yield { } }"); } catch(e) {}
+
+// TODO: Is this correct or a spec bug that will be fixed?
+// var yield = 10; function* gf() { var o = { yield }; } gf();
+try { eval("function* gf() { var o = { yield }; }"); } catch(e) {}
+
+// Note, reserved words are allowed for object literal and class PropertyNames, so these cases parse without error.
+try { eval("function* gf() { var fe = function yield() { } }"); } catch(e) {}
+try { eval("function* gf() { var o = { yield: 10 } }"); } catch(e) {}
+try { eval("function* gf() { var o = { get yield() { } } }"); } catch(e) {}
+try { eval("function* gf() { var o = { yield() { } } }"); } catch(e) {}
+try { eval("function* gf() { var o = { *yield() { } } }"); } catch(e) {}
+try { eval("function* gf() { class C { yield() { } } }"); } catch(e) {}
+try { eval("function* gf() { class C { *yield() { } } }"); } catch(e) {}
+}
+},
+{
+function t6() {
+try { eval("function *gf(b, a = 1 + yield) {}"); } catch(e) {}
+try { eval("function *gf(b, yield) {}"); } catch(e) {}
+try { eval("function *gf(a = (10, yield, 20)) {}"); } catch(e) {}
+try { eval("gf = function* (b, a = yield) {}"); } catch(e) {}
+try { eval("gf = function* (b, yield) {}"); } catch(e) {}
+try { eval("var obj = { *gf(b, a = yield) {} }"); } catch(e) {}
+try { eval("var obj = { *gf(b, yield) {} }"); } catch(e) {}
+}
+},
+{
+function t7() {
+try { eval("function f() { var yield; }"); } catch(e) {}
+try { eval("function f() { let yield; }"); } catch(e) {}
+try { eval("function f() { const yield = 10; }"); } catch(e) {}
+
+try { eval("function f() { function yield() { } }"); } catch(e) {}
+try { eval("function f() { function* yield() { } }"); } catch(e) {}
+try { eval("function f() { var fe = function yield() { } }"); } catch(e) {}
+
+try { eval("function f() { class yield { } }"); } catch(e) {}
+
+try { eval("function f() { var o = { yield: 10 } }"); } catch(e) {}
+try { eval("function f() { var o = { get yield() { } } }"); } catch(e) {}
+try { eval("function f() { var o = { yield() { } } }"); } catch(e) {}
+try { eval("function f() { var o = { *yield() { } } }"); } catch(e) {}
+try { eval("function f() { var yield = 10; var o = { yield }; }"); } catch(e) {}
+try { eval("function f() { class C { yield() { } } }"); } catch(e) {}
+try { eval("function f() { class C { *yield() { } } }"); } catch(e) {}
+}
+},
+{
+function t8() {
+var x = 0;
+var gf1 = function *() {
+yield
+x = 1;
+}
+var g1 = gf1();
+console.log({value : undefined, done : false}, g1.next());
+console.log(0, x);
+console.log({value : undefined, done : true }, g1.next());
+console.log(1, x);
+
+g1 = 10;
+function *gf2() {
+return yield
+*g1;
+}
+var g2 = gf2();
+console.log({value: undefined, done: false}, g2.next());
+console.log({value: 100, done: true}, g2.next(10));
+}
+},
+{
+function t9() {
+var result;
+var x = 0;
+function *gf() {
+var g = function yield(a) {
+if (!a) {
+return yield(1);
+} else {
+return 10;
+}
+};
+yield g();
+};
+
+var g = gf();
+console.log({value: 10, done: false}, g.next());
+console.log({value: undefined, done: true}, g.next());
+}
+},
+{
+function t10() {
+try { eval("function* gf() { var a = yield => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (yield) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y, yield) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, yield, y) => { }; }"); } catch(e) {}
+
+try { eval("function* gf() { var a = (x = yield) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y = yield, z = 0) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y, z = yield) => { }; }"); } catch(e) {}
+
+try { eval("function* gf() { var a = (x = yield 0) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y = yield 0, z = 0) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y, z = yield 0) => { }; }"); } catch(e) {}
+
+try { eval("function* gf() { var a = (x = yield* 0) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y = yield* 0, z = 0) => { }; }"); } catch(e) {}
+try { eval("function* gf() { var a = (x, y, z = yield* 0) => { }; }"); } catch(e) {}
+try { eval("function *gf() { (a = (yield) => {}) => {}; }"); } catch(e) {}
+}
+},
+{
+name : "yield is allowed before 'in' in a for loop control but not elsewhere bug issue #5203",
+body : function () {
+try { eval("function* gf() {for(var a = yield in {});}"); } catch(e) {}
+try { eval("function* gf() {var a = yield in {};}"); } catch(e) {}
+try { eval("function* gf() {yield in {};}"); } catch(e) {}
+}
+}
+];
+
+testRunner.runTests(tests, { verbose: WScript.Arguments[0] != "summary" });

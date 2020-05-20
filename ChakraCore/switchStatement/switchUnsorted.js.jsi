@@ -1,0 +1,144 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+
+/*
+ ***************PERF TEST********************
+ * Test for last case hit with few empty cases.
+ */
+try { if (Inst0 <= 1000 && typeof (g) != "undefined") {_RecordType("<478,479,10>",(g)); Inst0++; } } catch(e) {}
+function g(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<480,481,10>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<495,496,11>",(x)); Inst2++; } } catch(e) {}
+  switch (x) {
+    /*empty case statements*/
+    case 20:
+    case 19:
+    case 18:
+    case 17:
+      break;
+
+    case 16:
+      break;
+
+    case 15:
+      break;
+
+    case 14:
+      break;
+
+    case 13:
+      break;
+
+    /*empty case statements*/
+
+    case 12:
+    case 11:
+    case 10:
+    case 9:
+      break;
+
+    case 8:
+      break;
+
+    case 7:
+      break;
+
+    case 6:
+      break;
+
+    /*empty case statements*/
+
+    case 5:
+    case 4:
+    case 3:
+    case 2:
+    case 1:
+    /* No default statement and no break at the end of the switch */
+
+  }
+}
+
+try { if (Inst4 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1082,1086,60>",(Date)); Inst4++; } } catch(e) {}
+var _switchStatementStartDate = new Date();
+try { if (Inst3 <= 1000 && typeof (_switchStatementStartDate) != "undefined") {_RecordType("<1050,1075,60>",(_switchStatementStartDate)); Inst3++; } } catch(e) {}
+
+for (i = 0; i < 10000000; i++) {
+try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<1096,1097,62>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<1103,1104,62>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<1117,1118,62>",(i)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (g) != "undefined") {_RecordType("<1126,1127,63>",(g)); Inst8++; } } catch(e) {}
+  g(1); //testing the last case
+}
+
+try { if (Inst10 <= 1000 && typeof (Date) != "undefined") {_RecordType("<1194,1198,66>",(Date)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (_switchStatementStartDate) != "undefined") {_RecordType("<1203,1228,66>",(_switchStatementStartDate)); Inst11++; } } catch(e) {}
+var _switchStatementInterval = new Date() - _switchStatementStartDate;
+try { if (Inst9 <= 1000 && typeof (_switchStatementInterval) != "undefined") {_RecordType("<1163,1187,66>",(_switchStatementInterval)); Inst9++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (print) != "undefined") {_RecordType("<1231,1236,68>",(print)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (_switchStatementInterval) != "undefined") {_RecordType("<1250,1274,68>",(_switchStatementInterval)); Inst13++; } } catch(e) {}
+print("### TIME:", _switchStatementInterval, "ms");
+

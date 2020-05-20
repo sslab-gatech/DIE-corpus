@@ -1,0 +1,1 @@
+[null,{"type":"Void"},{"type":"Void"},{"type":"Number"},{"type":"Number"},{"type":"Void"},{"type":"Any"},{"type":"Function","extra":{"args":{"type":"Args","extra":{"args":[{"type":"Any"}]}},"ret":{"type":"Any"}}},{"type":"String"},null,null,null,{"type":"Boolean"},{"type":"Void"},{"type":"String"},{"type":"Void"},{"type":"Number"},{"type":"Void"},{"type":"Number"}]

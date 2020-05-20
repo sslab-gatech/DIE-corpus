@@ -1,0 +1,350 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/ */
+// Very simple initial test that the "length" property of a function is
+// configurable. More thorough tests follow.
+var f = function (a1, a2, a3, a4) {
+try { if (Inst1 <= 1000 && typeof (a1) != "undefined") {_RecordType("<243,245,5>",(a1)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (a2) != "undefined") {_RecordType("<247,249,5>",(a2)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (a3) != "undefined") {_RecordType("<251,253,5>",(a3)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (a4) != "undefined") {_RecordType("<255,257,5>",(a4)); Inst4++; } } catch(e) {}
+  ;
+};
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<229,230,5>",(f)); Inst0++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (f.length) != "undefined") {_RecordType("<276,284,9>",(f.length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (f) != "undefined") {_RecordType("<276,277,9>",(f)); Inst6++; } } catch(e) {}
+delete f.length;
+true;
+try { if (Inst7 <= 1000 && typeof (f.hasOwnProperty) != "undefined") {_RecordType("<292,308,11>",(f.hasOwnProperty)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (f) != "undefined") {_RecordType("<292,293,11>",(f)); Inst8++; } } catch(e) {}
+f.hasOwnProperty("length");
+false;
+try { if (Inst9 <= 1000 && typeof (f.length) != "undefined") {_RecordType("<327,335,13>",(f.length)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<327,328,13>",(f)); Inst10++; } } catch(e) {}
+f.length;
+0;
+try { if (Inst11 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<347,372,15>",(Function.prototype.length)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<347,365,15>",(Function.prototype)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Function) != "undefined") {_RecordType("<347,355,15>",(Function)); Inst13++; } } catch(e) {}
+delete Function.prototype.length;
+true;
+try { if (Inst14 <= 1000 && typeof (f.length) != "undefined") {_RecordType("<380,388,17>",(f.length)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (f) != "undefined") {_RecordType("<380,381,17>",(f)); Inst15++; } } catch(e) {}
+f.length;
+try { if (Inst16 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<390,399,18>",(undefined)); Inst16++; } } catch(e) {}
+undefined;
+try { if (Inst17 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<413,431,19>",(Function.prototype)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Function) != "undefined") {_RecordType("<413,421,19>",(Function)); Inst18++; } } catch(e) {}
+"length" in Function.prototype;
+false;
+Function.prototype.length = 7;
+try { if (Inst19 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<440,465,21>",(Function.prototype.length)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<440,458,21>",(Function.prototype)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Function) != "undefined") {_RecordType("<440,448,21>",(Function)); Inst21++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<471,496,22>",(Function.prototype.length)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<471,489,22>",(Function.prototype)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (Function) != "undefined") {_RecordType("<471,479,22>",(Function)); Inst24++; } } catch(e) {}
+Function.prototype.length;
+7;
+try { if (Inst25 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<508,533,24>",(Function.prototype.length)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<508,526,24>",(Function.prototype)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Function) != "undefined") {_RecordType("<508,516,24>",(Function)); Inst27++; } } catch(e) {}
+delete Function.prototype.length;
+try { if (Inst28 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<535,560,25>",(Function.prototype.length)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<535,553,25>",(Function.prototype)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Function) != "undefined") {_RecordType("<535,543,25>",(Function)); Inst30++; } } catch(e) {}
+Function.prototype.length;
+try { if (Inst31 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<562,571,26>",(undefined)); Inst31++; } } catch(e) {}
+undefined;
+// OK, define Function.prototype.length back to its original state per spec, so
+// the remaining tests can run in a more typical environment.
+try { if (Inst32 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<715,736,29>",(Object.defineProperty)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (Object) != "undefined") {_RecordType("<715,721,29>",(Object)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<737,755,29>",(Function.prototype)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Function) != "undefined") {_RecordType("<737,745,29>",(Function)); Inst35++; } } catch(e) {}
+Object.defineProperty(Function.prototype, "length", {
+  value: 0,
+  configurable: true
+}); // Check the property descriptor of a function length property.
+
+try { if (Inst37 <= 1000 && typeof (f) != "undefined") {_RecordType("<888,889,34>",(f)); Inst37++; } } catch(e) {}
+var g = function f(a1, a2, a3, a4, a5) {
+try { if (Inst38 <= 1000 && typeof (a1) != "undefined") {_RecordType("<890,892,34>",(a1)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (a2) != "undefined") {_RecordType("<894,896,34>",(a2)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (a3) != "undefined") {_RecordType("<898,900,34>",(a3)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (a4) != "undefined") {_RecordType("<902,904,34>",(a4)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (a5) != "undefined") {_RecordType("<906,908,34>",(a5)); Inst42++; } } catch(e) {}
+  ;
+};
+try { if (Inst36 <= 1000 && typeof (g) != "undefined") {_RecordType("<875,876,34>",(g)); Inst36++; } } catch(e) {}
+
+try { if (Inst44 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<931,962,38>",(Object.getOwnPropertyDescriptor)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Object) != "undefined") {_RecordType("<931,937,38>",(Object)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (g) != "undefined") {_RecordType("<963,964,38>",(g)); Inst46++; } } catch(e) {}
+var desc = Object.getOwnPropertyDescriptor(g, "length");
+try { if (Inst43 <= 1000 && typeof (desc) != "undefined") {_RecordType("<924,928,38>",(desc)); Inst43++; } } catch(e) {}
+try { if (Inst47 <= 1000 && typeof (desc.configurable) != "undefined") {_RecordType("<977,994,39>",(desc.configurable)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (desc) != "undefined") {_RecordType("<977,981,39>",(desc)); Inst48++; } } catch(e) {}
+desc.configurable;
+true;
+try { if (Inst49 <= 1000 && typeof (desc.enumerable) != "undefined") {_RecordType("<1002,1017,41>",(desc.enumerable)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1002,1006,41>",(desc)); Inst50++; } } catch(e) {}
+desc.enumerable;
+false;
+try { if (Inst51 <= 1000 && typeof (desc.writable) != "undefined") {_RecordType("<1026,1039,43>",(desc.writable)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1026,1030,43>",(desc)); Inst52++; } } catch(e) {}
+desc.writable;
+false;
+try { if (Inst53 <= 1000 && typeof (desc.value) != "undefined") {_RecordType("<1048,1058,45>",(desc.value)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1048,1052,45>",(desc)); Inst54++; } } catch(e) {}
+desc.value;
+5;
+// After deleting the length property, assigning to f.length fails because
+// Function.prototype.length is non-writable. In strict mode it would throw.
+try { if (Inst55 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<1222,1230,49>",(g.length)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (g) != "undefined") {_RecordType("<1222,1223,49>",(g)); Inst56++; } } catch(e) {}
+delete g.length;
+g.length = 12;
+try { if (Inst57 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<1232,1240,50>",(g.length)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (g) != "undefined") {_RecordType("<1232,1233,50>",(g)); Inst58++; } } catch(e) {}
+try { if (Inst59 <= 1000 && typeof (g.hasOwnProperty) != "undefined") {_RecordType("<1247,1263,51>",(g.hasOwnProperty)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (g) != "undefined") {_RecordType("<1247,1248,51>",(g)); Inst60++; } } catch(e) {}
+g.hasOwnProperty("length");
+false;
+try { if (Inst61 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<1282,1290,53>",(g.length)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (g) != "undefined") {_RecordType("<1282,1283,53>",(g)); Inst62++; } } catch(e) {}
+g.length;
+0;
+// After deleting both the length property and Function.prototype.length,
+// assigning to f.length creates a new plain old data property.
+try { if (Inst63 <= 1000 && typeof (Function.prototype.length) != "undefined") {_RecordType("<1440,1465,57>",(Function.prototype.length)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<1440,1458,57>",(Function.prototype)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1440,1448,57>",(Function)); Inst65++; } } catch(e) {}
+delete Function.prototype.length;
+g.length = 13;
+try { if (Inst66 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<1467,1475,58>",(g.length)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (g) != "undefined") {_RecordType("<1467,1468,58>",(g)); Inst67++; } } catch(e) {}
+try { if (Inst69 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<1493,1524,59>",(Object.getOwnPropertyDescriptor)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1493,1499,59>",(Object)); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (g) != "undefined") {_RecordType("<1525,1526,59>",(g)); Inst71++; } } catch(e) {}
+var desc = Object.getOwnPropertyDescriptor(g, "length");
+try { if (Inst68 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1486,1490,59>",(desc)); Inst68++; } } catch(e) {}
+try { if (Inst72 <= 1000 && typeof (desc.configurable) != "undefined") {_RecordType("<1539,1556,60>",(desc.configurable)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1539,1543,60>",(desc)); Inst73++; } } catch(e) {}
+desc.configurable;
+true;
+try { if (Inst74 <= 1000 && typeof (desc.enumerable) != "undefined") {_RecordType("<1564,1579,62>",(desc.enumerable)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1564,1568,62>",(desc)); Inst75++; } } catch(e) {}
+desc.enumerable;
+true;
+try { if (Inst76 <= 1000 && typeof (desc.writable) != "undefined") {_RecordType("<1587,1600,64>",(desc.writable)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1587,1591,64>",(desc)); Inst77++; } } catch(e) {}
+desc.writable;
+true;
+try { if (Inst78 <= 1000 && typeof (desc.value) != "undefined") {_RecordType("<1608,1618,66>",(desc.value)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1608,1612,66>",(desc)); Inst79++; } } catch(e) {}
+desc.value;
+13;
+
+// Deleting the .length of one instance of a FunctionDeclaration does not
+// affect other instances.
+try { if (Inst80 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<1735,1740,71>",(mkfun)); Inst80++; } } catch(e) {}
+function mkfun() {
+try { if (Inst81 <= 1000 && typeof (fun) != "undefined") {_RecordType("<1756,1759,72>",(fun)); Inst81++; } } catch(e) {}
+  function fun(a1, a2, a3, a4, a5) {
+try { if (Inst82 <= 1000 && typeof (a1) != "undefined") {_RecordType("<1760,1762,72>",(a1)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (a2) != "undefined") {_RecordType("<1764,1766,72>",(a2)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (a3) != "undefined") {_RecordType("<1768,1770,72>",(a3)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (a4) != "undefined") {_RecordType("<1772,1774,72>",(a4)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (a5) != "undefined") {_RecordType("<1776,1778,72>",(a5)); Inst86++; } } catch(e) {}
+    ;
+  }
+
+try { if (Inst87 <= 1000 && typeof (fun) != "undefined") {_RecordType("<1802,1805,76>",(fun)); Inst87++; } } catch(e) {}
+  return fun;
+}
+
+try { if (Inst89 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<1814,1819,79>",(mkfun)); Inst89++; } } catch(e) {}
+g = mkfun();
+try { if (Inst88 <= 1000 && typeof (g) != "undefined") {_RecordType("<1810,1811,79>",(g)); Inst88++; } } catch(e) {}
+try { if (Inst91 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<1831,1836,80>",(mkfun)); Inst91++; } } catch(e) {}
+var h = mkfun();
+try { if (Inst90 <= 1000 && typeof (h) != "undefined") {_RecordType("<1827,1828,80>",(h)); Inst90++; } } catch(e) {}
+try { if (Inst92 <= 1000 && typeof (h.length) != "undefined") {_RecordType("<1847,1855,81>",(h.length)); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (h) != "undefined") {_RecordType("<1847,1848,81>",(h)); Inst93++; } } catch(e) {}
+delete h.length;
+try { if (Inst94 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<1857,1865,82>",(g.length)); Inst94++; } } catch(e) {}try { if (Inst95 <= 1000 && typeof (g) != "undefined") {_RecordType("<1857,1858,82>",(g)); Inst95++; } } catch(e) {}
+g.length;
+5;
+try { if (Inst96 <= 1000 && typeof (mkfun().length) != "undefined") {_RecordType("<1870,1884,84>",(mkfun().length)); Inst96++; } } catch(e) {}try { if (Inst97 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<1870,1875,84>",(mkfun)); Inst97++; } } catch(e) {}
+mkfun().length;
+5;
+// Object.defineProperty on a brand-new function is sufficient to cause the
+// LENGTH_RESOLVED flag to be set.
+try { if (Inst99 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<2004,2009,88>",(mkfun)); Inst99++; } } catch(e) {}
+g = mkfun();
+try { if (Inst98 <= 1000 && typeof (g) != "undefined") {_RecordType("<2000,2001,88>",(g)); Inst98++; } } catch(e) {}
+try { if (Inst100 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<2013,2034,89>",(Object.defineProperty)); Inst100++; } } catch(e) {}try { if (Inst101 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2013,2019,89>",(Object)); Inst101++; } } catch(e) {}try { if (Inst102 <= 1000 && typeof (g) != "undefined") {_RecordType("<2035,2036,89>",(g)); Inst102++; } } catch(e) {}
+Object.defineProperty(g, "length", {
+  value: 0
+});
+try { if (Inst103 <= 1000 && typeof (g.length) != "undefined") {_RecordType("<2072,2080,92>",(g.length)); Inst103++; } } catch(e) {}try { if (Inst104 <= 1000 && typeof (g) != "undefined") {_RecordType("<2072,2073,92>",(g)); Inst104++; } } catch(e) {}
+delete g.length;
+true;
+try { if (Inst105 <= 1000 && typeof (g.hasOwnProperty) != "undefined") {_RecordType("<2088,2104,94>",(g.hasOwnProperty)); Inst105++; } } catch(e) {}try { if (Inst106 <= 1000 && typeof (g) != "undefined") {_RecordType("<2088,2089,94>",(g)); Inst106++; } } catch(e) {}
+g.hasOwnProperty("length");
+false;
+// Object.defineProperty on a brand-new function correctly merges new
+// attributes with the builtin ones.
+try { if (Inst108 <= 1000 && typeof (mkfun) != "undefined") {_RecordType("<2234,2239,98>",(mkfun)); Inst108++; } } catch(e) {}
+g = mkfun();
+try { if (Inst107 <= 1000 && typeof (g) != "undefined") {_RecordType("<2230,2231,98>",(g)); Inst107++; } } catch(e) {}
+try { if (Inst109 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<2243,2264,99>",(Object.defineProperty)); Inst109++; } } catch(e) {}try { if (Inst110 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2243,2249,99>",(Object)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (g) != "undefined") {_RecordType("<2265,2266,99>",(g)); Inst111++; } } catch(e) {}
+Object.defineProperty(g, "length", {
+  value: 42
+});
+try { if (Inst113 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<2303,2334,102>",(Object.getOwnPropertyDescriptor)); Inst113++; } } catch(e) {}try { if (Inst114 <= 1000 && typeof (Object) != "undefined") {_RecordType("<2303,2309,102>",(Object)); Inst114++; } } catch(e) {}try { if (Inst115 <= 1000 && typeof (g) != "undefined") {_RecordType("<2335,2336,102>",(g)); Inst115++; } } catch(e) {}
+desc = Object.getOwnPropertyDescriptor(g, "length");
+try { if (Inst112 <= 1000 && typeof (desc) != "undefined") {_RecordType("<2296,2300,102>",(desc)); Inst112++; } } catch(e) {}
+try { if (Inst116 <= 1000 && typeof (desc.configurable) != "undefined") {_RecordType("<2349,2366,103>",(desc.configurable)); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (desc) != "undefined") {_RecordType("<2349,2353,103>",(desc)); Inst117++; } } catch(e) {}
+desc.configurable;
+true;
+try { if (Inst118 <= 1000 && typeof (desc.enumerable) != "undefined") {_RecordType("<2374,2389,105>",(desc.enumerable)); Inst118++; } } catch(e) {}try { if (Inst119 <= 1000 && typeof (desc) != "undefined") {_RecordType("<2374,2378,105>",(desc)); Inst119++; } } catch(e) {}
+desc.enumerable;
+false;
+try { if (Inst120 <= 1000 && typeof (desc.writable) != "undefined") {_RecordType("<2398,2411,107>",(desc.writable)); Inst120++; } } catch(e) {}try { if (Inst121 <= 1000 && typeof (desc) != "undefined") {_RecordType("<2398,2402,107>",(desc)); Inst121++; } } catch(e) {}
+desc.writable;
+false;
+try { if (Inst122 <= 1000 && typeof (desc.value) != "undefined") {_RecordType("<2420,2430,109>",(desc.value)); Inst122++; } } catch(e) {}try { if (Inst123 <= 1000 && typeof (desc) != "undefined") {_RecordType("<2420,2424,109>",(desc)); Inst123++; } } catch(e) {}
+desc.value;
+42;
+try { if (Inst124 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2436,2449,111>",(reportCompare)); Inst124++; } } catch(e) {}
+reportCompare(0, 0, 'ok');
+

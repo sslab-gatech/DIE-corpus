@@ -1,0 +1,94 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Deleting the .next method of an iterator in the middle of a for-of loop
+// doesn't cause a TypeError at the next iteration.
+try { if (Inst1 <= 1000 && typeof (Object.getPrototypeOf) != "undefined") {_RecordType("<143,164,3>",(Object.getPrototypeOf)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<143,149,3>",(Object)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof ([][Symbol.iterator]) != "undefined") {_RecordType("<165,184,3>",([][Symbol.iterator])); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<168,183,3>",(Symbol.iterator)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<168,174,3>",(Symbol)); Inst5++; } } catch(e) {}
+var iterProto = Object.getPrototypeOf([][Symbol.iterator]());
+try { if (Inst0 <= 1000 && typeof (iterProto) != "undefined") {_RecordType("<131,140,3>",(iterProto)); Inst0++; } } catch(e) {}
+var s = '';
+try { if (Inst6 <= 1000 && typeof (s) != "undefined") {_RecordType("<193,194,4>",(s)); Inst6++; } } catch(e) {}
+
+for (var v of ['duck', 'duck', 'duck', 'goose', 'and now you\'re it']) {
+try { if (Inst7 <= 1000 && typeof (v) != "undefined") {_RecordType("<211,212,6>",(v)); Inst7++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (v) != "undefined") {_RecordType("<282,283,7>",(v)); Inst9++; } } catch(e) {}
+  s += v;
+try { if (Inst8 <= 1000 && typeof (s) != "undefined") {_RecordType("<277,278,7>",(s)); Inst8++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (v) != "undefined") {_RecordType("<292,293,9>",(v)); Inst10++; } } catch(e) {}
+  if (v === 'goose') {
+try { if (Inst11 <= 1000 && typeof (iterProto.next) != "undefined") {_RecordType("<320,334,10>",(iterProto.next)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (iterProto) != "undefined") {_RecordType("<320,329,10>",(iterProto)); Inst12++; } } catch(e) {}
+    delete iterProto.next;
+  }
+
+  s += '.';
+try { if (Inst13 <= 1000 && typeof (s) != "undefined") {_RecordType("<343,344,13>",(s)); Inst13++; } } catch(e) {}
+}
+
+try { if (Inst14 <= 1000 && typeof (s) != "undefined") {_RecordType("<356,357,16>",(s)); Inst14++; } } catch(e) {}
+s;
+'duck.duck.duck.goose.and now you\'re it.';
+

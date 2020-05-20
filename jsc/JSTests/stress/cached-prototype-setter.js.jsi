@@ -1,0 +1,159 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// [ARM] stress/cached-prototype-setter.js.no-llint fails intermittently on Aarch64 Linux
+// https://bugs.webkit.org/show_bug.cgi?id=142277
+//@ skip if $architecture == "arm64" and $hostOS == "linux"
+(function () {
+  var xSetterCalled = false;
+try { if (Inst0 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<221,234,5>",(xSetterCalled)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (MyConstructor) != "undefined") {_RecordType("<256,269,7>",(MyConstructor)); Inst1++; } } catch(e) {}
+  function MyConstructor() {
+    this.x = 1;
+try { if (Inst2 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<278,284,8>",(this.x)); Inst2++; } } catch(e) {}
+  }
+
+try { if (Inst3 <= 1000 && typeof (MyConstructor) != "undefined") {_RecordType("<301,314,11>",(MyConstructor)); Inst3++; } } catch(e) {}
+  new MyConstructor();
+try { if (Inst4 <= 1000 && typeof (MyConstructor) != "undefined") {_RecordType("<324,337,12>",(MyConstructor)); Inst4++; } } catch(e) {}
+  new MyConstructor();
+
+try { if (Inst5 <= 1000 && typeof (setter) != "undefined") {_RecordType("<353,359,14>",(setter)); Inst5++; } } catch(e) {}
+  function setter() {
+    xSetterCalled = true;
+try { if (Inst6 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<368,381,15>",(xSetterCalled)); Inst6++; } } catch(e) {}
+  }
+
+try { if (Inst7 <= 1000 && typeof (Object.prototype.__defineSetter__) != "undefined") {_RecordType("<397,430,18>",(Object.prototype.__defineSetter__)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<397,413,18>",(Object.prototype)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<397,403,18>",(Object)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (setter) != "undefined") {_RecordType("<436,442,18>",(setter)); Inst10++; } } catch(e) {}
+  Object.prototype.__defineSetter__("x", setter);
+
+try { if (Inst11 <= 1000 && typeof (MyConstructor) != "undefined") {_RecordType("<452,465,20>",(MyConstructor)); Inst11++; } } catch(e) {}
+  new MyConstructor();
+
+try { if (Inst12 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<477,490,22>",(xSetterCalled)); Inst12++; } } catch(e) {}
+  if (!xSetterCalled) {
+try { if (Inst13 <= 1000 && typeof (Error) != "undefined") {_RecordType("<508,513,23>",(Error)); Inst13++; } } catch(e) {}
+    throw new Error("FAIL: 'x' setter was not called.");
+  }
+})();
+
+(function () {
+  var xSetterCalled = false;
+try { if (Inst14 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<583,596,28>",(xSetterCalled)); Inst14++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (makeO) != "undefined") {_RecordType("<618,623,30>",(makeO)); Inst15++; } } catch(e) {}
+  function makeO() {
+    var o = {};
+try { if (Inst16 <= 1000 && typeof (o) != "undefined") {_RecordType("<636,637,31>",(o)); Inst16++; } } catch(e) {}
+    o.x = 1;
+try { if (Inst17 <= 1000 && typeof (o.x) != "undefined") {_RecordType("<648,651,32>",(o.x)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (o) != "undefined") {_RecordType("<648,649,32>",(o)); Inst18++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (o) != "undefined") {_RecordType("<668,669,33>",(o)); Inst19++; } } catch(e) {}
+    return o;
+  }
+
+try { if (Inst20 <= 1000 && typeof (makeO) != "undefined") {_RecordType("<678,683,36>",(makeO)); Inst20++; } } catch(e) {}
+  makeO();
+try { if (Inst21 <= 1000 && typeof (makeO) != "undefined") {_RecordType("<689,694,37>",(makeO)); Inst21++; } } catch(e) {}
+  makeO();
+
+try { if (Inst22 <= 1000 && typeof (setter) != "undefined") {_RecordType("<710,716,39>",(setter)); Inst22++; } } catch(e) {}
+  function setter(x) {
+try { if (Inst23 <= 1000 && typeof (x) != "undefined") {_RecordType("<717,718,39>",(x)); Inst23++; } } catch(e) {}
+    xSetterCalled = true;
+try { if (Inst24 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<726,739,40>",(xSetterCalled)); Inst24++; } } catch(e) {}
+  }
+
+try { if (Inst25 <= 1000 && typeof (Object.prototype.__defineSetter__) != "undefined") {_RecordType("<755,788,43>",(Object.prototype.__defineSetter__)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<755,771,43>",(Object.prototype)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Object) != "undefined") {_RecordType("<755,761,43>",(Object)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (setter) != "undefined") {_RecordType("<794,800,43>",(setter)); Inst28++; } } catch(e) {}
+  Object.prototype.__defineSetter__("x", setter);
+
+try { if (Inst29 <= 1000 && typeof (makeO) != "undefined") {_RecordType("<806,811,45>",(makeO)); Inst29++; } } catch(e) {}
+  makeO();
+
+try { if (Inst30 <= 1000 && typeof (xSetterCalled) != "undefined") {_RecordType("<823,836,47>",(xSetterCalled)); Inst30++; } } catch(e) {}
+  if (!xSetterCalled) {
+try { if (Inst31 <= 1000 && typeof (Error) != "undefined") {_RecordType("<854,859,48>",(Error)); Inst31++; } } catch(e) {}
+    throw new Error("FAIL: 'x' setter was not called.");
+  }
+})();
+

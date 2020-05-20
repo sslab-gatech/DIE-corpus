@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+x = [0, 1, 1, 0, 1, 1];
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<0,1,1>",(x)); Inst0++; } } catch(e) {}
+y = -1;
+try { if (Inst1 <= 1000 && typeof (y) != "undefined") {_RecordType("<24,25,2>",(y)); Inst1++; } } catch(e) {}
+sum = 0;
+try { if (Inst2 <= 1000 && typeof (sum) != "undefined") {_RecordType("<32,35,3>",(sum)); Inst2++; } } catch(e) {}
+
+for (var j = 0; j < x.length; ++j) {
+try { if (Inst3 <= 1000 && typeof (j) != "undefined") {_RecordType("<51,52,5>",(j)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (j) != "undefined") {_RecordType("<58,59,5>",(j)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (x.length) != "undefined") {_RecordType("<62,70,5>",(x.length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<62,63,5>",(x)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (j) != "undefined") {_RecordType("<74,75,5>",(j)); Inst7++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (sum) != "undefined") {_RecordType("<87,90,6>",(sum)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (x[j]) != "undefined") {_RecordType("<94,98,6>",(x[j])); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (x) != "undefined") {_RecordType("<94,95,6>",(x)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (y) != "undefined") {_RecordType("<105,106,6>",(y)); Inst12++; } } catch(e) {}
+  sum = sum + (x[j] ? 0 : y >>> 0) | 0;
+try { if (Inst8 <= 1000 && typeof (sum) != "undefined") {_RecordType("<81,84,6>",(sum)); Inst8++; } } catch(e) {}
+}
+
+try { if (Inst13 <= 1000 && typeof (sum) != "undefined") {_RecordType("<122,125,9>",(sum)); Inst13++; } } catch(e) {}
+sum;
+-2;
+

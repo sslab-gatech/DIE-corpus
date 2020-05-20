@@ -1,0 +1,100 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Throw a TypeError if the trap reports an existing own property as
+ * non-existent on a non-extensible object
+ */
+var target = {};
+try { if (Inst0 <= 1000 && typeof (target) != "undefined") {_RecordType("<123,129,5>",(target)); Inst0++; } } catch(e) {}
+try { if (Inst1 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<136,157,6>",(Object.defineProperty)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<136,142,6>",(Object)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (target) != "undefined") {_RecordType("<158,164,6>",(target)); Inst3++; } } catch(e) {}
+Object.defineProperty(target, 'foo', {
+  configurable: true
+});
+try { if (Inst4 <= 1000 && typeof (Object.preventExtensions) != "undefined") {_RecordType("<200,224,9>",(Object.preventExtensions)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Object) != "undefined") {_RecordType("<200,206,9>",(Object)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (target) != "undefined") {_RecordType("<225,231,9>",(target)); Inst6++; } } catch(e) {}
+Object.preventExtensions(target);
+try { if (Inst8 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<284,293,11>",(undefined)); Inst8++; } } catch(e) {}
+var handler = {
+  getOwnPropertyDescriptor: () => undefined
+};
+try { if (Inst7 <= 1000 && typeof (handler) != "undefined") {_RecordType("<238,245,10>",(handler)); Inst7++; } } catch(e) {}
+
+for (let p of [new Proxy(target, handler), Proxy.revocable(target, handler).proxy]) {
+try { if (Inst9 <= 1000 && typeof (p) != "undefined") {_RecordType("<307,308,14>",(p)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<317,322,14>",(Proxy)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (target) != "undefined") {_RecordType("<323,329,14>",(target)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (handler) != "undefined") {_RecordType("<331,338,14>",(handler)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Proxy.revocable(target, handler).proxy) != "undefined") {_RecordType("<341,379,14>",(Proxy.revocable(target, handler).proxy)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Proxy.revocable) != "undefined") {_RecordType("<341,356,14>",(Proxy.revocable)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<341,346,14>",(Proxy)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (target) != "undefined") {_RecordType("<357,363,14>",(target)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (handler) != "undefined") {_RecordType("<365,372,14>",(handler)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<393,424,15>",(Object.getOwnPropertyDescriptor)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Object) != "undefined") {_RecordType("<393,399,15>",(Object)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (p) != "undefined") {_RecordType("<425,426,15>",(p)); Inst20++; } } catch(e) {}
+  (() => Object.getOwnPropertyDescriptor(p, 'foo'))();
+
+try { if (Inst21 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<442,451,17>",(TypeError)); Inst21++; } } catch(e) {}
+  TypeError;
+}
+

@@ -1,0 +1,110 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Accessing `value` property of non primitive type should report its type.
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<85,89,2>",(test)); Inst0++; } } catch(e) {}
+function test() {
+try { if (Inst2 <= 1000 && typeof (ctypes.StructType) != "undefined") {_RecordType("<114,131,3>",(ctypes.StructType)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<114,120,3>",(ctypes)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (ctypes.voidptr_t) != "undefined") {_RecordType("<159,175,4>",(ctypes.voidptr_t)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<159,165,4>",(ctypes)); Inst5++; } } catch(e) {}
+  let test_struct = ctypes.StructType("test_struct", [{
+    "x": ctypes.voidptr_t
+  }]);
+try { if (Inst1 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<100,111,3>",(test_struct)); Inst1++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (test_struct().value) != "undefined") {_RecordType("<193,212,7>",(test_struct().value)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<193,204,7>",(test_struct)); Inst7++; } } catch(e) {}
+  (() => test_struct().value)();
+
+  ".value only works on character and numeric types, not `test_struct`";
+try { if (Inst9 <= 1000 && typeof (ctypes.ArrayType) != "undefined") {_RecordType("<310,326,10>",(ctypes.ArrayType)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<310,316,10>",(ctypes)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<327,338,10>",(test_struct)); Inst11++; } } catch(e) {}
+  let test_array = ctypes.ArrayType(test_struct);
+try { if (Inst8 <= 1000 && typeof (test_array) != "undefined") {_RecordType("<297,307,10>",(test_array)); Inst8++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (test_array(10).value) != "undefined") {_RecordType("<351,371,12>",(test_array(10).value)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (test_array) != "undefined") {_RecordType("<351,361,12>",(test_array)); Inst13++; } } catch(e) {}
+  (() => test_array(10).value)();
+
+  ".value only works on character and numeric types, not `test_struct.array(10)`";
+try { if (Inst15 <= 1000 && typeof (ctypes.PointerType) != "undefined") {_RecordType("<481,499,15>",(ctypes.PointerType)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<481,487,15>",(ctypes)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<500,511,15>",(test_struct)); Inst17++; } } catch(e) {}
+  let test_pointer = ctypes.PointerType(test_struct);
+try { if (Inst14 <= 1000 && typeof (test_pointer) != "undefined") {_RecordType("<466,478,15>",(test_pointer)); Inst14++; } } catch(e) {}
+
+try { if (Inst18 <= 1000 && typeof (test_pointer(10).value) != "undefined") {_RecordType("<524,546,17>",(test_pointer(10).value)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (test_pointer) != "undefined") {_RecordType("<524,536,17>",(test_pointer)); Inst19++; } } catch(e) {}
+  (() => test_pointer(10).value)();
+
+  ".value only works on character and numeric types, not `test_struct.ptr`";
+}
+
+try { if (Inst20 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<643,649,22>",(ctypes)); Inst20++; } } catch(e) {}
+if (typeof ctypes === "object") {
+try { if (Inst21 <= 1000 && typeof (test) != "undefined") {_RecordType("<668,672,23>",(test)); Inst21++; } } catch(e) {}
+  test();
+}
+

@@ -1,0 +1,104 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test we don't assert when the promise is settled and we then try to call the
+// resolving function.
+try { if (Inst0 <= 1000 && typeof (newPromiseCapability) != "undefined") {_RecordType("<112,132,3>",(newPromiseCapability)); Inst0++; } } catch(e) {}
+function newPromiseCapability() {
+try { if (Inst4 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<186,193,6>",(Promise)); Inst4++; } } catch(e) {}
+  var resolve,
+      reject,
+      promise = new Promise(function (r1, r2) {
+try { if (Inst5 <= 1000 && typeof (r1) != "undefined") {_RecordType("<204,206,6>",(r1)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (r2) != "undefined") {_RecordType("<208,210,6>",(r2)); Inst6++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (r1) != "undefined") {_RecordType("<228,230,7>",(r1)); Inst8++; } } catch(e) {}
+    resolve = r1;
+try { if (Inst7 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<218,225,7>",(resolve)); Inst7++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (r2) != "undefined") {_RecordType("<245,247,8>",(r2)); Inst10++; } } catch(e) {}
+    reject = r2;
+try { if (Inst9 <= 1000 && typeof (reject) != "undefined") {_RecordType("<236,242,8>",(reject)); Inst9++; } } catch(e) {}
+  });
+try { if (Inst1 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<143,150,4>",(resolve)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (reject) != "undefined") {_RecordType("<158,164,5>",(reject)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (promise) != "undefined") {_RecordType("<172,179,6>",(promise)); Inst3++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (promise) != "undefined") {_RecordType("<270,277,11>",(promise)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<283,290,12>",(resolve)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (reject) != "undefined") {_RecordType("<296,302,13>",(reject)); Inst13++; } } catch(e) {}
+  return {
+    promise,
+    resolve,
+    reject
+  };
+}
+
+try { if (Inst16 <= 1000 && typeof (newPromiseCapability) != "undefined") {_RecordType("<342,362,20>",(newPromiseCapability)); Inst16++; } } catch(e) {}
+var {
+  promise,
+  resolve
+} = newPromiseCapability(); // Don't assert when the promise is already settled.
+try { if (Inst14 <= 1000 && typeof (promise) != "undefined") {_RecordType("<319,326,18>",(promise)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<330,337,19>",(resolve)); Inst15++; } } catch(e) {}
+
+try { if (Inst17 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<420,427,22>",(resolve)); Inst17++; } } catch(e) {}
+resolve(0);
+

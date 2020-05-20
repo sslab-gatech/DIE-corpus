@@ -1,0 +1,108 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// In these cases, @@unscopables should not be consulted.
+// Because obj has no properties `assertEq` or `x`,
+// obj[@@unscopables] is not checked here:
+try { if (Inst1 <= 1000 && typeof (Symbol.unscopables) != "undefined") {_RecordType("<172,190,5>",(Symbol.unscopables)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<172,178,5>",(Symbol)); Inst2++; } } catch(e) {}
+var obj = {
+  get [Symbol.unscopables]() {
+    throw "tried to read @@unscopables";
+  }
+
+};
+try { if (Inst0 <= 1000 && typeof (obj) != "undefined") {_RecordType("<157,160,4>",(obj)); Inst0++; } } catch(e) {}
+var x = 3;
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<249,250,10>",(x)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (obj) != "undefined") {_RecordType("<262,265,11>",(obj)); Inst4++; } } catch(e) {}
+with (obj) {
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<271,272,12>",(x)); Inst5++; } } catch(e) {}
+  x;
+  3;
+} // If @@unscopables is present but not an object, it is ignored:
+
+for (let nonObject of [undefined, null, "nothing", Symbol.for("moon")]) {
+try { if (Inst6 <= 1000 && typeof (nonObject) != "undefined") {_RecordType("<356,365,16>",(nonObject)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<370,379,16>",(undefined)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Symbol.for) != "undefined") {_RecordType("<398,408,16>",(Symbol.for)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<398,404,16>",(Symbol)); Inst9++; } } catch(e) {}
+  let y = 4;
+try { if (Inst10 <= 1000 && typeof (y) != "undefined") {_RecordType("<427,428,17>",(y)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (nonObject) != "undefined") {_RecordType("<475,484,19>",(nonObject)); Inst12++; } } catch(e) {}
+  let obj2 = {
+    [Symbol.unscopables]: nonObject,
+    y: 5
+  };
+try { if (Inst11 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<440,444,18>",(obj2)); Inst11++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<508,512,22>",(obj2)); Inst13++; } } catch(e) {}
+  with (obj2) {
+try { if (Inst14 <= 1000 && typeof (y) != "undefined") {_RecordType("<520,521,23>",(y)); Inst14++; } } catch(e) {}
+    y;
+    5;
+  }
+}
+
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<537,550,28>",(reportCompare)); Inst15++; } } catch(e) {}
+reportCompare(0, 0);
+

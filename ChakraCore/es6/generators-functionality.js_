@@ -1,0 +1,4101 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// ES6 Generators functionality tests -- verifies behavior of generator functions
+function ExpectedException() {
+  this.message = "Expected Exception";
+}
+
+var x = 0;
+
+function CreateIterable(nextFunc, returnFunc, throwFunc) {
+  return {
+    [Symbol.iterator]: function () {
+      var obj = {
+        i: 1
+      };
+
+      if (nextFunc) {
+        obj.next = nextFunc;
+      }
+
+      if (returnFunc) {
+        obj.return = returnFunc;
+      }
+
+      if (throwFunc) {
+        obj.throw = throwFunc;
+      }
+
+      return obj;
+    }
+  };
+}
+
+function simpleNextFunc() {
+  return {
+    done: this.i == 3,
+    value: this.i++
+  };
+}
+
+function simpleReturnFunc() {
+  x++;
+  return {
+    done: true,
+    value: undefined
+  };
+}
+
+function simpleThrowFunc() {
+  x++;
+  return {
+    done: true,
+    value: undefined
+  };
+}
+
+var global = function () {
+  return this;
+}();
+
+function t1() {
+  function* gf1() {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, gf1().next());
+
+  function* gf2() {
+    return 123;
+  }
+
+  console.log({
+    value: 123,
+    done: true
+  }, gf2().next());
+
+  function* gf3() {
+    yield 1;
+  }
+
+  var g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+
+  function* gf4() {
+    yield 1;
+    return 123;
+  }
+
+  var g4 = gf4();
+  console.log({
+    value: 1,
+    done: false
+  }, g4.next());
+  console.log({
+    value: 123,
+    done: true
+  }, g4.next());
+
+  function* gf5() {
+    yield 1;
+    yield 2;
+    yield 3;
+    return 10;
+  }
+
+  var g5 = gf5();
+  console.log({
+    value: 1,
+    done: false
+  }, g5.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g5.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g5.next());
+  console.log({
+    value: 10,
+    done: true
+  }, g5.next());
+}
+
+t1();
+
+function t2() {
+  function* gf() {
+    yield 1;
+    return 0;
+  }
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 0,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t2();
+
+function t3() {
+  function* gf() {
+    yield 1;
+    yield 2;
+    yield 3;
+    return 0;
+  }
+
+  var g1 = gf();
+  var g2 = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g1.next());
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g1.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g1.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 0,
+    done: true
+  }, g1.next());
+  console.log({
+    value: 0,
+    done: true
+  }, g2.next());
+  var g3 = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 0,
+    done: true
+  }, g3.next());
+}
+
+t3();
+
+function t4() {
+  function* gf() {
+    yield 1;
+    yield 2;
+    yield 3;
+    return 0;
+  }
+
+  var a = [];
+
+  for (let x of gf()) {
+    a.push(x);
+  }
+
+  console.log(3, a.length);
+  console.log(1, a[0]);
+  console.log(2, a[1]);
+  console.log(3, a[2]);
+}
+
+t4();
+
+function t5() {
+  function* gf() {
+    console.log('a', (yield 1));
+    console.log('b', (yield 2));
+    console.log('c', (yield 3));
+    return 0;
+  }
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next('ignored'));
+  console.log({
+    value: 2,
+    done: false
+  }, g.next('a'));
+  console.log({
+    value: 3,
+    done: false
+  }, g.next('b'));
+  console.log({
+    value: 0,
+    done: true
+  }, g.next('c'));
+}
+
+t5();
+
+function t6() {
+  function* gf() {
+    var a = 0,
+        b = 1;
+    yield a;
+    a += b++;
+    yield a;
+    a += b++;
+    yield a;
+    a += b++;
+  }
+
+  var g = gf();
+  console.log(0, g.next().value);
+  console.log(1, g.next().value);
+  console.log(3, g.next().value);
+}
+
+t6();
+
+function t7() {
+  function* gf(a, b, c) {
+    yield a;
+    yield b;
+    yield c;
+  }
+
+  var g = gf(0, 1, 2);
+  console.log(0, g.next().value);
+  console.log(1, g.next().value);
+  console.log(2, g.next().value);
+  g = gf(0);
+  console.log(0, g.next().value);
+  console.log(undefined, g.next().value);
+  console.log(undefined, g.next().value);
+  g = gf(3, 4, 5, 6, 7);
+  console.log(3, g.next().value);
+  console.log(4, g.next().value);
+  console.log(5, g.next().value);
+  console.log(undefined, g.next().value);
+}
+
+t7();
+
+function t8() {
+  function* gf1(...r) {
+    for (var i = 0; i < r.length; i += 1) {
+      yield r[i];
+    }
+  }
+
+  var g = gf1();
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf1(0);
+  console.log(0, g.next().value);
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf1(0, 1, 2, 3);
+  console.log(0, g.next().value);
+  console.log(1, g.next().value);
+  console.log(2, g.next().value);
+  console.log(3, g.next().value);
+  console.log(undefined, g.next().value);
+
+  function* gf2(a, b, ...r) {
+    for (var i = r.length - 1; i >= 0; i -= 1) {
+      yield r[i];
+    }
+
+    yield b;
+    yield a;
+  }
+
+  g = gf2();
+  console.log({
+    value: undefined,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf2(0, 1);
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 0,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf2(0, 1, 2, 3, 4);
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 0,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t8();
+
+function t9() {
+  function* gf(a) {
+    yield 1 + a + this.a;
+  }
+
+  g = gf.call({
+    a: 100
+  }, 10);
+  console.log({
+    value: 111,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t9();
+
+function t10() {
+  function* gf(a) {
+    yield 1 + a + this.a;
+  }
+
+  try {
+    new gf();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new gf(10);
+  } catch (e) {
+    ;
+  }
+
+  var obj1 = {
+    *gf() {
+      ;
+    }
+
+  };
+
+  try {
+    new obj1.gf();
+  } catch (e) {
+    ;
+  }
+
+  class c {
+    *gf() {
+      ;
+    }
+
+  }
+
+  ;
+  var obj2 = new c();
+
+  try {
+    new obj2.gf();
+  } catch (e) {
+    ;
+  }
+}
+
+t10();
+
+function t11() {
+  function* gf() {
+    return arguments.length;
+  }
+
+  console.log(0, gf().next().value);
+  console.log(1, gf(0).next().value);
+  console.log(3, gf(0, 1, 2).next().value);
+}
+
+t11();
+
+function t12() {
+  function* gf() {
+    for (var i = 0; i < arguments.length; i += 1) {
+      yield arguments[i];
+    }
+  }
+
+  var g = gf();
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf(0);
+  console.log({
+    value: 0,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  g = gf(0, 1, 2);
+  console.log({
+    value: 0,
+    done: false
+  }, g.next());
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t12();
+
+function t13() {
+  function f(a) {
+    let b = 0;
+
+    function* gf() {
+      yield a++;
+      yield b++;
+      yield a++;
+      yield b++;
+    }
+
+    return gf;
+  }
+
+  var gf = f(10);
+  var g = gf();
+  console.log(10, g.next().value);
+  console.log(0, g.next().value);
+  console.log(11, g.next().value);
+  console.log(1, g.next().value);
+  console.log(undefined, g.next().value);
+  g = gf();
+  console.log(12, g.next().value);
+  console.log(2, g.next().value);
+  console.log(13, g.next().value);
+  console.log(3, g.next().value);
+  console.log(undefined, g.next().value);
+  gf = f(5);
+  g = gf();
+  console.log(5, g.next().value);
+  console.log(0, g.next().value);
+  console.log(6, g.next().value);
+  console.log(1, g.next().value);
+}
+
+t13();
+
+function t14() {
+  function* gf(a) {
+    if (a === 'if') {
+      yield 1;
+    } else {
+      if (a === 'else if') {
+        yield 2;
+      } else {
+        yield 3;
+      }
+    }
+
+    return 0;
+  }
+
+  var g = gf('if');
+  console.log(1, g.next().value);
+  console.log(0, g.next().value);
+  g = gf('else if');
+  console.log(2, g.next().value);
+  console.log(0, g.next().value);
+  g = gf();
+  console.log(3, g.next().value);
+  console.log(0, g.next().value);
+}
+
+t14();
+
+function t15() {
+  function* gf(a) {
+    switch (a) {
+      case 1:
+        yield 1;
+        break;
+
+      case 2:
+        yield 2;
+      // fallthrough
+
+      case 3:
+        yield 3;
+        break;
+
+      default:
+        yield -1;
+        break;
+    }
+
+    return 0;
+  }
+
+  var g = gf(1);
+  console.log(1, g.next().value);
+  console.log(0, g.next().value);
+  g = gf(2);
+  console.log(2, g.next().value);
+  console.log(3, g.next().value);
+  console.log(0, g.next().value);
+  var g = gf(3);
+  console.log(3, g.next().value);
+  console.log(0, g.next().value);
+  var g = gf(4);
+  console.log(-1, g.next().value);
+  console.log(0, g.next().value);
+}
+
+t15();
+
+function t16() {
+  function* gf() {
+    var a = 1;
+
+    while (a < 3) {
+      yield a;
+      a += 1;
+    }
+
+    return 0;
+  }
+
+  var g = gf();
+  console.log(1, g.next().value);
+  console.log(2, g.next().value);
+  console.log(0, g.next().value);
+}
+
+t16();
+
+function t17() {
+  function* gf() {
+    for (var a = 1; a < 3; a++) {
+      yield a;
+    }
+
+    return 0;
+  }
+
+  var g = gf();
+  console.log(1, g.next().value);
+  console.log(2, g.next().value);
+  console.log(0, g.next().value);
+}
+
+t17();
+
+function t18() {
+  function* gf() {
+    var o = {
+      a: '',
+      b: ''
+    };
+
+    for (var a in o) {
+      yield a;
+    }
+
+    return 0;
+  }
+
+  var g = gf();
+  console.log('a', g.next().value);
+  console.log('b', g.next().value);
+  console.log(0, g.next().value);
+}
+
+t18();
+
+function t19() {
+  function* gf() {
+    for (var a of [1, 2]) {
+      yield a;
+    }
+
+    return 0;
+  }
+
+  var g = gf();
+  console.log(1, g.next().value);
+  console.log(2, g.next().value);
+  console.log(0, g.next().value);
+}
+
+t19();
+
+function t20() {
+  function* gf1() {
+    return {
+      [yield 1]: 2
+    };
+  }
+
+  var g = gf1();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: {
+      foo: 2
+    },
+    done: true
+  }, g.next("foo"));
+
+  function* gf2() {
+    return yield 1;
+  }
+
+  g = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.next(2));
+}
+
+t20();
+
+function t21() {
+  function* gf() {
+    throw new Error();
+    yield 10;
+    return 20;
+  }
+
+  var g = gf();
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t21();
+
+function t22() {
+  function* gf() {
+    try {
+      g.next();
+    } catch (e) {
+      ;
+    }
+
+    try {
+      g.return(1);
+    } catch (e) {
+      ;
+    }
+
+    try {
+      g.throw(1);
+    } catch (e) {
+      ;
+    }
+
+    return 123;
+  }
+
+  var g = gf();
+  console.log({
+    value: 123,
+    done: true
+  }, g.next());
+}
+
+t22();
+
+function t23() {
+  function* gf1() {
+    ;
+  }
+
+  function* gf2(a, b, c) {
+    yield a + b + c;
+  }
+
+  var gf3 = function* () {
+    ;
+  };
+
+  console.log("function* gf1() { }", gf1.toString());
+  console.log("function* gf2(a, b, c) {\r\n                yield a + b + c;\r\n            }", gf2.toString());
+  console.log("function* () { }", gf3.toString());
+}
+
+t23();
+
+function t24() {
+  var GeneratorFunction = Object.getPrototypeOf(function* () {
+    ;
+  }).constructor;
+  var gf = new GeneratorFunction('yield 1; return 0;');
+  var g = gf();
+  console.log("function* anonymous(\n) {yield 1; return 0;\n}", gf.toString());
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 0,
+    done: true
+  }, g.next());
+  gf = new GeneratorFunction('a', 'b', 'c', 'yield a; yield b; yield c;');
+  g = gf(1, 2, 3);
+  console.log("function* anonymous(a,b,c\n) {yield a; yield b; yield c;\n}", gf.toString());
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t24();
+
+function t25() {
+  var gf = function* gfrec() {
+    return gfrec;
+  };
+
+  var x = gf().next().value;
+  console.log(gf, x);
+}
+
+t25();
+
+function t26() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } catch (ex) {
+      ;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw "";
+    } catch (ex) {
+      yield 1;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      yield 2;
+      throw 3;
+    } catch (ex) {
+      yield ex;
+    }
+
+    yield 4;
+    return 5;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw 2;
+    } catch (ex) {
+      yield 1;
+      throw new ExpectedException();
+    }
+
+    assert.fail("Control shouldn't reach here");
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t26();
+
+function t27() {
+  var gf = function* gf() {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+      return 3;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+      throw new ExpectedException();
+    } finally {
+      yield 2;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+      throw new ExpectedException();
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      return 2;
+    } finally {
+      yield 1;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t27();
+
+function t28() {
+  var gf = function* () {
+    yield 1;
+
+    try {
+      yield 2;
+      throw 3;
+    } catch (e) {
+      yield e;
+    } finally {
+      yield 4;
+    }
+
+    yield 5;
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      try {
+        yield 2;
+        throw 4;
+      } finally {
+        yield 3;
+      }
+
+      yield 100;
+    } catch (e) {
+      yield e;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      try {
+        yield 2;
+        throw new ExpectedException();
+      } finally {
+        yield 3;
+      }
+
+      yield 100;
+    } finally {
+      yield 4;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      try {
+        yield 2;
+        throw 3;
+      } catch (ex) {
+        yield ex;
+      }
+
+      throw 4;
+    } catch (ex) {
+      yield ex;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      try {
+        yield 2;
+        throw 3;
+      } catch (ex) {
+        yield ex;
+      }
+
+      throw new ExpectedException();
+    } finally {
+      yield 4;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      yield 2;
+
+      try {
+        yield 3;
+        throw 4;
+      } catch (ex) {
+        yield ex;
+      }
+
+      yield 5;
+      throw 6;
+    } catch (ex) {
+      yield ex;
+    }
+
+    return 7;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: false
+  }, g.next());
+  console.log({
+    value: 6,
+    done: false
+  }, g.next());
+  console.log({
+    value: 7,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+
+    try {
+      yield 2;
+      throw 6;
+    } catch (ex) {
+      try {
+        yield 3;
+        throw 4;
+      } catch (ex) {
+        yield ex;
+      }
+
+      yield 5;
+      yield ex;
+    }
+
+    return 7;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: false
+  }, g.next());
+  console.log({
+    value: 6,
+    done: false
+  }, g.next());
+  console.log({
+    value: 7,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    var x = 1;
+    yield x;
+
+    try {
+      x = 2;
+      yield x;
+      x = 3;
+
+      try {
+        yield x;
+        x = 4;
+        throw x;
+      } catch (ex) {
+        yield ex;
+        x = 5;
+      }
+
+      yield x;
+      throw x = 6;
+    } catch (ex) {
+      yield x;
+    }
+
+    x = 7;
+    return x;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: false
+  }, g.next());
+  console.log({
+    value: 6,
+    done: false
+  }, g.next());
+  console.log({
+    value: 7,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        return 100;
+      } finally {
+        throw 1;
+      }
+    } catch (e) {
+      yield e;
+    }
+
+    yield 2;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t28();
+
+function t29() {
+  var gf = function* () {
+    yield 1;
+    yield 2;
+    yield 3;
+    return 5;
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+  };
+
+  g = gf();
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+    yield 2;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t29();
+
+function t30() {
+  var gf = function* () {
+    try {
+      yield 1;
+      throw 100;
+    } catch (ex) {
+      yield ex;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+      throw 2;
+    } catch (ex) {
+      yield ex;
+      yield 100;
+    }
+
+    assert.fail("Control should never reach here");
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t30();
+
+function t31() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+    }
+
+    assert.fail("Control should never reach here");
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(new ExpectedException()));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+      throw 100;
+    } finally {
+      yield 2;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(new ExpectedException()));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+      throw new ExpectedException();
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(3));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      return 2;
+    } finally {
+      yield 1;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t31();
+
+function t32() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } catch (e) {
+      yield e;
+    } finally {
+      yield 3;
+    }
+
+    assert.fail("Control should not reach here");
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(2));
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        yield 1;
+      } finally {
+        yield 2;
+      }
+
+      assert.fail("Control should never reach here");
+    } catch (e) {
+      yield e;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(3));
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        yield 1;
+        throw 100;
+      } finally {
+        yield 2;
+        yield 100;
+      }
+    } finally {
+      yield 3;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.throw(new ExpectedException()));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        yield 1;
+        throw 2;
+      } catch (ex) {
+        yield ex;
+      }
+
+      throw 100;
+    } catch (ex) {
+      yield ex;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.throw(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        yield 1;
+        throw 2;
+      } catch (ex) {
+        yield ex;
+      }
+
+      yield 3;
+    } finally {
+      yield 4;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: false
+  }, g.throw(new ExpectedException()));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+  var x = 1;
+
+  gf = function* () {
+    try {
+      yield x;
+      x = 2;
+
+      try {
+        yield x;
+      } catch (ex) {
+        yield ex;
+        x = 4;
+      }
+
+      yield x;
+    } catch (ex) {
+      yield x;
+    }
+
+    x = 6;
+    return x;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.throw(x = 3));
+  console.log({
+    value: 4,
+    done: false
+  }, g.next());
+  console.log({
+    value: 5,
+    done: false
+  }, g.throw(x = 5));
+  console.log({
+    value: 6,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        return 100;
+      } finally {
+        yield 1;
+      }
+    } catch (e) {
+      yield e;
+    }
+
+    yield 3;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(2));
+  console.log({
+    value: 3,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t32();
+
+function t33() {
+  var gf = function* () {
+    yield 1;
+    assert.fail("Control should never reach here");
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    assert.fail("Control should never reach here");
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: true
+  }, g.return(1));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    for (i = 1; i < 3; i += 2) {
+      yield i;
+    }
+
+    "Control should never reach here";
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+    return "Control should never reach here";
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    yield 1;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.return());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t33();
+
+function t34() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } catch (ex) {
+      ;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        yield 1;
+      } finally {
+        yield 2;
+      }
+    } catch (e) {
+      yield e;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      yield 2;
+      return 3;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.return(100));
+  console.log({
+    value: 3,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw 1;
+    } catch (e) {
+      yield e;
+    } finally {
+      yield 2;
+      return 3;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.return(100));
+  console.log({
+    value: 3,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw 1;
+    } catch (e) {
+      yield e;
+    } finally {
+      yield 2;
+      throw new ExpectedException();
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.return(100));
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw new ExpectedException();
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  g = gf();
+
+  try {
+    g.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+}
+
+t34();
+
+function t35() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+      return 100;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        return 100;
+      } finally {
+        throw 1;
+      }
+    } catch (e) {
+      yield e;
+    }
+
+    assert.fail("Control should never reach here");
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw 1;
+    } catch (e) {
+      yield e;
+    } finally {
+      yield 2;
+    }
+
+    return 100;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.return(3));
+  console.log({
+    value: 3,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    var x = yield 1;
+
+    if (x) {
+      yield x;
+      return "Control should never reach here";
+    } else {
+      yield x;
+      return 4;
+    }
+  };
+
+  var g1 = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g1.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g1.next(2));
+  console.log({
+    value: 3,
+    done: true
+  }, g1.return(3));
+  var g2 = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 0,
+    done: false
+  }, g2.next(0));
+  console.log({
+    value: 2,
+    done: true
+  }, g2.return(2));
+}
+
+t35();
+
+function t36() {
+  var gf = function* () {
+    try {
+      try {
+        yield 1;
+        throw 100;
+      } finally {
+        yield 2;
+      }
+    } finally {
+      yield 3;
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g.return(4));
+  console.log({
+    value: 4,
+    done: true
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      yield 1;
+      throw 100;
+    } finally {
+      yield 2;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      throw "";
+    } catch (ex) {
+      yield 1;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t36();
+
+function t37() {
+  var gf = function* () {
+    try {
+      yield 1;
+    } finally {
+      yield 2;
+      assert.fail("Control should not reach here");
+    }
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(100));
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    var x = yield 1;
+    var y = yield x;
+    yield y;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next(2));
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+
+  gf = function* () {
+    try {
+      try {
+        ;
+      } finally {
+        yield 1;
+      }
+    } finally {
+      yield 2;
+    }
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.throw(100));
+  console.log({
+    value: 3,
+    done: true
+  }, g.return(3));
+}
+
+t37();
+
+function t38() {
+  x = 0;
+  var simpleIterator = CreateIterable(simpleNextFunc, simpleReturnFunc, null);
+
+  var gf = function* () {
+    yield* simpleIterator;
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.return(3));
+  console.log(1, x);
+  x = 0;
+  var simpleIterator = CreateIterable(simpleNextFunc, undefined, simpleReturnFunc);
+
+  var gf = function* () {
+    yield* simpleIterator;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.throw(new ExpectedException()));
+  console.log(1, x);
+}
+
+t38();
+
+function t39() {
+  var gf1 = function* () {
+    yield 1;
+    yield 2;
+  };
+
+  var g1 = gf1();
+
+  var gf2 = function* () {
+    yield* g1;
+  };
+
+  var g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g2.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  g1 = gf1();
+  g2 = gf2();
+
+  function* gf3() {
+    yield* g2;
+  }
+
+  var g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 3,
+    done: true
+  }, g3.return(3));
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+}
+
+t39();
+
+function t40() {
+  function* gf1() {
+    yield 1;
+    yield 2;
+  }
+
+  var g1 = gf1();
+
+  function* gf2() {
+    yield* g1;
+  }
+
+  var g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+
+  try {
+    g2.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  g1 = gf1();
+  g2 = gf2();
+
+  function* gf3() {
+    yield* g2;
+  }
+
+  var g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+
+  try {
+    g3.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+}
+
+t40();
+
+function t41() {
+  var gf1 = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } catch (e) {
+      console.log(2, e);
+      yield 100;
+    }
+
+    yield 3;
+  };
+
+  var g1 = gf1();
+
+  var gf2 = function* () {
+    yield* g1;
+  };
+
+  var g2 = gf2();
+
+  var gf3 = function* () {
+    yield* g2;
+  };
+
+  var g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 100,
+    done: false
+  }, g3.throw(2));
+  console.log({
+    value: 3,
+    done: false
+  }, g3.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+
+  gf1 = function* () {
+    yield 1;
+    assert.fail("Control should never reach here");
+  };
+
+  g1 = gf1();
+
+  gf2 = function* () {
+    try {
+      yield* g1;
+    } catch (e) {
+      console.log(2, e);
+      yield 100;
+    }
+
+    yield 3;
+  };
+
+  g2 = gf2();
+  g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 100,
+    done: false
+  }, g3.throw(2));
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: 3,
+    done: false
+  }, g3.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+}
+
+t41();
+
+function t42() {
+  x = 0;
+
+  var gf1 = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      x += 1;
+    }
+  };
+
+  var g1 = gf1();
+
+  var gf2 = function* () {
+    try {
+      yield* g1;
+      assert.fail("Control should never reach here");
+    } finally {
+      x += 3;
+    }
+  };
+
+  var g2 = gf2();
+
+  var gf3 = function* () {
+    try {
+      yield* g2;
+      assert.fail("Control should never reach here");
+    } finally {
+      x += 5;
+    }
+  };
+
+  var g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+
+  try {
+    g3.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log(9, x);
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+  x = 0;
+  g1 = gf1();
+  g2 = gf2();
+  g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g3.return(2));
+  console.log(9, x);
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+
+  gf1 = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      x += 1;
+      return 100;
+    }
+  };
+
+  x = 0;
+  g1 = gf1();
+
+  gf2 = function* () {
+    try {
+      yield* g1;
+    } finally {
+      x += 3;
+    }
+  };
+
+  g2 = gf2();
+
+  gf3 = function* () {
+    try {
+      yield* g2;
+    } finally {
+      x += 5;
+    }
+  };
+
+  g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.throw(new ExpectedException()));
+  console.log(9, x);
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+
+  gf1 = function* () {
+    try {
+      try {
+        yield 1;
+        assert.fail("Control should never reach here");
+      } finally {
+        x += 1;
+      }
+    } finally {
+      x += 2;
+    }
+  };
+
+  g1 = gf1();
+
+  gf2 = function* () {
+    try {
+      try {
+        try {
+          yield* g1;
+          assert.fail("Control should never reach here");
+        } finally {
+          x += 4;
+        }
+      } finally {
+        x += 8;
+      }
+    } finally {
+      x += 16;
+    }
+  };
+
+  g2 = gf2();
+
+  gf3 = function* () {
+    try {
+      yield* g2;
+      assert.fail("Control should never reach here");
+    } finally {
+      x += 32;
+    }
+  };
+
+  g3 = gf3();
+  x = 0;
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+
+  try {
+    g3.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log(63, x);
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+  x = 0;
+  g1 = gf1();
+  g2 = gf2();
+  g3 = gf3();
+  console.log({
+    value: 1,
+    done: false
+  }, g3.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g3.return(2));
+  console.log(63, x);
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g3.next());
+}
+
+t42();
+
+function t43() {
+  var gf1 = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } catch (e) {
+      console.log(2, e);
+      throw new ExpectedException();
+    }
+  };
+
+  var g1 = gf1();
+
+  var gf2 = function* () {
+    yield* g1;
+  };
+
+  var g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+
+  try {
+    g2.throw(2);
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+
+  gf1 = function* () {
+    try {
+      yield 1;
+    } finally {
+      throw new ExpectedException();
+    }
+  };
+
+  g1 = gf1();
+  g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+
+  try {
+    g2.return(100);
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+  g1 = gf1();
+  g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+
+  try {
+    g2.throw(2);
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, g1.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g2.next());
+}
+
+t43();
+
+function t44() {
+  var gf1 = function* () {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      return 2;
+    }
+  };
+
+  var g1 = gf1();
+
+  var gf2 = function* () {
+    yield* g1;
+  };
+
+  g1 = gf1();
+  g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g2.return(100));
+
+  gf1 = function* () {
+    try {
+      return 100;
+    } finally {
+      yield 1;
+    }
+  };
+
+  g1 = gf1();
+  g2 = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g2.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g2.return(2));
+}
+
+t44();
+
+function t45() {
+  var iteratorWithNoReturnOrThrow = CreateIterable(simpleNextFunc);
+
+  var gf = function* () {
+    yield* iteratorWithNoReturnOrThrow;
+  };
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  var iteratorWithNullAsReturn = CreateIterable(simpleNextFunc, null);
+
+  gf = function* () {
+    yield* iteratorWithNullAsReturn;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: true
+  }, g.return(2));
+  var returnCalled = false;
+  var iteratorWithNullAsThrow = CreateIterable(simpleNextFunc, () => {
+    returnCalled = true;
+    return {
+      done: true
+    };
+  }, null);
+
+  gf = function* () {
+    yield* iteratorWithNullAsThrow;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw();
+  } catch (e) {
+    ;
+  }
+
+  console.log(returnCalled);
+  var iteratorWithBadReturnAndThrow = CreateIterable(simpleNextFunc, {}, {});
+
+  gf = function* () {
+    yield* iteratorWithBadReturnAndThrow;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.return(100);
+  } catch (e) {
+    ;
+  }
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(100);
+  } catch (e) {
+    ;
+  }
+
+  var iteratorReturningNonObj = CreateIterable(simpleNextFunc, () => {
+    return this.i;
+  }, () => {
+    return this.i;
+  });
+
+  gf = function* () {
+    yield* iteratorReturningNonObj;
+  };
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.return(100);
+  } catch (e) {
+    ;
+  }
+
+  g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+
+  try {
+    g.throw(new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  var iteratorReturningWithoutValue = CreateIterable(() => {
+    return {
+      done: false
+    };
+  }, () => {
+    return {
+      done: true
+    };
+  }, () => {
+    return {
+      done: true
+    };
+  });
+
+  gf = function* () {
+    yield* iteratorReturningWithoutValue;
+  };
+
+  g = gf();
+  g.next();
+  console.log({
+    value: undefined,
+    done: true
+  }, g.return(100));
+}
+
+t45();
+
+function t46() {
+  var simpleIterator = CreateIterable(simpleNextFunc);
+
+  function* gf() {
+    yield* simpleIterator;
+    return 4;
+  }
+
+  var g = gf();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 2,
+    done: false
+  }, g.next());
+  console.log({
+    value: 4,
+    done: true
+  }, g.next());
+}
+
+t46();
+
+function t47() {
+  var obj = {
+    prop: 7
+  };
+
+  var gf = function* () {
+    yield* CreateIterable(() => obj);
+  };
+
+  var g = gf();
+  console.log(g.next() === obj);
+  console.log({
+    prop: 7
+  }, g.next());
+}
+
+t47();
+
+function t48() {
+  function* gf1() {
+    yield 1;
+    return 100;
+  }
+
+  function* gf2() {
+    yield* gf1();
+    yield* gf1();
+  }
+
+  var g = gf2();
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: 1,
+    done: false
+  }, g.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, g.next());
+}
+
+t48();
+
+function t49() {
+  function dummy() {
+    ;
+  }
+
+  var gf = function* () {
+    yield* dummy;
+  };
+
+  try {
+    gf().next();
+  } catch (e) {
+    ;
+  }
+
+  var iteratorWithNoNextMethod = CreateIterable();
+
+  gf = function* () {
+    yield* iteratorWithNoNextMethod;
+  };
+
+  try {
+    gf().next();
+  } catch (e) {
+    ;
+  }
+
+  var iteratorWithBadNextMethod = CreateIterable({});
+
+  gf = function* () {
+    yield* iteratorWithBadNextMethod;
+  };
+
+  try {
+    gf().next();
+  } catch (e) {
+    ;
+  }
+
+  var iteratorWithBadNextMethod = CreateIterable(function () {
+    return 100;
+  });
+
+  gf = function* () {
+    yield* iteratorWithBadNextMethod;
+  };
+
+  try {
+    gf().next();
+  } catch (e) {
+    ;
+  }
+}
+
+t49();
+
+function t50() {
+  function* inner() {
+    console.log((yield));
+  }
+
+  function* outer() {
+    yield* inner();
+  }
+
+  var it = outer();
+  it.next();
+  it.next("a");
+}
+
+t50();
+
+function t51() {
+  const error = new ExpectedException();
+  let yieldStarResult;
+  let innerGeneratorThrew = false;
+
+  function* gen() {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      innerGeneratorThrew = true;
+    }
+  }
+
+  function* genWhichYieldsInsideCatch() {
+    try {
+      yield 2;
+      assert.fail("Control should never reach here");
+    } catch (e) {
+      console.log(e, error);
+      yield 3;
+    }
+  }
+
+  function* genWhichYieldsInsideFinally() {
+    try {
+      yield 4;
+      assert.fail("Control should never reach here");
+    } finally {
+      yield 5;
+    }
+  }
+
+  function* genWhichReturnsInsideCatch() {
+    try {
+      yield 6;
+      assert.fail("Control should never reach here");
+    } catch (e) {
+      return 101;
+    }
+  }
+
+  function* genWhichReturnsInsideFinally() {
+    try {
+      yield 7;
+      assert.fail("Control should never reach here");
+    } finally {
+      return 102;
+    }
+  }
+
+  function* wrap(gen) {
+    yieldStarResult = yield* gen();
+    yield 10;
+  }
+
+  let it = wrap(gen);
+  console.log({
+    value: 1,
+    done: false
+  }, it.next());
+
+  try {
+    it.throw(error);
+  } catch (e) {
+    ;
+  }
+
+  console.log(innerGeneratorThrew);
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichYieldsInsideCatch);
+  console.log({
+    value: 2,
+    done: false
+  }, it.next());
+  console.log({
+    value: 3,
+    done: false
+  }, it.throw(error));
+  console.log({
+    value: 10,
+    done: false
+  }, it.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichYieldsInsideFinally);
+  console.log({
+    value: 4,
+    done: false
+  }, it.next());
+  console.log({
+    value: 5,
+    done: false
+  }, it.throw(error));
+
+  try {
+    it.next();
+  } catch (e) {
+    ;
+  }
+
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichReturnsInsideCatch);
+  console.log({
+    value: 6,
+    done: false
+  }, it.next());
+  console.log({
+    value: 10,
+    done: false
+  }, it.throw(new ExpectedException()));
+  console.log(yieldStarResult, 101);
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichReturnsInsideFinally);
+  console.log({
+    value: 7,
+    done: false
+  }, it.next());
+  console.log({
+    value: 10,
+    done: false
+  }, it.throw(new ExpectedException()));
+  console.log(yieldStarResult, 102);
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+}
+
+t51();
+
+function t52() {
+  let yieldStarResult;
+  let innerGeneratorReturned = false;
+
+  function* gen() {
+    try {
+      yield 1;
+      assert.fail("Control should never reach here");
+    } finally {
+      innerGeneratorReturned = true;
+    }
+  }
+
+  function* genWhichYieldsInsideFinally() {
+    try {
+      yield 4;
+      assert.fail("Control should never reach here");
+    } finally {
+      yield 5;
+    }
+  }
+
+  function* genWhichReturnsInsideFinally() {
+    try {
+      yield 6;
+      assert.fail("Control should never reach here");
+    } finally {
+      return 101;
+    }
+  }
+
+  function* wrap(gen) {
+    yieldStartResult = yield* gen();
+    yield 10;
+  }
+
+  let it = wrap(gen);
+  console.log({
+    value: 1,
+    done: false
+  }, it.next());
+  console.log({
+    value: 100,
+    done: true
+  }, it.return(100));
+  console.log(innerGeneratorReturned);
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichYieldsInsideFinally);
+  console.log({
+    value: 4,
+    done: false
+  }, it.next());
+  console.log({
+    value: 5,
+    done: false
+  }, it.return(100));
+  console.log({
+    value: 10,
+    done: false
+  }, it.next());
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+  it = wrap(genWhichReturnsInsideFinally);
+  console.log({
+    value: 6,
+    done: false
+  }, it.next());
+  console.log({
+    value: 101,
+    done: true
+  }, it.return(100));
+  console.log({
+    value: undefined,
+    done: true
+  }, it.next());
+}
+
+t52();
+
+function t53() {
+  class BASE {
+    base0() {
+      return 0;
+    }
+
+    base1() {
+      return "BASE";
+    }
+
+  }
+
+  class A extends BASE {
+    *gf() {
+      yield super.base0();
+      return super.base1();
+    }
+
+  }
+
+  ;
+  var o = new A();
+  var g = o.gf();
+  console.log(0, g.next().value);
+  console.log("BASE", g.next().value);
+}
+
+t53();
+
+function t55() {
+  var thisValue = null;
+
+  function* method1() {
+    thisValue = this;
+  }
+
+  ;
+  method1().next();
+  console.log(global, thisValue);
+  thisValue = null;
+
+  function* method2() {
+    'use strict';
+
+    thisValue = this;
+  }
+
+  ;
+  method2().next();
+  console.log(undefined, thisValue);
+}
+
+t55();
+
+function t56() {
+  var closed = false;
+  var g1, g2;
+
+  function* gf1() {
+    yield 1;
+  }
+
+  function* gf2() {
+    yield* g1;
+  }
+
+  ;
+  g1 = gf1();
+  g1.throw = undefined, g1.return = function () {
+    closed = true;
+    return {
+      done: true
+    };
+  };
+  g2 = gf2();
+  g2.next();
+
+  try {
+    g2['throw'](new ExpectedException());
+  } catch (e) {
+    ;
+  }
+
+  console.log(closed);
+  g1 = gf1();
+  g1.throw = undefined, g1.return = function () {
+    throw new ExpectedException();
+  };
+  g2 = gf2();
+  g2.next();
+
+  try {
+    g2['throw']({
+      value: 1
+    });
+  } catch (e) {
+    ;
+  }
+
+  g1 = gf1();
+  g1.throw = undefined, g1.return = function () {
+    return 10;
+  };
+  g2 = gf2();
+  g2.next();
+
+  try {
+    g2['throw']({
+      value: 1
+    });
+  } catch (e) {
+    ;
+  }
+}
+
+t56();
+
+function t57() {
+  var obj = {
+    *foo() {
+      return super.toString;
+    }
+
+  };
+  obj.toString = null;
+  console.log(Object.prototype.toString, obj.foo().next().value);
+}
+
+t57();
+
+function t58() {
+  var obj = {
+    *foo(a = super.toString) {
+      return a;
+    }
+
+  };
+  obj.toString = null;
+  console.log(Object.prototype.toString, obj.foo().next().value);
+}
+
+t58();
+
+function t59() {
+  var proto = {
+    method() {
+      return 42;
+    }
+
+  };
+  var object = {
+    *g() {
+      yield super.method();
+    }
+
+  };
+  Object.setPrototypeOf(object, proto);
+  console.log(42, object.g().next().value, "The value of `object.g().next().value` is `42`, after executing `Object.setPrototypeOf(object, proto);`");
+}
+
+t59();
+
+function t60() {
+  var func = function () {
+    return func.caller;
+  };
+
+  function* gf(flag, value) {
+    if (!flag) {
+      yield func();
+    }
+
+    yield value * value;
+  }
+
+  var callergf = gf().next().value;
+  console.log(gf, callergf);
+  console.log(100, callergf(true, 10).next().value);
+}
+
+t60();
+
+function t61() {
+  var yGf1 = 1;
+
+  function* gf1(x = yGf1 = 100) {
+    console.log(100, x);
+  }
+
+  gf1();
+  console.log(100, yGf1);
+  var yGf2 = 1;
+
+  function* gf2(x, y = yGf2 = 100) {
+    yGf2 = 101;
+    yield yGf2;
+    yGf2++;
+    return yGf2;
+  }
+
+  var g2 = gf2();
+  console.log(100, yGf2);
+  var result = g2.next();
+  console.log(101, result.value);
+  console.log(false, result.done);
+  result = g2.next();
+  console.log(102, result.value);
+  console.log(true, result.done);
+  var yGf3 = 1;
+
+  function* gf3(x = yGf3 = 100, y = () => x) {
+    console.log(100, x);
+  }
+
+  gf3();
+  console.log(100, yGf3);
+  var yGf4 = 1;
+
+  function* gf4(x = eval("yGf4 = 100")) {
+    console.log(100, x);
+  }
+
+  gf4();
+  console.log(100, yGf4);
+  var yGf5 = 1;
+
+  function* gf5(x = yGf5 = 100) {
+    assert.fail("Body is not expected to be executed!");
+  }
+
+  gf5.prototype.next = function () {
+    yGf5++;
+  };
+
+  var g5 = gf5();
+  console.log(100, yGf5);
+  g5.next();
+  console.log(101, yGf5);
+  var yGf6 = 1;
+  var yield = 200;
+
+  function* gf6(x = yGf6, y = yGf6 = 100, z = () => yield) {
+    console.log(1, x);
+    console.log(200, z());
+  }
+
+  gf6();
+  console.log(100, yGf6);
+}
+
+t61();

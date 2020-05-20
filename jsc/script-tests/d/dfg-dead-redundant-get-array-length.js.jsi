@@ -1,0 +1,88 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Tests that having a dead, and redundant, use of array.length doesn't cause compiler crashes.");
+
+try { if (Inst2 <= 1000 && typeof (foo) != "undefined") {_RecordType("<119,122,3>",(foo)); Inst2++; } } catch(e) {}
+function foo(array) {
+try { if (Inst3 <= 1000 && typeof (array) != "undefined") {_RecordType("<123,128,3>",(array)); Inst3++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (array.length) != "undefined") {_RecordType("<142,154,4>",(array.length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (array) != "undefined") {_RecordType("<142,147,4>",(array)); Inst6++; } } catch(e) {}
+  var x = array.length; // This is dead. If it wasn't, it would be redundant with the one below.
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<138,139,4>",(x)); Inst4++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (array.length) != "undefined") {_RecordType("<239,251,6>",(array.length)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (array) != "undefined") {_RecordType("<239,244,6>",(array)); Inst8++; } } catch(e) {}
+  return array.length;
+}
+
+for (var i = 0; i < 200; i++) {
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<265,266,9>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<272,273,9>",(i)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<281,282,9>",(i)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (foo) != "undefined") {_RecordType("<290,293,10>",(foo)); Inst12++; } } catch(e) {}
+  foo([1, 2, 3]);
+}
+
+try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<309,312,13>",(foo)); Inst13++; } } catch(e) {}
+foo([1, 2, 3]);
+

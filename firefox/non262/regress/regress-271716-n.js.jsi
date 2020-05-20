@@ -1,0 +1,114 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip -- never terminates
+
+/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 271716;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<409,418,9>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Don\'t Crash on infinite loop creating new Arrays';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<433,440,10>",(summary)); Inst1++; } } catch(e) {}
+var actual = 'Crash';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<500,506,11>",(actual)); Inst2++; } } catch(e) {}
+var expect = 'No Crash';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<522,528,12>",(expect)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<543,557,13>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<558,567,13>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<570,581,14>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<582,589,14>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary);
+
+try { if (Inst14 <= 1000 && typeof (e) != "undefined") {_RecordType("<692,693,24>",(e)); Inst14++; } } catch(e) {}
+try {
+try { if (Inst9 <= 1000 && typeof (Array) != "undefined") {_RecordType("<609,614,17>",(Array)); Inst9++; } } catch(e) {}
+  a = new Array();
+try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<601,602,17>",(a)); Inst8++; } } catch(e) {}
+
+  while (1) {
+try { if (Inst11 <= 1000 && typeof (Array) != "undefined") {_RecordType("<645,650,20>",(Array)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<651,652,20>",(a)); Inst12++; } } catch(e) {}
+    a = new Array(a);
+try { if (Inst10 <= 1000 && typeof (a) != "undefined") {_RecordType("<637,638,20>",(a)); Inst10++; } } catch(e) {}
+  }
+
+  actual = 'No Crash';
+try { if (Inst13 <= 1000 && typeof (actual) != "undefined") {_RecordType("<662,668,23>",(actual)); Inst13++; } } catch(e) {}
+} catch (e) {
+  actual = 'No Crash';
+try { if (Inst15 <= 1000 && typeof (actual) != "undefined") {_RecordType("<699,705,25>",(actual)); Inst15++; } } catch(e) {}
+}
+
+try { if (Inst16 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<723,736,28>",(reportCompare)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (expect) != "undefined") {_RecordType("<737,743,28>",(expect)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (actual) != "undefined") {_RecordType("<745,751,28>",(actual)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (summary) != "undefined") {_RecordType("<753,760,28>",(summary)); Inst19++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

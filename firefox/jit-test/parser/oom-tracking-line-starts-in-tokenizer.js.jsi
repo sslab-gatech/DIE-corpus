@@ -1,0 +1,77 @@
+var Inst0 = 0;
+var Inst1 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Constraints on this test's appearance:
+//
+//   * |TokenStream::SourceCoords::add| must try to allocate memory.  (This test
+//     ensures this happens by making the function below >=128 lines long so
+//     that |SourceCoords::lineStartOffsets_| must convert to heap storage.  The
+//     precise approach doesn't matter.)
+//   * That allocation attempt must fail (by forced simulated OOM, here).
+//
+// It'd be nice to build up the function programmatically, but it appears that
+// the above only happens if the provided function has a lazy script.  Cursory
+// attempts to relazify |Function("...")| didn't work, so this fuzzer-like
+// version had to be used instead.
+if ("oomTest" in this) {
+try { if (Inst0 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<697,704,14>",(oomTest)); Inst0++; } } catch(e) {}
+  oomTest(function () {
+try { if (Inst1 <= 1000 && typeof (e) != "undefined") {_RecordType("<750,751,17>",(e)); Inst1++; } } catch(e) {}
+    try {
+      ;
+    } catch (e) {
+      ;
+    }
+  });
+}
+

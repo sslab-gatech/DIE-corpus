@@ -1,0 +1,1 @@
+[null,{"type":"Void"},{"type":"Undefined"},{"type":"Function","extra":{"args":{"type":"Args","extra":{"args":[{"type":"Custom","extra":{"subType":"global"}}]}},"ret":{"type":"Undefined"}}},{"type":"Custom","extra":{"subType":"global"}},{"type":"Void"},null,null]

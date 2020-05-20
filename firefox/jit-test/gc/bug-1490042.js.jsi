@@ -1,0 +1,115 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| --no-ion; --no-baseline; skip-if: !('gcstate' in this)
+try { if (Inst0 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<69,75,2>",(gczeal)); Inst0++; } } catch(e) {}
+gczeal(0); // Create a bunch of ObjectGroups with TypeNewScript attached.
+
+const count = 1000;
+try { if (Inst1 <= 1000 && typeof (count) != "undefined") {_RecordType("<150,155,4>",(count)); Inst1++; } } catch(e) {}
+let c = [];
+try { if (Inst2 <= 1000 && typeof (c) != "undefined") {_RecordType("<168,169,5>",(c)); Inst2++; } } catch(e) {}
+let a = [];
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<180,181,6>",(a)); Inst3++; } } catch(e) {}
+
+for (let i = 0; i < count; i++) {
+try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<198,199,8>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<205,206,8>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (count) != "undefined") {_RecordType("<209,214,8>",(count)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<216,217,8>",(i)); Inst7++; } } catch(e) {}
+  c[i] = function () {
+    this.a = 1;
+try { if (Inst10 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<250,256,10>",(this.a)); Inst10++; } } catch(e) {}
+    this.b = 0;
+try { if (Inst11 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<266,272,11>",(this.b)); Inst11++; } } catch(e) {}
+    this.c = 2;
+try { if (Inst12 <= 1000 && typeof (this.c) != "undefined") {_RecordType("<282,288,12>",(this.c)); Inst12++; } } catch(e) {}
+  };
+try { if (Inst8 <= 1000 && typeof (c[i]) != "undefined") {_RecordType("<225,229,9>",(c[i])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (c) != "undefined") {_RecordType("<225,226,9>",(c)); Inst9++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (c[i]) != "undefined") {_RecordType("<313,317,15>",(c[i])); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (c) != "undefined") {_RecordType("<313,314,15>",(c)); Inst16++; } } catch(e) {}
+  a[i] = new c[i]();
+try { if (Inst13 <= 1000 && typeof (a[i]) != "undefined") {_RecordType("<302,306,15>",(a[i])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (a) != "undefined") {_RecordType("<302,303,15>",(a)); Inst14++; } } catch(e) {}
+} // Start an incremental GC and run until we're about to sweep type information.
+
+
+try { if (Inst17 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<405,411,19>",(gczeal)); Inst17++; } } catch(e) {}
+gczeal(20); // Run incremental slices with simulated OOM set up to provoke OOM when sweeping
+// types.
+
+try { if (Inst18 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<509,515,22>",(gczeal)); Inst18++; } } catch(e) {}
+gczeal(10); // Ensure our type information stays alive.
+
+try { if (Inst20 <= 1000 && typeof (c.length) != "undefined") {_RecordType("<574,582,24>",(c.length)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (c) != "undefined") {_RecordType("<574,575,24>",(c)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (a.length) != "undefined") {_RecordType("<585,593,24>",(a.length)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (a) != "undefined") {_RecordType("<585,586,24>",(a)); Inst23++; } } catch(e) {}
+let x = c.length + a.length;
+try { if (Inst19 <= 1000 && typeof (x) != "undefined") {_RecordType("<570,571,24>",(x)); Inst19++; } } catch(e) {}
+

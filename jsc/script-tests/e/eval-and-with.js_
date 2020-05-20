@@ -1,0 +1,29 @@
+console.log("This test case checks variable resolution in the presence of both eval and with."); // Direct non-strict eval inside a with.
+
+function freeVarInsideEvalAndWith(o, str) {
+  with (o) {
+    return function () {
+      return eval(str);
+    };
+  }
+}
+
+freeVarInsideEvalAndWith({}, "true")();
+freeVarInsideEvalAndWith({}, "false")();
+freeVarInsideEvalAndWith({}, "var x = 10; x")() == 10;
+freeVarInsideEvalAndWith({}, "var x = 10; (function (){return x;})")()() == 10;
+
+function localVarInsideEvalAndWith(o, str) {
+  with (o) {
+    return eval(str);
+  }
+}
+
+localVarInsideEvalAndWith({}, "true");
+localVarInsideEvalAndWith({}, "false");
+localVarInsideEvalAndWith({}, "var x = true; x");
+localVarInsideEvalAndWith({}, "var x = 10; (function (){return x;})")() == 10;
+var y;
+localVarInsideEvalAndWith(y = {
+  x: false
+}, "var x = true; x && y.x");

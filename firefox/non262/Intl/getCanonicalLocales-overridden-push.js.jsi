@@ -1,0 +1,85 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Tests the getCanonicalLocales function for overriden Array.push.
+Array.prototype.push = () => {
+  throw 42;
+}; // must not throw 42, might if push is used
+try { if (Inst0 <= 1000 && typeof (Array.prototype.push) != "undefined") {_RecordType("<325,345,7>",(Array.prototype.push)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<325,340,7>",(Array.prototype)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Array) != "undefined") {_RecordType("<325,330,7>",(Array)); Inst2++; } } catch(e) {}
+
+
+try { if (Inst4 <= 1000 && typeof (Intl.getCanonicalLocales) != "undefined") {_RecordType("<427,451,12>",(Intl.getCanonicalLocales)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<427,431,12>",(Intl)); Inst5++; } } catch(e) {}
+var arr = Intl.getCanonicalLocales(["en-US"]);
+try { if (Inst3 <= 1000 && typeof (arr) != "undefined") {_RecordType("<421,424,12>",(arr)); Inst3++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (arr) != "undefined") {_RecordType("<464,467,13>",(arr)); Inst6++; } } catch(e) {}
+arr;
+["en-US"];
+
+try { if (Inst7 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<492,505,16>",(reportCompare)); Inst7++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst8 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<526,539,17>",(reportCompare)); Inst8++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

@@ -1,0 +1,98 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (test0) != "undefined") {_RecordType("<376,381,5>",(test0)); Inst0++; } } catch(e) {}
+function test0() {
+  var func0 = function (argArr2) {
+try { if (Inst2 <= 1000 && typeof (argArr2) != "undefined") {_RecordType("<410,417,6>",(argArr2)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (check) != "undefined") {_RecordType("<429,434,7>",(check)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (argArr2.pop) != "undefined") {_RecordType("<437,448,7>",(argArr2.pop)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (argArr2) != "undefined") {_RecordType("<437,444,7>",(argArr2)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (print) != "undefined") {_RecordType("<453,458,7>",(print)); Inst6++; } } catch(e) {}
+    if (check ? argArr2.pop() : print("false")) {
+      ;
+    }
+  };
+try { if (Inst1 <= 1000 && typeof (func0) != "undefined") {_RecordType("<392,397,6>",(func0)); Inst1++; } } catch(e) {}
+
+  var check = true;
+try { if (Inst7 <= 1000 && typeof (check) != "undefined") {_RecordType("<497,502,12>",(check)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (func0) != "undefined") {_RecordType("<513,518,13>",(func0)); Inst8++; } } catch(e) {}
+  func0([1]); // func0 will be inlined while jitting test0()
+
+  check = false;
+try { if (Inst9 <= 1000 && typeof (check) != "undefined") {_RecordType("<575,580,15>",(check)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (func0) != "undefined") {_RecordType("<592,597,16>",(func0)); Inst10++; } } catch(e) {}
+  func0(1); // func0 will be inlined while jitting test0()
+}
+
+; // generate profile
+
+try { if (Inst11 <= 1000 && typeof (test0) != "undefined") {_RecordType("<675,680,21>",(test0)); Inst11++; } } catch(e) {}
+test0(); // Run Simple JIT
+
+try { if (Inst12 <= 1000 && typeof (test0) != "undefined") {_RecordType("<703,708,23>",(test0)); Inst12++; } } catch(e) {}
+test0();
+

@@ -1,0 +1,41 @@
+function testSyntax(script) {
+    try {
+        eval(script);
+    } catch (error) {
+    }
+}
+
+function testSyntaxError(script, message) {
+    var error = null;
+    try {
+        eval(script);
+    } catch (e) {
+        error = e;
+    }
+}
+
+testSyntaxError(`
+class Cocoa {
+    *constructor()
+    {
+    }
+}
+`, `SyntaxError: Cannot declare a generator function named 'constructor'.`);
+
+testSyntax(`
+class Cocoa {
+    *ok()
+    {
+        yield 42;
+    }
+}
+`);
+
+testSyntax(`
+class Cocoa {
+    static *ok()
+    {
+        yield 42;
+    }
+}
+`);

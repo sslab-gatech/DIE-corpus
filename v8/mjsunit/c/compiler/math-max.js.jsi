@@ -1,0 +1,142 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+// Test the case where TurboFan can statically rule out -0 from the
+// Math.max type.
+(function () {
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<312,315,8>",(foo)); Inst0++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<316,317,8>",(x)); Inst1++; } } catch(e) {}
+    // Arrange x such that TurboFan infers type [-inf, inf] \/ MinusZero.
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<404,405,10>",(x)); Inst3++; } } catch(e) {}
+    x = +x;
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<399,400,10>",(x)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (Math.round) != "undefined") {_RecordType("<415,425,11>",(Math.round)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Math) != "undefined") {_RecordType("<415,419,11>",(Math)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<426,427,11>",(x)); Inst7++; } } catch(e) {}
+    x = Math.round(x);
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<411,412,11>",(x)); Inst4++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Object.is) != "undefined") {_RecordType("<441,450,12>",(Object.is)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<441,447,12>",(Object)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Math.max) != "undefined") {_RecordType("<455,463,12>",(Math.max)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Math) != "undefined") {_RecordType("<455,459,12>",(Math)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<467,468,12>",(x)); Inst12++; } } catch(e) {}
+    return Object.is(-0, Math.max(1, x));
+  }
+
+try { if (Inst13 <= 1000 && typeof (foo) != "undefined") {_RecordType("<479,482,15>",(foo)); Inst13++; } } catch(e) {}
+  foo(-0);
+try { if (Inst14 <= 1000 && typeof (foo) != "undefined") {_RecordType("<490,493,16>",(foo)); Inst14++; } } catch(e) {}
+  foo(-1);
+try { if (Inst15 <= 1000 && typeof (foo) != "undefined") {_RecordType("<501,504,17>",(foo)); Inst15++; } } catch(e) {}
+  foo(-0);
+try { if (Inst16 <= 1000 && typeof (foo) != "undefined") {_RecordType("<512,515,18>",(foo)); Inst16++; } } catch(e) {}
+  foo(-1);
+})(); // Test the case where -0 is ruled out because it's strictly less than +0.
+
+
+(function () {
+try { if (Inst17 <= 1000 && typeof (foo) != "undefined") {_RecordType("<630,633,23>",(foo)); Inst17++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst18 <= 1000 && typeof (x) != "undefined") {_RecordType("<634,635,23>",(x)); Inst18++; } } catch(e) {}
+    // Arrange x such that TurboFan infers type [-inf, inf] \/ MinusZero.
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<722,723,25>",(x)); Inst20++; } } catch(e) {}
+    x = +x;
+try { if (Inst19 <= 1000 && typeof (x) != "undefined") {_RecordType("<717,718,25>",(x)); Inst19++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Math.round) != "undefined") {_RecordType("<733,743,26>",(Math.round)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Math) != "undefined") {_RecordType("<733,737,26>",(Math)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (x) != "undefined") {_RecordType("<744,745,26>",(x)); Inst24++; } } catch(e) {}
+    x = Math.round(x);
+try { if (Inst21 <= 1000 && typeof (x) != "undefined") {_RecordType("<729,730,26>",(x)); Inst21++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (Object.is) != "undefined") {_RecordType("<759,768,27>",(Object.is)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Object) != "undefined") {_RecordType("<759,765,27>",(Object)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Math.max) != "undefined") {_RecordType("<773,781,27>",(Math.max)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Math) != "undefined") {_RecordType("<773,777,27>",(Math)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (x) != "undefined") {_RecordType("<785,786,27>",(x)); Inst29++; } } catch(e) {}
+    return Object.is(-0, Math.max(0, x));
+  }
+
+try { if (Inst30 <= 1000 && typeof (foo) != "undefined") {_RecordType("<797,800,30>",(foo)); Inst30++; } } catch(e) {}
+  foo(-0);
+try { if (Inst31 <= 1000 && typeof (foo) != "undefined") {_RecordType("<808,811,31>",(foo)); Inst31++; } } catch(e) {}
+  foo(-1);
+try { if (Inst32 <= 1000 && typeof (foo) != "undefined") {_RecordType("<819,822,32>",(foo)); Inst32++; } } catch(e) {}
+  foo(-0);
+try { if (Inst33 <= 1000 && typeof (foo) != "undefined") {_RecordType("<830,833,33>",(foo)); Inst33++; } } catch(e) {}
+  foo(-1);
+})();
+

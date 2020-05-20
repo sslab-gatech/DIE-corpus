@@ -1,0 +1,89 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("This test checks that toString and join share the same HashSet for visited elements.");
+var arr = [1, 2];
+try { if (Inst2 <= 1000 && typeof (arr) != "undefined") {_RecordType("<105,108,2>",(arr)); Inst2++; } } catch(e) {}
+var obj = {};
+try { if (Inst3 <= 1000 && typeof (obj) != "undefined") {_RecordType("<123,126,3>",(obj)); Inst3++; } } catch(e) {}
+
+obj.__proto__.toString = function () {
+try { if (Inst7 <= 1000 && typeof (arr) != "undefined") {_RecordType("<188,191,6>",(arr)); Inst7++; } } catch(e) {}
+  return "*" + arr + "*";
+};
+try { if (Inst4 <= 1000 && typeof (obj.__proto__.toString) != "undefined") {_RecordType("<134,156,5>",(obj.__proto__.toString)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (obj.__proto__) != "undefined") {_RecordType("<134,147,5>",(obj.__proto__)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (obj) != "undefined") {_RecordType("<134,137,5>",(obj)); Inst6++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (arr) != "undefined") {_RecordType("<212,215,9>",(arr)); Inst10++; } } catch(e) {}
+arr[2] = arr;
+try { if (Inst8 <= 1000 && typeof (arr[2]) != "undefined") {_RecordType("<203,209,9>",(arr[2])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arr) != "undefined") {_RecordType("<203,206,9>",(arr)); Inst9++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (obj) != "undefined") {_RecordType("<226,229,10>",(obj)); Inst13++; } } catch(e) {}
+arr[3] = obj;
+try { if (Inst11 <= 1000 && typeof (arr[3]) != "undefined") {_RecordType("<217,223,10>",(arr[3])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (arr) != "undefined") {_RecordType("<217,220,10>",(arr)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (arr.join) != "undefined") {_RecordType("<231,239,11>",(arr.join)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (arr) != "undefined") {_RecordType("<231,234,11>",(arr)); Inst15++; } } catch(e) {}
+arr.join();
+

@@ -1,0 +1,80 @@
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2016 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+"/\p{Block=ASCII}+/u";
+"/\p{Block=ASCII}+/u";
+"/\p{Block=Basic_Latin}+/u";
+"/\p{Block=Basic_Latin}+/u";
+"/\p{blk=CJK}+/u";
+"/\p{blk=CJK_Unified_Ideographs}+/u";
+"/\p{blk=CJK}+/u";
+"/\p{blk=CJK_Unified_Ideographs}+/u";
+"/\p{Block=ASCII}+/u";
+"/\p{Block=ASCII}+/u";
+"/\p{Block=Basic_Latin}+/u";
+"/\p{Block=Basic_Latin}+/u";
+"/\p{NFKD_Quick_Check=Y}+/u";
+"/\p{NFKD_QC=Yes}+/u";
+"/\p{Numeric_Type=Decimal}+/u";
+"/\p{nt=De}+/u";
+"/\p{Bidi_Class=Arabic_Letter}+/u";
+"/\p{Bidi_Class=AN}+/u";
+"/\p{ccc=OV}+/u";
+"/\p{Sentence_Break=Format}+/u";
+"/\\p{In}/u";
+"/\\pI/u";
+"/\\p{I}/u";
+"/\\p{CJK}/u";
+"/\\p{}/u";
+

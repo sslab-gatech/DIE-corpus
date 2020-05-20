@@ -1,0 +1,71 @@
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2016 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+"/\\p{Bidi_Class=L}+/u";
+"/\\p{bc=Left_To_Right}+/u";
+"/\\p{bc=AL}+/u";
+"/\\p{bc=Arabic_Letter}+/u";
+"/\\p{Line_Break=Glue}/u";
+"/\\p{lb=AL}/u";
+"/\\p{Block=}/u";
+"/\\p{=}/u";
+"/\\p{=L}/u";
+"/\\p{=Hiragana}/u";
+"/\\p{Block=CJK=}/u";
+"/\\p{Age=V8_0}/u";
+"/\\p{General_Category=Letter}/u";
+"/\\p{gc=L}/u";
+"/\\p{General_Category_Mask=Letter}/u";
+"/\\p{gcm=L}/u";
+

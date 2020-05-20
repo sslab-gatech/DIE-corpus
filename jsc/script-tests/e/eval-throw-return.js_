@@ -1,0 +1,31 @@
+console.log('This test verifies the result returned by the eval function when exceptions are thrown and caught whithin the contents of the evaluated string.');
+
+function throwFunc() {
+  throw "";
+}
+
+function throwOnReturn() {
+  1;
+  return throwFunc();
+}
+
+function twoFunc() {
+  2;
+}
+
+eval("1;");
+eval("1; try { foo = [2,3,throwFunc(), 4]; } catch (e){}");
+eval("1; try { 2; throw \"\"; } catch (e){}");
+eval("1; try { 2; throwFunc(); } catch (e){}");
+eval("1; try { 2; throwFunc(); } catch (e){3;} finally {}");
+eval("1; try { 2; throwFunc(); } catch (e){3;} finally {4;}");
+eval("function blah() { 1; }\n blah();");
+eval("var x = 1;");
+eval("if (true) { 1; } else { 2; }");
+eval("if (false) { 1; } else { 2; }");
+eval("try{1; if (true) { 2; throw \"\"; } else { 2; }} catch(e){}");
+eval("1; var i = 0; do { ++i; 2; } while(i!=1);");
+eval("try{1; var i = 0; do { ++i; 2; throw \"\"; } while(i!=1);} catch(e){}");
+eval("1; try{2; throwOnReturn();} catch(e){}");
+eval("1; twoFunc();");
+eval("1; with ( { a: 0 } ) { 2; }");

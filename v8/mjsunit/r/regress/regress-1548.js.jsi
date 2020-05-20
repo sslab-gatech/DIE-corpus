@@ -1,0 +1,168 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2011 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Test that the caller and arguments objects are not available on native
+// functions.
+try { if (Inst0 <= 1000 && typeof (testfn) != "undefined") {_RecordType("<1694,1700,29>",(testfn)); Inst0++; } } catch(e) {}
+function testfn(f) {
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<1701,1702,29>",(f)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof ([1].map(f)[0]) != "undefined") {_RecordType("<1715,1728,30>",([1].map(f)[0])); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof ([1].map) != "undefined") {_RecordType("<1715,1722,30>",([1].map)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (f) != "undefined") {_RecordType("<1723,1724,30>",(f)); Inst4++; } } catch(e) {}
+  return [1].map(f)[0];
+}
+
+try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1742,1745,33>",(foo)); Inst5++; } } catch(e) {}
+function foo() {
+try { if (Inst6 <= 1000 && typeof ([].map.caller) != "undefined") {_RecordType("<1759,1772,34>",([].map.caller)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof ([].map) != "undefined") {_RecordType("<1759,1765,34>",([].map)); Inst7++; } } catch(e) {}
+  return [].map.caller;
+}
+
+(function () {
+try { if (Inst8 <= 1000 && typeof (testfn) != "undefined") {_RecordType("<1794,1800,38>",(testfn)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1801,1804,38>",(foo)); Inst9++; } } catch(e) {}
+  testfn(foo);
+})();
+
+// Try to delete the caller property (to make sure that we can't get to the
+// caller accessor on the prototype.
+try { if (Inst10 <= 1000 && typeof (Array.prototype.map.caller) != "undefined") {_RecordType("<1934,1960,43>",(Array.prototype.map.caller)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Array.prototype.map) != "undefined") {_RecordType("<1934,1953,43>",(Array.prototype.map)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1934,1949,43>",(Array.prototype)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1934,1939,43>",(Array)); Inst13++; } } catch(e) {}
+delete Array.prototype.map.caller;
+
+(function () {
+try { if (Inst14 <= 1000 && typeof (testfn) != "undefined") {_RecordType("<1980,1986,46>",(testfn)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1987,1990,46>",(foo)); Inst15++; } } catch(e) {}
+  testfn(foo);
+})();
+
+// Redo tests with arguments object.
+try { if (Inst16 <= 1000 && typeof (testarguments) != "undefined") {_RecordType("<2046,2059,50>",(testarguments)); Inst16++; } } catch(e) {}
+function testarguments(f) {
+try { if (Inst17 <= 1000 && typeof (f) != "undefined") {_RecordType("<2060,2061,50>",(f)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof ([1].map(f)[0]) != "undefined") {_RecordType("<2074,2087,51>",([1].map(f)[0])); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof ([1].map) != "undefined") {_RecordType("<2074,2081,51>",([1].map)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (f) != "undefined") {_RecordType("<2082,2083,51>",(f)); Inst20++; } } catch(e) {}
+  return [1].map(f)[0];
+}
+
+try { if (Inst21 <= 1000 && typeof (bar) != "undefined") {_RecordType("<2101,2104,54>",(bar)); Inst21++; } } catch(e) {}
+function bar() {
+try { if (Inst22 <= 1000 && typeof ([].map.arguments) != "undefined") {_RecordType("<2118,2134,55>",([].map.arguments)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof ([].map) != "undefined") {_RecordType("<2118,2124,55>",([].map)); Inst23++; } } catch(e) {}
+  return [].map.arguments;
+}
+
+(function () {
+try { if (Inst24 <= 1000 && typeof (testarguments) != "undefined") {_RecordType("<2156,2169,59>",(testarguments)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (bar) != "undefined") {_RecordType("<2170,2173,59>",(bar)); Inst25++; } } catch(e) {}
+  testarguments(bar);
+})();
+
+// Try to delete the arguments property (to make sure that we can't get to the
+// caller accessor on the prototype.
+try { if (Inst26 <= 1000 && typeof (Array.prototype.map.arguments) != "undefined") {_RecordType("<2306,2335,64>",(Array.prototype.map.arguments)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Array.prototype.map) != "undefined") {_RecordType("<2306,2325,64>",(Array.prototype.map)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<2306,2321,64>",(Array.prototype)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Array) != "undefined") {_RecordType("<2306,2311,64>",(Array)); Inst29++; } } catch(e) {}
+delete Array.prototype.map.arguments;
+
+(function () {
+try { if (Inst30 <= 1000 && typeof (testarguments) != "undefined") {_RecordType("<2355,2368,67>",(testarguments)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (bar) != "undefined") {_RecordType("<2369,2372,67>",(bar)); Inst31++; } } catch(e) {}
+  testarguments(bar);
+})();
+

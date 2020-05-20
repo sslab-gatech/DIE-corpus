@@ -1,0 +1,58 @@
+function testSyntax(script) {
+  try {
+    eval(script);
+  } catch (error) {
+    ;
+  }
+}
+
+function testSyntaxError(script, message) {
+  var error = null;
+
+  try {
+    eval(script);
+  } catch (e) {
+    error = e;
+  }
+}
+
+testSyntaxError(`super()`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`super.hello()`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+{
+    super();
+}
+`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+{
+    super.hello();
+}
+`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+function test()
+{
+    super();
+}
+`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+function test()
+{
+    super.hello();
+}
+`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+function test()
+{
+    {
+        super();
+    }
+}
+`, `SyntaxError: super is not valid in this context.`);
+testSyntaxError(`
+function test()
+{
+    {
+        super.hello();
+    }
+}
+`, `SyntaxError: super is not valid in this context.`);

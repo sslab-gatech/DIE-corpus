@@ -1,0 +1,109 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var s = "aaaaaaaaaaaaaaaaaa111aaaa";
+try { if (Inst0 <= 1000 && typeof (s) != "undefined") {_RecordType("<4,5,1>",(s)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (s) != "undefined") {_RecordType("<63,64,2>",(s)); Inst2++; } } catch(e) {}
+var latin1Rope1 = "foo" + s;
+try { if (Inst1 <= 1000 && typeof (latin1Rope1) != "undefined") {_RecordType("<41,52,2>",(latin1Rope1)); Inst1++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (latin1Rope1) != "undefined") {_RecordType("<92,103,3>",(latin1Rope1)); Inst4++; } } catch(e) {}
+var latin1Rope2 = "bar" + latin1Rope1;
+try { if (Inst3 <= 1000 && typeof (latin1Rope2) != "undefined") {_RecordType("<70,81,3>",(latin1Rope2)); Inst3++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (latin1Rope1) != "undefined") {_RecordType("<136,147,4>",(latin1Rope1)); Inst6++; } } catch(e) {}
+var twoByteRope = "\u1200--" + latin1Rope1; // Flatten twoByteRope.
+try { if (Inst5 <= 1000 && typeof (twoByteRope) != "undefined") {_RecordType("<109,120,4>",(twoByteRope)); Inst5++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (twoByteRope.lastIndexOf) != "undefined") {_RecordType("<174,197,6>",(twoByteRope.lastIndexOf)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (twoByteRope) != "undefined") {_RecordType("<174,185,6>",(twoByteRope)); Inst8++; } } catch(e) {}
+twoByteRope.lastIndexOf("11");
+25;
+try { if (Inst9 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<209,217,8>",(isLatin1)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (latin1Rope1) != "undefined") {_RecordType("<218,229,8>",(latin1Rope1)); Inst10++; } } catch(e) {}
+isLatin1(latin1Rope1);
+false;
+try { if (Inst11 <= 1000 && typeof (latin1Rope1) != "undefined") {_RecordType("<239,250,10>",(latin1Rope1)); Inst11++; } } catch(e) {}
+latin1Rope1;
+"fooaaaaaaaaaaaaaaaaaa111aaaa";
+
+// latin1Rope2 should still be Latin1, but now has a
+// TwoByte descendent (latin1Rope1).
+try { if (Inst12 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<379,387,15>",(isLatin1)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (s) != "undefined") {_RecordType("<388,389,15>",(s)); Inst13++; } } catch(e) {}
+if (isLatin1(s)) {
+try { if (Inst14 <= 1000 && typeof (isLatin1) != "undefined") {_RecordType("<396,404,16>",(isLatin1)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (latin1Rope2) != "undefined") {_RecordType("<405,416,16>",(latin1Rope2)); Inst15++; } } catch(e) {}
+  isLatin1(latin1Rope2);
+  true;
+} // Flatten latin1Rope2.
+
+
+try { if (Inst16 <= 1000 && typeof (latin1Rope2.lastIndexOf) != "undefined") {_RecordType("<455,478,21>",(latin1Rope2.lastIndexOf)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (latin1Rope2) != "undefined") {_RecordType("<455,466,21>",(latin1Rope2)); Inst17++; } } catch(e) {}
+latin1Rope2.lastIndexOf("11");
+25;
+try { if (Inst18 <= 1000 && typeof (latin1Rope2) != "undefined") {_RecordType("<490,501,23>",(latin1Rope2)); Inst18++; } } catch(e) {}
+latin1Rope2;
+"barfooaaaaaaaaaaaaaaaaaa111aaaa";
+

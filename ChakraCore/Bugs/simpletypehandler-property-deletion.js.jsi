@@ -1,0 +1,82 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// When a property from SimpleTypeHandler was deleted, we used to
+// convert it to NullTypeHandler (even if there are multiple
+// properties) and this caused removal of other properties from the
+// Object.
+// A script function should have a SimpleTypeHandler as its type handler.
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<656,657,10>",(f)); Inst0++; } } catch(e) {}
+function f() {
+  ;
+}
+
+try { if (Inst1 <= 1000 && typeof (f.name) != "undefined") {_RecordType("<676,682,14>",(f.name)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (f) != "undefined") {_RecordType("<676,677,14>",(f)); Inst2++; } } catch(e) {}
+delete f.name;
+try { if (Inst4 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<695,726,15>",(Object.getOwnPropertyDescriptor)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Object) != "undefined") {_RecordType("<695,701,15>",(Object)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (f) != "undefined") {_RecordType("<727,728,15>",(f)); Inst6++; } } catch(e) {}
+var desc = Object.getOwnPropertyDescriptor(f, 'prototype');
+try { if (Inst3 <= 1000 && typeof (desc) != "undefined") {_RecordType("<688,692,15>",(desc)); Inst3++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<744,749,16>",(print)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (desc) != "undefined") {_RecordType("<750,754,16>",(desc)); Inst8++; } } catch(e) {}
+print(desc);
+

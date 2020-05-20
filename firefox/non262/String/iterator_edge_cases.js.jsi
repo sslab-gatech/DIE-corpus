@@ -1,0 +1,136 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that we can't confuse %StringIteratorPrototype% for a
+// StringIterator object.
+try { if (Inst0 <= 1000 && typeof (TestStringIteratorPrototypeConfusion) != "undefined") {_RecordType("<97,133,3>",(TestStringIteratorPrototypeConfusion)); Inst0++; } } catch(e) {}
+function TestStringIteratorPrototypeConfusion() {
+try { if (Inst2 <= 1000 && typeof (""[Symbol.iterator]) != "undefined") {_RecordType("<151,170,4>",(""[Symbol.iterator])); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<154,169,4>",(Symbol.iterator)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<154,160,4>",(Symbol)); Inst4++; } } catch(e) {}
+  var iter = ""[Symbol.iterator]();
+try { if (Inst1 <= 1000 && typeof (iter) != "undefined") {_RecordType("<144,148,4>",(iter)); Inst1++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (e) != "undefined") {_RecordType("<286,287,9>",(e)); Inst12++; } } catch(e) {}
+  try {
+try { if (Inst5 <= 1000 && typeof (iter.next.call) != "undefined") {_RecordType("<187,201,7>",(iter.next.call)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (iter.next) != "undefined") {_RecordType("<187,196,7>",(iter.next)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (iter) != "undefined") {_RecordType("<187,191,7>",(iter)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object.getPrototypeOf) != "undefined") {_RecordType("<202,223,7>",(Object.getPrototypeOf)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<202,208,7>",(Object)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (iter) != "undefined") {_RecordType("<224,228,7>",(iter)); Inst10++; } } catch(e) {}
+    iter.next.call(Object.getPrototypeOf(iter));
+try { if (Inst11 <= 1000 && typeof (Error) != "undefined") {_RecordType("<246,251,8>",(Error)); Inst11++; } } catch(e) {}
+    throw new Error("Call did not throw");
+  } catch (e) {
+try { if (Inst13 <= 1000 && typeof (e) != "undefined") {_RecordType("<295,296,10>",(e)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<308,317,10>",(TypeError)); Inst14++; } } catch(e) {}
+    e instanceof TypeError;
+    true;
+try { if (Inst15 <= 1000 && typeof (e.message) != "undefined") {_RecordType("<333,342,12>",(e.message)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (e) != "undefined") {_RecordType("<333,334,12>",(e)); Inst16++; } } catch(e) {}
+    e.message;
+    "next method called on incompatible String Iterator";
+  }
+}
+
+try { if (Inst17 <= 1000 && typeof (TestStringIteratorPrototypeConfusion) != "undefined") {_RecordType("<409,445,17>",(TestStringIteratorPrototypeConfusion)); Inst17++; } } catch(e) {}
+TestStringIteratorPrototypeConfusion(); // Tests that we can use %StringIteratorPrototype%.next on a
+// cross-compartment iterator.
+
+try { if (Inst18 <= 1000 && typeof (TestStringIteratorWrappers) != "undefined") {_RecordType("<551,577,20>",(TestStringIteratorWrappers)); Inst18++; } } catch(e) {}
+function TestStringIteratorWrappers() {
+try { if (Inst20 <= 1000 && typeof (""[Symbol.iterator]) != "undefined") {_RecordType("<595,614,21>",(""[Symbol.iterator])); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<598,613,21>",(Symbol.iterator)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<598,604,21>",(Symbol)); Inst22++; } } catch(e) {}
+  var iter = ""[Symbol.iterator]();
+try { if (Inst19 <= 1000 && typeof (iter) != "undefined") {_RecordType("<588,592,21>",(iter)); Inst19++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (iter.next.call) != "undefined") {_RecordType("<620,634,22>",(iter.next.call)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (iter.next) != "undefined") {_RecordType("<620,629,22>",(iter.next)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (iter) != "undefined") {_RecordType("<620,624,22>",(iter)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (newGlobal().eval) != "undefined") {_RecordType("<635,651,22>",(newGlobal().eval)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<635,644,22>",(newGlobal)); Inst27++; } } catch(e) {}
+  iter.next.call(newGlobal().eval('"x"[Symbol.iterator]()'));
+  ({
+    value: "x",
+    done: false
+  });
+}
+
+try { if (Inst28 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<737,746,29>",(newGlobal)); Inst28++; } } catch(e) {}
+if (typeof newGlobal === "function") {
+try { if (Inst29 <= 1000 && typeof (TestStringIteratorWrappers) != "undefined") {_RecordType("<767,793,30>",(TestStringIteratorWrappers)); Inst29++; } } catch(e) {}
+  TestStringIteratorWrappers();
+}
+
+try { if (Inst30 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<811,824,33>",(reportCompare)); Inst30++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst31 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<845,858,34>",(reportCompare)); Inst31++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

@@ -1,0 +1,144 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Regression test for https://webkit.org/b/139533. This test should not crash.");
+
+try { if (Inst2 <= 1000 && typeof (outer) != "undefined") {_RecordType("<103,108,3>",(outer)); Inst2++; } } catch(e) {}
+function outer(index, obj) {
+try { if (Inst3 <= 1000 && typeof (index) != "undefined") {_RecordType("<109,114,3>",(index)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (obj) != "undefined") {_RecordType("<116,119,3>",(obj)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (inner) != "undefined") {_RecordType("<134,139,4>",(inner)); Inst5++; } } catch(e) {}
+  function inner(arg) {
+try { if (Inst6 <= 1000 && typeof (arg) != "undefined") {_RecordType("<140,143,4>",(arg)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (arg) != "undefined") {_RecordType("<158,161,5>",(arg)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (obj.addend) != "undefined") {_RecordType("<164,174,5>",(obj.addend)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (obj) != "undefined") {_RecordType("<164,167,5>",(obj)); Inst9++; } } catch(e) {}
+    return arg + obj.addend;
+  }
+
+try { if (Inst10 <= 1000 && typeof (inner) != "undefined") {_RecordType("<190,195,8>",(inner)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (index) != "undefined") {_RecordType("<196,201,8>",(index)); Inst11++; } } catch(e) {}
+  return inner(index);
+}
+
+obj = {
+  addend: 1
+}; // Create an object that will require calling defaultValue which is a native function call
+try { if (Inst12 <= 1000 && typeof (obj) != "undefined") {_RecordType("<207,210,11>",(obj)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (MyNumber) != "undefined") {_RecordType("<331,339,15>",(MyNumber)); Inst13++; } } catch(e) {}
+function MyNumber() {
+  ;
+}
+
+MyNumber.prototype.toString = function () {
+  return "";
+};
+try { if (Inst14 <= 1000 && typeof (MyNumber.prototype.toString) != "undefined") {_RecordType("<351,378,19>",(MyNumber.prototype.toString)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (MyNumber.prototype) != "undefined") {_RecordType("<351,369,19>",(MyNumber.prototype)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (MyNumber) != "undefined") {_RecordType("<351,359,19>",(MyNumber)); Inst16++; } } catch(e) {}
+
+var limit = 1000;
+try { if (Inst17 <= 1000 && typeof (limit) != "undefined") {_RecordType("<416,421,23>",(limit)); Inst17++; } } catch(e) {}
+var result = 0;
+try { if (Inst18 <= 1000 && typeof (result) != "undefined") {_RecordType("<434,440,24>",(result)); Inst18++; } } catch(e) {}
+
+for (var i = 0; i < limit; ++i) {
+try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<456,457,26>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<463,464,26>",(i)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (limit) != "undefined") {_RecordType("<467,472,26>",(limit)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (i) != "undefined") {_RecordType("<476,477,26>",(i)); Inst22++; } } catch(e) {}
+  // The problem fixed in bug 139533 was that the ScopeChain slot of the call frame header
+  // is not being restored by OSR exit handler (nor should it).  In some cases, especially
+  // when we inline we end up overwriting the memory with some other value.
+  // After tiering up into the DFG, change the "addend" of obj.  This will do two things:
+  // 1) We should OSR exit with a BadType (addend is no longer an integer)
+  // 2) In the next call to inner, we will call jsAddSlowCase which will make a
+  //    native call to get the default value of obj.addend.
+  // The OSR exit handler will not restore the ScopeChain slot in the header therefore
+  // the value might be anything.  The native call will copy the ScopeChain slot from
+  // inner to the frame for the native call.
+try { if (Inst23 <= 1000 && typeof (i) != "undefined") {_RecordType("<1268,1269,37>",(i)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (limit) != "undefined") {_RecordType("<1273,1278,37>",(limit)); Inst24++; } } catch(e) {}
+  if (i == limit - 10) {
+try { if (Inst27 <= 1000 && typeof (MyNumber) != "undefined") {_RecordType("<1308,1316,38>",(MyNumber)); Inst27++; } } catch(e) {}
+    obj.addend = new MyNumber();
+try { if (Inst25 <= 1000 && typeof (obj.addend) != "undefined") {_RecordType("<1291,1301,38>",(obj.addend)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1291,1294,38>",(obj)); Inst26++; } } catch(e) {}
+  }
+
+try { if (Inst29 <= 1000 && typeof (outer) != "undefined") {_RecordType("<1336,1341,41>",(outer)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (i) != "undefined") {_RecordType("<1342,1343,41>",(i)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1345,1348,41>",(obj)); Inst31++; } } catch(e) {}
+  result = outer(i, obj);
+try { if (Inst28 <= 1000 && typeof (result) != "undefined") {_RecordType("<1327,1333,41>",(result)); Inst28++; } } catch(e) {}
+}
+

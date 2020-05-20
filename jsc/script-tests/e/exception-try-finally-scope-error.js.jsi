@@ -1,0 +1,148 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log('This test makes sure stack unwinding works correctly in combination with dynamically added scopes');
+
+try { if (Inst2 <= 1000 && typeof (gc) != "undefined") {_RecordType("<124,126,3>",(gc)); Inst2++; } } catch(e) {}
+function gc() {
+try { if (Inst3 <= 1000 && typeof (this.GCController) != "undefined") {_RecordType("<137,154,4>",(this.GCController)); Inst3++; } } catch(e) {}
+  if (this.GCController) {
+try { if (Inst4 <= 1000 && typeof (GCController.collect) != "undefined") {_RecordType("<162,182,5>",(GCController.collect)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (GCController) != "undefined") {_RecordType("<162,174,5>",(GCController)); Inst5++; } } catch(e) {}
+    GCController.collect();
+  } else {
+    for (var i = 0; i < 10000; ++i) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<210,211,7>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<217,218,7>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<230,231,7>",(i)); Inst8++; } } catch(e) {}
+      // Allocate a sufficient number of objects to force a GC.
+      ({});
+    }
+  }
+}
+
+var result;
+try { if (Inst9 <= 1000 && typeof (result) != "undefined") {_RecordType("<328,334,14>",(result)); Inst9++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (runTest) != "undefined") {_RecordType("<346,353,16>",(runTest)); Inst10++; } } catch(e) {}
+function runTest() {
+  var test = "outer scope";
+try { if (Inst11 <= 1000 && typeof (test) != "undefined") {_RecordType("<364,368,17>",(test)); Inst11++; } } catch(e) {}
+  with ({
+    test: "inner scope"
+  }) {
+    (function () {
+      try {
+        throw "";
+      } finally {
+try { if (Inst13 <= 1000 && typeof (test) != "undefined") {_RecordType("<511,515,25>",(test)); Inst13++; } } catch(e) {}
+        result = test;
+try { if (Inst12 <= 1000 && typeof (result) != "undefined") {_RecordType("<502,508,25>",(result)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (result) != "undefined") {_RecordType("<525,531,26>",(result)); Inst14++; } } catch(e) {}
+        result === "inner scope";
+        return;
+      }
+    })();
+  }
+}
+
+try { if (Inst15 <= 1000 && typeof (runTest) != "undefined") {_RecordType("<592,599,33>",(runTest)); Inst15++; } } catch(e) {}
+runTest();
+
+try { if (Inst17 <= 1000 && typeof (r) != "undefined") {_RecordType("<763,764,47>",(r)); Inst17++; } } catch(e) {}
+try {
+  (function () {
+try { if (Inst16 <= 1000 && typeof (y) != "undefined") {_RecordType("<666,667,39>",(y)); Inst16++; } } catch(e) {}
+    try {
+      throw "";
+    } catch (y) {
+      throw function () {
+        ;
+      };
+    } finally {
+      ;
+    }
+  })();
+} catch (r) {
+  ;
+} // Just clobber any temporaries
+
+
+a = {};
+try { if (Inst18 <= 1000 && typeof (a) != "undefined") {_RecordType("<808,809,52>",(a)); Inst18++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (a) != "undefined") {_RecordType("<821,822,53>",(a)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (a) != "undefined") {_RecordType("<825,826,53>",(a)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (a) != "undefined") {_RecordType("<829,830,53>",(a)); Inst22++; } } catch(e) {}
+a *= a * a * a;
+try { if (Inst19 <= 1000 && typeof (a) != "undefined") {_RecordType("<816,817,53>",(a)); Inst19++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (gc) != "undefined") {_RecordType("<832,834,54>",(gc)); Inst23++; } } catch(e) {}
+gc();
+

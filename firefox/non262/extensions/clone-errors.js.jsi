@@ -1,0 +1,165 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!xulRuntime.shell)
+// -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+try { if (Inst0 <= 1000 && typeof (check) != "undefined") {_RecordType("<231,236,5>",(check)); Inst0++; } } catch(e) {}
+function check(v) {
+try { if (Inst1 <= 1000 && typeof (v) != "undefined") {_RecordType("<237,238,5>",(v)); Inst1++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (exc) != "undefined") {_RecordType("<279,282,8>",(exc)); Inst4++; } } catch(e) {}
+  try {
+try { if (Inst2 <= 1000 && typeof (serialize) != "undefined") {_RecordType("<254,263,7>",(serialize)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (v) != "undefined") {_RecordType("<264,265,7>",(v)); Inst3++; } } catch(e) {}
+    serialize(v);
+  } catch (exc) {
+    return;
+  }
+
+try { if (Inst5 <= 1000 && typeof (Error) != "undefined") {_RecordType("<315,320,12>",(Error)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (uneval) != "undefined") {_RecordType("<338,344,12>",(uneval)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (v) != "undefined") {_RecordType("<345,346,12>",(v)); Inst7++; } } catch(e) {}
+  throw new Error("serializing " + uneval(v) + " should have failed with an exception");
+} // Unsupported object types.
+
+
+try { if (Inst8 <= 1000 && typeof (check) != "undefined") {_RecordType("<425,430,16>",(check)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Error) != "undefined") {_RecordType("<435,440,16>",(Error)); Inst9++; } } catch(e) {}
+check(new Error("oops"));
+try { if (Inst10 <= 1000 && typeof (check) != "undefined") {_RecordType("<451,456,17>",(check)); Inst10++; } } catch(e) {}
+check(this);
+try { if (Inst11 <= 1000 && typeof (check) != "undefined") {_RecordType("<464,469,18>",(check)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Math) != "undefined") {_RecordType("<470,474,18>",(Math)); Inst12++; } } catch(e) {}
+check(Math);
+try { if (Inst13 <= 1000 && typeof (check) != "undefined") {_RecordType("<477,482,19>",(check)); Inst13++; } } catch(e) {}
+check(function () {
+  ;
+});
+try { if (Inst14 <= 1000 && typeof (check) != "undefined") {_RecordType("<505,510,22>",(check)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<515,520,22>",(Proxy)); Inst15++; } } catch(e) {}
+check(new Proxy({}, {})); // A failing getter.
+
+try { if (Inst16 <= 1000 && typeof (check) != "undefined") {_RecordType("<553,558,24>",(check)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (x) != "undefined") {_RecordType("<567,568,25>",(x)); Inst17++; } } catch(e) {}
+check({
+  get x() {
+try { if (Inst18 <= 1000 && typeof (Error) != "undefined") {_RecordType("<587,592,26>",(Error)); Inst18++; } } catch(e) {}
+    throw new Error("fail");
+  }
+
+}); // Mismatched scopes.
+
+for (let [write_scope, read_scope] of [['SameProcessSameThread', 'SameProcessDifferentThread'], ['SameProcessSameThread', 'DifferentProcess'], ['SameProcessDifferentThread', 'DifferentProcessForIndexedDB'], ['SameProcessDifferentThread', 'DifferentProcess']]) {
+try { if (Inst19 <= 1000 && typeof (write_scope) != "undefined") {_RecordType("<644,655,31>",(write_scope)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (read_scope) != "undefined") {_RecordType("<657,667,31>",(read_scope)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<911,922,32>",(ArrayBuffer)); Inst22++; } } catch(e) {}
+  var ab = new ArrayBuffer(12);
+try { if (Inst21 <= 1000 && typeof (ab) != "undefined") {_RecordType("<902,904,32>",(ab)); Inst21++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (serialize) != "undefined") {_RecordType("<943,952,33>",(serialize)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (ab) != "undefined") {_RecordType("<953,955,33>",(ab)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (ab) != "undefined") {_RecordType("<958,960,33>",(ab)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (write_scope) != "undefined") {_RecordType("<976,987,34>",(write_scope)); Inst27++; } } catch(e) {}
+  var buffer = serialize(ab, [ab], {
+    scope: write_scope
+  });
+try { if (Inst23 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<934,940,33>",(buffer)); Inst23++; } } catch(e) {}
+  var caught = false;
+try { if (Inst28 <= 1000 && typeof (caught) != "undefined") {_RecordType("<1000,1006,36>",(caught)); Inst28++; } } catch(e) {}
+
+try { if (Inst32 <= 1000 && typeof (exc) != "undefined") {_RecordType("<1094,1097,42>",(exc)); Inst32++; } } catch(e) {}
+  try {
+try { if (Inst29 <= 1000 && typeof (deserialize) != "undefined") {_RecordType("<1029,1040,39>",(deserialize)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (buffer) != "undefined") {_RecordType("<1041,1047,39>",(buffer)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (read_scope) != "undefined") {_RecordType("<1064,1074,40>",(read_scope)); Inst31++; } } catch(e) {}
+    deserialize(buffer, {
+      scope: read_scope
+    });
+  } catch (exc) {
+    caught = true;
+try { if (Inst33 <= 1000 && typeof (caught) != "undefined") {_RecordType("<1105,1111,43>",(caught)); Inst33++; } } catch(e) {}
+  }
+
+try { if (Inst34 <= 1000 && typeof (caught) != "undefined") {_RecordType("<1127,1133,46>",(caught)); Inst34++; } } catch(e) {}
+  caught;
+  true;
+try { if (Inst35 <= 1000 && typeof (write_scope) != "undefined") {_RecordType("<1148,1159,48>",(write_scope)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (read_scope) != "undefined") {_RecordType("<1208,1218,48>",(read_scope)); Inst36++; } } catch(e) {}
+  `${write_scope} clone buffer should not be deserializable as ${read_scope}`;
+}
+
+try { if (Inst37 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1225,1238,51>",(reportCompare)); Inst37++; } } catch(e) {}
+reportCompare(0, 0, "ok");
+

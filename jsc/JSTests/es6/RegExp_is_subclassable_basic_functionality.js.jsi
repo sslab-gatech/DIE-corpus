@@ -1,0 +1,81 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<9,13,1>",(test)); Inst0++; } } catch(e) {}
+function test() {
+try { if (Inst2 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<36,42,2>",(RegExp)); Inst2++; } } catch(e) {}
+  class R extends RegExp {}
+try { if (Inst1 <= 1000 && typeof (R) != "undefined") {_RecordType("<26,27,2>",(R)); Inst1++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (R) != "undefined") {_RecordType("<61,62,4>",(R)); Inst4++; } } catch(e) {}
+  var r = new R("baz", "g");
+try { if (Inst3 <= 1000 && typeof (r) != "undefined") {_RecordType("<53,54,4>",(r)); Inst3++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (r.global) != "undefined") {_RecordType("<85,93,5>",(r.global)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (r) != "undefined") {_RecordType("<85,86,5>",(r)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (r.source) != "undefined") {_RecordType("<97,105,5>",(r.source)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (r) != "undefined") {_RecordType("<97,98,5>",(r)); Inst8++; } } catch(e) {}
+  return r.global && r.source === "baz";
+}
+
+try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<125,129,8>",(test)); Inst9++; } } catch(e) {}
+if (!test()) {
+try { if (Inst10 <= 1000 && typeof (Error) != "undefined") {_RecordType("<147,152,9>",(Error)); Inst10++; } } catch(e) {}
+  throw new Error("Test failed");
+}
+

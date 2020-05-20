@@ -1,0 +1,39 @@
+var assert = function (result, expected, message) {
+};
+
+var assertThrow = function (cb, errorText) {
+    try {
+        cb();
+    } catch (e) {
+    }
+};
+
+{ 
+  eval('{ function foo() {} }');
+  assert(this.hasOwnProperty("foo"), true);
+  assert(typeof foo, 'function');
+}
+
+Object.defineProperty(this, "globalNonWritable", {
+  value: false,
+  configurable: true,
+  writable: false,
+  enumerable: true
+});
+eval("{function globalNonWritable() { return 1; }}");
+var globalNonWritableDescriptor
+    = Object.getOwnPropertyDescriptor(this, "globalNonWritable");
+assert(globalNonWritableDescriptor.enumerable, true);
+
+Object.freeze(this);
+{
+  var error = false;
+  try {
+    eval('{ function boo() {} }');
+  } catch (e) {
+    error = true;
+  }
+  assert(this.hasOwnProperty("boo"), false);
+  assert(error, false);
+  assertThrow(() => boo, 'ReferenceError: Can\'t find variable: boo');
+}

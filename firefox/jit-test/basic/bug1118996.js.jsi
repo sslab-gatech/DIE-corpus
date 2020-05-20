@@ -1,0 +1,79 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| allow-oom; --fuzzing-safe; --no-threads; --no-ion; allow-unhandlable-oom
+try { if (Inst1 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<91,100,2>",(newGlobal)); Inst1++; } } catch(e) {}
+g = newGlobal();
+try { if (Inst0 <= 1000 && typeof (g) != "undefined") {_RecordType("<87,88,2>",(g)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (gcparam) != "undefined") {_RecordType("<104,111,3>",(gcparam)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (gcparam) != "undefined") {_RecordType("<124,131,3>",(gcparam)); Inst3++; } } catch(e) {}
+gcparam('maxBytes', gcparam('gcBytes'));
+
+try { if (Inst6 <= 1000 && typeof (error) != "undefined") {_RecordType("<228,233,10>",(error)); Inst6++; } } catch(e) {}
+try {
+try { if (Inst4 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<154,162,6>",(evaluate)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (g) != "undefined") {_RecordType("<189,190,7>",(g)); Inst5++; } } catch(e) {}
+  evaluate("return 0", {
+    global: g,
+    newContext: true
+  });
+} catch (error) {
+  // We expect evaluate() above to fail with OOM, but due to GC zeal settings
+  // it may execute correctly and throw "SyntaxError: return not in function".
+  // This catch block is to ignore that error.
+  ;
+}
+

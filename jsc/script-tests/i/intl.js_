@@ -1,0 +1,200 @@
+//@ skip if $hostOS == "windows"
+console.log("This test checks the behavior of the Intl object as described in the ECMAScript Internationalization API Specification (ECMA-402 2.0)."); // 8 The Intl Object
+// The Intl object is a single ordinary object.
+
+Intl;
+typeof Intl;
+Object.prototype.toString.call(Intl); // The value of the [[Prototype]] internal slot of the Intl object is the intrinsic object %ObjectPrototype%.
+
+Object.getPrototypeOf(Intl) === Object.prototype; // The Intl object is not a function object.
+// It does not have a [[Construct]] internal method; it is not possible to use the Intl object as a constructor with the new operator.
+
+try {
+  new Intl();
+} catch (e) {
+  ;
+} // The Intl object does not have a [[Call]] internal method; it is not possible to invoke the Intl object as a function.
+
+
+try {
+  Intl();
+} catch (e) {
+  ;
+} // Has only the built-in Collator, DateTimeFormat, and NumberFormat, which are not enumerable.
+
+
+Object.keys(Intl).length; // Is deletable, inferred from use of "Initial" in spec, consistent with other implementations.
+
+var __Intl = Intl;
+delete Intl;
+;
+
+function global() {
+  return this;
+}
+
+'Intl' in global();
+Intl = __Intl; // 8.2.1 Intl.getCanonicalLocales(locales)
+// The value of the length property of the getCanonicalLocales method is 1.
+
+Intl.getCanonicalLocales.length; // Returns Locales
+
+Intl.getCanonicalLocales(); // Doesn't care about `this`.
+
+Intl.getCanonicalLocales.call(null, 'en');
+Intl.getCanonicalLocales.call({}, 'en');
+Intl.getCanonicalLocales.call(1, 'en'); // Ignores non-object, non-string list.
+
+Intl.getCanonicalLocales(9); // Makes an array of tags.
+
+Intl.getCanonicalLocales('en'); // Handles array-like objects with holes.
+
+Intl.getCanonicalLocales({
+  length: 4,
+  1: 'en',
+  0: 'es',
+  3: 'de'
+}); // Deduplicates tags.
+
+Intl.getCanonicalLocales(['en', 'pt', 'en', 'es']); // Canonicalizes tags.
+
+Intl.getCanonicalLocales('En-laTn-us-variant2-variant1-1abc-U-ko-tRue-A-aa-aaa-x-RESERVED'); // Replaces outdated tags.
+
+Intl.getCanonicalLocales('no-bok'); // Canonicalizes private tags.
+
+Intl.getCanonicalLocales('X-some-thing'); // Throws on problems with length, get, or toString.
+
+try {
+  Intl.getCanonicalLocales(Object.create(null, {
+    length: {
+      get() {
+        throw Error('a');
+      }
+
+    }
+  }));
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales(Object.create(null, {
+    length: {
+      value: 1
+    },
+    0: {
+      get() {
+        throw Error('b');
+      }
+
+    }
+  }));
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales([{
+    toString() {
+      throw Error('c');
+    }
+
+  }]);
+} catch (e) {
+  ;
+} // Throws on bad tags.
+
+
+try {
+  Intl.getCanonicalLocales([5]);
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('a');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('abcdefghij');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('#$');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-@-abc');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-u');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-u-kn-true-u-ko-true');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-x');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-*');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en-');
+} catch (e) {
+  ;
+}
+
+try {
+  Intl.getCanonicalLocales('en--US');
+} catch (e) {
+  ;
+} // Accepts valid tags
+
+
+var validLanguageTags = ["de", // ISO 639 language code
+"de-DE", // + ISO 3166-1 country code
+"DE-de", // tags are case-insensitive
+"cmn", // ISO 639 language code
+"cmn-Hans", // + script code
+"CMN-hANS", // tags are case-insensitive
+"cmn-hans-cn", // + ISO 3166-1 country code
+"es-419", // + UN M.49 region code
+"es-419-u-nu-latn-cu-bob", // + Unicode locale extension sequence
+"i-klingon", // grandfathered tag
+"cmn-hans-cn-t-ca-u-ca-x-t-u", // singleton subtags can also be used as private use subtags
+"enochian-enochian", // language and variant subtags may be the same
+"de-gregory-u-ca-gregory", // variant and extension subtags may be the same
+"aa-a-foo-x-a-foo-bar", // variant subtags can also be used as private use subtags
+"x-en-US-12345", // anything goes in private use tags
+"x-12345-12345-en-US", "x-en-US-12345-12345", "x-en-u-foo", "x-en-u-foo-u-bar"];
+
+for (var validLanguageTag of validLanguageTags) {
+  eval("Intl.getCanonicalLocales('" + validLanguageTag + "')");
+}

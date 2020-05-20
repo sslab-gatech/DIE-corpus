@@ -1,0 +1,106 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --no-always-opt --no-stress-flush-bytecode
+// Flags: --no-stress-incremental-marking
+// Files: test/mjsunit/code-coverage-utils.js
+// Test precise code coverage.
+// Without precise coverage enabled, we lose coverage data to the GC.
+try { if (Inst0 <= 1000 && typeof (TestCoverage) != "undefined") {_RecordType("<432,444,9>",(TestCoverage)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<487,496,11>",(undefined)); Inst1++; } } catch(e) {}
+TestCoverage("call an IIFE", `
+(function f() {})();
+`, undefined // The IIFE has been garbage-collected.
+);
+try { if (Inst2 <= 1000 && typeof (TestCoverage) != "undefined") {_RecordType("<540,552,13>",(TestCoverage)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<657,666,18>",(undefined)); Inst3++; } } catch(e) {}
+TestCoverage("call locally allocated function", `
+for (var i = 0; i < 10; i++) {
+  let f = () => 1;
+  i += f();
+}
+`, undefined); // This does not happen with precise coverage enabled.
+
+try { if (Inst4 <= 1000 && typeof (TestCoverage) != "undefined") {_RecordType("<725,737,20>",(TestCoverage)); Inst4++; } } catch(e) {}
+TestCoverage("call an IIFE", `
+(function f() {})();
+`, [{
+  "start": 0,
+  "end": 20,
+  "count": 1
+}, {
+  "start": 1,
+  "end": 16,
+  "count": 1
+}]);
+try { if (Inst5 <= 1000 && typeof (TestCoverage) != "undefined") {_RecordType("<873,885,31>",(TestCoverage)); Inst5++; } } catch(e) {}
+TestCoverage("call locally allocated function", `
+for (var i = 0; i < 10; i++) {
+  let f = () => 1;
+  i += f();
+}
+`, [{
+  "start": 0,
+  "end": 63,
+  "count": 1
+}, {
+  "start": 41,
+  "end": 48,
+  "count": 5
+}]);
+

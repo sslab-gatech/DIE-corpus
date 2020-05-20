@@ -1,0 +1,98 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//@ skip if $memoryLimited
+"use strict"; // Based on André Bargull's test case.
+// The test pass if it does not crash.
+// see https://bugs.webkit.org/show_bug.cgi?id=158793.
+
+try { if (Inst0 <= 1000 && typeof (createRegexp) != "undefined") {_RecordType("<184,196,6>",(createRegexp)); Inst0++; } } catch(e) {}
+function createRegexp() {
+try { if (Inst2 <= 1000 && typeof ("a".repeat) != "undefined") {_RecordType("<211,221,7>",("a".repeat)); Inst2++; } } catch(e) {}
+  var s = "a".repeat(0x3fffffff);
+try { if (Inst1 <= 1000 && typeof (s) != "undefined") {_RecordType("<207,208,7>",(s)); Inst1++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (RegExp.prototype.toString.call) != "undefined") {_RecordType("<245,275,8>",(RegExp.prototype.toString.call)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (RegExp.prototype.toString) != "undefined") {_RecordType("<245,270,8>",(RegExp.prototype.toString)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (RegExp.prototype) != "undefined") {_RecordType("<245,261,8>",(RegExp.prototype)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<245,251,8>",(RegExp)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (s) != "undefined") {_RecordType("<290,291,9>",(s)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (s) != "undefined") {_RecordType("<304,305,10>",(s)); Inst9++; } } catch(e) {}
+  var r = RegExp.prototype.toString.call({
+    source: s,
+    flags: s
+  });
+try { if (Inst3 <= 1000 && typeof (r) != "undefined") {_RecordType("<241,242,8>",(r)); Inst3++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (s) != "undefined") {_RecordType("<322,323,12>",(s)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (r) != "undefined") {_RecordType("<325,326,12>",(r)); Inst11++; } } catch(e) {}
+  return [s, r];
+}
+
+try { if (Inst13 <= 1000 && typeof (e) != "undefined") {_RecordType("<365,366,17>",(e)); Inst13++; } } catch(e) {}
+try {
+try { if (Inst12 <= 1000 && typeof (createRegexp) != "undefined") {_RecordType("<340,352,16>",(createRegexp)); Inst12++; } } catch(e) {}
+  createRegexp();
+} catch (e) {
+  ;
+}
+
+try { if (Inst14 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<377,388,21>",(console.log)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (console) != "undefined") {_RecordType("<377,384,21>",(console)); Inst15++; } } catch(e) {}
+console.log("PASS: no crash");
+

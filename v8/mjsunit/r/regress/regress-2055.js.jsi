@@ -1,0 +1,129 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2012 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Test that array literal boilerplate objects can be transitioned while
+// existing un-transitioned clones are still being populated.
+try { if (Inst0 <= 1000 && typeof (test1) != "undefined") {_RecordType("<1741,1746,29>",(test1)); Inst0++; } } catch(e) {}
+function test1(depth) {
+try { if (Inst1 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1747,1752,29>",(depth)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1764,1769,30>",(depth)); Inst2++; } } catch(e) {}
+  if (--depth < 0) {
+    return [];
+  } else {
+try { if (Inst3 <= 1000 && typeof (test1) != "undefined") {_RecordType("<1818,1823,33>",(test1)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1824,1829,33>",(depth)); Inst4++; } } catch(e) {}
+    return [0, test1(depth)];
+  }
+}
+
+[0, [0, []]];
+try { if (Inst5 <= 1000 && typeof (test1) != "undefined") {_RecordType("<1854,1859,38>",(test1)); Inst5++; } } catch(e) {}
+test1(2);
+
+try { if (Inst6 <= 1000 && typeof (test2) != "undefined") {_RecordType("<1874,1879,40>",(test2)); Inst6++; } } catch(e) {}
+function test2(depth) {
+try { if (Inst7 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1880,1885,40>",(depth)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1897,1902,41>",(depth)); Inst8++; } } catch(e) {}
+  if (--depth < 0) {
+    return [];
+  } else {
+try { if (Inst10 <= 1000 && typeof (test2) != "undefined") {_RecordType("<1952,1957,44>",(test2)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1958,1963,44>",(depth)); Inst11++; } } catch(e) {}
+    var o = [0, test2(depth)];
+try { if (Inst9 <= 1000 && typeof (o) != "undefined") {_RecordType("<1944,1945,44>",(o)); Inst9++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (depth) != "undefined") {_RecordType("<1978,1983,45>",(depth)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (o) != "undefined") {_RecordType("<1997,1998,45>",(o)); Inst13++; } } catch(e) {}
+    return depth == 0 ? 0.5 : o;
+  }
+}
+
+[0, 0.5];
+try { if (Inst14 <= 1000 && typeof (test2) != "undefined") {_RecordType("<2017,2022,50>",(test2)); Inst14++; } } catch(e) {}
+test2(2);
+

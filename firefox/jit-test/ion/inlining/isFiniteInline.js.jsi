@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* Test inlining of Number.isFinite() */
+for (var i = 0; i < 200000; i++) {
+try { if (Inst0 <= 1000 && typeof (i) != "undefined") {_RecordType("<50,51,2>",(i)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (i) != "undefined") {_RecordType("<57,58,2>",(i)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (i) != "undefined") {_RecordType("<69,70,2>",(i)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<78,93,3>",(Number.isFinite)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Number) != "undefined") {_RecordType("<78,84,3>",(Number)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<94,97,3>",(NaN)); Inst5++; } } catch(e) {}
+  Number.isFinite(NaN);
+  false;
+try { if (Inst6 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<111,126,5>",(Number.isFinite)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Number) != "undefined") {_RecordType("<111,117,5>",(Number)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<128,131,5>",(NaN)); Inst8++; } } catch(e) {}
+  Number.isFinite(-NaN);
+  false;
+try { if (Inst9 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<145,160,7>",(Number.isFinite)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Number) != "undefined") {_RecordType("<145,151,7>",(Number)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<162,170,7>",(Infinity)); Inst11++; } } catch(e) {}
+  Number.isFinite(+Infinity);
+  false;
+try { if (Inst12 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<184,199,9>",(Number.isFinite)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Number) != "undefined") {_RecordType("<184,190,9>",(Number)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<201,209,9>",(Infinity)); Inst14++; } } catch(e) {}
+  Number.isFinite(-Infinity);
+  false;
+try { if (Inst15 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<223,238,11>",(Number.isFinite)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Number) != "undefined") {_RecordType("<223,229,11>",(Number)); Inst16++; } } catch(e) {}
+  Number.isFinite(3);
+  true;
+try { if (Inst17 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<253,268,13>",(Number.isFinite)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Number) != "undefined") {_RecordType("<253,259,13>",(Number)); Inst18++; } } catch(e) {}
+  Number.isFinite(3.141592654);
+  true;
+try { if (Inst19 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<293,308,15>",(Number.isFinite)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Number) != "undefined") {_RecordType("<293,299,15>",(Number)); Inst20++; } } catch(e) {}
+  Number.isFinite(+0);
+  true;
+try { if (Inst21 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<324,339,17>",(Number.isFinite)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Number) != "undefined") {_RecordType("<324,330,17>",(Number)); Inst22++; } } catch(e) {}
+  Number.isFinite(-0);
+  true;
+try { if (Inst23 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<355,370,19>",(Number.isFinite)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (Number) != "undefined") {_RecordType("<355,361,19>",(Number)); Inst24++; } } catch(e) {}
+  Number.isFinite(-3);
+  true;
+try { if (Inst25 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<386,401,21>",(Number.isFinite)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Number) != "undefined") {_RecordType("<386,392,21>",(Number)); Inst26++; } } catch(e) {}
+  Number.isFinite(-3.141592654);
+  true;
+try { if (Inst27 <= 1000 && typeof (Number.isFinite) != "undefined") {_RecordType("<427,442,23>",(Number.isFinite)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Number) != "undefined") {_RecordType("<427,433,23>",(Number)); Inst28++; } } catch(e) {}
+  Number.isFinite({});
+  false;
+}
+

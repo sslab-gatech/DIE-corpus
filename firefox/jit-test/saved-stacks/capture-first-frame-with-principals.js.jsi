@@ -1,0 +1,171 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Create two different globals whose compartments have two different
+// principals. Test getting the first frame on the stack with some given
+// principals in various configurations of JS stack and of wanting self-hosted
+// frames or not.
+try { if (Inst1 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<251,260,5>",(newGlobal)); Inst1++; } } catch(e) {}
+const g1 = newGlobal({
+  principal: 0xffff
+});
+try { if (Inst0 <= 1000 && typeof (g1) != "undefined") {_RecordType("<246,248,5>",(g1)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<298,307,8>",(newGlobal)); Inst3++; } } catch(e) {}
+const g2 = newGlobal({
+  principal: 0xff
+}); // Introduce everyone to themselves and each other.
+try { if (Inst2 <= 1000 && typeof (g2) != "undefined") {_RecordType("<293,295,8>",(g2)); Inst2++; } } catch(e) {}
+
+try { if (Inst8 <= 1000 && typeof (g2) != "undefined") {_RecordType("<401,403,12>",(g2)); Inst8++; } } catch(e) {}
+g1.g2 = g2.g2 = g2;
+try { if (Inst4 <= 1000 && typeof (g1.g2) != "undefined") {_RecordType("<385,390,12>",(g1.g2)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (g1) != "undefined") {_RecordType("<385,387,12>",(g1)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (g2.g2) != "undefined") {_RecordType("<393,398,12>",(g2.g2)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (g2) != "undefined") {_RecordType("<393,395,12>",(g2)); Inst7++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (g1) != "undefined") {_RecordType("<421,423,13>",(g1)); Inst13++; } } catch(e) {}
+g1.g1 = g2.g1 = g1;
+try { if (Inst9 <= 1000 && typeof (g1.g1) != "undefined") {_RecordType("<405,410,13>",(g1.g1)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (g1) != "undefined") {_RecordType("<405,407,13>",(g1)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (g2.g1) != "undefined") {_RecordType("<413,418,13>",(g2.g1)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (g2) != "undefined") {_RecordType("<413,415,13>",(g2)); Inst12++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (g2.eval) != "undefined") {_RecordType("<436,443,14>",(g2.eval)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (g2) != "undefined") {_RecordType("<436,438,14>",(g2)); Inst17++; } } catch(e) {}
+g1.g2obj = g2.eval("new Object");
+try { if (Inst14 <= 1000 && typeof (g1.g2obj) != "undefined") {_RecordType("<425,433,14>",(g1.g2obj)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (g1) != "undefined") {_RecordType("<425,427,14>",(g1)); Inst15++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (g1.evaluate) != "undefined") {_RecordType("<459,470,15>",(g1.evaluate)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (g1) != "undefined") {_RecordType("<459,461,15>",(g1)); Inst19++; } } catch(e) {}
+g1.evaluate(`
+  const global = this;
+
+  // Capture the stack back to the first frame in the g2 global.
+  function capture(shouldIgnoreSelfHosted = true) {
+  }
+`, {
+  fileName: "script1.js"
+});
+try { if (Inst20 <= 1000 && typeof (g2.evaluate) != "undefined") {_RecordType("<652,663,24>",(g2.evaluate)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (g2) != "undefined") {_RecordType("<652,654,24>",(g2)); Inst21++; } } catch(e) {}
+g2.evaluate(`
+  const capture = g1.capture;
+
+  // Use our Function.prototype.bind, not capture.bind (which is ===
+  // g1.Function.prototype.bind) so that the generated bound function is in our
+  // compartment and has our principals.
+  const boundTrue = Function.prototype.bind.call(capture, null, true);
+  const boundFalse = Function.prototype.bind.call(capture, null, false);
+
+  function getOldestFrame(stack) {
+    while (stack.parent) {
+      stack = stack.parent;
+    }
+    return stack;
+  }
+
+  function dumpStack(name, stack) {
+    print("Stack " + name + " =");
+    while (stack) {
+      print("    " + stack.functionDisplayName + " @ " + stack.source);
+      stack = stack.parent;
+    }
+    print();
+  }
+
+  // When the youngest frame is not self-hosted, it doesn't matter whether or not
+  // we specify that we should ignore self hosted frames when capturing the first
+  // frame with the given principals.
+  //
+  // Stack: iife1 (g2) <- capture (g1)
+
+  (function iife1() {
+    const captureTrueStack = capture(true);
+    dumpStack("captureTrueStack", captureTrueStack);
+    assertEq(getOldestFrame(captureTrueStack).functionDisplayName, "iife1");
+    assertEq(getOldestFrame(captureTrueStack).source, "script2.js");
+
+    const captureFalseStack = capture(false);
+    dumpStack("captureFalseStack", captureFalseStack);
+    assertEq(getOldestFrame(captureFalseStack).functionDisplayName, "iife1");
+    assertEq(getOldestFrame(captureFalseStack).source, "script2.js");
+  }());
+
+  // When the youngest frame is a self hosted frame, we get two different
+  // captured stacks depending on whether or not we ignore self-hosted frames.
+  //
+  // Stack: iife2 (g2) <- bound function (g2) <- capture (g1)
+
+  (function iife2() {
+    const boundTrueStack = boundTrue();
+    dumpStack("boundTrueStack", boundTrueStack);
+    assertEq(getOldestFrame(boundTrueStack).functionDisplayName, "iife2");
+    assertEq(getOldestFrame(boundTrueStack).source, "script2.js");
+
+    const boundFalseStack = boundFalse();
+    dumpStack("boundFalseStack", boundFalseStack);
+    assertEq(getOldestFrame(boundFalseStack).functionDisplayName !== "iife2", true);
+    assertEq(getOldestFrame(boundFalseStack).source, "self-hosted");
+  }());
+`, {
+  fileName: "script2.js"
+});
+

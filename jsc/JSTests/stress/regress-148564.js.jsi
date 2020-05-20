@@ -1,0 +1,217 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//@ runNoCJITNoAccessInlining
+// Regression test for https://bugs.webkit.org/show_bug.cgi?id=148542
+//
+// In order to manifest, the bug being tested requires all these conditions to be true:
+// 1. A put operation must not being optimized by the DFG into a PutByOffset.
+//    It needs to be a PutById node instead so that it will use the inline cache.
+//    This is satisfied by using the --useAccessInlining=false option above.
+//
+// 2. The PutById's execution must go through its transition stub.
+//
+// 3. In the transition stub, the object being put into must require a reallocation of its
+//    storage butterfly. This causes the stub to generate code to save some registers.
+//
+// 4. The transition stub needs to call the slow path for flushing the heap write barrier
+//    buffer.
+//
+// 5. The caller of the test must not be DFG compiled. This was not a strictly needed
+//    condition of the bug, but allowing the caller to compile seems to interfere with
+//    our method below of achieving condition 3.
+//
+// With the bug fixed, this test should not crash.
+var val = {
+  a: 5,
+  b: 10
+};
+try { if (Inst0 <= 1000 && typeof (val) != "undefined") {_RecordType("<1069,1072,22>",(val)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (test) != "undefined") {_RecordType("<1106,1110,27>",(test)); Inst1++; } } catch(e) {}
+function test(obj, val, j, x, y, z) {
+try { if (Inst2 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1111,1114,27>",(obj)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (val) != "undefined") {_RecordType("<1116,1119,27>",(val)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (j) != "undefined") {_RecordType("<1121,1122,27>",(j)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<1124,1125,27>",(x)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (y) != "undefined") {_RecordType("<1127,1128,27>",(y)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (z) != "undefined") {_RecordType("<1130,1131,27>",(z)); Inst7++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (val.a) != "undefined") {_RecordType("<1145,1150,28>",(val.a)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (val) != "undefined") {_RecordType("<1145,1148,28>",(val)); Inst11++; } } catch(e) {}
+  obj.a = val.a; // PutById after GetById
+try { if (Inst8 <= 1000 && typeof (obj.a) != "undefined") {_RecordType("<1137,1142,28>",(obj.a)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1137,1140,28>",(obj)); Inst9++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (val.b) != "undefined") {_RecordType("<1184,1189,30>",(val.b)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (val) != "undefined") {_RecordType("<1184,1187,30>",(val)); Inst13++; } } catch(e) {}
+  if (val.b) {
+    // GetById to access val in a register again.
+try { if (Inst14 <= 1000 && typeof (val.b) != "undefined") {_RecordType("<1247,1252,32>",(val.b)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (val) != "undefined") {_RecordType("<1247,1250,32>",(val)); Inst15++; } } catch(e) {}
+    val.b++;
+  }
+}
+
+try { if (Inst16 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<1263,1271,36>",(noInline)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (test) != "undefined") {_RecordType("<1272,1276,36>",(test)); Inst17++; } } catch(e) {}
+noInline(test);
+
+try { if (Inst18 <= 1000 && typeof (runTest) != "undefined") {_RecordType("<1289,1296,38>",(runTest)); Inst18++; } } catch(e) {}
+function runTest() {
+  for (var j = 0; j < 50; j++) {
+try { if (Inst19 <= 1000 && typeof (j) != "undefined") {_RecordType("<1312,1313,39>",(j)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (j) != "undefined") {_RecordType("<1319,1320,39>",(j)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (j) != "undefined") {_RecordType("<1327,1328,39>",(j)); Inst21++; } } catch(e) {}
+    var objs = [];
+try { if (Inst22 <= 1000 && typeof (objs) != "undefined") {_RecordType("<1342,1346,40>",(objs)); Inst22++; } } catch(e) {}
+    let numberOfObjects = 200;
+try { if (Inst23 <= 1000 && typeof (numberOfObjects) != "undefined") {_RecordType("<1361,1376,41>",(numberOfObjects)); Inst23++; } } catch(e) {}
+
+    for (var k = 0; k < numberOfObjects; k++) {
+try { if (Inst24 <= 1000 && typeof (k) != "undefined") {_RecordType("<1398,1399,43>",(k)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (k) != "undefined") {_RecordType("<1405,1406,43>",(k)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (numberOfObjects) != "undefined") {_RecordType("<1409,1424,43>",(numberOfObjects)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (k) != "undefined") {_RecordType("<1426,1427,43>",(k)); Inst27++; } } catch(e) {}
+      var obj = {}; // Condition 3.
+try { if (Inst28 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1443,1446,44>",(obj)); Inst28++; } } catch(e) {}
+      // Fuzzing the amount of property storage used so that we can get the
+      // repatch stub generator to resize the object out of line storage, and
+      // create more register pressure to do that work. This in turn causes it to
+      // need to preserve registers on the stack.
+
+try { if (Inst30 <= 1000 && typeof (j) != "undefined") {_RecordType("<1784,1785,50>",(j)); Inst30++; } } catch(e) {}
+      var numInitialProps = j % 20;
+try { if (Inst29 <= 1000 && typeof (numInitialProps) != "undefined") {_RecordType("<1766,1781,50>",(numInitialProps)); Inst29++; } } catch(e) {}
+
+      for (var i = 0; i < numInitialProps; i++) {
+try { if (Inst31 <= 1000 && typeof (i) != "undefined") {_RecordType("<1808,1809,52>",(i)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (i) != "undefined") {_RecordType("<1815,1816,52>",(i)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (numInitialProps) != "undefined") {_RecordType("<1819,1834,52>",(numInitialProps)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (i) != "undefined") {_RecordType("<1836,1837,52>",(i)); Inst34++; } } catch(e) {}
+try { if (Inst38 <= 1000 && typeof (i) != "undefined") {_RecordType("<1866,1867,53>",(i)); Inst38++; } } catch(e) {}
+        obj["i" + i] = i;
+try { if (Inst35 <= 1000 && typeof (obj["i" + i]) != "undefined") {_RecordType("<1851,1863,53>",(obj["i" + i])); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1851,1854,53>",(obj)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (i) != "undefined") {_RecordType("<1861,1862,53>",(i)); Inst37++; } } catch(e) {}
+      }
+
+try { if (Inst41 <= 1000 && typeof (obj) != "undefined") {_RecordType("<1894,1897,56>",(obj)); Inst41++; } } catch(e) {}
+      objs[k] = obj;
+try { if (Inst39 <= 1000 && typeof (objs[k]) != "undefined") {_RecordType("<1884,1891,56>",(objs[k])); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (objs) != "undefined") {_RecordType("<1884,1888,56>",(objs)); Inst40++; } } catch(e) {}
+    } // Condition 4.
+    // Put all the objects in the GC's oldGen so that we can exercise the write
+    // barrier when we exercise the PutById.
+
+
+try { if (Inst42 <= 1000 && typeof (gc) != "undefined") {_RecordType("<2052,2054,62>",(gc)); Inst42++; } } catch(e) {}
+    gc();
+
+    for (var k = 0; k < numberOfObjects; k++) {
+try { if (Inst43 <= 1000 && typeof (k) != "undefined") {_RecordType("<2072,2073,64>",(k)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (k) != "undefined") {_RecordType("<2079,2080,64>",(k)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (numberOfObjects) != "undefined") {_RecordType("<2083,2098,64>",(numberOfObjects)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (k) != "undefined") {_RecordType("<2100,2101,64>",(k)); Inst46++; } } catch(e) {}
+      // Condition 2.
+      // Eventually, the IC will converge on the slow path. Need to gc()
+      // periodically to repatch anew.
+try { if (Inst47 <= 1000 && typeof (k) != "undefined") {_RecordType("<2251,2252,68>",(k)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (j) != "undefined") {_RecordType("<2266,2267,68>",(j)); Inst48++; } } catch(e) {}
+      if (k % 97 == 1 && j % 5 == 1) {
+try { if (Inst49 <= 1000 && typeof (gc) != "undefined") {_RecordType("<2288,2290,69>",(gc)); Inst49++; } } catch(e) {}
+        gc();
+      }
+
+try { if (Inst50 <= 1000 && typeof (test) != "undefined") {_RecordType("<2309,2313,72>",(test)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (objs[k]) != "undefined") {_RecordType("<2314,2321,72>",(objs[k])); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (objs) != "undefined") {_RecordType("<2314,2318,72>",(objs)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (val) != "undefined") {_RecordType("<2323,2326,72>",(val)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (j) != "undefined") {_RecordType("<2328,2329,72>",(j)); Inst54++; } } catch(e) {}
+      test(objs[k], val, j);
+    }
+  }
+}
+
+try { if (Inst55 <= 1000 && typeof (noDFG) != "undefined") {_RecordType("<2345,2350,77>",(noDFG)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (runTest) != "undefined") {_RecordType("<2351,2358,77>",(runTest)); Inst56++; } } catch(e) {}
+noDFG(runTest); // Condition 5.
+
+try { if (Inst57 <= 1000 && typeof (runTest) != "undefined") {_RecordType("<2378,2385,79>",(runTest)); Inst57++; } } catch(e) {}
+runTest();
+

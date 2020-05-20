@@ -1,0 +1,162 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ * Contributor:
+ *   Jeff Walden <jwalden+code@mit.edu>
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 721322;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<252,261,8>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'f.arguments must trigger an arguments object in non-strict mode functions';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<276,283,9>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<363,368,10>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<369,378,10>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<388,395,10>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+var obj = {
+  test: function () {
+try { if (Inst7 <= 1000 && typeof (obj.test.arguments) != "undefined") {_RecordType("<497,515,17>",(obj.test.arguments)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (obj.test) != "undefined") {_RecordType("<497,505,17>",(obj.test)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (obj) != "undefined") {_RecordType("<497,500,17>",(obj)); Inst9++; } } catch(e) {}
+    var args = obj.test.arguments;
+try { if (Inst6 <= 1000 && typeof (args) != "undefined") {_RecordType("<490,494,17>",(args)); Inst6++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (args) != "undefined") {_RecordType("<521,525,18>",(args)); Inst10++; } } catch(e) {}
+    args !== null;
+    true;
+try { if (Inst11 <= 1000 && typeof (args[0]) != "undefined") {_RecordType("<550,557,20>",(args[0])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (args) != "undefined") {_RecordType("<550,554,20>",(args)); Inst12++; } } catch(e) {}
+    args[0];
+    5;
+try { if (Inst13 <= 1000 && typeof (args[1]) != "undefined") {_RecordType("<570,577,22>",(args[1])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (args) != "undefined") {_RecordType("<570,574,22>",(args)); Inst14++; } } catch(e) {}
+    args[1];
+try { if (Inst15 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<583,592,23>",(undefined)); Inst15++; } } catch(e) {}
+    undefined;
+try { if (Inst16 <= 1000 && typeof (args.length) != "undefined") {_RecordType("<598,609,24>",(args.length)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (args) != "undefined") {_RecordType("<598,602,24>",(args)); Inst17++; } } catch(e) {}
+    args.length;
+    2;
+  }
+};
+try { if (Inst5 <= 1000 && typeof (obj) != "undefined") {_RecordType("<452,455,15>",(obj)); Inst5++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (obj.test) != "undefined") {_RecordType("<625,633,28>",(obj.test)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (obj) != "undefined") {_RecordType("<625,628,28>",(obj)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<637,646,28>",(undefined)); Inst20++; } } catch(e) {}
+obj.test(5, undefined);
+var sobj = {
+  test: function () {
+    "use strict";
+
+try { if (Inst27 <= 1000 && typeof (e) != "undefined") {_RecordType("<861,862,36>",(e)); Inst27++; } } catch(e) {}
+    try {
+try { if (Inst23 <= 1000 && typeof (sobj.test.arguments) != "undefined") {_RecordType("<730,749,34>",(sobj.test.arguments)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (sobj.test) != "undefined") {_RecordType("<730,739,34>",(sobj.test)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (sobj) != "undefined") {_RecordType("<730,734,34>",(sobj)); Inst25++; } } catch(e) {}
+      var args = sobj.test.arguments;
+try { if (Inst22 <= 1000 && typeof (args) != "undefined") {_RecordType("<723,727,34>",(args)); Inst22++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (Error) != "undefined") {_RecordType("<767,772,35>",(Error)); Inst26++; } } catch(e) {}
+      throw new Error("access to arguments property of strict mode " + "function didn't throw");
+    } catch (e) {
+try { if (Inst28 <= 1000 && typeof (e) != "undefined") {_RecordType("<872,873,37>",(e)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<885,894,37>",(TypeError)); Inst29++; } } catch(e) {}
+      e instanceof TypeError;
+      true;
+try { if (Inst30 <= 1000 && typeof (e) != "undefined") {_RecordType("<962,963,39>",(e)); Inst30++; } } catch(e) {}
+      "should have thrown TypeError, instead got: " + e;
+    }
+  }
+};
+try { if (Inst21 <= 1000 && typeof (sobj) != "undefined") {_RecordType("<653,657,29>",(sobj)); Inst21++; } } catch(e) {}
+try { if (Inst31 <= 1000 && typeof (sobj.test) != "undefined") {_RecordType("<978,987,43>",(sobj.test)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (sobj) != "undefined") {_RecordType("<978,982,43>",(sobj)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<991,1000,43>",(undefined)); Inst33++; } } catch(e) {}
+sobj.test(5, undefined);
+/******************************************************************************/
+
+try { if (Inst34 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1096,1109,46>",(reportCompare)); Inst34++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst35 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1130,1143,47>",(reportCompare)); Inst35++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst36 <= 1000 && typeof (print) != "undefined") {_RecordType("<1160,1165,50>",(print)); Inst36++; } } catch(e) {}
+print("Tests complete");
+

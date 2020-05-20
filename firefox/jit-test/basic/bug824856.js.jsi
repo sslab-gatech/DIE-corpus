@@ -1,0 +1,66 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: TypeError
+try { if (Inst0 <= 1000 && typeof (RegExp("(&)??\\1}").test) != "undefined") {_RecordType("<31,55,2>",(RegExp("(&)??\\1}").test)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<31,37,2>",(RegExp)); Inst1++; } } catch(e) {}
+RegExp("(&)??\\1}").test("&D");
+try { if (Inst2 <= 1000 && typeof ("xy".match) != "undefined") {_RecordType("<63,73,3>",("xy".match)); Inst2++; } } catch(e) {}
+"xy".match(/((x)??){2}y/);
+try { if (Inst3 <= 1000 && typeof ("\u66d6J".split) != "undefined") {_RecordType("<90,105,4>",("\u66d6J".split)); Inst3++; } } catch(e) {}
+"\u66d6J".split(/((\u66d6)??){7}J/);
+try { if (Inst4 <= 1000 && typeof ("2\"".match) != "undefined") {_RecordType("<127,138,5>",("2\"".match)); Inst4++; } } catch(e) {}
+"2\"".match("(((2)??)+\")")();
+

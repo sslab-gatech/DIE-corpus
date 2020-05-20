@@ -1,0 +1,95 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+let foo = {};
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<4,7,1>",(foo)); Inst0++; } } catch(e) {}
+
+for (let method of ["resolve", "reject", "race"]) {
+try { if (Inst1 <= 1000 && typeof (method) != "undefined") {_RecordType("<24,30,3>",(method)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (Promise[method].call) != "undefined") {_RecordType("<76,96,4>",(Promise[method].call)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Promise[method]) != "undefined") {_RecordType("<76,91,4>",(Promise[method])); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<76,83,4>",(Promise)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<97,100,4>",(foo)); Inst5++; } } catch(e) {}
+  (() => Promise[method].call(foo))();
+
+try { if (Inst6 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<109,118,6>",(TypeError)); Inst6++; } } catch(e) {}
+  TypeError;
+  "foo is not a constructor";
+
+try { if (Inst7 <= 1000 && typeof (Promise[method].call) != "undefined") {_RecordType("<160,180,9>",(Promise[method].call)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Promise[method]) != "undefined") {_RecordType("<160,175,9>",(Promise[method])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<160,167,9>",(Promise)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (foo) != "undefined") {_RecordType("<181,184,9>",(foo)); Inst10++; } } catch(e) {}
+  (() => Promise[method].call(foo, []))();
+
+try { if (Inst11 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<197,206,11>",(TypeError)); Inst11++; } } catch(e) {}
+  TypeError;
+  "foo is not a constructor";
+
+try { if (Inst12 <= 1000 && typeof (Promise[method].call) != "undefined") {_RecordType("<248,268,14>",(Promise[method].call)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Promise[method]) != "undefined") {_RecordType("<248,263,14>",(Promise[method])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<248,255,14>",(Promise)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (foo) != "undefined") {_RecordType("<277,280,14>",(foo)); Inst15++; } } catch(e) {}
+  (() => Promise[method].call({}, [], foo))();
+
+try { if (Inst16 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<289,298,16>",(TypeError)); Inst16++; } } catch(e) {}
+  TypeError;
+  "({}) is not a constructor";
+}
+

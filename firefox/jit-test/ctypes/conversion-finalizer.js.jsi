@@ -1,0 +1,297 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| skip-if: getBuildConfiguration()['arm'] || getBuildConfiguration()['arm64']
+// skip on arm, arm64 due to bug 1511615
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<140,144,3>",(test)); Inst0++; } } catch(e) {}
+function test() {
+  // non object
+  (() => {
+try { if (Inst1 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<180,201,6>",(ctypes.CDataFinalizer)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<180,186,6>",(ctypes)); Inst2++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, "foo");
+  })();
+
+  "expected _a CData object_ of a function pointer type, got the string \"foo\"";
+
+  (() => {
+try { if (Inst3 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<320,341,12>",(ctypes.CDataFinalizer)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<320,326,12>",(ctypes)); Inst4++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, ["foo"]);
+  })();
+
+  "expected a _CData_ object of a function pointer type, got the array [\"foo\"]";
+
+  (() => {
+try { if (Inst5 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<463,484,18>",(ctypes.CDataFinalizer)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<463,469,18>",(ctypes)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<488,502,18>",(ctypes.int32_t)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<488,494,18>",(ctypes)); Inst8++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, ctypes.int32_t(0));
+  })();
+
+  "expected a CData object of a function _pointer_ type, got ctypes.int32_t(0)";
+
+  (() => {
+try { if (Inst9 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<614,635,24>",(ctypes.CDataFinalizer)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<614,620,24>",(ctypes)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (ctypes.int32_t.ptr) != "undefined") {_RecordType("<639,657,24>",(ctypes.int32_t.ptr)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<639,653,24>",(ctypes.int32_t)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<639,645,24>",(ctypes)); Inst13++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, ctypes.int32_t.ptr(0));
+  })();
+
+  "expected a CData object of a _function_ pointer type, got ctypes.int32_t.ptr(ctypes.UInt64(\"0x0\"))";
+  // null function
+try { if (Inst15 <= 1000 && typeof (ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t, ctypes.int32_t]).ptr) != "undefined") {_RecordType("<815,910,29>",(ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t, ctypes.int32_t]).ptr)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (ctypes.FunctionType) != "undefined") {_RecordType("<815,834,29>",(ctypes.FunctionType)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<815,821,29>",(ctypes)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (ctypes.default_abi) != "undefined") {_RecordType("<835,853,29>",(ctypes.default_abi)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<835,841,29>",(ctypes)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (ctypes.voidptr_t) != "undefined") {_RecordType("<855,871,29>",(ctypes.voidptr_t)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<855,861,29>",(ctypes)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<874,888,29>",(ctypes.int32_t)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<874,880,29>",(ctypes)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<890,904,29>",(ctypes.int32_t)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<890,896,29>",(ctypes)); Inst25++; } } catch(e) {}
+  let func_type = ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t, ctypes.int32_t]).ptr;
+try { if (Inst14 <= 1000 && typeof (func_type) != "undefined") {_RecordType("<803,812,29>",(func_type)); Inst14++; } } catch(e) {}
+try { if (Inst27 <= 1000 && typeof (func_type) != "undefined") {_RecordType("<923,932,30>",(func_type)); Inst27++; } } catch(e) {}
+  let f0 = func_type(0);
+try { if (Inst26 <= 1000 && typeof (f0) != "undefined") {_RecordType("<918,920,30>",(f0)); Inst26++; } } catch(e) {}
+
+  (() => {
+try { if (Inst28 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<953,974,33>",(ctypes.CDataFinalizer)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<953,959,33>",(ctypes)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (f0) != "undefined") {_RecordType("<978,980,33>",(f0)); Inst30++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, f0);
+  })();
+
+  "expected a CData object of a _non-NULL_ function pointer type, got ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t, ctypes.int32_t]).ptr(ctypes.UInt64(\"0x0\"))";
+  // a function with 2 arguments
+try { if (Inst32 <= 1000 && typeof (func_type) != "undefined") {_RecordType("<1228,1237,38>",(func_type)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (x) != "undefined") {_RecordType("<1238,1239,38>",(x)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (x) != "undefined") {_RecordType("<1243,1244,38>",(x)); Inst34++; } } catch(e) {}
+  let f1 = func_type(x => x);
+try { if (Inst31 <= 1000 && typeof (f1) != "undefined") {_RecordType("<1223,1225,38>",(f1)); Inst31++; } } catch(e) {}
+
+  (() => {
+try { if (Inst35 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<1263,1284,41>",(ctypes.CDataFinalizer)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1263,1269,41>",(ctypes)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (f1) != "undefined") {_RecordType("<1288,1290,41>",(f1)); Inst37++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, f1);
+  })();
+
+  "expected a function accepting exactly one argument, got ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t, ctypes.int32_t])";
+  // non CData in argument 1
+try { if (Inst39 <= 1000 && typeof (ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t.ptr]).ptr) != "undefined") {_RecordType("<1503,1586,46>",(ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t.ptr]).ptr)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (ctypes.FunctionType) != "undefined") {_RecordType("<1503,1522,46>",(ctypes.FunctionType)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1503,1509,46>",(ctypes)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (ctypes.default_abi) != "undefined") {_RecordType("<1523,1541,46>",(ctypes.default_abi)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1523,1529,46>",(ctypes)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (ctypes.voidptr_t) != "undefined") {_RecordType("<1543,1559,46>",(ctypes.voidptr_t)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1543,1549,46>",(ctypes)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (ctypes.int32_t.ptr) != "undefined") {_RecordType("<1562,1580,46>",(ctypes.int32_t.ptr)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<1562,1576,46>",(ctypes.int32_t)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1562,1568,46>",(ctypes)); Inst48++; } } catch(e) {}
+  let func_type2 = ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t.ptr]).ptr;
+try { if (Inst38 <= 1000 && typeof (func_type2) != "undefined") {_RecordType("<1490,1500,46>",(func_type2)); Inst38++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (func_type2) != "undefined") {_RecordType("<1599,1609,47>",(func_type2)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (x) != "undefined") {_RecordType("<1610,1611,47>",(x)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (x) != "undefined") {_RecordType("<1615,1616,47>",(x)); Inst52++; } } catch(e) {}
+  let f2 = func_type2(x => x);
+try { if (Inst49 <= 1000 && typeof (f2) != "undefined") {_RecordType("<1594,1596,47>",(f2)); Inst49++; } } catch(e) {}
+
+  (() => {
+try { if (Inst53 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<1635,1656,50>",(ctypes.CDataFinalizer)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1635,1641,50>",(ctypes)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (f2) != "undefined") {_RecordType("<1660,1662,50>",(f2)); Inst55++; } } catch(e) {}
+    ctypes.CDataFinalizer(0, f2);
+  })();
+
+  "can't convert the number 0 to the type of argument 1 of ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [ctypes.int32_t.ptr]).ptr";
+  // wrong struct in argument 1
+try { if (Inst57 <= 1000 && typeof (ctypes.StructType) != "undefined") {_RecordType("<1871,1888,55>",(ctypes.StructType)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1871,1877,55>",(ctypes)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<1916,1930,56>",(ctypes.int32_t)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1916,1922,56>",(ctypes)); Inst60++; } } catch(e) {}
+  let test_struct = ctypes.StructType("test_struct", [{
+    "x": ctypes.int32_t
+  }]);
+try { if (Inst56 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<1857,1868,55>",(test_struct)); Inst56++; } } catch(e) {}
+try { if (Inst62 <= 1000 && typeof (ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [test_struct]).ptr) != "undefined") {_RecordType("<1957,2033,58>",(ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [test_struct]).ptr)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (ctypes.FunctionType) != "undefined") {_RecordType("<1957,1976,58>",(ctypes.FunctionType)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1957,1963,58>",(ctypes)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (ctypes.default_abi) != "undefined") {_RecordType("<1977,1995,58>",(ctypes.default_abi)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1977,1983,58>",(ctypes)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (ctypes.voidptr_t) != "undefined") {_RecordType("<1997,2013,58>",(ctypes.voidptr_t)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<1997,2003,58>",(ctypes)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<2016,2027,58>",(test_struct)); Inst69++; } } catch(e) {}
+  let func_type3 = ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [test_struct]).ptr;
+try { if (Inst61 <= 1000 && typeof (func_type3) != "undefined") {_RecordType("<1944,1954,58>",(func_type3)); Inst61++; } } catch(e) {}
+try { if (Inst71 <= 1000 && typeof (func_type3) != "undefined") {_RecordType("<2046,2056,59>",(func_type3)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (x) != "undefined") {_RecordType("<2057,2058,59>",(x)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (x) != "undefined") {_RecordType("<2062,2063,59>",(x)); Inst73++; } } catch(e) {}
+  let f3 = func_type3(x => x);
+try { if (Inst70 <= 1000 && typeof (f3) != "undefined") {_RecordType("<2041,2043,59>",(f3)); Inst70++; } } catch(e) {}
+
+  (() => {
+try { if (Inst74 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<2082,2103,62>",(ctypes.CDataFinalizer)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2082,2088,62>",(ctypes)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (f3) != "undefined") {_RecordType("<2130,2132,64>",(f3)); Inst76++; } } catch(e) {}
+    ctypes.CDataFinalizer({
+      "x": "foo"
+    }, f3);
+  })();
+
+  "can't convert the string \"foo\" to the 'x' field (int32_t) of test_struct at argument 1 of ctypes.FunctionType(ctypes.default_abi, ctypes.voidptr_t, [test_struct]).ptr";
+  // different size in argument 1
+try { if (Inst78 <= 1000 && typeof (ctypes.FunctionType(ctypes.default_abi, ctypes.int32_t, [ctypes.int32_t]).ptr) != "undefined") {_RecordType("<2371,2448,69>",(ctypes.FunctionType(ctypes.default_abi, ctypes.int32_t, [ctypes.int32_t]).ptr)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (ctypes.FunctionType) != "undefined") {_RecordType("<2371,2390,69>",(ctypes.FunctionType)); Inst79++; } } catch(e) {}try { if (Inst80 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2371,2377,69>",(ctypes)); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (ctypes.default_abi) != "undefined") {_RecordType("<2391,2409,69>",(ctypes.default_abi)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2391,2397,69>",(ctypes)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<2411,2425,69>",(ctypes.int32_t)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2411,2417,69>",(ctypes)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<2428,2442,69>",(ctypes.int32_t)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2428,2434,69>",(ctypes)); Inst86++; } } catch(e) {}
+  let func_type4 = ctypes.FunctionType(ctypes.default_abi, ctypes.int32_t, [ctypes.int32_t]).ptr;
+try { if (Inst77 <= 1000 && typeof (func_type4) != "undefined") {_RecordType("<2358,2368,69>",(func_type4)); Inst77++; } } catch(e) {}
+try { if (Inst88 <= 1000 && typeof (func_type4) != "undefined") {_RecordType("<2461,2471,70>",(func_type4)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (x) != "undefined") {_RecordType("<2472,2473,70>",(x)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (x) != "undefined") {_RecordType("<2477,2478,70>",(x)); Inst90++; } } catch(e) {}
+  let f4 = func_type4(x => x);
+try { if (Inst87 <= 1000 && typeof (f4) != "undefined") {_RecordType("<2456,2458,70>",(f4)); Inst87++; } } catch(e) {}
+
+  (() => {
+try { if (Inst91 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<2497,2518,73>",(ctypes.CDataFinalizer)); Inst91++; } } catch(e) {}try { if (Inst92 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2497,2503,73>",(ctypes)); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (ctypes.int16_t) != "undefined") {_RecordType("<2519,2533,73>",(ctypes.int16_t)); Inst93++; } } catch(e) {}try { if (Inst94 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2519,2525,73>",(ctypes)); Inst94++; } } catch(e) {}try { if (Inst95 <= 1000 && typeof (f4) != "undefined") {_RecordType("<2538,2540,73>",(f4)); Inst95++; } } catch(e) {}
+    ctypes.CDataFinalizer(ctypes.int16_t(0), f4);
+  })();
+
+  "expected an object with the same size as argument 1 of ctypes.FunctionType(ctypes.default_abi, ctypes.int32_t, [ctypes.int32_t]).ptr, got ctypes.int16_t(0)";
+try { if (Inst97 <= 1000 && typeof (ctypes.CDataFinalizer) != "undefined") {_RecordType("<2725,2746,77>",(ctypes.CDataFinalizer)); Inst97++; } } catch(e) {}try { if (Inst98 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2725,2731,77>",(ctypes)); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<2747,2761,77>",(ctypes.int32_t)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2747,2753,77>",(ctypes)); Inst100++; } } catch(e) {}try { if (Inst101 <= 1000 && typeof (f4) != "undefined") {_RecordType("<2766,2768,77>",(f4)); Inst101++; } } catch(e) {}
+  let fin = ctypes.CDataFinalizer(ctypes.int32_t(0), f4);
+try { if (Inst96 <= 1000 && typeof (fin) != "undefined") {_RecordType("<2719,2722,77>",(fin)); Inst96++; } } catch(e) {}
+try { if (Inst102 <= 1000 && typeof (fin.dispose) != "undefined") {_RecordType("<2773,2784,78>",(fin.dispose)); Inst102++; } } catch(e) {}try { if (Inst103 <= 1000 && typeof (fin) != "undefined") {_RecordType("<2773,2776,78>",(fin)); Inst103++; } } catch(e) {}
+  fin.dispose();
+
+  (() => {
+try { if (Inst107 <= 1000 && typeof (fin) != "undefined") {_RecordType("<2830,2833,81>",(fin)); Inst107++; } } catch(e) {}
+    ctypes.int32_t(0).value = fin;
+try { if (Inst104 <= 1000 && typeof (ctypes.int32_t(0).value) != "undefined") {_RecordType("<2804,2827,81>",(ctypes.int32_t(0).value)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<2804,2818,81>",(ctypes.int32_t)); Inst105++; } } catch(e) {}try { if (Inst106 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<2804,2810,81>",(ctypes)); Inst106++; } } catch(e) {}
+  })();
+
+  "attempting to convert an empty CDataFinalizer";
+
+  (() => {
+try { if (Inst108 <= 1000 && typeof (f4) != "undefined") {_RecordType("<2911,2913,87>",(f4)); Inst108++; } } catch(e) {}try { if (Inst109 <= 1000 && typeof (fin) != "undefined") {_RecordType("<2914,2917,87>",(fin)); Inst109++; } } catch(e) {}
+    f4(fin);
+  })();
+
+  /attempting to convert an empty CDataFinalizer at argument 1 of ctypes\.FunctionType\(ctypes\.default_abi, ctypes\.int32_t, \[ctypes\.int32_t\]\)\.ptr\(ctypes\.UInt64\(\"[x0-9A-Fa-f]+\"\)\)/;
+}
+
+try { if (Inst110 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<3137,3143,93>",(ctypes)); Inst110++; } } catch(e) {}
+if (typeof ctypes === "object") {
+try { if (Inst111 <= 1000 && typeof (test) != "undefined") {_RecordType("<3162,3166,94>",(test)); Inst111++; } } catch(e) {}
+  test();
+}
+

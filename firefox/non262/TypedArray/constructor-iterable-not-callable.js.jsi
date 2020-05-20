@@ -1,0 +1,87 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Construct typed array from object with non-callable [Symbol.iterator] property.
+for (let constructor of anyTypedArrayConstructors) {
+try { if (Inst0 <= 1000 && typeof (constructor) != "undefined") {_RecordType("<297,308,5>",(constructor)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (anyTypedArrayConstructors) != "undefined") {_RecordType("<312,337,5>",(anyTypedArrayConstructors)); Inst1++; } } catch(e) {}
+  for (let iterator of [true, 0, Math.PI, "", "10", Symbol.iterator, {}, []]) {
+try { if (Inst2 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<352,360,6>",(iterator)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Math.PI) != "undefined") {_RecordType("<374,381,6>",(Math.PI)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Math) != "undefined") {_RecordType("<374,378,6>",(Math)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<393,408,6>",(Symbol.iterator)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<393,399,6>",(Symbol)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (constructor) != "undefined") {_RecordType("<436,447,7>",(constructor)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<475,483,8>",(iterator)); Inst8++; } } catch(e) {}
+    (() => new constructor({
+      [Symbol.iterator]: iterator
+    }))();
+
+try { if (Inst9 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<500,509,11>",(TypeError)); Inst9++; } } catch(e) {}
+    TypeError;
+  }
+}
+
+try { if (Inst10 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<529,542,15>",(reportCompare)); Inst10++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst11 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<563,576,16>",(reportCompare)); Inst11++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

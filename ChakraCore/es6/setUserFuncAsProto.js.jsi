@@ -1,0 +1,110 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<376,379,5>",(foo)); Inst0++; } } catch(e) {}
+function foo() {
+try { if (Inst1 <= 1000 && typeof (bar) != "undefined") {_RecordType("<395,398,6>",(bar)); Inst1++; } } catch(e) {}
+  function bar() {
+    // Deferred function   
+    ;
+  }
+
+try { if (Inst2 <= 1000 && typeof (bar) != "undefined") {_RecordType("<451,454,11>",(bar)); Inst2++; } } catch(e) {}
+  return bar;
+} // Create two deferred functions
+
+
+try { if (Inst4 <= 1000 && typeof (foo) != "undefined") {_RecordType("<505,508,15>",(foo)); Inst4++; } } catch(e) {}
+var func1 = foo();
+try { if (Inst3 <= 1000 && typeof (func1) != "undefined") {_RecordType("<497,502,15>",(func1)); Inst3++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (foo) != "undefined") {_RecordType("<524,527,16>",(foo)); Inst6++; } } catch(e) {}
+var func2 = foo(); // Set the prototype of `func2` to `func1`
+try { if (Inst5 <= 1000 && typeof (func2) != "undefined") {_RecordType("<516,521,16>",(func2)); Inst5++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (Object.setPrototypeOf) != "undefined") {_RecordType("<575,596,18>",(Object.setPrototypeOf)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object) != "undefined") {_RecordType("<575,581,18>",(Object)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (func2) != "undefined") {_RecordType("<597,602,18>",(func2)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (func1) != "undefined") {_RecordType("<604,609,18>",(func1)); Inst10++; } } catch(e) {}
+Object.setPrototypeOf(func2, func1); // Set a property of `func2` first causing it to be undeferred
+
+func2.x = 1; // Set a property of `func1` second causing it to share the type of `func2`
+try { if (Inst11 <= 1000 && typeof (func2.x) != "undefined") {_RecordType("<676,683,20>",(func2.x)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (func2) != "undefined") {_RecordType("<676,681,20>",(func2)); Inst12++; } } catch(e) {}
+
+func1.x = 2; // Try to access an undefined property, this will loop infinitely
+try { if (Inst13 <= 1000 && typeof (func1.x) != "undefined") {_RecordType("<766,773,22>",(func1.x)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (func1) != "undefined") {_RecordType("<766,771,22>",(func1)); Inst14++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<850,859,24>",(undefined)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (func1.y) != "undefined") {_RecordType("<864,871,24>",(func1.y)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (func1) != "undefined") {_RecordType("<864,869,24>",(func1)); Inst17++; } } catch(e) {}
+if (undefined === func1.y) {
+try { if (Inst18 <= 1000 && typeof (WScript.Echo) != "undefined") {_RecordType("<877,889,25>",(WScript.Echo)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (WScript) != "undefined") {_RecordType("<877,884,25>",(WScript)); Inst19++; } } catch(e) {}
+  WScript.Echo('pass');
+}
+

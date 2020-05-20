@@ -1,0 +1,162 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2015 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+try { if (Inst0 <= 1000 && typeof (Receiver) != "undefined") {_RecordType("<176,184,4>",(Receiver)); Inst0++; } } catch(e) {}
+function Receiver() {
+  this.receiver = "receiver";
+try { if (Inst1 <= 1000 && typeof (this.receiver) != "undefined") {_RecordType("<191,204,5>",(this.receiver)); Inst1++; } } catch(e) {}
+}
+
+try { if (Inst2 <= 1000 && typeof (Proto) != "undefined") {_RecordType("<231,236,8>",(Proto)); Inst2++; } } catch(e) {}
+function Proto() {
+  this.proto = "proto";
+try { if (Inst3 <= 1000 && typeof (this.proto) != "undefined") {_RecordType("<243,253,9>",(this.proto)); Inst3++; } } catch(e) {}
+}
+
+try { if (Inst4 <= 1000 && typeof (f) != "undefined") {_RecordType("<277,278,12>",(f)); Inst4++; } } catch(e) {}
+function f(a) {
+try { if (Inst5 <= 1000 && typeof (a) != "undefined") {_RecordType("<279,280,12>",(a)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (a.foo) != "undefined") {_RecordType("<293,298,13>",(a.foo)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<293,294,13>",(a)); Inst7++; } } catch(e) {}
+  return a.foo;
+}
+
+try { if (Inst9 <= 1000 && typeof (Receiver) != "undefined") {_RecordType("<317,325,16>",(Receiver)); Inst9++; } } catch(e) {}
+var rec = new Receiver(); // Formerly, this mutated rec.__proto__.__proto__, but
+try { if (Inst8 <= 1000 && typeof (rec) != "undefined") {_RecordType("<307,310,16>",(rec)); Inst8++; } } catch(e) {}
+// the global object prototype chain is now immutable;
+// not sure if this test now hits the original hazard case.
+
+try { if (Inst11 <= 1000 && typeof (rec.__proto__) != "undefined") {_RecordType("<512,525,20>",(rec.__proto__)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (rec) != "undefined") {_RecordType("<512,515,20>",(rec)); Inst12++; } } catch(e) {}
+var proto = rec.__proto__; // Initialize prototype chain dependent IC (nonexistent load).
+try { if (Inst10 <= 1000 && typeof (proto) != "undefined") {_RecordType("<504,509,20>",(proto)); Inst10++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<591,600,22>",(undefined)); Inst13++; } } catch(e) {}
+undefined;
+try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<602,603,23>",(f)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (rec) != "undefined") {_RecordType("<604,607,23>",(rec)); Inst15++; } } catch(e) {}
+f(rec);
+try { if (Inst16 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<610,619,24>",(undefined)); Inst16++; } } catch(e) {}
+undefined;
+try { if (Inst17 <= 1000 && typeof (f) != "undefined") {_RecordType("<621,622,25>",(f)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (rec) != "undefined") {_RecordType("<623,626,25>",(rec)); Inst18++; } } catch(e) {}
+f(rec);
+// Add a new prototype to the end of the chain.
+try { if (Inst20 <= 1000 && typeof (Proto) != "undefined") {_RecordType("<690,695,27>",(Proto)); Inst20++; } } catch(e) {}
+var p2 = new Proto();
+try { if (Inst19 <= 1000 && typeof (p2) != "undefined") {_RecordType("<681,683,27>",(p2)); Inst19++; } } catch(e) {}
+p2.__proto__ = null;
+try { if (Inst21 <= 1000 && typeof (p2.__proto__) != "undefined") {_RecordType("<699,711,28>",(p2.__proto__)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (p2) != "undefined") {_RecordType("<699,701,28>",(p2)); Inst22++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (p2) != "undefined") {_RecordType("<738,740,29>",(p2)); Inst25++; } } catch(e) {}
+proto.__proto__ = p2; // Update the IC.
+try { if (Inst23 <= 1000 && typeof (proto.__proto__) != "undefined") {_RecordType("<720,735,29>",(proto.__proto__)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (proto) != "undefined") {_RecordType("<720,725,29>",(proto)); Inst24++; } } catch(e) {}
+
+try { if (Inst26 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<761,770,31>",(undefined)); Inst26++; } } catch(e) {}
+undefined;
+try { if (Inst27 <= 1000 && typeof (f) != "undefined") {_RecordType("<772,773,32>",(f)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (rec) != "undefined") {_RecordType("<774,777,32>",(rec)); Inst28++; } } catch(e) {}
+f(rec);
+// Now modify the most recently added prototype by adding a property...
+p2.foo = "bar";
+try { if (Inst29 <= 1000 && typeof (p2.foo) != "undefined") {_RecordType("<852,858,34>",(p2.foo)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (p2) != "undefined") {_RecordType("<852,854,34>",(p2)); Inst30++; } } catch(e) {}
+"bar";
+try { if (Inst31 <= 1000 && typeof (f) != "undefined") {_RecordType("<875,876,36>",(f)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (rec) != "undefined") {_RecordType("<877,880,36>",(rec)); Inst32++; } } catch(e) {}
+f(rec);
+// ...and removing it again. Due to missing prototype user registrations,
+// this fails to invalidate the IC.
+try { if (Inst33 <= 1000 && typeof (p2.foo) != "undefined") {_RecordType("<1000,1006,39>",(p2.foo)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (p2) != "undefined") {_RecordType("<1000,1002,39>",(p2)); Inst34++; } } catch(e) {}
+delete p2.foo;
+p2.secret = "GAME OVER";
+try { if (Inst35 <= 1000 && typeof (p2.secret) != "undefined") {_RecordType("<1008,1017,40>",(p2.secret)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (p2) != "undefined") {_RecordType("<1008,1010,40>",(p2)); Inst36++; } } catch(e) {}
+try { if (Inst37 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1033,1042,41>",(undefined)); Inst37++; } } catch(e) {}
+undefined;
+try { if (Inst38 <= 1000 && typeof (f) != "undefined") {_RecordType("<1044,1045,42>",(f)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (rec) != "undefined") {_RecordType("<1046,1049,42>",(rec)); Inst39++; } } catch(e) {}
+f(rec);
+

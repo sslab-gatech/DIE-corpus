@@ -1,0 +1,105 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| crash
+try { if (Inst0 <= 1000 && typeof (g) != "undefined") {_RecordType("<29,30,2>",(g)); Inst0++; } } catch(e) {}
+function g() {
+try { if (Inst1 <= 1000 && typeof (inIon) != "undefined") {_RecordType("<44,49,3>",(inIon)); Inst1++; } } catch(e) {}
+  return inIon();
+} // Wait until IonMonkey compilation finished.
+
+
+try { if (Inst3 <= 1000 && typeof (g) != "undefined") {_RecordType("<118,119,7>",(g)); Inst3++; } } catch(e) {}
+while (!(res = g())) {
+  ;
+} // Check that we entered Ion succesfully.
+try { if (Inst2 <= 1000 && typeof (res) != "undefined") {_RecordType("<112,115,7>",(res)); Inst2++; } } catch(e) {}
+
+
+try { if (Inst4 <= 1000 && typeof (res) != "undefined") {_RecordType("<180,183,12>",(res)); Inst4++; } } catch(e) {}
+if (res !== true) {
+try { if (Inst5 <= 1000 && typeof (crash) != "undefined") {_RecordType("<198,203,13>",(crash)); Inst5++; } } catch(e) {}
+  crash("Cannot enter IonMonkey");
+} // Test that assertRecoveredOnBailout fails as expected.
+
+
+try { if (Inst6 <= 1000 && typeof (f) != "undefined") {_RecordType("<301,302,17>",(f)); Inst6++; } } catch(e) {}
+function f() {
+  var o = {};
+try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<313,314,18>",(o)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (inIon) != "undefined") {_RecordType("<330,335,19>",(inIon)); Inst8++; } } catch(e) {}
+  return inIon();
+} // Wait until IonMonkey compilation finished.
+
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<404,405,23>",(f)); Inst10++; } } catch(e) {}
+while (!(res = f())) {
+  ;
+} // Ensure that we entered Ion.
+try { if (Inst9 <= 1000 && typeof (res) != "undefined") {_RecordType("<398,401,23>",(res)); Inst9++; } } catch(e) {}
+
+
+try { if (Inst11 <= 1000 && typeof (res) != "undefined") {_RecordType("<451,454,28>",(res)); Inst11++; } } catch(e) {}
+res;
+true;
+

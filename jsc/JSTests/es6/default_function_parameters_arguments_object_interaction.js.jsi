@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<9,13,1>",(test)); Inst0++; } } catch(e) {}
+function test() {
+  return function (a = "baz", b = "qux", c = "quux") {
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<37,38,2>",(a)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (b) != "undefined") {_RecordType("<48,49,2>",(b)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (c) != "undefined") {_RecordType("<59,60,2>",(c)); Inst3++; } } catch(e) {}
+    a = "corge"; // The arguments object is not mapped to the
+try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<77,78,3>",(a)); Inst4++; } } catch(e) {}
+    // parameters, even outside of strict mode.
+
+try { if (Inst5 <= 1000 && typeof (arguments.length) != "undefined") {_RecordType("<195,211,6>",(arguments.length)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<195,204,6>",(arguments)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (arguments[0]) != "undefined") {_RecordType("<221,233,6>",(arguments[0])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<221,230,6>",(arguments)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arguments[1]) != "undefined") {_RecordType("<247,259,6>",(arguments[1])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<247,256,6>",(arguments)); Inst10++; } } catch(e) {}
+    return arguments.length === 2 && arguments[0] === "foo" && arguments[1] === "bar";
+  }("foo", "bar");
+}
+
+try { if (Inst11 <= 1000 && typeof (test) != "undefined") {_RecordType("<298,302,10>",(test)); Inst11++; } } catch(e) {}
+if (!test()) {
+try { if (Inst12 <= 1000 && typeof (Error) != "undefined") {_RecordType("<320,325,11>",(Error)); Inst12++; } } catch(e) {}
+  throw new Error("Test failed");
+}
+

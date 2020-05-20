@@ -1,0 +1,188 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2010 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+// Test inlined functions contain throw.
+try { if (Inst0 <= 1000 && typeof (doThrow) != "undefined") {_RecordType("<1680,1687,29>",(doThrow)); Inst0++; } } catch(e) {}
+function doThrow() {
+  throw "uha";
+}
+
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<1719,1720,33>",(f)); Inst1++; } } catch(e) {}
+function f(x) {
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<1721,1722,33>",(x)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<1732,1733,34>",(x)); Inst3++; } } catch(e) {}
+  if (x == 42) {
+try { if (Inst4 <= 1000 && typeof (doThrow) != "undefined") {_RecordType("<1753,1760,35>",(doThrow)); Inst4++; } } catch(e) {}
+    throw doThrow();
+  }
+
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<1775,1776,38>",(x)); Inst5++; } } catch(e) {}
+  if (x == 43) {
+    throw "wow";
+  }
+
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<1817,1818,42>",(x)); Inst6++; } } catch(e) {}
+  return x == 0;
+}
+
+try { if (Inst7 <= 1000 && typeof (g) != "undefined") {_RecordType("<1837,1838,45>",(g)); Inst7++; } } catch(e) {}
+function g(x) {
+try { if (Inst8 <= 1000 && typeof (x) != "undefined") {_RecordType("<1839,1840,45>",(x)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (f) != "undefined") {_RecordType("<1853,1854,46>",(f)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<1855,1856,46>",(x)); Inst10++; } } catch(e) {}
+  return f(x);
+}
+
+for (var i = 0; i < 5; i++) {
+try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<1871,1872,49>",(i)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<1878,1879,49>",(i)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<1885,1886,49>",(i)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (g) != "undefined") {_RecordType("<1894,1895,50>",(g)); Inst14++; } } catch(e) {}
+  g(0);
+}
+
+true;
+try { if (Inst15 <= 1000 && typeof (g) != "undefined") {_RecordType("<1909,1910,54>",(g)); Inst15++; } } catch(e) {}
+g(0);
+
+try { if (Inst17 <= 1000 && typeof (e) != "undefined") {_RecordType("<1940,1941,58>",(e)); Inst17++; } } catch(e) {}
+try {
+try { if (Inst16 <= 1000 && typeof (g) != "undefined") {_RecordType("<1924,1925,57>",(g)); Inst16++; } } catch(e) {}
+  g(42);
+} catch (e) {
+  "uha";
+try { if (Inst18 <= 1000 && typeof (e) != "undefined") {_RecordType("<1956,1957,60>",(e)); Inst18++; } } catch(e) {}
+  e;
+} // Test inlining in a test context.
+
+
+try { if (Inst19 <= 1000 && typeof (h) != "undefined") {_RecordType("<2008,2009,64>",(h)); Inst19++; } } catch(e) {}
+function h(x) {
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<2010,2011,64>",(x)); Inst20++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (f) != "undefined") {_RecordType("<2024,2025,65>",(f)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (x) != "undefined") {_RecordType("<2026,2027,65>",(x)); Inst22++; } } catch(e) {}
+  return f(x) ? "yes" : "no";
+}
+
+for (var i = 0; i < 5; i++) {
+try { if (Inst23 <= 1000 && typeof (i) != "undefined") {_RecordType("<2057,2058,68>",(i)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (i) != "undefined") {_RecordType("<2064,2065,68>",(i)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (i) != "undefined") {_RecordType("<2071,2072,68>",(i)); Inst25++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (h) != "undefined") {_RecordType("<2080,2081,69>",(h)); Inst26++; } } catch(e) {}
+  h(0);
+}
+
+"yes";
+try { if (Inst27 <= 1000 && typeof (h) != "undefined") {_RecordType("<2096,2097,73>",(h)); Inst27++; } } catch(e) {}
+h(0);
+
+try { if (Inst29 <= 1000 && typeof (e) != "undefined") {_RecordType("<2127,2128,77>",(e)); Inst29++; } } catch(e) {}
+try {
+try { if (Inst28 <= 1000 && typeof (h) != "undefined") {_RecordType("<2111,2112,76>",(h)); Inst28++; } } catch(e) {}
+  h(43);
+} catch (e) {
+  "wow";
+try { if (Inst30 <= 1000 && typeof (e) != "undefined") {_RecordType("<2143,2144,79>",(e)); Inst30++; } } catch(e) {}
+  e;
+}
+

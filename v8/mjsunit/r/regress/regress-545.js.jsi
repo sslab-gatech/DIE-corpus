@@ -1,0 +1,104 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2009 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// See: http://code.google.com/p/v8/issues/detail?id=545
+// and: http://code.google.com/p/chromium/issues/detail?id=28353
+// The "this" variable proxy was reused. If context annotations differ between
+// uses, this can cause a use in a value context to assume a test context. Since
+// it has no true/false labels set, it causes a null-pointer dereference and
+// segmentation fault.
+// Code should not crash:
+// Original bug report by Robert Swiecki (wrapped to not throw):
+try { if (Inst6 <= 1000 && typeof (e) != "undefined") {_RecordType("<2169,2170,37>",(e)); Inst6++; } } catch(e) {}
+try {
+try { if (Inst0 <= 1000 && typeof (IsPrimitive) != "undefined") {_RecordType("<2082,2093,36>",(IsPrimitive)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (load) != "undefined") {_RecordType("<2094,2098,36>",(load)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (this.join) != "undefined") {_RecordType("<2104,2113,36>",(this.join)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (String('&#10;').charCodeAt) != "undefined") {_RecordType("<2118,2144,36>",(String('&#10;').charCodeAt)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (String) != "undefined") {_RecordType("<2118,2124,36>",(String)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Math) != "undefined") {_RecordType("<2153,2157,36>",(Math)); Inst5++; } } catch(e) {}
+  new IsPrimitive(load()) ? this.join() : String('&#10;').charCodeAt(!this > Math);
+} catch (e) {
+  ;
+} // Shorter examples:
+
+
+this + !this;
+this + (this ? 1 : 2);
+

@@ -1,0 +1,102 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (bar) != "undefined") {_RecordType("<9,12,1>",(bar)); Inst0++; } } catch(e) {}
+function bar() {
+  ;
+}
+
+try { if (Inst1 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<24,32,5>",(noInline)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (bar) != "undefined") {_RecordType("<33,36,5>",(bar)); Inst2++; } } catch(e) {}
+noInline(bar);
+
+try { if (Inst3 <= 1000 && typeof (baz) != "undefined") {_RecordType("<49,52,7>",(baz)); Inst3++; } } catch(e) {}
+function baz() {
+  ;
+}
+
+try { if (Inst4 <= 1000 && typeof (foo) != "undefined") {_RecordType("<73,76,11>",(foo)); Inst4++; } } catch(e) {}
+function foo() {
+try { if (Inst5 <= 1000 && typeof (baz) != "undefined") {_RecordType("<94,97,12>",(baz)); Inst5++; } } catch(e) {}
+  if (typeof baz !== "undefined") {
+    ;
+  } else {
+    // The test here is to make sure that we don't merge this basic block
+    // with itself. If we did, we'd infinite loop in the compiler and eventually
+    // crash due to OOM when growing a Vector.
+    while (true) {
+try { if (Inst6 <= 1000 && typeof (bar) != "undefined") {_RecordType("<361,364,19>",(bar)); Inst6++; } } catch(e) {}
+      bar();
+    }
+  }
+}
+
+try { if (Inst7 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<381,389,24>",(noInline)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (foo) != "undefined") {_RecordType("<390,393,24>",(foo)); Inst8++; } } catch(e) {}
+noInline(foo);
+
+for (let i = 0; i < 10000; ++i) {
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<406,407,26>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<413,414,26>",(i)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<426,427,26>",(i)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (foo) != "undefined") {_RecordType("<433,436,27>",(foo)); Inst12++; } } catch(e) {}
+  foo();
+}
+

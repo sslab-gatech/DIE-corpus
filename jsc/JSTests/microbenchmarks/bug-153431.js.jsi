@@ -1,0 +1,142 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//@ runNoFTL
+// Regression test for https://bugs.webkit.org/show_bug.cgi?id=153431.
+// Reduced version based on the reproduction case provided by Ryan Sturgell in the bug,
+// with some variable renames to read slightly better.
+try { if (Inst0 <= 1000 && typeof (assert) != "undefined") {_RecordType("<236,242,5>",(assert)); Inst0++; } } catch(e) {}
+function assert(testedValue) {
+try { if (Inst1 <= 1000 && typeof (testedValue) != "undefined") {_RecordType("<243,254,5>",(testedValue)); Inst1++; } } catch(e) {}
+  ;
+}
+
+try { if (Inst2 <= 1000 && typeof (badFunc) != "undefined") {_RecordType("<274,281,9>",(badFunc)); Inst2++; } } catch(e) {}
+function badFunc(arr, operand, resultArr) {
+try { if (Inst3 <= 1000 && typeof (arr) != "undefined") {_RecordType("<282,285,9>",(arr)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (operand) != "undefined") {_RecordType("<287,294,9>",(operand)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<296,305,9>",(resultArr)); Inst5++; } } catch(e) {}
+  // This re-use of variable "operand" is important - rename it and the bug goes away.
+try { if (Inst7 <= 1000 && typeof (arr[operand]) != "undefined") {_RecordType("<408,420,11>",(arr[operand])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (arr) != "undefined") {_RecordType("<408,411,11>",(arr)); Inst8++; } } catch(e) {}
+  operand = arr[operand];
+try { if (Inst6 <= 1000 && typeof (operand) != "undefined") {_RecordType("<398,405,11>",(operand)); Inst6++; } } catch(e) {}
+
+  if (false) {
+    // If this unreachable block is removed, the bug goes away!!
+    ;
+  } else {
+try { if (Inst11 <= 1000 && typeof (operand) != "undefined") {_RecordType("<539,546,17>",(operand)); Inst11++; } } catch(e) {}
+    resultArr[0] = operand;
+try { if (Inst9 <= 1000 && typeof (resultArr[0]) != "undefined") {_RecordType("<524,536,17>",(resultArr[0])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<524,533,17>",(resultArr)); Inst10++; } } catch(e) {}
+  }
+}
+
+try { if (Inst12 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<555,563,21>",(noInline)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (badFunc) != "undefined") {_RecordType("<564,571,21>",(badFunc)); Inst13++; } } catch(e) {}
+noInline(badFunc);
+
+try { if (Inst14 <= 1000 && typeof (run) != "undefined") {_RecordType("<584,587,23>",(run)); Inst14++; } } catch(e) {}
+function run() {
+  for (var i = 0; i < 10000; i++) {
+try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<603,604,24>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<610,611,24>",(i)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<621,622,24>",(i)); Inst17++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (Uint32Array) != "undefined") {_RecordType("<646,657,25>",(Uint32Array)); Inst19++; } } catch(e) {}
+    var arr = new Uint32Array([0x80000000, 1]); // Needs to be an Uint32Array.
+try { if (Inst18 <= 1000 && typeof (arr) != "undefined") {_RecordType("<636,639,25>",(arr)); Inst18++; } } catch(e) {}
+
+    var resultArr = [];
+try { if (Inst20 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<716,725,27>",(resultArr)); Inst20++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (badFunc) != "undefined") {_RecordType("<736,743,28>",(badFunc)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (arr) != "undefined") {_RecordType("<744,747,28>",(arr)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<752,761,28>",(resultArr)); Inst23++; } } catch(e) {}
+    badFunc(arr, 0, resultArr);
+try { if (Inst24 <= 1000 && typeof (resultArr[0]) != "undefined") {_RecordType("<768,780,29>",(resultArr[0])); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<768,777,29>",(resultArr)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (arr[0]) != "undefined") {_RecordType("<784,790,29>",(arr[0])); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (arr) != "undefined") {_RecordType("<784,787,29>",(arr)); Inst27++; } } catch(e) {}
+    resultArr[0] == arr[0];
+try { if (Inst28 <= 1000 && typeof (badFunc) != "undefined") {_RecordType("<796,803,30>",(badFunc)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (arr) != "undefined") {_RecordType("<804,807,30>",(arr)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<812,821,30>",(resultArr)); Inst30++; } } catch(e) {}
+    badFunc(arr, 1, resultArr);
+try { if (Inst31 <= 1000 && typeof (resultArr[0]) != "undefined") {_RecordType("<828,840,31>",(resultArr[0])); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (resultArr) != "undefined") {_RecordType("<828,837,31>",(resultArr)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (arr[1]) != "undefined") {_RecordType("<844,850,31>",(arr[1])); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (arr) != "undefined") {_RecordType("<844,847,31>",(arr)); Inst34++; } } catch(e) {}
+    resultArr[0] == arr[1];
+  }
+}
+
+try { if (Inst35 <= 1000 && typeof (run) != "undefined") {_RecordType("<859,862,35>",(run)); Inst35++; } } catch(e) {}
+run();
+

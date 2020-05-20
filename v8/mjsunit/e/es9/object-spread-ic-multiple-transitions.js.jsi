@@ -1,0 +1,96 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+try { if (Inst0 <= 1000 && typeof (testMegamorphicWithNonSimpleTransitionHandler) != "undefined") {_RecordType("<177,222,4>",(testMegamorphicWithNonSimpleTransitionHandler)); Inst0++; } } catch(e) {}
+(function testMegamorphicWithNonSimpleTransitionHandler() {
+try { if (Inst1 <= 1000 && typeof (spread) != "undefined") {_RecordType("<238,244,5>",(spread)); Inst1++; } } catch(e) {}
+  function spread(o) {
+try { if (Inst2 <= 1000 && typeof (o) != "undefined") {_RecordType("<245,246,5>",(o)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (o) != "undefined") {_RecordType("<266,267,6>",(o)); Inst3++; } } catch(e) {}
+    return { ...o
+    };
+  } // Set up transition tree
+
+
+  let obj = { ...{},
+    a: 0,
+    b: 1,
+    boom: 2
+  }; // make CloneObjectIC MEGAMORPHIC
+try { if (Inst4 <= 1000 && typeof (obj) != "undefined") {_RecordType("<313,316,11>",(obj)); Inst4++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (spread) != "undefined") {_RecordType("<402,408,17>",(spread)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<413,418,17>",(Proxy)); Inst6++; } } catch(e) {}
+  spread(new Proxy({}, {})); // Ensure we don't crash, and create the correct object
+
+  ({
+    a: 0,
+    b: 1,
+    c: 2
+  });
+try { if (Inst7 <= 1000 && typeof (spread) != "undefined") {_RecordType("<528,534,24>",(spread)); Inst7++; } } catch(e) {}
+  spread({
+    a: 0,
+    b: 1,
+    c: 2
+  });
+})();
+

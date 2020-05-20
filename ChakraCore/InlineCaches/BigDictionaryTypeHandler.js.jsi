@@ -1,0 +1,121 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+
+/*
+ * Behaviour of inline caches when the TypeHandler switches to BigDictionaryTypeHandler.
+ * Based on a bug: Blue 179018
+ */
+var obj1 = {
+  prop1: 0
+};
+try { if (Inst0 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<499,503,10>",(obj1)); Inst0++; } } catch(e) {}
+var index = 0; //{};
+try { if (Inst1 <= 1000 && typeof (index) != "undefined") {_RecordType("<526,531,13>",(index)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<544,565,15>",(Object.defineProperty)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<544,550,15>",(Object)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<566,570,15>",(obj1)); Inst4++; } } catch(e) {}
+Object.defineProperty(obj1, "someProp", {
+  get: function () {
+    ;
+  },
+  set: function (x) {
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<635,636,19>",(x)); Inst5++; } } catch(e) {}
+    ;
+  }
+});
+
+var func0 = function () {
+  obj1[index--] = 1;
+try { if (Inst7 <= 1000 && typeof (obj1[index--]) != "undefined") {_RecordType("<683,696,25>",(obj1[index--])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<683,687,25>",(obj1)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (index) != "undefined") {_RecordType("<688,693,25>",(index)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (obj1.prop1) != "undefined") {_RecordType("<711,721,26>",(obj1.prop1)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<711,715,26>",(obj1)); Inst11++; } } catch(e) {}
+  return obj1.prop1;
+};
+try { if (Inst6 <= 1000 && typeof (func0) != "undefined") {_RecordType("<659,664,24>",(func0)); Inst6++; } } catch(e) {}
+
+var func1 = function (obj1) {
+try { if (Inst13 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<749,753,29>",(obj1)); Inst13++; } } catch(e) {}
+  for (var i = 0; i < 65535; i++) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<768,769,30>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<775,776,30>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<786,787,30>",(i)); Inst16++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (func0) != "undefined") {_RecordType("<810,815,31>",(func0)); Inst19++; } } catch(e) {}
+    obj1.prop1 = func0();
+try { if (Inst17 <= 1000 && typeof (obj1.prop1) != "undefined") {_RecordType("<797,807,31>",(obj1.prop1)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (obj1) != "undefined") {_RecordType("<797,801,31>",(obj1)); Inst18++; } } catch(e) {}
+  }
+};
+try { if (Inst12 <= 1000 && typeof (func1) != "undefined") {_RecordType("<731,736,29>",(func1)); Inst12++; } } catch(e) {}
+
+try { if (Inst20 <= 1000 && typeof (print) != "undefined") {_RecordType("<827,832,35>",(print)); Inst20++; } } catch(e) {}
+print("Pass");
+

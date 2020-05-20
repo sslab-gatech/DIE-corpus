@@ -1,0 +1,400 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+var Inst125 = 0;
+var Inst126 = 0;
+var Inst127 = 0;
+var Inst128 = 0;
+var Inst129 = 0;
+var Inst130 = 0;
+var Inst131 = 0;
+var Inst132 = 0;
+var Inst133 = 0;
+var Inst134 = 0;
+var Inst135 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2012 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+try { if (Inst0 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<1639,1658,28>",(test_helper_for_ics)); Inst0++; } } catch(e) {}
+function test_helper_for_ics(func, b1, b2, b3, b4) {
+try { if (Inst1 <= 1000 && typeof (func) != "undefined") {_RecordType("<1659,1663,28>",(func)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (b1) != "undefined") {_RecordType("<1665,1667,28>",(b1)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (b2) != "undefined") {_RecordType("<1669,1671,28>",(b2)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b3) != "undefined") {_RecordType("<1673,1675,28>",(b3)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (b4) != "undefined") {_RecordType("<1677,1679,28>",(b4)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (b1) != "undefined") {_RecordType("<1685,1687,29>",(b1)); Inst6++; } } catch(e) {}
+  b1;
+try { if (Inst7 <= 1000 && typeof (func) != "undefined") {_RecordType("<1691,1695,30>",(func)); Inst7++; } } catch(e) {}
+  func(.5, .5);
+try { if (Inst8 <= 1000 && typeof (b2) != "undefined") {_RecordType("<1707,1709,31>",(b2)); Inst8++; } } catch(e) {}
+  b2;
+try { if (Inst9 <= 1000 && typeof (func) != "undefined") {_RecordType("<1713,1717,32>",(func)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1722,1731,32>",(undefined)); Inst10++; } } catch(e) {}
+  func(.5, undefined);
+try { if (Inst11 <= 1000 && typeof (b3) != "undefined") {_RecordType("<1736,1738,33>",(b3)); Inst11++; } } catch(e) {}
+  b3;
+try { if (Inst12 <= 1000 && typeof (func) != "undefined") {_RecordType("<1742,1746,34>",(func)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1747,1756,34>",(undefined)); Inst13++; } } catch(e) {}
+  func(undefined, .5);
+try { if (Inst14 <= 1000 && typeof (b4) != "undefined") {_RecordType("<1765,1767,35>",(b4)); Inst14++; } } catch(e) {}
+  b4;
+try { if (Inst15 <= 1000 && typeof (func) != "undefined") {_RecordType("<1771,1775,36>",(func)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1776,1785,36>",(undefined)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1787,1796,36>",(undefined)); Inst17++; } } catch(e) {}
+  func(undefined, undefined);
+}
+
+try { if (Inst18 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<1811,1837,39>",(test_helper_for_crankshaft)); Inst18++; } } catch(e) {}
+function test_helper_for_crankshaft(func, b1, b2, b3, b4) {
+try { if (Inst19 <= 1000 && typeof (func) != "undefined") {_RecordType("<1838,1842,39>",(func)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (b1) != "undefined") {_RecordType("<1844,1846,39>",(b1)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (b2) != "undefined") {_RecordType("<1848,1850,39>",(b2)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (b3) != "undefined") {_RecordType("<1852,1854,39>",(b3)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (b4) != "undefined") {_RecordType("<1856,1858,39>",(b4)); Inst23++; } } catch(e) {}
+try { if (Inst24 <= 1000 && typeof (b1) != "undefined") {_RecordType("<1864,1866,40>",(b1)); Inst24++; } } catch(e) {}
+  b1;
+try { if (Inst25 <= 1000 && typeof (func) != "undefined") {_RecordType("<1870,1874,41>",(func)); Inst25++; } } catch(e) {}
+  func(.5, .5);
+try { if (Inst26 <= 1000 && typeof (b1) != "undefined") {_RecordType("<1886,1888,42>",(b1)); Inst26++; } } catch(e) {}
+  b1;
+try { if (Inst27 <= 1000 && typeof (func) != "undefined") {_RecordType("<1892,1896,43>",(func)); Inst27++; } } catch(e) {}
+  func(.5, .5);
+try { if (Inst28 <= 1000 && typeof (b2) != "undefined") {_RecordType("<1908,1910,44>",(b2)); Inst28++; } } catch(e) {}
+  b2;
+try { if (Inst29 <= 1000 && typeof (func) != "undefined") {_RecordType("<1914,1918,45>",(func)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1923,1932,45>",(undefined)); Inst30++; } } catch(e) {}
+  func(.5, undefined);
+try { if (Inst31 <= 1000 && typeof (b3) != "undefined") {_RecordType("<1937,1939,46>",(b3)); Inst31++; } } catch(e) {}
+  b3;
+try { if (Inst32 <= 1000 && typeof (func) != "undefined") {_RecordType("<1943,1947,47>",(func)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1948,1957,47>",(undefined)); Inst33++; } } catch(e) {}
+  func(undefined, .5);
+try { if (Inst34 <= 1000 && typeof (b4) != "undefined") {_RecordType("<1966,1968,48>",(b4)); Inst34++; } } catch(e) {}
+  b4;
+try { if (Inst35 <= 1000 && typeof (func) != "undefined") {_RecordType("<1972,1976,49>",(func)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1977,1986,49>",(undefined)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1988,1997,49>",(undefined)); Inst37++; } } catch(e) {}
+  func(undefined, undefined);
+}
+
+try { if (Inst38 <= 1000 && typeof (less_1) != "undefined") {_RecordType("<2012,2018,52>",(less_1)); Inst38++; } } catch(e) {}
+function less_1(a, b) {
+try { if (Inst39 <= 1000 && typeof (a) != "undefined") {_RecordType("<2019,2020,52>",(a)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (b) != "undefined") {_RecordType("<2022,2023,52>",(b)); Inst40++; } } catch(e) {}
+try { if (Inst41 <= 1000 && typeof (a) != "undefined") {_RecordType("<2036,2037,53>",(a)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (b) != "undefined") {_RecordType("<2040,2041,53>",(b)); Inst42++; } } catch(e) {}
+  return a < b;
+}
+
+try { if (Inst43 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<2046,2065,56>",(test_helper_for_ics)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (less_1) != "undefined") {_RecordType("<2066,2072,56>",(less_1)); Inst44++; } } catch(e) {}
+test_helper_for_ics(less_1, false, false, false, false);
+
+try { if (Inst45 <= 1000 && typeof (less_2) != "undefined") {_RecordType("<2113,2119,58>",(less_2)); Inst45++; } } catch(e) {}
+function less_2(a, b) {
+try { if (Inst46 <= 1000 && typeof (a) != "undefined") {_RecordType("<2120,2121,58>",(a)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (b) != "undefined") {_RecordType("<2123,2124,58>",(b)); Inst47++; } } catch(e) {}
+try { if (Inst48 <= 1000 && typeof (a) != "undefined") {_RecordType("<2137,2138,59>",(a)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (b) != "undefined") {_RecordType("<2141,2142,59>",(b)); Inst49++; } } catch(e) {}
+  return a < b;
+}
+
+try { if (Inst50 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<2147,2173,62>",(test_helper_for_crankshaft)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (less_1) != "undefined") {_RecordType("<2174,2180,62>",(less_1)); Inst51++; } } catch(e) {}
+test_helper_for_crankshaft(less_1, false, false, false, false);
+
+try { if (Inst52 <= 1000 && typeof (greater_1) != "undefined") {_RecordType("<2221,2230,64>",(greater_1)); Inst52++; } } catch(e) {}
+function greater_1(a, b) {
+try { if (Inst53 <= 1000 && typeof (a) != "undefined") {_RecordType("<2231,2232,64>",(a)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (b) != "undefined") {_RecordType("<2234,2235,64>",(b)); Inst54++; } } catch(e) {}
+try { if (Inst55 <= 1000 && typeof (a) != "undefined") {_RecordType("<2248,2249,65>",(a)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (b) != "undefined") {_RecordType("<2252,2253,65>",(b)); Inst56++; } } catch(e) {}
+  return a > b;
+}
+
+try { if (Inst57 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<2258,2277,68>",(test_helper_for_ics)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (greater_1) != "undefined") {_RecordType("<2278,2287,68>",(greater_1)); Inst58++; } } catch(e) {}
+test_helper_for_ics(greater_1, false, false, false, false);
+
+try { if (Inst59 <= 1000 && typeof (greater_2) != "undefined") {_RecordType("<2328,2337,70>",(greater_2)); Inst59++; } } catch(e) {}
+function greater_2(a, b) {
+try { if (Inst60 <= 1000 && typeof (a) != "undefined") {_RecordType("<2338,2339,70>",(a)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (b) != "undefined") {_RecordType("<2341,2342,70>",(b)); Inst61++; } } catch(e) {}
+try { if (Inst62 <= 1000 && typeof (a) != "undefined") {_RecordType("<2355,2356,71>",(a)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (b) != "undefined") {_RecordType("<2359,2360,71>",(b)); Inst63++; } } catch(e) {}
+  return a > b;
+}
+
+try { if (Inst64 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<2365,2391,74>",(test_helper_for_crankshaft)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (greater_1) != "undefined") {_RecordType("<2392,2401,74>",(greater_1)); Inst65++; } } catch(e) {}
+test_helper_for_crankshaft(greater_1, false, false, false, false);
+
+try { if (Inst66 <= 1000 && typeof (less_equal_1) != "undefined") {_RecordType("<2442,2454,76>",(less_equal_1)); Inst66++; } } catch(e) {}
+function less_equal_1(a, b) {
+try { if (Inst67 <= 1000 && typeof (a) != "undefined") {_RecordType("<2455,2456,76>",(a)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (b) != "undefined") {_RecordType("<2458,2459,76>",(b)); Inst68++; } } catch(e) {}
+try { if (Inst69 <= 1000 && typeof (a) != "undefined") {_RecordType("<2472,2473,77>",(a)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (b) != "undefined") {_RecordType("<2477,2478,77>",(b)); Inst70++; } } catch(e) {}
+  return a <= b;
+}
+
+try { if (Inst71 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<2483,2502,80>",(test_helper_for_ics)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (less_equal_1) != "undefined") {_RecordType("<2503,2515,80>",(less_equal_1)); Inst72++; } } catch(e) {}
+test_helper_for_ics(less_equal_1, true, false, false, false);
+
+try { if (Inst73 <= 1000 && typeof (less_equal_2) != "undefined") {_RecordType("<2555,2567,82>",(less_equal_2)); Inst73++; } } catch(e) {}
+function less_equal_2(a, b) {
+try { if (Inst74 <= 1000 && typeof (a) != "undefined") {_RecordType("<2568,2569,82>",(a)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (b) != "undefined") {_RecordType("<2571,2572,82>",(b)); Inst75++; } } catch(e) {}
+try { if (Inst76 <= 1000 && typeof (a) != "undefined") {_RecordType("<2585,2586,83>",(a)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (b) != "undefined") {_RecordType("<2590,2591,83>",(b)); Inst77++; } } catch(e) {}
+  return a <= b;
+}
+
+try { if (Inst78 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<2596,2622,86>",(test_helper_for_crankshaft)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (less_equal_1) != "undefined") {_RecordType("<2623,2635,86>",(less_equal_1)); Inst79++; } } catch(e) {}
+test_helper_for_crankshaft(less_equal_1, true, false, false, false);
+
+try { if (Inst80 <= 1000 && typeof (greater_equal_1) != "undefined") {_RecordType("<2675,2690,88>",(greater_equal_1)); Inst80++; } } catch(e) {}
+function greater_equal_1(a, b) {
+try { if (Inst81 <= 1000 && typeof (a) != "undefined") {_RecordType("<2691,2692,88>",(a)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (b) != "undefined") {_RecordType("<2694,2695,88>",(b)); Inst82++; } } catch(e) {}
+try { if (Inst83 <= 1000 && typeof (a) != "undefined") {_RecordType("<2708,2709,89>",(a)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (b) != "undefined") {_RecordType("<2713,2714,89>",(b)); Inst84++; } } catch(e) {}
+  return a >= b;
+}
+
+try { if (Inst85 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<2719,2738,92>",(test_helper_for_ics)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (greater_equal_1) != "undefined") {_RecordType("<2739,2754,92>",(greater_equal_1)); Inst86++; } } catch(e) {}
+test_helper_for_ics(greater_equal_1, true, false, false, false);
+
+try { if (Inst87 <= 1000 && typeof (greater_equal_2) != "undefined") {_RecordType("<2794,2809,94>",(greater_equal_2)); Inst87++; } } catch(e) {}
+function greater_equal_2(a, b) {
+try { if (Inst88 <= 1000 && typeof (a) != "undefined") {_RecordType("<2810,2811,94>",(a)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (b) != "undefined") {_RecordType("<2813,2814,94>",(b)); Inst89++; } } catch(e) {}
+try { if (Inst90 <= 1000 && typeof (a) != "undefined") {_RecordType("<2827,2828,95>",(a)); Inst90++; } } catch(e) {}try { if (Inst91 <= 1000 && typeof (b) != "undefined") {_RecordType("<2832,2833,95>",(b)); Inst91++; } } catch(e) {}
+  return a >= b;
+}
+
+try { if (Inst92 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<2838,2864,98>",(test_helper_for_crankshaft)); Inst92++; } } catch(e) {}try { if (Inst93 <= 1000 && typeof (greater_equal_1) != "undefined") {_RecordType("<2865,2880,98>",(greater_equal_1)); Inst93++; } } catch(e) {}
+test_helper_for_crankshaft(greater_equal_1, true, false, false, false);
+
+try { if (Inst94 <= 1000 && typeof (equal_1) != "undefined") {_RecordType("<2920,2927,100>",(equal_1)); Inst94++; } } catch(e) {}
+function equal_1(a, b) {
+try { if (Inst95 <= 1000 && typeof (a) != "undefined") {_RecordType("<2928,2929,100>",(a)); Inst95++; } } catch(e) {}try { if (Inst96 <= 1000 && typeof (b) != "undefined") {_RecordType("<2931,2932,100>",(b)); Inst96++; } } catch(e) {}
+try { if (Inst97 <= 1000 && typeof (a) != "undefined") {_RecordType("<2945,2946,101>",(a)); Inst97++; } } catch(e) {}try { if (Inst98 <= 1000 && typeof (b) != "undefined") {_RecordType("<2950,2951,101>",(b)); Inst98++; } } catch(e) {}
+  return a == b;
+}
+
+try { if (Inst99 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<2956,2975,104>",(test_helper_for_ics)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (equal_1) != "undefined") {_RecordType("<2976,2983,104>",(equal_1)); Inst100++; } } catch(e) {}
+test_helper_for_ics(equal_1, true, false, false, true);
+
+try { if (Inst101 <= 1000 && typeof (equal_2) != "undefined") {_RecordType("<3022,3029,106>",(equal_2)); Inst101++; } } catch(e) {}
+function equal_2(a, b) {
+try { if (Inst102 <= 1000 && typeof (a) != "undefined") {_RecordType("<3030,3031,106>",(a)); Inst102++; } } catch(e) {}try { if (Inst103 <= 1000 && typeof (b) != "undefined") {_RecordType("<3033,3034,106>",(b)); Inst103++; } } catch(e) {}
+try { if (Inst104 <= 1000 && typeof (a) != "undefined") {_RecordType("<3047,3048,107>",(a)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (b) != "undefined") {_RecordType("<3052,3053,107>",(b)); Inst105++; } } catch(e) {}
+  return a == b;
+}
+
+try { if (Inst106 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<3058,3084,110>",(test_helper_for_crankshaft)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (equal_2) != "undefined") {_RecordType("<3085,3092,110>",(equal_2)); Inst107++; } } catch(e) {}
+test_helper_for_crankshaft(equal_2, true, false, false, true);
+
+try { if (Inst108 <= 1000 && typeof (strict_equal_1) != "undefined") {_RecordType("<3131,3145,112>",(strict_equal_1)); Inst108++; } } catch(e) {}
+function strict_equal_1(a, b) {
+try { if (Inst109 <= 1000 && typeof (a) != "undefined") {_RecordType("<3146,3147,112>",(a)); Inst109++; } } catch(e) {}try { if (Inst110 <= 1000 && typeof (b) != "undefined") {_RecordType("<3149,3150,112>",(b)); Inst110++; } } catch(e) {}
+try { if (Inst111 <= 1000 && typeof (a) != "undefined") {_RecordType("<3163,3164,113>",(a)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (b) != "undefined") {_RecordType("<3169,3170,113>",(b)); Inst112++; } } catch(e) {}
+  return a === b;
+}
+
+try { if (Inst113 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<3175,3194,116>",(test_helper_for_ics)); Inst113++; } } catch(e) {}try { if (Inst114 <= 1000 && typeof (strict_equal_1) != "undefined") {_RecordType("<3195,3209,116>",(strict_equal_1)); Inst114++; } } catch(e) {}
+test_helper_for_ics(strict_equal_1, true, false, false, true);
+
+try { if (Inst115 <= 1000 && typeof (strict_equal_2) != "undefined") {_RecordType("<3248,3262,118>",(strict_equal_2)); Inst115++; } } catch(e) {}
+function strict_equal_2(a, b) {
+try { if (Inst116 <= 1000 && typeof (a) != "undefined") {_RecordType("<3263,3264,118>",(a)); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (b) != "undefined") {_RecordType("<3266,3267,118>",(b)); Inst117++; } } catch(e) {}
+try { if (Inst118 <= 1000 && typeof (a) != "undefined") {_RecordType("<3280,3281,119>",(a)); Inst118++; } } catch(e) {}try { if (Inst119 <= 1000 && typeof (b) != "undefined") {_RecordType("<3286,3287,119>",(b)); Inst119++; } } catch(e) {}
+  return a === b;
+}
+
+try { if (Inst120 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<3292,3318,122>",(test_helper_for_crankshaft)); Inst120++; } } catch(e) {}try { if (Inst121 <= 1000 && typeof (strict_equal_2) != "undefined") {_RecordType("<3319,3333,122>",(strict_equal_2)); Inst121++; } } catch(e) {}
+test_helper_for_crankshaft(strict_equal_2, true, false, false, true);
+
+try { if (Inst122 <= 1000 && typeof (not_equal_1) != "undefined") {_RecordType("<3372,3383,124>",(not_equal_1)); Inst122++; } } catch(e) {}
+function not_equal_1(a, b) {
+try { if (Inst123 <= 1000 && typeof (a) != "undefined") {_RecordType("<3384,3385,124>",(a)); Inst123++; } } catch(e) {}try { if (Inst124 <= 1000 && typeof (b) != "undefined") {_RecordType("<3387,3388,124>",(b)); Inst124++; } } catch(e) {}
+try { if (Inst125 <= 1000 && typeof (a) != "undefined") {_RecordType("<3401,3402,125>",(a)); Inst125++; } } catch(e) {}try { if (Inst126 <= 1000 && typeof (b) != "undefined") {_RecordType("<3406,3407,125>",(b)); Inst126++; } } catch(e) {}
+  return a != b;
+}
+
+try { if (Inst127 <= 1000 && typeof (test_helper_for_ics) != "undefined") {_RecordType("<3412,3431,128>",(test_helper_for_ics)); Inst127++; } } catch(e) {}try { if (Inst128 <= 1000 && typeof (not_equal_1) != "undefined") {_RecordType("<3432,3443,128>",(not_equal_1)); Inst128++; } } catch(e) {}
+test_helper_for_ics(not_equal_1, false, true, true, false);
+
+try { if (Inst129 <= 1000 && typeof (not_equal_2) != "undefined") {_RecordType("<3482,3493,130>",(not_equal_2)); Inst129++; } } catch(e) {}
+function not_equal_2(a, b) {
+try { if (Inst130 <= 1000 && typeof (a) != "undefined") {_RecordType("<3494,3495,130>",(a)); Inst130++; } } catch(e) {}try { if (Inst131 <= 1000 && typeof (b) != "undefined") {_RecordType("<3497,3498,130>",(b)); Inst131++; } } catch(e) {}
+try { if (Inst132 <= 1000 && typeof (a) != "undefined") {_RecordType("<3511,3512,131>",(a)); Inst132++; } } catch(e) {}try { if (Inst133 <= 1000 && typeof (b) != "undefined") {_RecordType("<3516,3517,131>",(b)); Inst133++; } } catch(e) {}
+  return a != b;
+}
+
+try { if (Inst134 <= 1000 && typeof (test_helper_for_crankshaft) != "undefined") {_RecordType("<3522,3548,134>",(test_helper_for_crankshaft)); Inst134++; } } catch(e) {}try { if (Inst135 <= 1000 && typeof (not_equal_2) != "undefined") {_RecordType("<3549,3560,134>",(not_equal_2)); Inst135++; } } catch(e) {}
+test_helper_for_crankshaft(not_equal_2, false, true, true, false);
+

@@ -1,0 +1,70 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --mock-arraybuffer-allocator --mock-arraybuffer-allocator-limit=1300000000
+// --mock-arraybuffer-allocator-limit should be above the hard limit external
+// for memory. Below that limit anything is opportunistic and may be delayed,
+// e.g., by tasks getting stalled and the event loop not being invoked.
+for (var i = 0; i < 1536; i++) {
+try { if (Inst0 <= 1000 && typeof (i) != "undefined") {_RecordType("<489,490,8>",(i)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (i) != "undefined") {_RecordType("<496,497,8>",(i)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (i) != "undefined") {_RecordType("<506,507,8>",(i)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<533,544,9>",(ArrayBuffer)); Inst4++; } } catch(e) {}
+  let garbage = new ArrayBuffer(1024 * 1024);
+try { if (Inst3 <= 1000 && typeof (garbage) != "undefined") {_RecordType("<519,526,9>",(garbage)); Inst3++; } } catch(e) {}
+}
+

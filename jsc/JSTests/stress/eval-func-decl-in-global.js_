@@ -1,0 +1,26 @@
+var assert = function (result, expected, message) {
+};
+
+var assertThrow = function (cb, expected) {
+    try {
+        cb();
+    } catch(e) {
+    }
+};
+
+var foo = 'foo';
+var success = false;
+// FIXME: According to spec foo should have value 'undefined', 
+// but possible it would be changed https://github.com/tc39/ecma262/issues/753 
+eval("success = foo === 'foo'; { function foo(){} }");
+
+assert(success, true);
+
+success = false;
+
+let boo = 'boo';
+eval("success = boo === 'boo'; { function boo(){} } success = success && boo === 'boo';");
+
+success = success && boo === 'boo';
+
+assert(success, true);

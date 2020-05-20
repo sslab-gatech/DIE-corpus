@@ -1,0 +1,1 @@
+[null,{"type":"Void"},{"type":"Void"},{"type":"TypedArray","extra":{"subType":"Int32Array"}},null,{"type":"Constructor","extra":{"name":"Int32Array","ret":{"type":"TypedArray","extra":{"subType":"Int32Array"}}}},{"type":"Void"},{"type":"Number"},null,null,{"type":"TypedArray","extra":{"subType":"Int32Array"}},{"type":"Number"},null]

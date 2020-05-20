@@ -1,0 +1,185 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// test bailout from inlined callback.call
+try { if (Inst0 <= 1000 && typeof (BailOut) != "undefined") {_RecordType("<419,426,6>",(BailOut)); Inst0++; } } catch(e) {}
+function BailOut(ary) {
+try { if (Inst1 <= 1000 && typeof (ary) != "undefined") {_RecordType("<427,430,6>",(ary)); Inst1++; } } catch(e) {}
+  ary[0] = 1;
+try { if (Inst2 <= 1000 && typeof (ary[0]) != "undefined") {_RecordType("<436,442,7>",(ary[0])); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (ary) != "undefined") {_RecordType("<436,439,7>",(ary)); Inst3++; } } catch(e) {}
+}
+
+try { if (Inst4 <= 1000 && typeof (DispatchCallWithThis) != "undefined") {_RecordType("<460,480,10>",(DispatchCallWithThis)); Inst4++; } } catch(e) {}
+function DispatchCallWithThis(callback, arg) {
+try { if (Inst5 <= 1000 && typeof (callback) != "undefined") {_RecordType("<481,489,10>",(callback)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (arg) != "undefined") {_RecordType("<491,494,10>",(arg)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (callback.call) != "undefined") {_RecordType("<500,513,11>",(callback.call)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (callback) != "undefined") {_RecordType("<500,508,11>",(callback)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arg) != "undefined") {_RecordType("<520,523,11>",(arg)); Inst9++; } } catch(e) {}
+  callback.call(this, arg);
+}
+
+try { if (Inst10 <= 1000 && typeof (DispatchBailout) != "undefined") {_RecordType("<538,553,14>",(DispatchBailout)); Inst10++; } } catch(e) {}
+function DispatchBailout(arg) {
+try { if (Inst11 <= 1000 && typeof (arg) != "undefined") {_RecordType("<554,557,14>",(arg)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (DispatchCallWithThis) != "undefined") {_RecordType("<563,583,15>",(DispatchCallWithThis)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (BailOut) != "undefined") {_RecordType("<584,591,15>",(BailOut)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (arg) != "undefined") {_RecordType("<593,596,15>",(arg)); Inst14++; } } catch(e) {}
+  DispatchCallWithThis(BailOut, arg);
+}
+
+try { if (Inst15 <= 1000 && typeof (DispatchBailout) != "undefined") {_RecordType("<602,617,18>",(DispatchBailout)); Inst15++; } } catch(e) {}
+DispatchBailout([1]);
+try { if (Inst16 <= 1000 && typeof (DispatchBailout) != "undefined") {_RecordType("<624,639,19>",(DispatchBailout)); Inst16++; } } catch(e) {}
+DispatchBailout([1]);
+try { if (Inst17 <= 1000 && typeof (DispatchBailout) != "undefined") {_RecordType("<646,661,20>",(DispatchBailout)); Inst17++; } } catch(e) {}
+DispatchBailout([1.1]); // test bail out from having a different callback function
+
+try { if (Inst18 <= 1000 && typeof (foo) != "undefined") {_RecordType("<739,742,22>",(foo)); Inst18++; } } catch(e) {}
+function foo() {
+try { if (Inst19 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<749,760,23>",(console.log)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (console) != "undefined") {_RecordType("<749,756,23>",(console)); Inst20++; } } catch(e) {}
+  console.log("foo");
+}
+
+;
+
+try { if (Inst21 <= 1000 && typeof (Dispatch) != "undefined") {_RecordType("<784,792,28>",(Dispatch)); Inst21++; } } catch(e) {}
+function Dispatch(callback) {
+try { if (Inst22 <= 1000 && typeof (callback) != "undefined") {_RecordType("<793,801,28>",(callback)); Inst22++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (callback.call) != "undefined") {_RecordType("<807,820,29>",(callback.call)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (callback) != "undefined") {_RecordType("<807,815,29>",(callback)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<821,830,29>",(undefined)); Inst25++; } } catch(e) {}
+  callback.call(undefined);
+}
+
+try { if (Inst26 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<845,857,32>",(CallDispatch)); Inst26++; } } catch(e) {}
+function CallDispatch(callback) {
+try { if (Inst27 <= 1000 && typeof (callback) != "undefined") {_RecordType("<858,866,32>",(callback)); Inst27++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (Dispatch) != "undefined") {_RecordType("<872,880,33>",(Dispatch)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (callback) != "undefined") {_RecordType("<881,889,33>",(callback)); Inst29++; } } catch(e) {}
+  Dispatch(callback);
+}
+
+try { if (Inst30 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<895,907,36>",(CallDispatch)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (foo) != "undefined") {_RecordType("<908,911,36>",(foo)); Inst31++; } } catch(e) {}
+CallDispatch(foo);
+try { if (Inst32 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<914,926,37>",(CallDispatch)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (foo) != "undefined") {_RecordType("<927,930,37>",(foo)); Inst33++; } } catch(e) {}
+CallDispatch(foo);
+try { if (Inst34 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<933,945,38>",(CallDispatch)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (foo) != "undefined") {_RecordType("<946,949,38>",(foo)); Inst35++; } } catch(e) {}
+CallDispatch(foo); // BailOutOnInlineFunction
+
+try { if (Inst36 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<980,992,40>",(CallDispatch)); Inst36++; } } catch(e) {}
+CallDispatch(function () {
+try { if (Inst37 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<1009,1020,41>",(console.log)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (console) != "undefined") {_RecordType("<1009,1016,41>",(console)); Inst38++; } } catch(e) {}
+  console.log("bar");
+});
+try { if (Inst39 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<1033,1045,43>",(CallDispatch)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1046,1049,43>",(foo)); Inst40++; } } catch(e) {}
+CallDispatch(foo); // tautological statement makes function.call a non-fixed method. Test CheckFixedFld bailout.
+
+try { if (Inst44 <= 1000 && typeof (Function.prototype.call) != "undefined") {_RecordType("<1173,1196,45>",(Function.prototype.call)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<1173,1191,45>",(Function.prototype)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1173,1181,45>",(Function)); Inst46++; } } catch(e) {}
+Function.prototype.call = Function.prototype.call;
+try { if (Inst41 <= 1000 && typeof (Function.prototype.call) != "undefined") {_RecordType("<1147,1170,45>",(Function.prototype.call)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (Function.prototype) != "undefined") {_RecordType("<1147,1165,45>",(Function.prototype)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1147,1155,45>",(Function)); Inst43++; } } catch(e) {}
+try { if (Inst47 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<1198,1210,46>",(CallDispatch)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1211,1214,46>",(foo)); Inst48++; } } catch(e) {}
+CallDispatch(foo);
+try { if (Inst49 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<1217,1229,47>",(CallDispatch)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1230,1233,47>",(foo)); Inst50++; } } catch(e) {}
+CallDispatch(foo); // rejit, not inlining callback.call
+
+try { if (Inst51 <= 1000 && typeof (CallDispatch) != "undefined") {_RecordType("<1274,1286,49>",(CallDispatch)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1287,1290,49>",(foo)); Inst52++; } } catch(e) {}
+CallDispatch(foo);
+

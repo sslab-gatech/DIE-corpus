@@ -1,0 +1,109 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (assert) != "undefined") {_RecordType("<9,15,1>",(assert)); Inst0++; } } catch(e) {}
+function assert(cond) {
+try { if (Inst1 <= 1000 && typeof (cond) != "undefined") {_RecordType("<16,20,1>",(cond)); Inst1++; } } catch(e) {}
+  ;
+}
+
+try { if (Inst2 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<31,39,5>",(noInline)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (assert) != "undefined") {_RecordType("<40,46,5>",(assert)); Inst3++; } } catch(e) {}
+noInline(assert);
+
+try { if (Inst4 <= 1000 && typeof (shouldThrowTDZ) != "undefined") {_RecordType("<59,73,7>",(shouldThrowTDZ)); Inst4++; } } catch(e) {}
+function shouldThrowTDZ(func) {
+try { if (Inst5 <= 1000 && typeof (func) != "undefined") {_RecordType("<74,78,7>",(func)); Inst5++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (e) != "undefined") {_RecordType("<113,114,10>",(e)); Inst7++; } } catch(e) {}
+  try {
+try { if (Inst6 <= 1000 && typeof (func) != "undefined") {_RecordType("<94,98,9>",(func)); Inst6++; } } catch(e) {}
+    func();
+  } catch (e) {
+    ;
+  }
+}
+
+try { if (Inst8 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<131,139,15>",(noInline)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (shouldThrowTDZ) != "undefined") {_RecordType("<140,154,15>",(shouldThrowTDZ)); Inst9++; } } catch(e) {}
+noInline(shouldThrowTDZ);
+let b = false;
+try { if (Inst10 <= 1000 && typeof (b) != "undefined") {_RecordType("<161,162,16>",(b)); Inst10++; } } catch(e) {}
+
+try { if (Inst11 <= 1000 && typeof (foo) != "undefined") {_RecordType("<182,185,18>",(foo)); Inst11++; } } catch(e) {}
+function foo() {
+try { if (Inst12 <= 1000 && typeof (b) != "undefined") {_RecordType("<196,197,19>",(b)); Inst12++; } } catch(e) {}
+  if (b) {
+try { if (Inst14 <= 1000 && typeof (x) != "undefined") {_RecordType("<209,210,20>",(x)); Inst14++; } } catch(e) {}
+    x = x;
+try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<205,206,20>",(x)); Inst13++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (x) != "undefined") {_RecordType("<223,224,21>",(x)); Inst15++; } } catch(e) {}
+    return x;
+  }
+}
+
+try { if (Inst16 <= 1000 && typeof (foo) != "undefined") {_RecordType("<233,236,25>",(foo)); Inst16++; } } catch(e) {}
+foo(); // Link as UnresolvedProperty.
+

@@ -1,0 +1,26 @@
+function assert(cond, msg = "") {
+  ;
+}
+
+noInline(assert);
+
+function shouldThrowSyntaxError(str) {
+  var hadError = false;
+
+  try {
+    eval(str);
+  } catch (e) {
+    ;
+  }
+}
+
+noInline(shouldThrowSyntaxError);
+shouldThrowSyntaxError("var f = new Function('}{')");
+shouldThrowSyntaxError("var f = new Function('}}{{')");
+
+var GeneratorFunction = function* () {
+  ;
+}.constructor;
+
+shouldThrowSyntaxError("var f = new GeneratorFunction('}{')");
+shouldThrowSyntaxError("var f = new GeneratorFunction('}}{{')");

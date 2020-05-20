@@ -1,0 +1,131 @@
+console.log('This test exercises the source URL and line number that is embedded in JavaScript exceptions, which is displayed in places like the JavaScript console.');
+
+function exceptionInFunction() {
+  throw new Error();
+}
+
+var e = undefined;
+
+try {
+  // Raises an exception that gets picked up by KJS_CHECKEXCEPTION
+  document.documentElement.innerHTML(foo);
+} catch (exception) {
+  e = exception;
+}
+
+typeof e.sourceURL;
+e.line;
+e = undefined;
+
+try {
+  // Raises an exception that gets picked up by KJS_CHECKEXCEPTIONVALUE
+  document.documentElement.appendChild('').prefix = '';
+} catch (exception) {
+  e = exception;
+}
+
+typeof e.sourceURL;
+e.line;
+e = undefined;
+
+try {
+  // Raises an exception that gets picked up by KJS_CHECKEXCEPTIONREFERENCE
+  document.documentElement.appendChild('').innerHTML = '';
+} catch (exception) {
+  e = exception;
+}
+
+typeof e.sourceURL;
+e.line;
+e = undefined;
+
+try {
+  // Raises an exception that gets picked up by KJS_CHECKEXCEPTIONLIST
+  document.getElementById(1());
+} catch (exception) {
+  e = exception;
+}
+
+typeof e.sourceURL;
+e.line;
+e = undefined; // Raises an exception inside a function to check that its line number
+// isn't overwritten in the assignment node.
+
+try {
+  var a = exceptionInFunction();
+} catch (exception) {
+  e = exception;
+}
+
+typeof e.sourceURL;
+e.line;
+realEval = eval;
+delete eval;
+
+(function () {
+  try {
+    eval("");
+  } catch (exception) {
+    e = exception;
+  }
+})();
+
+eval = realEval;
+typeof e.sourceURL;
+e.line;
+var firstPropIsGetter = {
+  get getter() {
+    throw new Error();
+  }
+
+};
+var secondPropIsGetter = {
+  prop: 1,
+
+  get getter() {
+    throw new Error();
+  }
+
+};
+var firstPropIsSetter = {
+  set setter(a) {
+    throw new Error();
+  }
+
+};
+var secondPropIsSetter = {
+  prop: 1,
+
+  set setter(a) {
+    throw new Error();
+  }
+
+};
+
+try {
+  firstPropIsGetter.getter;
+} catch (ex) {
+  e = ex;
+  e.line;
+}
+
+try {
+  secondPropIsGetter.getter;
+} catch (ex) {
+  e = ex;
+  e.line;
+}
+
+try {
+  firstPropIsSetter.setter = '';
+} catch (ex) {
+  e = ex;
+  e.line;
+}
+
+try {
+  secondPropIsSetter.setter = '';
+} catch (ex) {
+  e = ex;
+  e.line;
+}

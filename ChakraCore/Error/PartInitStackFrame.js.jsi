@@ -1,0 +1,101 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// -nonative -InjectExceptionAtPartiallyInitializedInterpreterFrame:3 -InjectPartiallyInitializedInterpreterFrameErrorType:1
+// We only check interpreter frame which ret addr matches one from frames pushed to scriptContext.
+// Thus use same function body (causes same interpreter thunk).
+try { if (Inst0 <= 1000 && typeof (createFoo) != "undefined") {_RecordType("<664,673,8>",(createFoo)); Inst0++; } } catch(e) {}
+function createFoo() {
+  var foo = function (another) {
+try { if (Inst2 <= 1000 && typeof (another) != "undefined") {_RecordType("<700,707,9>",(another)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (another) != "undefined") {_RecordType("<719,726,10>",(another)); Inst3++; } } catch(e) {}
+    if (another) {
+try { if (Inst4 <= 1000 && typeof (another) != "undefined") {_RecordType("<736,743,11>",(another)); Inst4++; } } catch(e) {}
+      another();
+    }
+  };
+try { if (Inst1 <= 1000 && typeof (foo) != "undefined") {_RecordType("<684,687,9>",(foo)); Inst1++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<768,771,15>",(foo)); Inst5++; } } catch(e) {}
+  return foo;
+}
+
+try { if (Inst12 <= 1000 && typeof (ex) != "undefined") {_RecordType("<857,859,22>",(ex)); Inst12++; } } catch(e) {}
+try {
+try { if (Inst7 <= 1000 && typeof (createFoo) != "undefined") {_RecordType("<795,804,19>",(createFoo)); Inst7++; } } catch(e) {}
+  var foo1 = createFoo();
+try { if (Inst6 <= 1000 && typeof (foo1) != "undefined") {_RecordType("<788,792,19>",(foo1)); Inst6++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (createFoo) != "undefined") {_RecordType("<821,830,20>",(createFoo)); Inst9++; } } catch(e) {}
+  var foo2 = createFoo();
+try { if (Inst8 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<814,818,20>",(foo2)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (foo1) != "undefined") {_RecordType("<836,840,21>",(foo1)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<841,845,21>",(foo2)); Inst11++; } } catch(e) {}
+  foo1(foo2);
+} catch (ex) {
+  ;
+}
+

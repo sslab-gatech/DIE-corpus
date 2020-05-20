@@ -1,0 +1,115 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Forward to the target if the trap is not defined
+var target = {
+  foo: 'bar'
+};
+try { if (Inst0 <= 1000 && typeof (target) != "undefined") {_RecordType("<56,62,2>",(target)); Inst0++; } } catch(e) {}
+
+for (let p of [new Proxy(target, {}), Proxy.revocable(target, {}).proxy]) {
+try { if (Inst1 <= 1000 && typeof (p) != "undefined") {_RecordType("<93,94,6>",(p)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<103,108,6>",(Proxy)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (target) != "undefined") {_RecordType("<109,115,6>",(target)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Proxy.revocable(target, {}).proxy) != "undefined") {_RecordType("<122,155,6>",(Proxy.revocable(target, {}).proxy)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Proxy.revocable) != "undefined") {_RecordType("<122,137,6>",(Proxy.revocable)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<122,127,6>",(Proxy)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (target) != "undefined") {_RecordType("<138,144,6>",(target)); Inst7++; } } catch(e) {}
+  // The sets from the first iteration will affect target, but it doesn't
+  // matter, since the effectiveness of the foo sets is still observable.
+  p.foo = 'baz';
+try { if (Inst8 <= 1000 && typeof (p.foo) != "undefined") {_RecordType("<310,315,9>",(p.foo)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (p) != "undefined") {_RecordType("<310,311,9>",(p)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (target.foo) != "undefined") {_RecordType("<327,337,10>",(target.foo)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (target) != "undefined") {_RecordType("<327,333,10>",(target)); Inst11++; } } catch(e) {}
+  target.foo;
+  'baz';
+  p['foo'] = 'buz';
+try { if (Inst12 <= 1000 && typeof (p['foo']) != "undefined") {_RecordType("<350,358,12>",(p['foo'])); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (p) != "undefined") {_RecordType("<350,351,12>",(p)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (target.foo) != "undefined") {_RecordType("<370,380,13>",(target.foo)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (target) != "undefined") {_RecordType("<370,376,13>",(target)); Inst15++; } } catch(e) {}
+  target.foo;
+  'buz';
+try { if (Inst17 <= 1000 && typeof (Symbol.for) != "undefined") {_RecordType("<403,413,15>",(Symbol.for)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<403,409,15>",(Symbol)); Inst18++; } } catch(e) {}
+  var sym = Symbol.for('quux');
+try { if (Inst16 <= 1000 && typeof (sym) != "undefined") {_RecordType("<397,400,15>",(sym)); Inst16++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (sym) != "undefined") {_RecordType("<434,437,16>",(sym)); Inst21++; } } catch(e) {}
+  p[sym] = sym;
+try { if (Inst19 <= 1000 && typeof (p[sym]) != "undefined") {_RecordType("<425,431,16>",(p[sym])); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (p) != "undefined") {_RecordType("<425,426,16>",(p)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (target[sym]) != "undefined") {_RecordType("<441,452,17>",(target[sym])); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (target) != "undefined") {_RecordType("<441,447,17>",(target)); Inst23++; } } catch(e) {}
+  target[sym];
+try { if (Inst24 <= 1000 && typeof (sym) != "undefined") {_RecordType("<456,459,18>",(sym)); Inst24++; } } catch(e) {}
+  sym;
+  // Reset for second iteration
+try { if (Inst27 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<509,518,20>",(undefined)); Inst27++; } } catch(e) {}
+  target[sym] = undefined;
+try { if (Inst25 <= 1000 && typeof (target[sym]) != "undefined") {_RecordType("<495,506,20>",(target[sym])); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (target) != "undefined") {_RecordType("<495,501,20>",(target)); Inst26++; } } catch(e) {}
+}
+

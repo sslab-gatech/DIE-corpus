@@ -1,0 +1,92 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// A set iterator can cope with removing the next entry, then the current entry.
+try { if (Inst1 <= 1000 && typeof (Set) != "undefined") {_RecordType("<95,98,2>",(Set)); Inst1++; } } catch(e) {}
+var set = new Set("abcd");
+try { if (Inst0 <= 1000 && typeof (set) != "undefined") {_RecordType("<85,88,2>",(set)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (set[Symbol.iterator]) != "undefined") {_RecordType("<119,139,3>",(set[Symbol.iterator])); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (set) != "undefined") {_RecordType("<119,122,3>",(set)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<123,138,3>",(Symbol.iterator)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<123,129,3>",(Symbol)); Inst6++; } } catch(e) {}
+var iter = set[Symbol.iterator]();
+try { if (Inst2 <= 1000 && typeof (iter) != "undefined") {_RecordType("<112,116,3>",(iter)); Inst2++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (iter) != "undefined") {_RecordType("<143,147,4>",(iter)); Inst7++; } } catch(e) {}
+iter;
+"a";
+try { if (Inst8 <= 1000 && typeof (iter) != "undefined") {_RecordType("<154,158,6>",(iter)); Inst8++; } } catch(e) {}
+iter;
+"b";
+try { if (Inst9 <= 1000 && typeof (set.delete) != "undefined") {_RecordType("<165,175,8>",(set.delete)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (set) != "undefined") {_RecordType("<165,168,8>",(set)); Inst10++; } } catch(e) {}
+set.delete("c");
+try { if (Inst11 <= 1000 && typeof (set.delete) != "undefined") {_RecordType("<182,192,9>",(set.delete)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (set) != "undefined") {_RecordType("<182,185,9>",(set)); Inst12++; } } catch(e) {}
+set.delete("b");
+try { if (Inst13 <= 1000 && typeof (iter) != "undefined") {_RecordType("<199,203,10>",(iter)); Inst13++; } } catch(e) {}
+iter;
+"d";
+try { if (Inst14 <= 1000 && typeof (iter) != "undefined") {_RecordType("<210,214,12>",(iter)); Inst14++; } } catch(e) {}
+iter;
+try { if (Inst15 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<216,225,13>",(undefined)); Inst15++; } } catch(e) {}
+undefined;
+

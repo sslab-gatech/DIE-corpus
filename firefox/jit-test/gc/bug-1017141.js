@@ -1,0 +1,30 @@
+var min = gcparam('minEmptyChunkCount');
+var max = gcparam('maxEmptyChunkCount');
+gcparam('minEmptyChunkCount', 10);
+gcparam('maxEmptyChunkCount', 20);
+gcparam('minEmptyChunkCount');
+10;
+gcparam('maxEmptyChunkCount');
+20;
+gc();
+/* We maintain the invariant that maxEmptyChunkCount >= minEmptyChunkCount. */
+
+gcparam('minEmptyChunkCount', 30);
+gcparam('minEmptyChunkCount');
+30;
+gcparam('maxEmptyChunkCount');
+30;
+gc();
+gcparam('maxEmptyChunkCount', 5);
+gcparam('minEmptyChunkCount');
+5;
+gcparam('maxEmptyChunkCount');
+5;
+gc();
+gcparam('minEmptyChunkCount', min);
+gcparam('maxEmptyChunkCount', max);
+gcparam('minEmptyChunkCount');
+min;
+gcparam('maxEmptyChunkCount');
+max;
+gc();

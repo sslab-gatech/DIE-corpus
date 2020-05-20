@@ -1,0 +1,95 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+'use strict';
+
+let hook = {};
+try { if (Inst0 <= 1000 && typeof (hook) != "undefined") {_RecordType("<19,23,3>",(hook)); Inst0++; } } catch(e) {}
+
+let Base = function () {
+  ;
+};
+try { if (Inst1 <= 1000 && typeof (Base) != "undefined") {_RecordType("<35,39,5>",(Base)); Inst1++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<85,90,9>",(Proxy)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Base.prototype) != "undefined") {_RecordType("<91,105,9>",(Base.prototype)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Base) != "undefined") {_RecordType("<91,95,9>",(Base)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (hook) != "undefined") {_RecordType("<107,111,9>",(hook)); Inst7++; } } catch(e) {}
+Base.prototype = new Proxy(Base.prototype, hook);
+try { if (Inst2 <= 1000 && typeof (Base.prototype) != "undefined") {_RecordType("<64,78,9>",(Base.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Base) != "undefined") {_RecordType("<64,68,9>",(Base)); Inst3++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (Base) != "undefined") {_RecordType("<137,141,11>",(Base)); Inst10++; } } catch(e) {}
+class Derived extends Base {
+  testPrimitiveReceiver() {
+    super.foo = "Derived";
+try { if (Inst9 <= 1000 && typeof (super.foo) != "undefined") {_RecordType("<176,185,13>",(super.foo)); Inst9++; } } catch(e) {}
+  }
+
+}
+try { if (Inst8 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<121,128,11>",(Derived)); Inst8++; } } catch(e) {}
+
+try { if (Inst11 <= 1000 && typeof (Derived.prototype.testPrimitiveReceiver.call) != "undefined") {_RecordType("<214,258,18>",(Derived.prototype.testPrimitiveReceiver.call)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Derived.prototype.testPrimitiveReceiver) != "undefined") {_RecordType("<214,253,18>",(Derived.prototype.testPrimitiveReceiver)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Derived.prototype) != "undefined") {_RecordType("<214,231,18>",(Derived.prototype)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<214,221,18>",(Derived)); Inst14++; } } catch(e) {}
+(() => Derived.prototype.testPrimitiveReceiver.call(null))();
+
+`can't assign to property "foo" on ({}): not an object`;
+

@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Bug 1227207
+try { if (Inst1 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<28,39,2>",(ArrayBuffer)); Inst1++; } } catch(e) {}
+var AB = new ArrayBuffer(12); // Length divides 4
+try { if (Inst0 <= 1000 && typeof (AB) != "undefined") {_RecordType("<19,21,2>",(AB)); Inst0++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<79,90,4>",(ArrayBuffer)); Inst3++; } } catch(e) {}
+var BC = new ArrayBuffer(14); // Length does not divide 4
+try { if (Inst2 <= 1000 && typeof (BC) != "undefined") {_RecordType("<70,72,4>",(BC)); Inst2++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<136,146,6>",(Int32Array)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (AB) != "undefined") {_RecordType("<147,149,6>",(AB)); Inst5++; } } catch(e) {}
+(() => new Int32Array(AB, -1))();
+
+try { if (Inst6 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<160,170,8>",(RangeError)); Inst6++; } } catch(e) {}
+RangeError;
+
+try { if (Inst7 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<184,194,10>",(Int32Array)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (AB) != "undefined") {_RecordType("<195,197,10>",(AB)); Inst8++; } } catch(e) {}
+(() => new Int32Array(AB, 2))();
+
+try { if (Inst9 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<207,217,12>",(RangeError)); Inst9++; } } catch(e) {}
+RangeError;
+
+try { if (Inst10 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<231,241,14>",(Int32Array)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (BC) != "undefined") {_RecordType("<242,244,14>",(BC)); Inst11++; } } catch(e) {}
+(() => new Int32Array(BC))();
+
+try { if (Inst12 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<251,261,16>",(RangeError)); Inst12++; } } catch(e) {}
+RangeError;
+
+try { if (Inst13 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<275,285,18>",(Int32Array)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (AB) != "undefined") {_RecordType("<286,288,18>",(AB)); Inst14++; } } catch(e) {}
+(() => new Int32Array(AB, 16))();
+
+try { if (Inst15 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<299,309,20>",(RangeError)); Inst15++; } } catch(e) {}
+RangeError;
+
+try { if (Inst16 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<323,333,22>",(Int32Array)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (AB) != "undefined") {_RecordType("<334,336,22>",(AB)); Inst17++; } } catch(e) {}
+(() => new Int32Array(AB, 0, 4))();
+
+try { if (Inst18 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<349,359,24>",(RangeError)); Inst18++; } } catch(e) {}
+RangeError;
+
+// 22.2.4.5 #14.c
+try { if (Inst19 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<391,404,27>",(reportCompare)); Inst19++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst20 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<425,438,28>",(reportCompare)); Inst20++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

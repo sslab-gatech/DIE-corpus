@@ -1,0 +1,322 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function t1() {
+  function foo(a, b, c, ...rest) {
+    return [a, b, c, ...rest];
+  }
+
+  var bar = (a, b, c, ...rest) => [a, b, c, ...rest];
+
+  class restClass {
+    method(a, b, c, ...rest) {
+      return [a, b, c, ...rest];
+    }
+
+  }
+
+  ;
+  var baz = new restClass();
+  var obj = {
+    method(a, b, c, ...rest) {
+      return [a, b, c, ...rest];
+    },
+
+    evalMethod(a, b, c, ...rest) {
+      return eval("[a, b, c, ...rest]");
+    }
+
+  };
+  var funcObj = new Function("a, b, c, ...rest", "return [a, b, c, ...rest]");
+
+  function singleRest(...rest) {
+    return rest;
+  }
+
+  console.log([1, 2, undefined], foo(1, 2));
+  console.log([1, 2, 3], foo(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], foo(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], bar(1, 2));
+  console.log([1, 2, 3], bar(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], bar(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], baz.method(1, 2));
+  console.log([1, 2, 3], baz.method(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], baz.method(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.method(1, 2));
+  console.log([1, 2, 3], obj.method(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.method(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.method(1, 2));
+  console.log([1, 2, 3], obj.method(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.method(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], funcObj(1, 2));
+  console.log([1, 2, 3], funcObj(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], funcObj(1, 2, 3, 4, 5, 6)); // The following takes a different path in the JIT
+
+  console.log([1, 2, 3, 4, 5, 6], singleRest(1, 2, 3, 4, 5, 6));
+}
+
+t1();
+
+function t2() {
+  function fooArgs(a, b, c, ...rest) {
+    arguments;
+    return [a, b, c, ...rest];
+  }
+
+  var barArgs = (a, b, c, ...rest) => {
+    arguments;
+    return [a, b, c, ...rest];
+  };
+
+  class restClass {
+    methodArgs(a, b, c, ...rest) {
+      arguments;
+      return [a, b, c, ...rest];
+    }
+
+  }
+
+  ;
+  var baz = new restClass();
+  var obj = {
+    methodArgs(a, b, c, ...rest) {
+      arguments;
+      return [a, b, c, ...rest];
+    },
+
+    evalMethodArgs(a, b, c, ...rest) {
+      arguments;
+      return eval("[a, b, c, ...rest]");
+    }
+
+  };
+
+  function testScopeSlots(a, b, c, ...rest) {
+    function sub() {
+      return [a, b, c, ...rest];
+    }
+
+    arguments;
+    return sub();
+  }
+
+  console.log([1, 2, undefined], fooArgs(1, 2));
+  console.log([1, 2, 3], fooArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], fooArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], barArgs(1, 2));
+  console.log([1, 2, 3], barArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], barArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], baz.methodArgs(1, 2));
+  console.log([1, 2, 3], baz.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], baz.methodArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.methodArgs(1, 2));
+  console.log([1, 2, 3], obj.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.methodArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.methodArgs(1, 2));
+  console.log([1, 2, 3], obj.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.methodArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], testScopeSlots(1, 2));
+  console.log([1, 2, 3], testScopeSlots(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], testScopeSlots(1, 2, 3, 4, 5, 6));
+}
+
+t2();
+
+function t3() {
+  function fooArgs(a, b, c, ...rest) {
+    this;
+    return [a, b, c, ...rest];
+  }
+
+  var barArgs = (a, b, c, ...rest) => {
+    this;
+    return [a, b, c, ...rest];
+  };
+
+  class restClass {
+    methodArgs(a, b, c, ...rest) {
+      this;
+      return [a, b, c, ...rest];
+    }
+
+  }
+
+  ;
+  var baz = new restClass();
+  var obj = {
+    methodArgs(a, b, c, ...rest) {
+      this;
+      return [a, b, c, ...rest];
+    },
+
+    evalMethodArgs(a, b, c, ...rest) {
+      this;
+      return eval("[a, b, c, ...rest]");
+    }
+
+  };
+  console.log([1, 2, undefined], fooArgs(1, 2));
+  console.log([1, 2, 3], fooArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], fooArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], barArgs(1, 2));
+  console.log([1, 2, 3], barArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], barArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], baz.methodArgs(1, 2));
+  console.log([1, 2, 3], baz.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], baz.methodArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.methodArgs(1, 2));
+  console.log([1, 2, 3], obj.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.methodArgs(1, 2, 3, 4, 5, 6));
+  console.log([1, 2, undefined], obj.methodArgs(1, 2));
+  console.log([1, 2, 3], obj.methodArgs(1, 2, 3));
+  console.log([1, 2, 3, 4, 5, 6], obj.methodArgs(1, 2, 3, 4, 5, 6));
+}
+
+t3();
+
+function t4() {
+  function inlineTest() {
+    function fooInline(a, b, c, ...rest) {
+      arguments;
+      this;
+      return [a, b, c, ...rest];
+    }
+
+    fooInline(1, 2);
+    console.log([1, 2, undefined], fooInline(1, 2));
+    console.log([1, 2, undefined], fooInline(...[1, 2]));
+    fooInline(1, 2, 3);
+    console.log([1, 2, 3], fooInline(1, 2, 3));
+    console.log([1, 2, 3], fooInline(...[1, 2, 3]));
+    fooInline(1, 2, 3, 4, 5, 6);
+    console.log([1, 2, 3, 4, 5, 6], fooInline(1, 2, 3, 4, 5, 6));
+    console.log([1, 2, 3, 4, 5, 6], fooInline(...[1, 2, 3, 4, 5, 6]));
+  }
+
+  inlineTest();
+  inlineTest();
+  inlineTest();
+}
+
+t4();
+
+function t5() {
+  var func4 = function (...argArr13) {
+    function foo() {
+      eval();
+    }
+  };
+}
+
+t5();
+
+function t6() {
+  var func4 = function (argArrObj9, ...argArr11) {
+    while (false) {
+      ;
+    }
+  };
+
+  func4();
+}
+
+t6();
+
+function t7() {
+  var func4 = function (...argArr6) {
+    for (var _i in arguments) {
+      ;
+    }
+  };
+}
+
+t7();
+
+function t8() {
+  function foo(...bar) {
+    function child() {
+      bar;
+    }
+
+    child();
+  }
+
+  foo();
+}
+
+t8();
+
+function t9() {
+  function test0() {
+    var func1 = function (...argArr5) {
+      arguments[1];
+    };
+
+    do {
+      func1();
+
+      _oo2obj2.func1();
+    } while (false);
+  }
+}
+
+t9();
+
+function t10() {
+  var eval = function (...arg) {
+    console.log(1, arg.length);
+    console.log("super()", arg[0]);
+  };
+
+  eval("super()");
+}
+
+t10();
+
+function t11() {
+  var func1 = function (...argArr0) {
+    eval('');
+    return Object({
+      get: function () {
+        ;
+      }
+    });
+  };
+}
+
+t11();
+
+function t12() {
+  function foo(...argArr9) {
+    var protoObj0 = {};
+    with (protoObj0) {
+      arguments;
+
+      var f = function () {
+        [1, 2, 3] === argArr9;
+      };
+
+      f();
+    }
+    console.log([1, 2, 3], argArr9);
+  }
+
+  foo(1, 2, 3);
+}
+
+t12(); // OS: Bug 269660: [ES6][Rest] ASSERTION 14444: (inetcore\jscript\lib\backend\irbuilder.cpp, line 792) Tried to use an undefined stacksym?
+// Serialization bug that needs to be at global scope.
+
+function test0() {
+  var func1 = function (...argArr2) {
+    if (false) {
+      var strvar9 = argArr2;
+    }
+  };
+
+  func1();
+}
+
+test0();
+test0();

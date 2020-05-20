@@ -1,0 +1,75 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+// Tests for primitive strings.
+try { if (Inst1 <= 1000 && typeof ('ott'[Symbol.iterator]) != "undefined") {_RecordType("<247,269,6>",('ott'[Symbol.iterator])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<253,268,6>",(Symbol.iterator)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<253,259,6>",(Symbol)); Inst3++; } } catch(e) {}
+var iterator = 'ott'[Symbol.iterator](); // These modifications shouldn't invalidate the String iterator protector.
+try { if (Inst0 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<236,244,6>",(iterator)); Inst0++; } } catch(e) {}
+
+iterator.__proto__.fonts = {};
+try { if (Inst4 <= 1000 && typeof (iterator.__proto__.fonts) != "undefined") {_RecordType("<349,373,8>",(iterator.__proto__.fonts)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (iterator.__proto__) != "undefined") {_RecordType("<349,367,8>",(iterator.__proto__)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<349,357,8>",(iterator)); Inst6++; } } catch(e) {}
+iterator.__proto__[0] = 0;
+try { if (Inst7 <= 1000 && typeof (iterator.__proto__[0]) != "undefined") {_RecordType("<380,401,9>",(iterator.__proto__[0])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (iterator.__proto__) != "undefined") {_RecordType("<380,398,9>",(iterator.__proto__)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (iterator) != "undefined") {_RecordType("<380,388,9>",(iterator)); Inst9++; } } catch(e) {}
+

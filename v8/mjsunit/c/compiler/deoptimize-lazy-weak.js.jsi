@@ -1,0 +1,136 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2017 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --expose-gc --allow-natives-syntax --verify-heap
+var o = {
+  f: 0
+};
+try { if (Inst0 <= 1000 && typeof (o) != "undefined") {_RecordType("<230,231,5>",(o)); Inst0++; } } catch(e) {}
+var shouldDeopt = true; // This tests a scenario where a function has an embedded object reference,
+try { if (Inst1 <= 1000 && typeof (shouldDeopt) != "undefined") {_RecordType("<250,261,8>",(shouldDeopt)); Inst1++; } } catch(e) {}
+// the function is lazy-deoptimized, the object is then collected, but the
+// code object keeps the dangling pointer.
+
+try { if (Inst2 <= 1000 && typeof (deopt) != "undefined") {_RecordType("<474,479,12>",(deopt)); Inst2++; } } catch(e) {}
+function deopt() {
+try { if (Inst3 <= 1000 && typeof (shouldDeopt) != "undefined") {_RecordType("<490,501,13>",(shouldDeopt)); Inst3++; } } catch(e) {}
+  if (shouldDeopt) {
+    // Change the global object. This deoptimizes function f because
+    // it optimistically embedded the reference to o as a constant.
+    o = {
+      f: 2
+    }; // Collect the original object o; at this point, f should invalidate
+try { if (Inst4 <= 1000 && typeof (o) != "undefined") {_RecordType("<646,647,16>",(o)); Inst4++; } } catch(e) {}
+    // its invalid reference to the original object.
+
+try { if (Inst5 <= 1000 && typeof (gc) != "undefined") {_RecordType("<797,799,21>",(gc)); Inst5++; } } catch(e) {}
+    gc();
+  }
+} // Forwarding function to make sure that function f is not the topomost
+// optimized frame (GC treats reference from topmost optimized code strongly).
+
+
+try { if (Inst6 <= 1000 && typeof (dummy_opt) != "undefined") {_RecordType("<971,980,27>",(dummy_opt)); Inst6++; } } catch(e) {}
+function dummy_opt() {
+try { if (Inst7 <= 1000 && typeof (deopt) != "undefined") {_RecordType("<987,992,28>",(deopt)); Inst7++; } } catch(e) {}
+  deopt();
+}
+
+try { if (Inst8 <= 1000 && typeof (dummy) != "undefined") {_RecordType("<1008,1013,31>",(dummy)); Inst8++; } } catch(e) {}
+function dummy() {
+try { if (Inst9 <= 1000 && typeof (dummy_opt) != "undefined") {_RecordType("<1020,1029,32>",(dummy_opt)); Inst9++; } } catch(e) {}
+  dummy_opt();
+} // When optimized, the function f embeds the constant reference
+// to the original object o.
+
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<1139,1140,37>",(f)); Inst10++; } } catch(e) {}
+function f() {
+try { if (Inst11 <= 1000 && typeof (dummy) != "undefined") {_RecordType("<1147,1152,38>",(dummy)); Inst11++; } } catch(e) {}
+  dummy();
+try { if (Inst12 <= 1000 && typeof (o.f) != "undefined") {_RecordType("<1165,1168,39>",(o.f)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (o) != "undefined") {_RecordType("<1165,1166,39>",(o)); Inst13++; } } catch(e) {}
+  return o.f;
+}
+
+shouldDeopt = false;
+try { if (Inst14 <= 1000 && typeof (shouldDeopt) != "undefined") {_RecordType("<1173,1184,42>",(shouldDeopt)); Inst14++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (f) != "undefined") {_RecordType("<1194,1195,43>",(f)); Inst15++; } } catch(e) {}
+f();
+try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<1199,1200,44>",(f)); Inst16++; } } catch(e) {}
+f();
+shouldDeopt = true;
+try { if (Inst17 <= 1000 && typeof (shouldDeopt) != "undefined") {_RecordType("<1204,1215,45>",(shouldDeopt)); Inst17++; } } catch(e) {}
+2;
+try { if (Inst18 <= 1000 && typeof (f) != "undefined") {_RecordType("<1227,1228,47>",(f)); Inst18++; } } catch(e) {}
+f();
+

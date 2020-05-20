@@ -1,0 +1,105 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test what happens when a compartment gets a SavedFrame that it doesn't have
+// the principals to access any of its frames.
+try { if (Inst1 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<136,145,3>",(newGlobal)); Inst1++; } } catch(e) {}
+var low = newGlobal({
+  principal: 0
+});
+try { if (Inst0 <= 1000 && typeof (low) != "undefined") {_RecordType("<130,133,3>",(low)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<178,187,6>",(newGlobal)); Inst3++; } } catch(e) {}
+var high = newGlobal({
+  principal: 0xfffff
+});
+try { if (Inst2 <= 1000 && typeof (high) != "undefined") {_RecordType("<171,175,6>",(high)); Inst2++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (high) != "undefined") {_RecordType("<226,230,9>",(high)); Inst6++; } } catch(e) {}
+low.high = high;
+try { if (Inst4 <= 1000 && typeof (low.high) != "undefined") {_RecordType("<215,223,9>",(low.high)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (low) != "undefined") {_RecordType("<215,218,9>",(low)); Inst5++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (low) != "undefined") {_RecordType("<243,246,10>",(low)); Inst9++; } } catch(e) {}
+high.low = low;
+try { if (Inst7 <= 1000 && typeof (high.low) != "undefined") {_RecordType("<232,240,10>",(high.low)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (high) != "undefined") {_RecordType("<232,236,10>",(high)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (high.eval) != "undefined") {_RecordType("<248,257,11>",(high.eval)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (high) != "undefined") {_RecordType("<248,252,11>",(high)); Inst11++; } } catch(e) {}
+high.eval("function a() { return saveStack(1, low); }");
+try { if (Inst13 <= 1000 && typeof (low.eval) != "undefined") {_RecordType("<317,325,12>",(low.eval)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (low) != "undefined") {_RecordType("<317,320,12>",(low)); Inst14++; } } catch(e) {}
+var stack = low.eval("high.a();");
+try { if (Inst12 <= 1000 && typeof (stack) != "undefined") {_RecordType("<309,314,12>",(stack)); Inst12++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (stack.functionDisplayName) != "undefined") {_RecordType("<340,365,13>",(stack.functionDisplayName)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (stack) != "undefined") {_RecordType("<340,345,13>",(stack)); Inst16++; } } catch(e) {}
+stack.functionDisplayName;
+null;
+try { if (Inst17 <= 1000 && typeof (stack.parent) != "undefined") {_RecordType("<373,385,15>",(stack.parent)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (stack) != "undefined") {_RecordType("<373,378,15>",(stack)); Inst18++; } } catch(e) {}
+stack.parent;
+null;
+try { if (Inst19 <= 1000 && typeof (stack.toString) != "undefined") {_RecordType("<393,407,17>",(stack.toString)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (stack) != "undefined") {_RecordType("<393,398,17>",(stack)); Inst20++; } } catch(e) {}
+stack.toString();
+"";
+

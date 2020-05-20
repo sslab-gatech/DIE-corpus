@@ -1,0 +1,111 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("This tests that integer addition optimizations in the DFG are not performed too overzealously.");
+
+try { if (Inst2 <= 1000 && typeof (doAdd) != "undefined") {_RecordType("<121,126,3>",(doAdd)); Inst2++; } } catch(e) {}
+function doAdd(a, b) {
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<127,128,3>",(a)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<130,131,3>",(b)); Inst4++; } } catch(e) {}
+  // The point of this test is to see if the DFG CSE's the second (a + b) against the first, after
+  // optimizing the first to be an integer addition. The first one certainly is an integer addition,
+  // but the second one isn't - it must either be an integer addition with overflow checking, or a
+  // double addition.
+try { if (Inst5 <= 1000 && typeof (a) != "undefined") {_RecordType("<474,475,9>",(a)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (b) != "undefined") {_RecordType("<478,479,9>",(b)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<492,493,10>",(a)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<496,497,10>",(b)); Inst8++; } } catch(e) {}
+  return {
+    a: a + b | 0,
+    b: a + b
+  };
+}
+
+for (var i = 0; i < 1000; ++i) {
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<515,516,14>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<522,523,14>",(i)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<534,535,14>",(i)); Inst11++; } } catch(e) {}
+  // Create numbers big enough that we'll start seeing doubles only after about 200 invocations.
+try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<646,647,16>",(i)); Inst13++; } } catch(e) {}
+  var a = i * 1000 * 1000 * 10;
+try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<642,643,16>",(a)); Inst12++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<678,679,17>",(i)); Inst15++; } } catch(e) {}
+  var b = i * 1000 * 1000 * 10 + 1;
+try { if (Inst14 <= 1000 && typeof (b) != "undefined") {_RecordType("<674,675,17>",(b)); Inst14++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (doAdd) != "undefined") {_RecordType("<719,724,18>",(doAdd)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (a) != "undefined") {_RecordType("<725,726,18>",(a)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (b) != "undefined") {_RecordType("<728,729,18>",(b)); Inst19++; } } catch(e) {}
+  var result = doAdd(a, b); // Use eval() for computing the correct result, to force execution to happen outside the DFG.
+try { if (Inst16 <= 1000 && typeof (result) != "undefined") {_RecordType("<710,716,18>",(result)); Inst16++; } } catch(e) {}
+
+try { if (Inst20 <= 1000 && typeof (result.a) != "undefined") {_RecordType("<829,837,20>",(result.a)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (result) != "undefined") {_RecordType("<829,835,20>",(result)); Inst21++; } } catch(e) {}
+  result.a;
+try { if (Inst22 <= 1000 && typeof (result.b) != "undefined") {_RecordType("<841,849,21>",(result.b)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (result) != "undefined") {_RecordType("<841,847,21>",(result)); Inst23++; } } catch(e) {}
+  result.b;
+}
+

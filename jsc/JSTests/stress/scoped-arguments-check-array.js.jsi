@@ -1,0 +1,170 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//@ defaultRun
+//@ runNoLLInt("--useConcurrentJIT=false", "--forceEagerCompilation=True")
+// This is a regression test that verifies we handle direct arguments as ArrayStorage.  This test should complete and not crash.
+// It is a reduction of a fuzzing bug produced testcase.  All of the code present was needed to reproduce the issue.
+let a;
+try { if (Inst0 <= 1000 && typeof (a) != "undefined") {_RecordType("<340,341,5>",(a)); Inst0++; } } catch(e) {}
+let f2;
+try { if (Inst1 <= 1000 && typeof (f2) != "undefined") {_RecordType("<347,349,6>",(f2)); Inst1++; } } catch(e) {}
+let args;
+try { if (Inst2 <= 1000 && typeof (args) != "undefined") {_RecordType("<355,359,7>",(args)); Inst2++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (setup) != "undefined") {_RecordType("<371,376,9>",(setup)); Inst3++; } } catch(e) {}
+function setup(arg1) {
+try { if (Inst4 <= 1000 && typeof (arg1) != "undefined") {_RecordType("<377,381,9>",(arg1)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<396,399,10>",(foo)); Inst5++; } } catch(e) {}
+  function foo() {
+try { if (Inst6 <= 1000 && typeof (arg1) != "undefined") {_RecordType("<415,419,11>",(arg1)); Inst6++; } } catch(e) {}
+    return arg1;
+  }
+
+  a = [0];
+try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<428,429,14>",(a)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (a.unshift) != "undefined") {_RecordType("<439,448,15>",(a.unshift)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<439,440,15>",(a)); Inst9++; } } catch(e) {}
+  a.unshift(0);
+
+  for (let z of [4, 4, 4, 4, 4]) {
+try { if (Inst10 <= 1000 && typeof (z) != "undefined") {_RecordType("<465,466,17>",(z)); Inst10++; } } catch(e) {}
+    ;
+  }
+
+  ;
+try { if (Inst11 <= 1000 && typeof (Float64Array) != "undefined") {_RecordType("<510,522,22>",(Float64Array)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<523,524,22>",(a)); Inst12++; } } catch(e) {}
+  new Float64Array(a);
+
+  f2 = function () {
+    ;
+  };
+try { if (Inst13 <= 1000 && typeof (f2) != "undefined") {_RecordType("<530,532,24>",(f2)); Inst13++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<570,579,28>",(arguments)); Inst15++; } } catch(e) {}
+  args = arguments;
+try { if (Inst14 <= 1000 && typeof (args) != "undefined") {_RecordType("<563,567,28>",(args)); Inst14++; } } catch(e) {}
+  args.length = 0;
+try { if (Inst16 <= 1000 && typeof (args.length) != "undefined") {_RecordType("<583,594,29>",(args.length)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (args) != "undefined") {_RecordType("<583,587,29>",(args)); Inst17++; } } catch(e) {}
+}
+
+;
+
+try { if (Inst18 <= 1000 && typeof (forOfArray) != "undefined") {_RecordType("<615,625,34>",(forOfArray)); Inst18++; } } catch(e) {}
+function forOfArray() {
+  for (let z of [true, true, true, true, true, true, true]) {
+try { if (Inst19 <= 1000 && typeof (z) != "undefined") {_RecordType("<641,642,35>",(z)); Inst19++; } } catch(e) {}
+    ;
+  }
+}
+
+try { if (Inst20 <= 1000 && typeof (forOfArgs) != "undefined") {_RecordType("<714,723,40>",(forOfArgs)); Inst20++; } } catch(e) {}
+function forOfArgs() {
+  for (let v of args) {
+try { if (Inst21 <= 1000 && typeof (v) != "undefined") {_RecordType("<739,740,41>",(v)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (args) != "undefined") {_RecordType("<744,748,41>",(args)); Inst22++; } } catch(e) {}
+    ;
+  }
+}
+
+try { if (Inst23 <= 1000 && typeof (callEveryOnArgs) != "undefined") {_RecordType("<774,789,46>",(callEveryOnArgs)); Inst23++; } } catch(e) {}
+function callEveryOnArgs() {
+  for (i = 0; i < 1000; ++i) {
+try { if (Inst24 <= 1000 && typeof (i) != "undefined") {_RecordType("<801,802,47>",(i)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (i) != "undefined") {_RecordType("<808,809,47>",(i)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (i) != "undefined") {_RecordType("<820,821,47>",(i)); Inst26++; } } catch(e) {}
+try { if (Inst27 <= 1000 && typeof (Array.prototype.every.call) != "undefined") {_RecordType("<829,855,48>",(Array.prototype.every.call)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Array.prototype.every) != "undefined") {_RecordType("<829,850,48>",(Array.prototype.every)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<829,844,48>",(Array.prototype)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Array) != "undefined") {_RecordType("<829,834,48>",(Array)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (args) != "undefined") {_RecordType("<856,860,48>",(args)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (f2) != "undefined") {_RecordType("<862,864,48>",(f2)); Inst32++; } } catch(e) {}
+    Array.prototype.every.call(args, f2, {});
+  }
+}
+
+try { if (Inst33 <= 1000 && typeof (setup) != "undefined") {_RecordType("<878,883,52>",(setup)); Inst33++; } } catch(e) {}
+setup();
+try { if (Inst34 <= 1000 && typeof (forOfArray) != "undefined") {_RecordType("<887,897,53>",(forOfArray)); Inst34++; } } catch(e) {}
+forOfArray();
+try { if (Inst35 <= 1000 && typeof (forOfArgs) != "undefined") {_RecordType("<901,910,54>",(forOfArgs)); Inst35++; } } catch(e) {}
+forOfArgs();
+try { if (Inst36 <= 1000 && typeof (callEveryOnArgs) != "undefined") {_RecordType("<914,929,55>",(callEveryOnArgs)); Inst36++; } } catch(e) {}
+callEveryOnArgs();
+

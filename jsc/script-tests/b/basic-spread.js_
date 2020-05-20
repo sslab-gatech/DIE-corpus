@@ -1,0 +1,56 @@
+console.log("This test checks the behavior of the spread construct.");
+
+function f(a, b, c, d) {
+  args = arguments;
+  passedThis = this;
+  passedThis;
+  args[0];
+  args[1];
+  args[2];
+  args[3];
+}
+
+var o = {};
+o.f = f;
+var test1 = [1, undefined, null, 4];
+var test2 = [1,, null, 4];
+o.f(...test1);
+o.f(...test2);
+var h = eval('"f"');
+o[h](...test1);
+o[h](...test2);
+
+function g() {
+  o.f(...arguments);
+}
+
+g.apply(null, test1);
+g.apply(null, test2);
+g(...test1);
+g(...test2);
+var a = [1, 2, 3];
+a;
+[...a];
+a = [...a];
+[...a];
+[...a, ...[...a]];
+[,,, ...a];
+[...a,,,].join('|');
+[, ...a, 4];
+[, ...a,, 5];
+[...a.keys()];
+[...a.entries()].join('|');
+
+Array.prototype.__defineSetter__(0, function () {
+  fail();
+});
+
+Array.prototype.__defineSetter__(1, function () {
+  fail();
+});
+
+Array.prototype.__defineSetter__(2, function () {
+  fail();
+});
+
+[...a];

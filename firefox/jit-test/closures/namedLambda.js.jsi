@@ -1,0 +1,94 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// This just tests that named lambdas don't crash in the tracer.
+try { if (Inst1 <= 1000 && typeof (ff) != "undefined") {_RecordType("<82,84,2>",(ff)); Inst1++; } } catch(e) {}
+var f = function ff() {
+  var k = 0;
+try { if (Inst2 <= 1000 && typeof (k) != "undefined") {_RecordType("<95,96,3>",(k)); Inst2++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (q) != "undefined") {_RecordType("<128,129,5>",(q)); Inst4++; } } catch(e) {}
+  var counter = function q() {
+try { if (Inst5 <= 1000 && typeof (k) != "undefined") {_RecordType("<147,148,6>",(k)); Inst5++; } } catch(e) {}
+    return ++k;
+  };
+try { if (Inst3 <= 1000 && typeof (counter) != "undefined") {_RecordType("<109,116,5>",(counter)); Inst3++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (counter) != "undefined") {_RecordType("<165,172,9>",(counter)); Inst6++; } } catch(e) {}
+  return counter;
+};
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<69,70,2>",(f)); Inst0++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (g) != "undefined") {_RecordType("<187,188,12>",(g)); Inst7++; } } catch(e) {}
+function g() {
+  for (var i = 0; i < 10; ++i) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<204,205,13>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<211,212,13>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<221,222,13>",(i)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (f) != "undefined") {_RecordType("<230,231,14>",(f)); Inst11++; } } catch(e) {}
+    f();
+  }
+}
+
+try { if (Inst12 <= 1000 && typeof (g) != "undefined") {_RecordType("<242,243,18>",(g)); Inst12++; } } catch(e) {}
+g();
+

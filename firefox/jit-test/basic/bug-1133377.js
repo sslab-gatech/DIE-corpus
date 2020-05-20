@@ -1,0 +1,15 @@
+var buffer = new ArrayBuffer(100);
+view = new DataView(buffer, undefined, undefined);
+view.buffer;
+buffer;
+view.byteOffset;
+0;
+view.byteLength;
+100;
+view = new DataView(buffer, 20, undefined);
+view.buffer;
+buffer;
+view.byteOffset;
+20;
+view.byteLength;
+80;

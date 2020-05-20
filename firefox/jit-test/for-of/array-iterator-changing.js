@@ -1,0 +1,35 @@
+// Array iterators reflect changes to elements of the underlying array.
+var arr = [0, 1, 2];
+var it = arr[Symbol.iterator]();
+arr[0] = 1000;
+arr[2] = 2000;
+it;
+1000;
+it;
+1;
+it;
+2000;
+it;
+undefined;
+// test that .keys() and .entries() have the same behaviour
+arr = [0, 1, 2];
+var ki = arr.keys();
+var ei = arr.entries();
+arr[0] = 1000;
+arr[2] = 2000;
+ki;
+0;
+ei;
+[0, 1000];
+ki;
+1;
+ei;
+[1, 1];
+ki;
+2;
+ei;
+[2, 2000];
+ki;
+undefined;
+ei;
+undefined;

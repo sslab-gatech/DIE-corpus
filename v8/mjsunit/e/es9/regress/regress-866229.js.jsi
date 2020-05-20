@@ -1,0 +1,109 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+var obj = {
+  length: 1,
+  0: "spread"
+};
+try { if (Inst0 <= 1000 && typeof (obj) != "undefined") {_RecordType("<204,207,5>",(obj)); Inst0++; } } catch(e) {}
+obj[Symbol.toStringTag] = "foo";
+try { if (Inst1 <= 1000 && typeof (obj[Symbol.toStringTag]) != "undefined") {_RecordType("<242,265,9>",(obj[Symbol.toStringTag])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (obj) != "undefined") {_RecordType("<242,245,9>",(obj)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol.toStringTag) != "undefined") {_RecordType("<246,264,9>",(Symbol.toStringTag)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<246,252,9>",(Symbol)); Inst4++; } } catch(e) {}
+
+obj[Symbol.hasInstance] = function () {
+  return true;
+};
+try { if (Inst5 <= 1000 && typeof (obj[Symbol.hasInstance]) != "undefined") {_RecordType("<276,299,11>",(obj[Symbol.hasInstance])); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (obj) != "undefined") {_RecordType("<276,279,11>",(obj)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Symbol.hasInstance) != "undefined") {_RecordType("<280,298,11>",(Symbol.hasInstance)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<280,286,11>",(Symbol)); Inst8++; } } catch(e) {}
+
+obj[Symbol.isConcatSpreadable] = true;
+try { if (Inst9 <= 1000 && typeof (obj[Symbol.isConcatSpreadable]) != "undefined") {_RecordType("<335,365,15>",(obj[Symbol.isConcatSpreadable])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (obj) != "undefined") {_RecordType("<335,338,15>",(obj)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Symbol.isConcatSpreadable) != "undefined") {_RecordType("<339,364,15>",(Symbol.isConcatSpreadable)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<339,345,15>",(Symbol)); Inst12++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (obj) != "undefined") {_RecordType("<390,393,16>",(obj)); Inst14++; } } catch(e) {}
+var obj2 = { ...obj
+}; // Crash if fast result map bitfield is not set correctly, if verifying heap
+try { if (Inst13 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<378,382,16>",(obj2)); Inst13++; } } catch(e) {}
+// Ensure correct result for some well-known symbols
+
+"[object foo]";
+try { if (Inst15 <= 1000 && typeof (Object.prototype.toString.call) != "undefined") {_RecordType("<544,574,21>",(Object.prototype.toString.call)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Object.prototype.toString) != "undefined") {_RecordType("<544,569,21>",(Object.prototype.toString)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<544,560,21>",(Object.prototype)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Object) != "undefined") {_RecordType("<544,550,21>",(Object)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<575,579,21>",(obj2)); Inst19++; } } catch(e) {}
+Object.prototype.toString.call(obj2);
+try { if (Inst20 <= 1000 && typeof (Uint8Array) != "undefined") {_RecordType("<582,592,22>",(Uint8Array)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<604,608,22>",(obj2)); Inst21++; } } catch(e) {}
+Uint8Array instanceof obj2;
+["spread"];
+try { if (Inst22 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<622,631,24>",([].concat)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (obj2) != "undefined") {_RecordType("<632,636,24>",(obj2)); Inst23++; } } catch(e) {}
+[].concat(obj2);
+

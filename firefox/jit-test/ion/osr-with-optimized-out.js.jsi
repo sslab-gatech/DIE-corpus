@@ -1,0 +1,107 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| --ion-offthread-compile=off;
+// We disable any off-main thread compilation, and set a definite trigger for
+// Ion compilation, such that we can garantee that we would OSR into the inner
+// loop before we reach the end of the loop.
+try { if (Inst0 <= 1000 && typeof (gcPreserveCode) != "undefined") {_RecordType("<245,259,5>",(gcPreserveCode)); Inst0++; } } catch(e) {}
+gcPreserveCode();
+
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<273,274,7>",(f)); Inst1++; } } catch(e) {}
+function f(n) {
+try { if (Inst2 <= 1000 && typeof (n) != "undefined") {_RecordType("<275,276,7>",(n)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (inIon) != "undefined") {_RecordType("<290,295,8>",(inIon)); Inst3++; } } catch(e) {}
+  while (!inIon()) {
+    var inner = 0;
+try { if (Inst4 <= 1000 && typeof (inner) != "undefined") {_RecordType("<309,314,9>",(inner)); Inst4++; } } catch(e) {}
+    let x = {};
+try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<328,329,10>",(x)); Inst5++; } } catch(e) {}
+
+    for (var i = 0; i < n; i++) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<350,351,12>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<357,358,12>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (n) != "undefined") {_RecordType("<361,362,12>",(n)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<364,365,12>",(i)); Inst9++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (inIon) != "undefined") {_RecordType("<386,391,13>",(inIon)); Inst11++; } } catch(e) {}
+      inner += inIon() == true ? 1 : 0;
+try { if (Inst10 <= 1000 && typeof (inner) != "undefined") {_RecordType("<377,382,13>",(inner)); Inst10++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (inner) != "undefined") {_RecordType("<422,427,15>",(inner)); Inst12++; } } catch(e) {}
+      if (inner <= 1) {
+try { if (Inst13 <= 1000 && typeof (bailout) != "undefined") {_RecordType("<444,451,16>",(bailout)); Inst13++; } } catch(e) {}
+        bailout();
+      }
+    }
+
+try { if (Inst14 <= 1000 && typeof (inner) != "undefined") {_RecordType("<474,479,20>",(inner)); Inst14++; } } catch(e) {}
+    inner != 1;
+    true;
+  }
+} // Iterate enough to ensure that we OSR in this inner loop.
+
+
+try { if (Inst15 <= 1000 && typeof (f) != "undefined") {_RecordType("<564,565,26>",(f)); Inst15++; } } catch(e) {}
+f(300);
+

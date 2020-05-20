@@ -1,0 +1,85 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Locale processing is supposed to internally remove any Unicode extension
+// sequences in the locale.  Test that various weird testcases invoking
+// algorithmic edge cases don't assert or throw exceptions.
+var weirdCases = ["x-u-foo", "en-x-u-foo", "en-a-bar-x-u-foo", "en-x-u-foo-a-bar", "en-a-bar-u-baz-x-u-foo"];
+try { if (Inst0 <= 1000 && typeof (weirdCases) != "undefined") {_RecordType("<469,479,9>",(weirdCases)); Inst0++; } } catch(e) {}
+
+for (let weird of weirdCases) {
+try { if (Inst1 <= 1000 && typeof (weird) != "undefined") {_RecordType("<585,590,11>",(weird)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (weirdCases) != "undefined") {_RecordType("<594,604,11>",(weirdCases)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Intl.getCanonicalLocales) != "undefined") {_RecordType("<610,634,12>",(Intl.getCanonicalLocales)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<610,614,12>",(Intl)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (weird) != "undefined") {_RecordType("<635,640,12>",(weird)); Inst5++; } } catch(e) {}
+  Intl.getCanonicalLocales(weird);
+try { if (Inst6 <= 1000 && typeof (weird) != "undefined") {_RecordType("<646,651,13>",(weird)); Inst6++; } } catch(e) {}
+  [weird];
+}
+
+try { if (Inst7 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<668,681,16>",(reportCompare)); Inst7++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst8 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<702,715,17>",(reportCompare)); Inst8++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

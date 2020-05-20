@@ -1,0 +1,17 @@
+var x = "abc";
+x.indexOf(x);
+0;
+x.indexOf(x, -1);
+0;
+x.indexOf(x, 1);
+-1;
+x.indexOf(x, 100);
+-1;
+x.lastIndexOf(x);
+0;
+x.lastIndexOf(x, -1);
+0;
+x.lastIndexOf(x, 1);
+0;
+x.lastIndexOf(x, 100);
+0;

@@ -1,0 +1,182 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+//
+// Test changing [writable] attribute should trigger Type transition.
+//
+try { if (Inst0 <= 1000 && typeof (assert) != "undefined") {_RecordType("<452,458,8>",(assert)); Inst0++; } } catch(e) {}
+function assert(value, msg) {
+try { if (Inst1 <= 1000 && typeof (value) != "undefined") {_RecordType("<459,464,8>",(value)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (msg) != "undefined") {_RecordType("<466,469,8>",(msg)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (value) != "undefined") {_RecordType("<480,485,9>",(value)); Inst3++; } } catch(e) {}
+  if (!value) {
+try { if (Inst4 <= 1000 && typeof (Error) != "undefined") {_RecordType("<503,508,10>",(Error)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (msg) != "undefined") {_RecordType("<522,525,10>",(msg)); Inst5++; } } catch(e) {}
+    throw new Error("Failed: " + msg);
+  }
+}
+
+try { if (Inst6 <= 1000 && typeof (endTest) != "undefined") {_RecordType("<544,551,14>",(endTest)); Inst6++; } } catch(e) {}
+function endTest() {
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<558,563,15>",(print)); Inst7++; } } catch(e) {}
+  print("pass");
+} //
+// Win8: 713428
+//
+//  When CLEAR writable on a SHARED SimpleTypeHandler, we fail to ChangeType, thus fail to invalidate cache.
+//  This test exploits the bug with PropertyString cache.
+//
+// Get a property string to manipulate with it
+
+
+try { if (Inst8 <= 1000 && typeof (getPropertyString) != "undefined") {_RecordType("<825,842,25>",(getPropertyString)); Inst8++; } } catch(e) {}
+function getPropertyString(x, name) {
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<843,844,25>",(x)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (name) != "undefined") {_RecordType("<846,850,25>",(name)); Inst10++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (Object.getOwnPropertyNames) != "undefined") {_RecordType("<868,894,26>",(Object.getOwnPropertyNames)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Object) != "undefined") {_RecordType("<868,874,26>",(Object)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<895,896,26>",(f)); Inst14++; } } catch(e) {}
+  var names = Object.getOwnPropertyNames(f);
+try { if (Inst11 <= 1000 && typeof (names) != "undefined") {_RecordType("<860,865,26>",(names)); Inst11++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (names.indexOf) != "undefined") {_RecordType("<909,922,27>",(names.indexOf)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (names) != "undefined") {_RecordType("<909,914,27>",(names)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (name) != "undefined") {_RecordType("<923,927,27>",(name)); Inst18++; } } catch(e) {}
+  var i = names.indexOf(name);
+try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<905,906,27>",(i)); Inst15++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (names[i]) != "undefined") {_RecordType("<939,947,28>",(names[i])); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (names) != "undefined") {_RecordType("<939,944,28>",(names)); Inst20++; } } catch(e) {}
+  return names[i];
+}
+
+try { if (Inst21 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<961,976,31>",(changePrototype)); Inst21++; } } catch(e) {}
+function changePrototype(f, expectedSucceed, msg) {
+try { if (Inst22 <= 1000 && typeof (f) != "undefined") {_RecordType("<977,978,31>",(f)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (expectedSucceed) != "undefined") {_RecordType("<980,995,31>",(expectedSucceed)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (msg) != "undefined") {_RecordType("<997,1000,31>",(msg)); Inst24++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1020,1026,32>",(Object)); Inst26++; } } catch(e) {}
+  var tmp = new Object(); // This exploits the PropertyString fast path in OP_SetElementI
+try { if (Inst25 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<1010,1013,32>",(tmp)); Inst25++; } } catch(e) {}
+
+try { if (Inst28 <= 1000 && typeof (getPropertyString) != "undefined") {_RecordType("<1109,1126,34>",(getPropertyString)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (f) != "undefined") {_RecordType("<1127,1128,34>",(f)); Inst29++; } } catch(e) {}
+  var proto = getPropertyString(f, "prototype");
+try { if (Inst27 <= 1000 && typeof (proto) != "undefined") {_RecordType("<1101,1106,34>",(proto)); Inst27++; } } catch(e) {}
+try { if (Inst32 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<1157,1160,35>",(tmp)); Inst32++; } } catch(e) {}
+  f[proto] = tmp;
+try { if (Inst30 <= 1000 && typeof (f[proto]) != "undefined") {_RecordType("<1146,1154,35>",(f[proto])); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (f) != "undefined") {_RecordType("<1146,1147,35>",(f)); Inst31++; } } catch(e) {}
+try { if (Inst34 <= 1000 && typeof (f.prototype) != "undefined") {_RecordType("<1180,1191,36>",(f.prototype)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (f) != "undefined") {_RecordType("<1180,1181,36>",(f)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<1196,1199,36>",(tmp)); Inst36++; } } catch(e) {}
+  var succeeded = f.prototype === tmp;
+try { if (Inst33 <= 1000 && typeof (succeeded) != "undefined") {_RecordType("<1168,1177,36>",(succeeded)); Inst33++; } } catch(e) {}
+try { if (Inst37 <= 1000 && typeof (succeeded) != "undefined") {_RecordType("<1203,1212,37>",(succeeded)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (expectedSucceed) != "undefined") {_RecordType("<1217,1232,37>",(expectedSucceed)); Inst38++; } } catch(e) {}
+  succeeded === expectedSucceed;
+try { if (Inst39 <= 1000 && typeof (msg) != "undefined") {_RecordType("<1236,1239,38>",(msg)); Inst39++; } } catch(e) {}
+  msg;
+} // Initially we use a shared SimpleTypeHandler with "prototype" property for a function.
+
+
+try { if (Inst40 <= 1000 && typeof (f) != "undefined") {_RecordType("<1343,1344,42>",(f)); Inst40++; } } catch(e) {}
+function f() {
+  ;
+}
+
+try { if (Inst41 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<1356,1371,46>",(changePrototype)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (f) != "undefined") {_RecordType("<1372,1373,46>",(f)); Inst42++; } } catch(e) {}
+changePrototype(f, true, "Should be able to change f.prototype initially");
+try { if (Inst43 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<1432,1453,47>",(Object.defineProperty)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1432,1438,47>",(Object)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (f) != "undefined") {_RecordType("<1454,1455,47>",(f)); Inst45++; } } catch(e) {}
+Object.defineProperty(f, "prototype", {
+  writable: false
+});
+try { if (Inst46 <= 1000 && typeof (changePrototype) != "undefined") {_RecordType("<1494,1509,50>",(changePrototype)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (f) != "undefined") {_RecordType("<1510,1511,50>",(f)); Inst47++; } } catch(e) {}
+changePrototype(f, false, "f.prototype is now not writable, shouldn't be changed");
+try { if (Inst48 <= 1000 && typeof (endTest) != "undefined") {_RecordType("<1578,1585,51>",(endTest)); Inst48++; } } catch(e) {}
+endTest();
+

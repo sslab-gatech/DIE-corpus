@@ -1,0 +1,1 @@
+[null,{"type":"Void"},{"type":"Void"},{"type":"RegExp"},{"type":"RegExp"},{"type":"Void"},{"type":"Number"},{"type":"Number"},{"type":"RegExp"},{"type":"Number"},{"type":"Number"},null,{"type":"Void"},{"type":"Void"},{"type":"String"},{"type":"RegExp"},{"type":"Void"},null]

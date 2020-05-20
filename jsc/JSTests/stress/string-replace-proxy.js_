@@ -1,0 +1,37 @@
+function assert(assertion) {
+  let result = eval(assertion);
+}
+
+let calls = 0;
+let getSet = [];
+
+function resetTracking() {
+  calls = 0;
+  getSet = [];
+}
+
+let getSetProxyReplace = new Proxy({
+  replace: function (string, search, replaceWith) {
+    calls++;
+    return string.replace(search, replaceWith);
+  }
+}, {
+  get: function (o, k) {
+    getSet.push(k);
+    return o[k];
+  },
+  set: function (o, k, v) {
+    getSet.push(k);
+    o[k] = v;
+  }
+});
+resetTracking();
+let replaceResult = getSetProxyReplace.replace("This is a test", / /g, "_");
+'replaceResult == "This_is_a_test"';
+'calls === 1';
+'getSet == "replace"';
+resetTracking();
+replaceResult = getSetProxyReplace.replace("This is a test", " ", "_");
+'replaceResult == "This_is a test"';
+'calls === 1';
+'getSet == "replace"';

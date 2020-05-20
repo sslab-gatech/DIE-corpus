@@ -1,0 +1,139 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+var gTestfile = "json-stringify-replacer-array-revocable-proxy.js"; //-----------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (gTestfile) != "undefined") {_RecordType("<109,118,3>",(gTestfile)); Inst0++; } } catch(e) {}
+
+var BUGNUMBER = 1196497;
+try { if (Inst1 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<258,267,5>",(BUGNUMBER)); Inst1++; } } catch(e) {}
+var summary = "Don't assert when JSON.stringify is passed a revocable proxy to an array, " + "then that proxy is revoked midflight during stringification";
+try { if (Inst2 <= 1000 && typeof (summary) != "undefined") {_RecordType("<283,290,6>",(summary)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<435,440,7>",(print)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<441,450,7>",(BUGNUMBER)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (summary) != "undefined") {_RecordType("<460,467,7>",(summary)); Inst5++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+var arr = [];
+try { if (Inst6 <= 1000 && typeof (arr) != "undefined") {_RecordType("<524,527,12>",(arr)); Inst6++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (Proxy.revocable) != "undefined") {_RecordType("<562,577,16>",(Proxy.revocable)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<562,567,16>",(Proxy)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (arr) != "undefined") {_RecordType("<578,581,16>",(arr)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (get) != "undefined") {_RecordType("<587,590,17>",(get)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (thisv) != "undefined") {_RecordType("<591,596,17>",(thisv)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (prop) != "undefined") {_RecordType("<598,602,17>",(prop)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<604,612,17>",(receiver)); Inst15++; } } catch(e) {}
+var {
+  proxy,
+  revoke
+} = Proxy.revocable(arr, {
+  get(thisv, prop, receiver) {
+    // First (and only) get will be for "length", to determine the length of the
+    // list of properties to serialize.  Returning 0 uses the empty list,
+    // resulting in |a: 0| being ignored below.
+try { if (Inst16 <= 1000 && typeof (thisv) != "undefined") {_RecordType("<823,828,21>",(thisv)); Inst16++; } } catch(e) {}
+    thisv;
+try { if (Inst17 <= 1000 && typeof (arr) != "undefined") {_RecordType("<834,837,22>",(arr)); Inst17++; } } catch(e) {}
+    arr;
+try { if (Inst18 <= 1000 && typeof (prop) != "undefined") {_RecordType("<843,847,23>",(prop)); Inst18++; } } catch(e) {}
+    prop;
+    "length";
+try { if (Inst19 <= 1000 && typeof (receiver) != "undefined") {_RecordType("<867,875,25>",(receiver)); Inst19++; } } catch(e) {}
+    receiver;
+try { if (Inst20 <= 1000 && typeof (proxy) != "undefined") {_RecordType("<881,886,26>",(proxy)); Inst20++; } } catch(e) {}
+    proxy;
+try { if (Inst21 <= 1000 && typeof (revoke) != "undefined") {_RecordType("<892,898,27>",(revoke)); Inst21++; } } catch(e) {}
+    revoke();
+    return 0;
+  }
+
+});
+try { if (Inst7 <= 1000 && typeof (proxy) != "undefined") {_RecordType("<542,547,14>",(proxy)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (revoke) != "undefined") {_RecordType("<551,557,15>",(revoke)); Inst8++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (JSON.stringify) != "undefined") {_RecordType("<925,939,32>",(JSON.stringify)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (JSON) != "undefined") {_RecordType("<925,929,32>",(JSON)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (proxy) != "undefined") {_RecordType("<952,957,34>",(proxy)); Inst24++; } } catch(e) {}
+JSON.stringify({
+  a: 0
+}, proxy);
+"{}";
+
+/******************************************************************************/
+try { if (Inst25 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1059,1072,38>",(reportCompare)); Inst25++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst26 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1093,1106,39>",(reportCompare)); Inst26++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst27 <= 1000 && typeof (print) != "undefined") {_RecordType("<1123,1128,42>",(print)); Inst27++; } } catch(e) {}
+print("Tests complete");
+

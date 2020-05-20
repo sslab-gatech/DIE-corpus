@@ -1,0 +1,128 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var BUGNUMBER = 1054755;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<4,13,1>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'String.prototype.{startsWith,endsWith,includes} should call IsRegExp.';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<29,36,2>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<112,117,3>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<118,127,3>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<137,144,3>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+
+for (var method of ["startsWith", "endsWith", "includes"]) {
+try { if (Inst5 <= 1000 && typeof (method) != "undefined") {_RecordType("<157,163,5>",(method)); Inst5++; } } catch(e) {}
+  for (var re of [/foo/, new RegExp()]) {
+try { if (Inst6 <= 1000 && typeof (re) != "undefined") {_RecordType("<220,222,6>",(re)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<238,244,6>",(RegExp)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof ("foo"[method]) != "undefined") {_RecordType("<262,275,7>",("foo"[method])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (re) != "undefined") {_RecordType("<276,278,7>",(re)); Inst9++; } } catch(e) {}
+    (() => "foo"[method](re))();
+
+try { if (Inst10 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<289,298,9>",(TypeError)); Inst10++; } } catch(e) {}
+    TypeError;
+    re[Symbol.match] = false;
+try { if (Inst11 <= 1000 && typeof (re[Symbol.match]) != "undefined") {_RecordType("<304,320,10>",(re[Symbol.match])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (re) != "undefined") {_RecordType("<304,306,10>",(re)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Symbol.match) != "undefined") {_RecordType("<307,319,10>",(Symbol.match)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<307,313,10>",(Symbol)); Inst14++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof ("foo"[method]) != "undefined") {_RecordType("<334,347,11>",("foo"[method])); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (re) != "undefined") {_RecordType("<348,350,11>",(re)); Inst16++; } } catch(e) {}
+    "foo"[method](re);
+  }
+
+  for (var v1 of [true, 1, "bar", [], {}, Symbol.iterator]) {
+try { if (Inst17 <= 1000 && typeof (v1) != "undefined") {_RecordType("<369,371,14>",(v1)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<400,415,14>",(Symbol.iterator)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<400,406,14>",(Symbol)); Inst19++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof ("foo"[method]) != "undefined") {_RecordType("<431,444,15>",("foo"[method])); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (v1) != "undefined") {_RecordType("<469,471,16>",(v1)); Inst21++; } } catch(e) {}
+    (() => "foo"[method]({
+      [Symbol.match]: v1
+    }))();
+
+try { if (Inst22 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<488,497,19>",(TypeError)); Inst22++; } } catch(e) {}
+    TypeError;
+  }
+
+  for (var v2 of [false, 0, undefined, ""]) {
+try { if (Inst23 <= 1000 && typeof (v2) != "undefined") {_RecordType("<515,517,22>",(v2)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<532,541,22>",(undefined)); Inst24++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof ("foo"[method]) != "undefined") {_RecordType("<554,567,23>",("foo"[method])); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (v2) != "undefined") {_RecordType("<592,594,24>",(v2)); Inst26++; } } catch(e) {}
+    "foo"[method]({
+      [Symbol.match]: v2
+    });
+  }
+}
+
+try { if (Inst27 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<621,634,29>",(reportCompare)); Inst27++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst28 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<655,668,30>",(reportCompare)); Inst28++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

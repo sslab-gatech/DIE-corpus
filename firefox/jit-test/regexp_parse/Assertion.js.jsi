@@ -1,0 +1,82 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<0,8,1>",(test_mix)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (no_multiline_flags) != "undefined") {_RecordType("<14,32,1>",(no_multiline_flags)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<34,43,1>",(Assertion)); Inst2++; } } catch(e) {}
+test_mix("^", no_multiline_flags, Assertion("START_OF_INPUT"));
+try { if (Inst3 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<64,72,2>",(test_mix)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (multiline_flags) != "undefined") {_RecordType("<78,93,2>",(multiline_flags)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<95,104,2>",(Assertion)); Inst5++; } } catch(e) {}
+test_mix("^", multiline_flags, Assertion("START_OF_LINE"));
+try { if (Inst6 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<124,132,3>",(test_mix)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (no_multiline_flags) != "undefined") {_RecordType("<138,156,3>",(no_multiline_flags)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<158,167,3>",(Assertion)); Inst8++; } } catch(e) {}
+test_mix("$", no_multiline_flags, Assertion("END_OF_INPUT"));
+try { if (Inst9 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<186,194,4>",(test_mix)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (multiline_flags) != "undefined") {_RecordType("<200,215,4>",(multiline_flags)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<217,226,4>",(Assertion)); Inst11++; } } catch(e) {}
+test_mix("$", multiline_flags, Assertion("END_OF_LINE"));
+try { if (Inst12 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<244,252,5>",(test_mix)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (all_flags) != "undefined") {_RecordType("<260,269,5>",(all_flags)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<271,280,5>",(Assertion)); Inst14++; } } catch(e) {}
+test_mix("\\b", all_flags, Assertion("BOUNDARY"));
+try { if (Inst15 <= 1000 && typeof (test_mix) != "undefined") {_RecordType("<295,303,6>",(test_mix)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (all_flags) != "undefined") {_RecordType("<311,320,6>",(all_flags)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Assertion) != "undefined") {_RecordType("<322,331,6>",(Assertion)); Inst17++; } } catch(e) {}
+test_mix("\\B", all_flags, Assertion("NON_BOUNDARY"));
+

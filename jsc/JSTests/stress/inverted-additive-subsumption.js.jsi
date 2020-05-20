@@ -1,0 +1,104 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<9,12,1>",(foo)); Inst0++; } } catch(e) {}
+function foo(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<13,14,1>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<28,29,2>",(x)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<42,43,2>",(x)); Inst3++; } } catch(e) {}
+  return (x + 1 | 0) + (x + 1);
+}
+
+try { if (Inst4 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<53,61,5>",(noInline)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<62,65,5>",(foo)); Inst5++; } } catch(e) {}
+noInline(foo);
+
+for (var i = 0; i < 100000; ++i) {
+try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<78,79,7>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<85,86,7>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<99,100,7>",(i)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (foo) != "undefined") {_RecordType("<119,122,8>",(foo)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<123,124,8>",(i)); Inst11++; } } catch(e) {}
+  var result = foo(i);
+try { if (Inst9 <= 1000 && typeof (result) != "undefined") {_RecordType("<110,116,8>",(result)); Inst9++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (result) != "undefined") {_RecordType("<134,140,10>",(result)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<145,146,10>",(i)); Inst13++; } } catch(e) {}
+  if (result != (i + 1) * 2) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<200,201,11>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (result) != "undefined") {_RecordType("<211,217,11>",(result)); Inst15++; } } catch(e) {}
+    throw "Error: bad result for i = " + i + ": " + result;
+  }
+}
+
+try { if (Inst17 <= 1000 && typeof (foo) != "undefined") {_RecordType("<239,242,15>",(foo)); Inst17++; } } catch(e) {}
+var result = foo(2147483647);
+try { if (Inst16 <= 1000 && typeof (result) != "undefined") {_RecordType("<230,236,15>",(result)); Inst16++; } } catch(e) {}
+
+try { if (Inst18 <= 1000 && typeof (result) != "undefined") {_RecordType("<261,267,17>",(result)); Inst18++; } } catch(e) {}
+if (result != (2147483647 + 1 | 0) + (2147483647 + 1)) {
+try { if (Inst19 <= 1000 && typeof (result) != "undefined") {_RecordType("<361,367,18>",(result)); Inst19++; } } catch(e) {}
+  throw "Error: bad result for 2147483647: " + result;
+}
+

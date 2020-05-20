@@ -1,0 +1,130 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2015 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --turbo-filter=test*
+// Tests that TurboFan emits a dynamic hole-check for the temporal dead zone at
+// a non-initializing assignments to a {let} variable.
+try { if (Inst0 <= 1000 && typeof (test_hole_check_for_let) != "undefined") {_RecordType("<365,388,7>",(test_hole_check_for_let)); Inst0++; } } catch(e) {}
+function test_hole_check_for_let(a) {
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<389,390,7>",(a)); Inst1++; } } catch(e) {}
+  'use strict';
+
+  {
+try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<427,428,11>",(a)); Inst2++; } } catch(e) {}
+    switch (a) {
+      case 0:
+        let x;
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<458,459,13>",(x)); Inst3++; } } catch(e) {}
+
+      case 1:
+        x = 9;
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<484,485,16>",(x)); Inst4++; } } catch(e) {}
+    }
+  }
+}
+
+"test_hole_check_for_let(0)";
+"test_hole_check_for_let(1)";
+try { if (Inst5 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<564,578,23>",(ReferenceError)); Inst5++; } } catch(e) {}
+ReferenceError;
+"test_hole_check_for_let(1)";
+try { if (Inst6 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<610,624,25>",(ReferenceError)); Inst6++; } } catch(e) {}
+ReferenceError;
+
+// Tests that TurboFan emits a dynamic hole-check for the temporal dead zone at
+// a non-initializing assignments to a {const} variable.
+try { if (Inst7 <= 1000 && typeof (test_hole_check_for_const) != "undefined") {_RecordType("<773,798,29>",(test_hole_check_for_const)); Inst7++; } } catch(e) {}
+function test_hole_check_for_const(a) {
+try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<799,800,29>",(a)); Inst8++; } } catch(e) {}
+  'use strict';
+
+  {
+try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<837,838,33>",(a)); Inst9++; } } catch(e) {}
+    switch (a) {
+      case 0:
+        const x = 3;
+try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<870,871,35>",(x)); Inst10++; } } catch(e) {}
+
+      case 1:
+        x = 2;
+try { if (Inst11 <= 1000 && typeof (x) != "undefined") {_RecordType("<900,901,38>",(x)); Inst11++; } } catch(e) {}
+    }
+  }
+}
+
+"test_hole_check_for_const(0)";
+try { if (Inst12 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<952,961,44>",(TypeError)); Inst12++; } } catch(e) {}
+TypeError;
+"test_hole_check_for_const(1)";
+try { if (Inst13 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<995,1009,46>",(ReferenceError)); Inst13++; } } catch(e) {}
+ReferenceError;
+"test_hole_check_for_const(1)";
+try { if (Inst14 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<1043,1057,48>",(ReferenceError)); Inst14++; } } catch(e) {}
+ReferenceError;
+

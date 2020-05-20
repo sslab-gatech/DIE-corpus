@@ -1,0 +1,91 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// WinBlue 194710: wrong line/col number in exception from inside for in.
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<450,453,6>",(foo)); Inst0++; } } catch(e) {}
+function foo() {
+  for (var p in c) // Error: c is undefined.
+  {
+try { if (Inst1 <= 1000 && typeof (p) != "undefined") {_RecordType("<469,470,7>",(p)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (c) != "undefined") {_RecordType("<474,475,7>",(c)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (addPropertyName) != "undefined") {_RecordType("<511,526,9>",(addPropertyName)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (p) != "undefined") {_RecordType("<527,528,9>",(p)); Inst4++; } } catch(e) {}
+    addPropertyName(p);
+  }
+}
+
+try { if (Inst6 <= 1000 && typeof (ex) != "undefined") {_RecordType("<562,564,15>",(ex)); Inst6++; } } catch(e) {}
+try {
+try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<546,549,14>",(foo)); Inst5++; } } catch(e) {}
+  foo();
+} catch (ex) {
+try { if (Inst8 <= 1000 && typeof (ex.stack.replace) != "undefined") {_RecordType("<595,611,16>",(ex.stack.replace)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (ex.stack) != "undefined") {_RecordType("<595,603,16>",(ex.stack)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (ex) != "undefined") {_RecordType("<595,597,16>",(ex)); Inst10++; } } catch(e) {}
+  var truncatedPathStack = ex.stack.replace(/\(.*\\/g, "(");
+try { if (Inst7 <= 1000 && typeof (truncatedPathStack) != "undefined") {_RecordType("<574,592,16>",(truncatedPathStack)); Inst7++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (print) != "undefined") {_RecordType("<631,636,17>",(print)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (truncatedPathStack) != "undefined") {_RecordType("<637,655,17>",(truncatedPathStack)); Inst12++; } } catch(e) {}
+  print(truncatedPathStack);
+}
+

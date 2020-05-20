@@ -1,0 +1,153 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+
+/*
+ * These tests depend on the fact that testLenientAndStrict tries the
+ * strict case first; otherwise, the non-strict evaluation creates the
+ * variable. Ugh. Ideally, we would use evalcx, but that's not
+ * available in the browser.
+ */
+
+/* Assigning to an undeclared variable should fail in strict mode. */
+try { if (Inst0 <= 1000 && typeof (testLenientAndStrict) != "undefined") {_RecordType("<481,501,16>",(testLenientAndStrict)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (completesNormally) != "undefined") {_RecordType("<518,535,16>",(completesNormally)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<537,552,16>",(raisesException)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (ReferenceError) != "undefined") {_RecordType("<553,567,16>",(ReferenceError)); Inst3++; } } catch(e) {}
+testLenientAndStrict('undeclared=1', completesNormally, raisesException(ReferenceError));
+true;
+try { if (Inst4 <= 1000 && typeof (testLenientAndStrict) != "undefined") {_RecordType("<577,597,18>",(testLenientAndStrict)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (completesNormally) != "undefined") {_RecordType("<634,651,18>",(completesNormally)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (completesNormally) != "undefined") {_RecordType("<653,670,18>",(completesNormally)); Inst6++; } } catch(e) {}
+testLenientAndStrict('var var_declared; var_declared=1', completesNormally, completesNormally);
+true;
+try { if (Inst7 <= 1000 && typeof (testLenientAndStrict) != "undefined") {_RecordType("<679,699,20>",(testLenientAndStrict)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (parsesSuccessfully) != "undefined") {_RecordType("<731,749,20>",(parsesSuccessfully)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (parsesSuccessfully) != "undefined") {_RecordType("<751,769,20>",(parsesSuccessfully)); Inst9++; } } catch(e) {}
+testLenientAndStrict('undeclared_at_compiletime=1', parsesSuccessfully, parsesSuccessfully);
+true;
+
+try { if (Inst10 <= 1000 && typeof (obj) != "undefined") {_RecordType("<788,791,23>",(obj)); Inst10++; } } catch(e) {}
+function obj() {
+  var o = {
+    x: 1,
+    y: 1
+  };
+try { if (Inst11 <= 1000 && typeof (o) != "undefined") {_RecordType("<802,803,24>",(o)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<834,855,28>",(Object.defineProperty)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Object) != "undefined") {_RecordType("<834,840,28>",(Object)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (o) != "undefined") {_RecordType("<856,857,28>",(o)); Inst14++; } } catch(e) {}
+  Object.defineProperty(o, 'x', {
+    writable: false
+  });
+try { if (Inst15 <= 1000 && typeof (o) != "undefined") {_RecordType("<901,902,31>",(o)); Inst15++; } } catch(e) {}
+  return o;
+}
+/* Put EXPR in a strict mode code context with 'with' bindings in scope. */
+
+
+try { if (Inst16 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<993,1007,36>",(in_strict_with)); Inst16++; } } catch(e) {}
+function in_strict_with(expr) {
+try { if (Inst17 <= 1000 && typeof (expr) != "undefined") {_RecordType("<1008,1012,36>",(expr)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (expr) != "undefined") {_RecordType("<1073,1077,37>",(expr)); Inst18++; } } catch(e) {}
+  return "with(obj()) { (function () { 'use strict'; " + expr + " })(); }";
+}
+
+try { if (Inst19 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<1095,1110,40>",(raisesException)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1111,1120,40>",(TypeError)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<1122,1136,40>",(in_strict_with)); Inst21++; } } catch(e) {}
+raisesException(TypeError)(in_strict_with('x = 2; y = 2;'));
+true;
+try { if (Inst22 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<1162,1177,42>",(raisesException)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1178,1187,42>",(TypeError)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<1189,1203,42>",(in_strict_with)); Inst24++; } } catch(e) {}
+raisesException(TypeError)(in_strict_with('x++;'));
+true;
+try { if (Inst25 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<1220,1235,44>",(raisesException)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1236,1245,44>",(TypeError)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<1247,1261,44>",(in_strict_with)); Inst27++; } } catch(e) {}
+raisesException(TypeError)(in_strict_with('++x;'));
+true;
+try { if (Inst28 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<1278,1293,46>",(raisesException)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1294,1303,46>",(TypeError)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<1305,1319,46>",(in_strict_with)); Inst30++; } } catch(e) {}
+raisesException(TypeError)(in_strict_with('x--;'));
+true;
+try { if (Inst31 <= 1000 && typeof (raisesException) != "undefined") {_RecordType("<1336,1351,48>",(raisesException)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1352,1361,48>",(TypeError)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (in_strict_with) != "undefined") {_RecordType("<1363,1377,48>",(in_strict_with)); Inst33++; } } catch(e) {}
+raisesException(TypeError)(in_strict_with('--x;'));
+true;
+try { if (Inst34 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1394,1407,50>",(reportCompare)); Inst34++; } } catch(e) {}
+reportCompare(true, true);
+

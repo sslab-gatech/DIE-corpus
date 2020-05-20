@@ -1,0 +1,147 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+
+/*
+ *******************************UNIT TEST FOR SWITCH CASE OPTIMIZATION*******************************
+ * Test with two switch statements containing loop and retarget cases.
+ */
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<557,558,10>",(f)); Inst0++; } } catch(e) {}
+function f(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<559,560,10>",(x)); Inst1++; } } catch(e) {}
+  /* Retargetting*/
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<594,595,12>",(x)); Inst2++; } } catch(e) {}
+  switch (x) {
+    case 'abc':
+      break;
+
+    case 'stu':
+      break;
+
+    default:
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<678,683,20>",(print)); Inst3++; } } catch(e) {}
+      print('Default cases');
+      break;
+  }
+  /*Loop*/
+
+
+  for (i = 0; i < 2; i++) {
+try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<739,740,26>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<746,747,26>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<753,754,26>",(i)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<772,773,27>",(x)); Inst7++; } } catch(e) {}
+    switch (x) {
+      case 'abc':
+try { if (Inst8 <= 1000 && typeof (print) != "undefined") {_RecordType("<803,808,29>",(print)); Inst8++; } } catch(e) {}
+        print('abc');
+        break;
+
+      case 'def':
+        break;
+
+      default:
+try { if (Inst9 <= 1000 && typeof (print) != "undefined") {_RecordType("<890,895,36>",(print)); Inst9++; } } catch(e) {}
+        print('default');
+        break;
+    }
+  }
+}
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<936,937,42>",(f)); Inst10++; } } catch(e) {}
+f('stu');
+try { if (Inst11 <= 1000 && typeof (f) != "undefined") {_RecordType("<946,947,43>",(f)); Inst11++; } } catch(e) {}
+f('stu');
+try { if (Inst12 <= 1000 && typeof (f) != "undefined") {_RecordType("<956,957,44>",(f)); Inst12++; } } catch(e) {}
+f('vxy');
+try { if (Inst13 <= 1000 && typeof (f) != "undefined") {_RecordType("<966,967,45>",(f)); Inst13++; } } catch(e) {}
+f('z');
+try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<974,975,46>",(f)); Inst14++; } } catch(e) {}
+f('x');
+try { if (Inst15 <= 1000 && typeof (f) != "undefined") {_RecordType("<982,983,47>",(f)); Inst15++; } } catch(e) {}
+f('abc');
+try { if (Inst16 <= 1000 && typeof (f) != "undefined") {_RecordType("<992,993,48>",(f)); Inst16++; } } catch(e) {}
+f('def');
+try { if (Inst17 <= 1000 && typeof (f) != "undefined") {_RecordType("<1002,1003,49>",(f)); Inst17++; } } catch(e) {}
+f('ghi');
+try { if (Inst18 <= 1000 && typeof (f) != "undefined") {_RecordType("<1012,1013,50>",(f)); Inst18++; } } catch(e) {}
+f('jkl');
+try { if (Inst19 <= 1000 && typeof (f) != "undefined") {_RecordType("<1022,1023,51>",(f)); Inst19++; } } catch(e) {}
+f('mno');
+try { if (Inst20 <= 1000 && typeof (f) != "undefined") {_RecordType("<1032,1033,52>",(f)); Inst20++; } } catch(e) {}
+f('pqr');
+try { if (Inst21 <= 1000 && typeof (f) != "undefined") {_RecordType("<1042,1043,53>",(f)); Inst21++; } } catch(e) {}
+f('saf');
+

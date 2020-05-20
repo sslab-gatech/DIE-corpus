@@ -1,0 +1,130 @@
+console.log('Tests for ES6 arrow function lexical bind of this');
+
+function Dog(name) {
+  this.name = name;
+
+  this.getName = () => eval("this.name");
+
+  this.getNameHard = () => eval("(() => this.name)()");
+
+  this.getNameNesting = () => () => () => this.name;
+}
+
+var d = new Dog("Max");
+d.getName();
+d.getNameHard();
+d.getNameNesting()()();
+var obj = {
+  name: 'objCode',
+  method: function () {
+    return value => this.name + "-name-" + value;
+  }
+};
+obj.method()('correct');
+obj.name = 'newObjCode';
+obj.method()('correct');
+var deepObj = {
+  name: 'wrongObjCode',
+  internalObject: {
+    name: 'internalObject',
+    method: function () {
+      return value => this.name + "-name-" + value;
+    }
+  }
+};
+deepObj.internalObject.method()('correct');
+deepObj.internalObject.name = 'newInternalObject';
+deepObj.internalObject.method()('correct');
+
+var functionConstructor = function () {
+  this.func = () => this;
+};
+
+var instance = new functionConstructor();
+instance.func() === instance;
+var ownerObj = {
+  method: function () {
+    return () => this;
+  }
+};
+ownerObj.method()() === ownerObj;
+var fake = {
+  steal: ownerObj.method()
+};
+fake.steal() === ownerObj;
+var real = {
+  borrow: ownerObj.method
+};
+real.borrow()() === real;
+var arrowFunction = {
+  x: "right",
+  getArrowFunction: function () {
+    return z => this.x + z;
+  }
+}.getArrowFunction();
+var hostObj = {
+  x: "wrong",
+  func: arrowFunction
+};
+arrowFunction('-this');
+hostObj.func('-this');
+
+var functionConstructorWithEval = function () {
+  this._id = 'old-value';
+
+  this.func = () => {
+    var f;
+    eval('10==10');
+    this._id = 'new-value';
+    return this._id;
+  };
+};
+
+var arrowWithEval = new functionConstructorWithEval();
+arrowWithEval.func();
+var internal_value_1 = 123;
+var internal_value_2 = '1234';
+
+function foo() {
+  let arr = () => {
+    var x = internal_value_1;
+
+    function bas() {
+      return x;
+    }
+
+    ;
+    this._id = internal_value_2;
+    return bas();
+  };
+
+  this.arr = arr;
+}
+
+;
+var fooObject = new foo();
+fooObject.arr();
+fooObject._id;
+
+function boo() {
+  let arr = () => {
+    with ({
+      'this': 40
+    }) {
+      return this;
+    }
+  };
+
+  return arr();
+}
+
+let expected = {
+  'this': 20
+};
+boo.call(expected);
+(function () {
+  return (a = this) => {
+    return a;
+  };
+}).call(expected)();
+var successfullyParsed = true;

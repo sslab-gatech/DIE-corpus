@@ -1,0 +1,99 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that objects in different compartments can have the same shape if they
+// have a null proto.
+try { if (Inst1 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<110,119,3>",(newGlobal)); Inst1++; } } catch(e) {}
+var g1 = newGlobal();
+try { if (Inst0 <= 1000 && typeof (g1) != "undefined") {_RecordType("<105,107,3>",(g1)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<132,141,4>",(newGlobal)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (g1) != "undefined") {_RecordType("<158,160,5>",(g1)); Inst4++; } } catch(e) {}
+var g2 = newGlobal({
+  sameZoneAs: g1
+});
+try { if (Inst2 <= 1000 && typeof (g2) != "undefined") {_RecordType("<127,129,4>",(g2)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (g1.eval) != "undefined") {_RecordType("<165,172,7>",(g1.eval)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (g1) != "undefined") {_RecordType("<165,167,7>",(g1)); Inst6++; } } catch(e) {}
+g1.eval("x1 = {foo: 1}");
+try { if (Inst7 <= 1000 && typeof (g2.eval) != "undefined") {_RecordType("<191,198,8>",(g2.eval)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (g2) != "undefined") {_RecordType("<191,193,8>",(g2)); Inst8++; } } catch(e) {}
+g2.eval("x2 = {foo: 2}");
+try { if (Inst9 <= 1000 && typeof (unwrappedObjectsHaveSameShape) != "undefined") {_RecordType("<217,246,9>",(unwrappedObjectsHaveSameShape)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (g1.x1) != "undefined") {_RecordType("<247,252,9>",(g1.x1)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (g1) != "undefined") {_RecordType("<247,249,9>",(g1)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (g2.x2) != "undefined") {_RecordType("<254,259,9>",(g2.x2)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (g2) != "undefined") {_RecordType("<254,256,9>",(g2)); Inst13++; } } catch(e) {}
+unwrappedObjectsHaveSameShape(g1.x1, g2.x2);
+false;
+try { if (Inst14 <= 1000 && typeof (g1.eval) != "undefined") {_RecordType("<269,276,11>",(g1.eval)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (g1) != "undefined") {_RecordType("<269,271,11>",(g1)); Inst15++; } } catch(e) {}
+g1.eval("x1 = Object.create(null); x1.foo = 1;");
+try { if (Inst16 <= 1000 && typeof (g2.eval) != "undefined") {_RecordType("<319,326,12>",(g2.eval)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (g2) != "undefined") {_RecordType("<319,321,12>",(g2)); Inst17++; } } catch(e) {}
+g2.eval("x2 = Object.create(null); x2.foo = 2;");
+try { if (Inst18 <= 1000 && typeof (unwrappedObjectsHaveSameShape) != "undefined") {_RecordType("<369,398,13>",(unwrappedObjectsHaveSameShape)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (g1.x1) != "undefined") {_RecordType("<399,404,13>",(g1.x1)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (g1) != "undefined") {_RecordType("<399,401,13>",(g1)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (g2.x2) != "undefined") {_RecordType("<406,411,13>",(g2.x2)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (g2) != "undefined") {_RecordType("<406,408,13>",(g2)); Inst22++; } } catch(e) {}
+unwrappedObjectsHaveSameShape(g1.x1, g2.x2);
+true;
+

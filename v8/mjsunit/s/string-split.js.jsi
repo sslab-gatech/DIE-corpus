@@ -1,0 +1,470 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2008 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --allow-natives-syntax
+try { if (Inst1 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1647,1656,28>",(undefined)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1688,1697,28>",(undefined)); Inst2++; } } catch(e) {}
+expected = ["A", undefined, "B", "bold", "/", "B", "and", undefined, "CODE", "coded", "/", "CODE", ""];
+try { if (Inst0 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1630,1638,28>",(expected)); Inst0++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof ("A<B>bold</B>and<CODE>coded</CODE>".split) != "undefined") {_RecordType("<1743,1784,29>",("A<B>bold</B>and<CODE>coded</CODE>".split)); Inst4++; } } catch(e) {}
+result = "A<B>bold</B>and<CODE>coded</CODE>".split(/<(\/)?([^<>]+)>/);
+try { if (Inst3 <= 1000 && typeof (result) != "undefined") {_RecordType("<1734,1740,29>",(result)); Inst3++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1805,1813,30>",(expected)); Inst5++; } } catch(e) {}
+expected;
+try { if (Inst6 <= 1000 && typeof (result) != "undefined") {_RecordType("<1815,1821,31>",(result)); Inst6++; } } catch(e) {}
+result;
+["a", "b"];
+try { if (Inst7 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<1835,1845,33>",("ab".split)); Inst7++; } } catch(e) {}
+"ab".split(/a*?/);
+["", "b"];
+try { if (Inst8 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<1865,1875,35>",("ab".split)); Inst8++; } } catch(e) {}
+"ab".split(/a*/);
+["a"];
+try { if (Inst9 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<1890,1900,37>",("ab".split)); Inst9++; } } catch(e) {}
+"ab".split(/a*?/, 1);
+[""];
+try { if (Inst10 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<1918,1928,39>",("ab".split)); Inst10++; } } catch(e) {}
+"ab".split(/a*/, 1);
+["as", "fas", "fas", "f"];
+try { if (Inst11 <= 1000 && typeof ("asdfasdfasdf".split) != "undefined") {_RecordType("<1966,1986,41>",("asdfasdfasdf".split)); Inst11++; } } catch(e) {}
+"asdfasdfasdf".split("d");
+["as", "fas", "fas", "f"];
+try { if (Inst12 <= 1000 && typeof ("asdfasdfasdf".split) != "undefined") {_RecordType("<2020,2040,43>",("asdfasdfasdf".split)); Inst12++; } } catch(e) {}
+"asdfasdfasdf".split("d", -1);
+["as", "fas"];
+try { if (Inst13 <= 1000 && typeof ("asdfasdfasdf".split) != "undefined") {_RecordType("<2066,2086,45>",("asdfasdfasdf".split)); Inst13++; } } catch(e) {}
+"asdfasdfasdf".split("d", 2);
+[];
+try { if (Inst14 <= 1000 && typeof ("asdfasdfasdf".split) != "undefined") {_RecordType("<2100,2120,47>",("asdfasdfasdf".split)); Inst14++; } } catch(e) {}
+"asdfasdfasdf".split("d", 0);
+["as", "fas", "fas", ""];
+try { if (Inst15 <= 1000 && typeof ("asdfasdfasd".split) != "undefined") {_RecordType("<2156,2175,49>",("asdfasdfasd".split)); Inst15++; } } catch(e) {}
+"asdfasdfasd".split("d");
+[];
+try { if (Inst16 <= 1000 && typeof ("".split) != "undefined") {_RecordType("<2186,2194,51>",("".split)); Inst16++; } } catch(e) {}
+"".split("");
+[""];
+try { if (Inst17 <= 1000 && typeof ("".split) != "undefined") {_RecordType("<2206,2214,53>",("".split)); Inst17++; } } catch(e) {}
+"".split("a");
+["a", "b"];
+try { if (Inst18 <= 1000 && typeof ("axxb".split) != "undefined") {_RecordType("<2233,2245,55>",("axxb".split)); Inst18++; } } catch(e) {}
+"axxb".split(/x*/);
+["a", "b"];
+try { if (Inst19 <= 1000 && typeof ("axxb".split) != "undefined") {_RecordType("<2265,2277,57>",("axxb".split)); Inst19++; } } catch(e) {}
+"axxb".split(/x+/);
+["a", "", "b"];
+try { if (Inst20 <= 1000 && typeof ("axxb".split) != "undefined") {_RecordType("<2301,2313,59>",("axxb".split)); Inst20++; } } catch(e) {}
+"axxb".split(/x/);
+["div", "#id", ".class"];
+try { if (Inst21 <= 1000 && typeof ("div#id.class".split) != "undefined") {_RecordType("<2346,2366,61>",("div#id.class".split)); Inst21++; } } catch(e) {}
+"div#id.class".split(/(?=[#.])/);
+["div", "#i", "d", ".class"];
+try { if (Inst22 <= 1000 && typeof ("div#id.class".split) != "undefined") {_RecordType("<2410,2430,63>",("div#id.class".split)); Inst22++; } } catch(e) {}
+"div#id.class".split(/(?=[d#.])/);
+["a", "b", "c"];
+try { if (Inst23 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<2462,2473,65>",("abc".split)); Inst23++; } } catch(e) {}
+"abc".split(/(?=.)/);
+["Wenige", "sind", "auserwählt."];
+try { if (Inst24 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2519,2550,67>",("Wenige sind auserwählt.".split)); Inst24++; } } catch(e) {}
+"Wenige sind auserwählt.".split(" ");
+[];
+try { if (Inst25 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2561,2592,69>",("Wenige sind auserwählt.".split)); Inst25++; } } catch(e) {}
+"Wenige sind auserwählt.".split(" ", 0);
+["Wenige"];
+try { if (Inst26 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2614,2645,71>",("Wenige sind auserwählt.".split)); Inst26++; } } catch(e) {}
+"Wenige sind auserwählt.".split(" ", 1);
+["Wenige", "sind"];
+try { if (Inst27 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2675,2706,73>",("Wenige sind auserwählt.".split)); Inst27++; } } catch(e) {}
+"Wenige sind auserwählt.".split(" ", 2);
+["Wenige", "sind", "auserwählt."];
+try { if (Inst28 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2751,2782,75>",("Wenige sind auserwählt.".split)); Inst28++; } } catch(e) {}
+"Wenige sind auserwählt.".split(" ", 3);
+["Wenige sind auserw", "hlt."];
+try { if (Inst29 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2824,2855,77>",("Wenige sind auserwählt.".split)); Inst29++; } } catch(e) {}
+"Wenige sind auserwählt.".split("ä");
+["Wenige sind ", "."];
+try { if (Inst30 <= 1000 && typeof ("Wenige sind auserwählt.".split) != "undefined") {_RecordType("<2885,2916,79>",("Wenige sind auserwählt.".split)); Inst30++; } } catch(e) {}
+"Wenige sind auserwählt.".split("auserwählt");
+["a", "", "b"];
+try { if (Inst31 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<2948,2958,81>",("ab".split)); Inst31++; } } catch(e) {}
+"ab".split(/((?=.))/);
+["a", "b"];
+try { if (Inst32 <= 1000 && typeof ("ab".split) != "undefined") {_RecordType("<2983,2993,83>",("ab".split)); Inst32++; } } catch(e) {}
+"ab".split(/(?=)/);
+[""];
+try { if (Inst33 <= 1000 && typeof (''.split) != "undefined") {_RecordType("<3009,3017,85>",(''.split)); Inst33++; } } catch(e) {}
+''.split();
+[""];
+try { if (Inst34 <= 1000 && typeof (''.split) != "undefined") {_RecordType("<3027,3035,87>",(''.split)); Inst34++; } } catch(e) {}
+''.split(/./);
+[];
+try { if (Inst35 <= 1000 && typeof (''.split) != "undefined") {_RecordType("<3046,3054,89>",(''.split)); Inst35++; } } catch(e) {}
+''.split(/.?/);
+[];
+try { if (Inst36 <= 1000 && typeof (''.split) != "undefined") {_RecordType("<3066,3074,91>",(''.split)); Inst36++; } } catch(e) {}
+''.split(/.??/);
+[];
+try { if (Inst37 <= 1000 && typeof (''.split) != "undefined") {_RecordType("<3087,3095,93>",(''.split)); Inst37++; } } catch(e) {}
+''.split(/()()/);
+
+// Issue http://code.google.com/p/v8/issues/detail?id=929
+// (Splitting with empty separator and a limit.)
+try { if (Inst38 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3222,3231,97>",(numberObj)); Inst38++; } } catch(e) {}
+function numberObj(num) {
+try { if (Inst39 <= 1000 && typeof (num) != "undefined") {_RecordType("<3232,3235,97>",(num)); Inst39++; } } catch(e) {}
+  return {
+    valueOf: function () {
+try { if (Inst40 <= 1000 && typeof (num) != "undefined") {_RecordType("<3290,3293,100>",(num)); Inst40++; } } catch(e) {}
+      return num;
+    }
+  };
+}
+
+[];
+try { if (Inst41 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3313,3324,106>",("abc".split)); Inst41++; } } catch(e) {}
+"abc".split("", 0);
+[];
+try { if (Inst42 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3337,3348,108>",("abc".split)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3353,3362,108>",(numberObj)); Inst43++; } } catch(e) {}
+"abc".split("", numberObj(0));
+["a"];
+try { if (Inst44 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3375,3386,110>",("abc".split)); Inst44++; } } catch(e) {}
+"abc".split("", 1);
+["a"];
+try { if (Inst45 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3402,3413,112>",("abc".split)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3418,3427,112>",(numberObj)); Inst46++; } } catch(e) {}
+"abc".split("", numberObj(1));
+["a", "b"];
+try { if (Inst47 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3445,3456,114>",("abc".split)); Inst47++; } } catch(e) {}
+"abc".split("", 2);
+["a", "b"];
+try { if (Inst48 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3477,3488,116>",("abc".split)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3493,3502,116>",(numberObj)); Inst49++; } } catch(e) {}
+"abc".split("", numberObj(2));
+["a", "b", "c"];
+try { if (Inst50 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3525,3536,118>",("abc".split)); Inst50++; } } catch(e) {}
+"abc".split("", 3);
+["a", "b", "c"];
+try { if (Inst51 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3562,3573,120>",("abc".split)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3578,3587,120>",(numberObj)); Inst52++; } } catch(e) {}
+"abc".split("", numberObj(3));
+["a", "b", "c"];
+try { if (Inst53 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3610,3621,122>",("abc".split)); Inst53++; } } catch(e) {}
+"abc".split("", 4);
+["a", "b", "c"];
+try { if (Inst54 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<3647,3658,124>",("abc".split)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (numberObj) != "undefined") {_RecordType("<3663,3672,124>",(numberObj)); Inst55++; } } catch(e) {}
+"abc".split("", numberObj(4));
+// Check if split works also for sliced strings.
+try { if (Inst57 <= 1000 && typeof ("abcdefghijklmnopqrstuvwxyz".split) != "undefined") {_RecordType("<3747,3781,126>",("abcdefghijklmnopqrstuvwxyz".split)); Inst57++; } } catch(e) {}
+let sliced_string = "abcdefghijklmnopqrstuvwxyz".split(13);
+try { if (Inst56 <= 1000 && typeof (sliced_string) != "undefined") {_RecordType("<3731,3744,126>",(sliced_string)); Inst56++; } } catch(e) {}
+try { if (Inst58 <= 1000 && typeof ("nopqrstuvwxyz".split) != "undefined") {_RecordType("<3787,3808,127>",("nopqrstuvwxyz".split)); Inst58++; } } catch(e) {}
+"nopqrstuvwxyz".split("");
+try { if (Inst59 <= 1000 && typeof (sliced_string.split) != "undefined") {_RecordType("<3814,3833,128>",(sliced_string.split)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (sliced_string) != "undefined") {_RecordType("<3814,3827,128>",(sliced_string)); Inst60++; } } catch(e) {}
+sliced_string.split("");
+try { if (Inst61 <= 1000 && typeof ("nopqrstuvwxyz".split) != "undefined") {_RecordType("<3839,3860,129>",("nopqrstuvwxyz".split)); Inst61++; } } catch(e) {}
+"nopqrstuvwxyz".split("");
+try { if (Inst62 <= 1000 && typeof (sliced_string.split) != "undefined") {_RecordType("<3866,3885,130>",(sliced_string.split)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (sliced_string) != "undefined") {_RecordType("<3866,3879,130>",(sliced_string)); Inst63++; } } catch(e) {}
+sliced_string.split("");
+var all_ascii_codes = [];
+try { if (Inst64 <= 1000 && typeof (all_ascii_codes) != "undefined") {_RecordType("<3895,3910,131>",(all_ascii_codes)); Inst64++; } } catch(e) {}
+
+for (var i = 0; i < 128; i++) {
+try { if (Inst65 <= 1000 && typeof (i) != "undefined") {_RecordType("<3927,3928,133>",(i)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (i) != "undefined") {_RecordType("<3934,3935,133>",(i)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (i) != "undefined") {_RecordType("<3943,3944,133>",(i)); Inst67++; } } catch(e) {}
+try { if (Inst70 <= 1000 && typeof (i) != "undefined") {_RecordType("<3973,3974,134>",(i)); Inst70++; } } catch(e) {}
+  all_ascii_codes[i] = i;
+try { if (Inst68 <= 1000 && typeof (all_ascii_codes[i]) != "undefined") {_RecordType("<3952,3970,134>",(all_ascii_codes[i])); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (all_ascii_codes) != "undefined") {_RecordType("<3952,3967,134>",(all_ascii_codes)); Inst69++; } } catch(e) {}
+}
+
+try { if (Inst72 <= 1000 && typeof (String.fromCharCode.apply) != "undefined") {_RecordType("<4002,4027,137>",(String.fromCharCode.apply)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<4002,4021,137>",(String.fromCharCode)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (String) != "undefined") {_RecordType("<4002,4008,137>",(String)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (String) != "undefined") {_RecordType("<4028,4034,137>",(String)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (all_ascii_codes) != "undefined") {_RecordType("<4036,4051,137>",(all_ascii_codes)); Inst76++; } } catch(e) {}
+var all_ascii_string = String.fromCharCode.apply(String, all_ascii_codes);
+try { if (Inst71 <= 1000 && typeof (all_ascii_string) != "undefined") {_RecordType("<3983,3999,137>",(all_ascii_string)); Inst71++; } } catch(e) {}
+try { if (Inst78 <= 1000 && typeof (all_ascii_string.split) != "undefined") {_RecordType("<4072,4094,138>",(all_ascii_string.split)); Inst78++; } } catch(e) {}try { if (Inst79 <= 1000 && typeof (all_ascii_string) != "undefined") {_RecordType("<4072,4088,138>",(all_ascii_string)); Inst79++; } } catch(e) {}
+var split_chars = all_ascii_string.split("");
+try { if (Inst77 <= 1000 && typeof (split_chars) != "undefined") {_RecordType("<4058,4069,138>",(split_chars)); Inst77++; } } catch(e) {}
+128;
+try { if (Inst80 <= 1000 && typeof (split_chars.length) != "undefined") {_RecordType("<4105,4123,140>",(split_chars.length)); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (split_chars) != "undefined") {_RecordType("<4105,4116,140>",(split_chars)); Inst81++; } } catch(e) {}
+split_chars.length;
+
+for (var i = 0; i < 128; i++) {
+try { if (Inst82 <= 1000 && typeof (i) != "undefined") {_RecordType("<4135,4136,142>",(i)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (i) != "undefined") {_RecordType("<4142,4143,142>",(i)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (i) != "undefined") {_RecordType("<4151,4152,142>",(i)); Inst84++; } } catch(e) {}
+  1;
+try { if (Inst85 <= 1000 && typeof (split_chars[i].length) != "undefined") {_RecordType("<4165,4186,144>",(split_chars[i].length)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (split_chars[i]) != "undefined") {_RecordType("<4165,4179,144>",(split_chars[i])); Inst86++; } } catch(e) {}try { if (Inst87 <= 1000 && typeof (split_chars) != "undefined") {_RecordType("<4165,4176,144>",(split_chars)); Inst87++; } } catch(e) {}
+  split_chars[i].length;
+try { if (Inst88 <= 1000 && typeof (i) != "undefined") {_RecordType("<4190,4191,145>",(i)); Inst88++; } } catch(e) {}
+  i;
+try { if (Inst89 <= 1000 && typeof (split_chars[i].charCodeAt) != "undefined") {_RecordType("<4195,4220,146>",(split_chars[i].charCodeAt)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (split_chars[i]) != "undefined") {_RecordType("<4195,4209,146>",(split_chars[i])); Inst90++; } } catch(e) {}try { if (Inst91 <= 1000 && typeof (split_chars) != "undefined") {_RecordType("<4195,4206,146>",(split_chars)); Inst91++; } } catch(e) {}
+  split_chars[i].charCodeAt(0);
+} // Check that the separator is converted to string before returning due to
+// limit == 0.
+
+
+var counter = 0;
+try { if (Inst92 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4323,4330,151>",(counter)); Inst92++; } } catch(e) {}
+var separator = {
+  toString: function () {
+try { if (Inst94 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4384,4391,154>",(counter)); Inst94++; } } catch(e) {}
+    counter++;
+    return "b";
+  }
+};
+try { if (Inst93 <= 1000 && typeof (separator) != "undefined") {_RecordType("<4340,4349,152>",(separator)); Inst93++; } } catch(e) {}
+[];
+try { if (Inst95 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<4422,4433,159>",("abc".split)); Inst95++; } } catch(e) {}try { if (Inst96 <= 1000 && typeof (separator) != "undefined") {_RecordType("<4434,4443,159>",(separator)); Inst96++; } } catch(e) {}
+"abc".split(separator, 0);
+1;
+try { if (Inst97 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4452,4459,161>",(counter)); Inst97++; } } catch(e) {}
+counter;
+// Check that the subject is converted to string before the separator.
+counter = 0;
+try { if (Inst98 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4532,4539,163>",(counter)); Inst98++; } } catch(e) {}
+var subject = {
+  toString: function () {
+    0;
+try { if (Inst100 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4598,4605,167>",(counter)); Inst100++; } } catch(e) {}
+    counter;
+try { if (Inst101 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4611,4618,168>",(counter)); Inst101++; } } catch(e) {}
+    counter++;
+    return "abc";
+  }
+};
+try { if (Inst99 <= 1000 && typeof (subject) != "undefined") {_RecordType("<4549,4556,164>",(subject)); Inst99++; } } catch(e) {}
+separator = {
+  toString: function () {
+    1;
+try { if (Inst103 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4698,4705,175>",(counter)); Inst103++; } } catch(e) {}
+    counter;
+try { if (Inst104 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4711,4718,176>",(counter)); Inst104++; } } catch(e) {}
+    counter++;
+    return "b";
+  }
+};
+try { if (Inst102 <= 1000 && typeof (separator) != "undefined") {_RecordType("<4647,4656,172>",(separator)); Inst102++; } } catch(e) {}
+["a", "c"];
+try { if (Inst105 <= 1000 && typeof (String.prototype.split.call) != "undefined") {_RecordType("<4757,4784,181>",(String.prototype.split.call)); Inst105++; } } catch(e) {}try { if (Inst106 <= 1000 && typeof (String.prototype.split) != "undefined") {_RecordType("<4757,4779,181>",(String.prototype.split)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (String.prototype) != "undefined") {_RecordType("<4757,4773,181>",(String.prototype)); Inst107++; } } catch(e) {}try { if (Inst108 <= 1000 && typeof (String) != "undefined") {_RecordType("<4757,4763,181>",(String)); Inst108++; } } catch(e) {}try { if (Inst109 <= 1000 && typeof (subject) != "undefined") {_RecordType("<4785,4792,181>",(subject)); Inst109++; } } catch(e) {}try { if (Inst110 <= 1000 && typeof (separator) != "undefined") {_RecordType("<4794,4803,181>",(separator)); Inst110++; } } catch(e) {}
+String.prototype.split.call(subject, separator);
+2;
+try { if (Inst111 <= 1000 && typeof (counter) != "undefined") {_RecordType("<4809,4816,183>",(counter)); Inst111++; } } catch(e) {}
+counter;
+["a"];
+try { if (Inst112 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<4825,4844,185>",("a,b,c,d,e,f".split)); Inst112++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967295);
+["a", "b"];
+try { if (Inst113 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<4876,4895,187>",("a,b,c,d,e,f".split)); Inst113++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967294.001);
+["a", "b"];
+try { if (Inst114 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<4931,4950,189>",("a,b,c,d,e,f".split)); Inst114++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967294.5);
+["a", "b"];
+try { if (Inst115 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<4984,5003,191>",("a,b,c,d,e,f".split)); Inst115++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967294.999);
+["a", "b"];
+try { if (Inst116 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<5039,5058,193>",("a,b,c,d,e,f".split)); Inst116++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967294);
+["a", "b", "c"];
+try { if (Inst117 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<5095,5114,195>",("a,b,c,d,e,f".split)); Inst117++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967293);
+["a", "b", "c", "d"];
+try { if (Inst118 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<5156,5175,197>",("a,b,c,d,e,f".split)); Inst118++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -4294967292);
+["a", "b", "c", "d", "e", "f"];
+try { if (Inst119 <= 1000 && typeof ("a,b,c,d,e,f".split) != "undefined") {_RecordType("<5227,5246,199>",("a,b,c,d,e,f".split)); Inst119++; } } catch(e) {}
+"a,b,c,d,e,f".split(/,/, -1);
+["a", "b", "c"];
+try { if (Inst120 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<5274,5285,201>",("abc".split)); Inst120++; } } catch(e) {}
+"abc".split("", 0xffffffff);
+["\u0427", "\u0427"];
+try { if (Inst121 <= 1000 && typeof ("\u0427\u0427".split) != "undefined") {_RecordType("<5325,5345,203>",("\u0427\u0427".split)); Inst121++; } } catch(e) {}
+"\u0427\u0427".split("", 0xffffffff);
+

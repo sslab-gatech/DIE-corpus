@@ -1,0 +1,74 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log('This test checks that setting a non-object, non-null value for this.__proto__ does not lead to a crash when setting a property on the this object.');
+try { if (Inst3 <= 1000 && typeof (this.__proto__) != "undefined") {_RecordType("<179,193,2>",(this.__proto__)); Inst3++; } } catch(e) {}
+originalProto = this.__proto__;
+try { if (Inst2 <= 1000 && typeof (originalProto) != "undefined") {_RecordType("<163,176,2>",(originalProto)); Inst2++; } } catch(e) {}
+this.__proto__ = 1;
+try { if (Inst4 <= 1000 && typeof (this.__proto__) != "undefined") {_RecordType("<195,209,3>",(this.__proto__)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (this.__proto__) != "undefined") {_RecordType("<215,229,4>",(this.__proto__)); Inst5++; } } catch(e) {}
+this.__proto__;
+someProperty = 1;
+try { if (Inst6 <= 1000 && typeof (someProperty) != "undefined") {_RecordType("<231,243,5>",(someProperty)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<249,260,6>",(console.log)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (console) != "undefined") {_RecordType("<249,256,6>",(console)); Inst8++; } } catch(e) {}
+console.log('If we got to this point then we did not crash and the test has passed.');
+

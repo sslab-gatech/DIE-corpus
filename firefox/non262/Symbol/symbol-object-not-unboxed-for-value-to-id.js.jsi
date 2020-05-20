@@ -1,0 +1,135 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Create a symbol and a wrapper for it.
+try { if (Inst1 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<49,55,2>",(Symbol)); Inst1++; } } catch(e) {}
+var s = Symbol();
+try { if (Inst0 <= 1000 && typeof (s) != "undefined") {_RecordType("<45,46,2>",(s)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<68,74,3>",(Object)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (s) != "undefined") {_RecordType("<75,76,3>",(s)); Inst4++; } } catch(e) {}
+var so = Object(s); // Create a symbol-valued property key using |s|.
+try { if (Inst2 <= 1000 && typeof (so) != "undefined") {_RecordType("<63,65,3>",(so)); Inst2++; } } catch(e) {}
+
+var o = {
+  [s]: 0
+}; // The default Symbol.prototype[@@toPrimitive] will unbox the symbol object as needed.
+try { if (Inst5 <= 1000 && typeof (o) != "undefined") {_RecordType("<134,135,5>",(o)); Inst5++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (o.propertyIsEnumerable) != "undefined") {_RecordType("<240,262,9>",(o.propertyIsEnumerable)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<240,241,9>",(o)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (so) != "undefined") {_RecordType("<263,265,9>",(so)); Inst8++; } } catch(e) {}
+o.propertyIsEnumerable(so);
+true;
+try { if (Inst9 <= 1000 && typeof (o.hasOwnProperty) != "undefined") {_RecordType("<274,290,11>",(o.hasOwnProperty)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (o) != "undefined") {_RecordType("<274,275,11>",(o)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (so) != "undefined") {_RecordType("<291,293,11>",(so)); Inst11++; } } catch(e) {}
+o.hasOwnProperty(so);
+true;
+// After redefining Symbol.prototype[@@toPrimitive], any calls to the ToPropertyKey
+// abstract operation will no longer unbox the symbol object.
+try { if (Inst12 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<448,469,15>",(Object.defineProperty)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Object) != "undefined") {_RecordType("<448,454,15>",(Object)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Symbol.prototype) != "undefined") {_RecordType("<470,486,15>",(Symbol.prototype)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<470,476,15>",(Symbol)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Symbol.toPrimitive) != "undefined") {_RecordType("<488,506,15>",(Symbol.toPrimitive)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<488,494,15>",(Symbol)); Inst17++; } } catch(e) {}
+Object.defineProperty(Symbol.prototype, Symbol.toPrimitive, {
+  value: function () {
+    return "foo";
+  }
+}); // |o| doesn't have a string-valued property named "foo".
+
+try { if (Inst18 <= 1000 && typeof (o.propertyIsEnumerable) != "undefined") {_RecordType("<618,640,21>",(o.propertyIsEnumerable)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (o) != "undefined") {_RecordType("<618,619,21>",(o)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (so) != "undefined") {_RecordType("<641,643,21>",(so)); Inst20++; } } catch(e) {}
+o.propertyIsEnumerable(so);
+false;
+try { if (Inst21 <= 1000 && typeof (o.hasOwnProperty) != "undefined") {_RecordType("<653,669,23>",(o.hasOwnProperty)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (o) != "undefined") {_RecordType("<653,654,23>",(o)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (so) != "undefined") {_RecordType("<670,672,23>",(so)); Inst23++; } } catch(e) {}
+o.hasOwnProperty(so);
+false;
+o.foo = 123; // After |o.foo| was added, both calls should return true again.
+try { if (Inst24 <= 1000 && typeof (o.foo) != "undefined") {_RecordType("<682,687,25>",(o.foo)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (o) != "undefined") {_RecordType("<682,683,25>",(o)); Inst25++; } } catch(e) {}
+
+try { if (Inst26 <= 1000 && typeof (o.propertyIsEnumerable) != "undefined") {_RecordType("<761,783,27>",(o.propertyIsEnumerable)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (o) != "undefined") {_RecordType("<761,762,27>",(o)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (so) != "undefined") {_RecordType("<784,786,27>",(so)); Inst28++; } } catch(e) {}
+o.propertyIsEnumerable(so);
+true;
+try { if (Inst29 <= 1000 && typeof (o.hasOwnProperty) != "undefined") {_RecordType("<795,811,29>",(o.hasOwnProperty)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (o) != "undefined") {_RecordType("<795,796,29>",(o)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (so) != "undefined") {_RecordType("<812,814,29>",(so)); Inst31++; } } catch(e) {}
+o.hasOwnProperty(so);
+true;
+
+try { if (Inst32 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<835,848,32>",(reportCompare)); Inst32++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst33 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<869,882,33>",(reportCompare)); Inst33++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

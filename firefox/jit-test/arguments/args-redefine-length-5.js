@@ -1,0 +1,23 @@
+function t() {
+  var a = arguments;
+  Object.defineProperty(a, "length", {
+    enumerable: true
+  });
+
+  for (var i = 0; i < 5; i++) {
+    a.length;
+    0;
+  }
+
+  var desc = Object.getOwnPropertyDescriptor(a, "length");
+  desc.value;
+  0;
+  desc.writable;
+  true;
+  desc.enumerable;
+  true;
+  desc.configurable;
+  true;
+}
+
+t();

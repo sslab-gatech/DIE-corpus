@@ -1,0 +1,131 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2014 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --gc-global --noincremental-marking --allow-natives-syntax
+try { if (Inst0 <= 1000 && typeof (Ctor) != "undefined") {_RecordType("<245,249,5>",(Ctor)); Inst0++; } } catch(e) {}
+function Ctor() {
+  this.foo = 1;
+try { if (Inst1 <= 1000 && typeof (this.foo) != "undefined") {_RecordType("<256,264,6>",(this.foo)); Inst1++; } } catch(e) {}
+}
+
+try { if (Inst3 <= 1000 && typeof (Ctor) != "undefined") {_RecordType("<285,289,9>",(Ctor)); Inst3++; } } catch(e) {}
+var o = new Ctor();
+try { if (Inst2 <= 1000 && typeof (o) != "undefined") {_RecordType("<277,278,9>",(o)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (Ctor) != "undefined") {_RecordType("<305,309,10>",(Ctor)); Inst5++; } } catch(e) {}
+var p = new Ctor();
+try { if (Inst4 <= 1000 && typeof (p) != "undefined") {_RecordType("<297,298,10>",(p)); Inst4++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (crash) != "undefined") {_RecordType("<323,328,12>",(crash)); Inst6++; } } catch(e) {}
+function crash(o, timeout) {
+try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<329,330,12>",(o)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (timeout) != "undefined") {_RecordType("<332,339,12>",(timeout)); Inst8++; } } catch(e) {}
+  var s = "4000111222"; // Outside Smi range.
+try { if (Inst9 <= 1000 && typeof (s) != "undefined") {_RecordType("<349,350,13>",(s)); Inst9++; } } catch(e) {}
+  // This allocates a heap number, causing a GC, triggering lazy deopt.
+
+try { if (Inst11 <= 1000 && typeof (s) != "undefined") {_RecordType("<474,475,16>",(s)); Inst11++; } } catch(e) {}
+  var end = s >>> 0;
+try { if (Inst10 <= 1000 && typeof (end) != "undefined") {_RecordType("<468,471,16>",(end)); Inst10++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (s.substring) != "undefined") {_RecordType("<489,500,17>",(s.substring)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (s) != "undefined") {_RecordType("<489,490,17>",(s)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (end) != "undefined") {_RecordType("<504,507,17>",(end)); Inst15++; } } catch(e) {}
+  s = s.substring(0, end); // This creates a map dependency, which gives the GC a reason to trigger
+try { if (Inst12 <= 1000 && typeof (s) != "undefined") {_RecordType("<485,486,17>",(s)); Inst12++; } } catch(e) {}
+  // a lazy deopt when that map dies.
+
+  o.bar = 2;
+try { if (Inst16 <= 1000 && typeof (o.bar) != "undefined") {_RecordType("<624,629,20>",(o.bar)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (o) != "undefined") {_RecordType("<624,625,20>",(o)); Inst17++; } } catch(e) {}
+}
+
+try { if (Inst18 <= 1000 && typeof (crash) != "undefined") {_RecordType("<638,643,23>",(crash)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (o) != "undefined") {_RecordType("<644,645,23>",(o)); Inst19++; } } catch(e) {}
+crash(o, 100000);
+try { if (Inst20 <= 1000 && typeof (crash) != "undefined") {_RecordType("<656,661,24>",(crash)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (o) != "undefined") {_RecordType("<662,663,24>",(o)); Inst21++; } } catch(e) {}
+crash(o, 100000);
+try { if (Inst22 <= 1000 && typeof (crash) != "undefined") {_RecordType("<674,679,25>",(crash)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (p) != "undefined") {_RecordType("<680,681,25>",(p)); Inst23++; } } catch(e) {}
+crash(p, 100000);
+try { if (Inst24 <= 1000 && typeof (crash) != "undefined") {_RecordType("<692,697,26>",(crash)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (o) != "undefined") {_RecordType("<698,699,26>",(o)); Inst25++; } } catch(e) {}
+crash(o, 100000);
+o = null;
+try { if (Inst26 <= 1000 && typeof (o) != "undefined") {_RecordType("<710,711,27>",(o)); Inst26++; } } catch(e) {}
+p = null;
+try { if (Inst27 <= 1000 && typeof (p) != "undefined") {_RecordType("<720,721,28>",(p)); Inst27++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (crash) != "undefined") {_RecordType("<730,735,29>",(crash)); Inst28++; } } catch(e) {}
+crash({}, 0);
+

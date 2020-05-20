@@ -1,0 +1,103 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: InternalError: too much recursion
+// FIXME: this should not give an internal error once OSI lands.
+var forceReflow = false;
+try { if (Inst0 <= 1000 && typeof (forceReflow) != "undefined") {_RecordType("<124,135,3>",(forceReflow)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (rec) != "undefined") {_RecordType("<155,158,5>",(rec)); Inst1++; } } catch(e) {}
+function rec(x, self) {
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<159,160,5>",(x)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (self) != "undefined") {_RecordType("<162,166,5>",(self)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<176,177,6>",(x)); Inst4++; } } catch(e) {}
+  if (x > 0) {
+try { if (Inst5 <= 1000 && typeof (self) != "undefined") {_RecordType("<189,193,7>",(self)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<194,195,7>",(x)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (self) != "undefined") {_RecordType("<201,205,7>",(self)); Inst7++; } } catch(e) {}
+    self(x - 1, self);
+  } else {
+try { if (Inst8 <= 1000 && typeof (forceReflow) != "undefined") {_RecordType("<227,238,9>",(forceReflow)); Inst8++; } } catch(e) {}
+    if (forceReflow) {
+try { if (Inst9 <= 1000 && typeof (self) != "undefined") {_RecordType("<248,252,10>",(self)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<253,256,10>",(NaN)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (self) != "undefined") {_RecordType("<258,262,10>",(self)); Inst11++; } } catch(e) {}
+      self(NaN, self);
+    }
+  }
+}
+
+for (var i = 0; i < 40; ++i) {
+try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<287,288,15>",(i)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<294,295,15>",(i)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<304,305,15>",(i)); Inst14++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (rec) != "undefined") {_RecordType("<311,314,16>",(rec)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (rec) != "undefined") {_RecordType("<318,321,16>",(rec)); Inst16++; } } catch(e) {}
+  rec(1, rec);
+}
+
+forceReflow = true;
+try { if (Inst17 <= 1000 && typeof (forceReflow) != "undefined") {_RecordType("<327,338,19>",(forceReflow)); Inst17++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (rec) != "undefined") {_RecordType("<347,350,20>",(rec)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (rec) != "undefined") {_RecordType("<354,357,20>",(rec)); Inst19++; } } catch(e) {}
+rec(1, rec);
+

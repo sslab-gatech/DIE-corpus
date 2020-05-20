@@ -1,0 +1,160 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function assertPropertyExists(o, p, v) {
+  if (!o.hasOwnProperty(p)) {
+    console.log("Object does not have expected property '" + p + "'");
+  }
+
+  if (o[p] !== v) {
+    console.log("Object has property '" + p + "' but its value does not match the expected value");
+  }
+}
+
+function assertPropertyDoesNotExist(o, p) {
+  if (o.hasOwnProperty(p)) {
+    console.log("Object has unexpected property '" + p + "'");
+  }
+}
+
+(function addAccessorPropertiesToGlobal() {
+  var getter = function () {
+    print("This getter should not get called");
+  };
+
+  var setter = function () {
+    print("This setter should not get called");
+  };
+
+
+  Object.defineProperty(this, "bar", {
+    get: getter,
+    set: setter,
+    configurable: true
+  });
+  Object.defineProperty(this, "nonConfigurableFoo", {
+    get: getter,
+    set: setter,
+    configurable: false
+  });
+  Object.defineProperty(this, "nonConfigurableBar", {
+    get: getter,
+    set: setter,
+    configurable: false
+  }); // double check that the property is added as expected according to spec
+
+  var d = Object.getOwnPropertyDescriptor(this, "foo");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  true;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  d = Object.getOwnPropertyDescriptor(this, "bar");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  true;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  var d = Object.getOwnPropertyDescriptor(this, "nonConfigurableFoo");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  false;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  var d = Object.getOwnPropertyDescriptor(this, "nonConfigurableBar");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  false;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+}).call(this);
+
+function foo() {
+  // override global accessor property 'foo' with a function
+  // this should convert the property to a data property with
+  // writable true, enumerable true, configurable false
+  ;
+}
+
+eval("function bar() { /* same deal except for eval defined global functions configurable will be true */ }");
+(function verifyGlobalPropertyDescriptors() {
+  var d = Object.getOwnPropertyDescriptor(this, 'foo');
+  d;
+  'get';
+  d;
+  'set';
+  d;
+  'configurable';
+  false;
+  d;
+  'enumerable';
+  true;
+  d;
+  'writable';
+  true;
+  d;
+  'value';
+  foo();
+  d = Object.getOwnPropertyDescriptor(this, 'bar');
+  d;
+  'get';
+  d;
+  'set';
+  d;
+  'configurable';
+  true;
+  d;
+  'enumerable';
+  true;
+  d;
+  'writable';
+  true;
+  d;
+  'value';
+  bar;
+}).call(this);

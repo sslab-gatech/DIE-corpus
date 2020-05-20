@@ -1,0 +1,124 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| --no-baseline; skip-if: !('oomTest' in this)
+//
+// For background, see the comments for LiveSavedFrameCache in js/src/vm/Stack.h.
+//
+// The cache would like to assert that, assuming the cache hasn't been
+// completely flushed due to a compartment mismatch, if a stack frame's
+// hasCachedSavedFrame bit is set, then that frame does indeed have an entry in
+// the cache.
+//
+// When LiveSavedFrameCache::find finds an entry whose frame address matches,
+// but whose pc does not match, it removes that entry from the cache. Usually, a
+// fresh entry for that frame will be pushed into the cache in short order as we
+// rebuild the SavedFrame chain, but if the creation of the SavedFrame fails due
+// to OOM, then we are left with no cache entry for that frame.
+//
+// The fix for 1445973 is simply to clear the frame's bit when we remove the
+// cache entry for a pc mismatch. Previously the code neglected to do this, but
+// usually got away with it because the cache would be re-populated. OOM fuzzing
+// interrupted the code at the proper place and revealed the crash, but did so
+// with a test that took 90s to run. This test runs in a fraction of a second.
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<1180,1181,21>",(f)); Inst0++; } } catch(e) {}
+function f() {
+  // Ensure that we will try to allocate fresh SavedFrame objects.
+  // Ensure that all frames have their hasCachedSavedFrame bits set.
+try { if (Inst1 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<1324,1333,24>",(saveStack)); Inst1++; } } catch(e) {}
+  saveStack();
+
+try { if (Inst3 <= 1000 && typeof (e) != "undefined") {_RecordType("<1549,1550,31>",(e)); Inst3++; } } catch(e) {}
+  try {
+    // Capture the stack again. The entry for this frame will be removed due to
+    // a pc mismatch. The OOM must occur here, causing the cache not to be
+    // repopulated.
+try { if (Inst2 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<1525,1534,30>",(saveStack)); Inst2++; } } catch(e) {}
+    saveStack();
+  } catch (e) {
+    ;
+  } // Capture the stack a third time. This will see that f's frame has its bit
+  // set, even though it has no entry in the cache.
+
+
+try { if (Inst4 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<1696,1705,37>",(saveStack)); Inst4++; } } catch(e) {}
+  saveStack();
+} // This ensures that there is a frame below f's in the same Activation, so that
+// the assertion doesn't get skipped because the LiveSavedFrameCache is entirely
+// empty, to handle caches flushed by compartment mismatches.
+
+
+try { if (Inst5 <= 1000 && typeof (g) != "undefined") {_RecordType("<1945,1946,43>",(g)); Inst5++; } } catch(e) {}
+function g() {
+try { if (Inst6 <= 1000 && typeof (f) != "undefined") {_RecordType("<1953,1954,44>",(f)); Inst6++; } } catch(e) {}
+  f();
+} // Call all the code once, to ensure that everything has been delazified. When
+// different calls to g perform different amounts of allocation, oomTest's
+// simple strategy for choosing which allocation should fail can neglect to hit
+// the SavedFrame creation. This is also why we disable the baseline compiler in
+// the test metaline.
+
+
+try { if (Inst7 <= 1000 && typeof (g) != "undefined") {_RecordType("<2299,2300,52>",(g)); Inst7++; } } catch(e) {}
+g();
+try { if (Inst8 <= 1000 && typeof (oomTest) != "undefined") {_RecordType("<2304,2311,53>",(oomTest)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (g) != "undefined") {_RecordType("<2312,2313,53>",(g)); Inst9++; } } catch(e) {}
+oomTest(g);
+

@@ -1,0 +1,1 @@
+[null,null,{"type":"Void"},{"type":"Void"},null,null,{"type":"Immutable"},null,null,{"type":"Void"},null,{"type":"Void"},{"type":"Constructor","extra":{"name":"Number","ret":{"type":"Number"}}},{"type":"Number"},{"type":"Constructor","extra":{"name":"Number","ret":{"type":"Number"}}},{"type":"Constructor","extra":{"name":"Number","ret":{"type":"Number"}}},{"type":"Number"}]

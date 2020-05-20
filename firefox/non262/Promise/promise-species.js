@@ -1,0 +1,12 @@
+Promise[Symbol.species];
+Promise;
+let prop = Object.getOwnPropertyDescriptor(Promise, Symbol.species);
+'get' in prop;
+true;
+typeof prop.get;
+'function';
+'set' in prop;
+true;
+prop.set;
+undefined;
+reportCompare(0, 0, "ok");

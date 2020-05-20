@@ -1,0 +1,109 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// This test case tests how array hoisting optimizations work in the presence of implicit call
+// b < FloatArr0 has an implicit call of 'valueof' in this scenario
+try { if (Inst0 <= 1000 && typeof (test17) != "undefined") {_RecordType("<539,545,7>",(test17)); Inst0++; } } catch(e) {}
+function test17() {
+  var FloatArr0 = [];
+try { if (Inst1 <= 1000 && typeof (FloatArr0) != "undefined") {_RecordType("<556,565,8>",(FloatArr0)); Inst1++; } } catch(e) {}
+  var VarArr0 = [];
+try { if (Inst2 <= 1000 && typeof (VarArr0) != "undefined") {_RecordType("<578,585,9>",(VarArr0)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (VarArr0) != "undefined") {_RecordType("<602,609,10>",(VarArr0)); Inst4++; } } catch(e) {}
+  var b = VarArr0;
+try { if (Inst3 <= 1000 && typeof (b) != "undefined") {_RecordType("<598,599,10>",(b)); Inst3++; } } catch(e) {}
+
+  for (var __loopvar1 = 0; b < FloatArr0;) {
+try { if (Inst5 <= 1000 && typeof (__loopvar1) != "undefined") {_RecordType("<623,633,12>",(__loopvar1)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (b) != "undefined") {_RecordType("<639,640,12>",(b)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (FloatArr0) != "undefined") {_RecordType("<643,652,12>",(FloatArr0)); Inst7++; } } catch(e) {}
+    for (var v319132 = 0; v319132; v319132++) {
+try { if (Inst8 <= 1000 && typeof (v319132) != "undefined") {_RecordType("<670,677,13>",(v319132)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (v319132) != "undefined") {_RecordType("<683,690,13>",(v319132)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (v319132) != "undefined") {_RecordType("<692,699,13>",(v319132)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (FloatArr0[1]) != "undefined") {_RecordType("<711,723,14>",(FloatArr0[1])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (FloatArr0) != "undefined") {_RecordType("<711,720,14>",(FloatArr0)); Inst12++; } } catch(e) {}
+      FloatArr0[1];
+    }
+
+try { if (Inst13 <= 1000 && typeof (v319133) != "undefined") {_RecordType("<743,750,17>",(v319133)); Inst13++; } } catch(e) {}
+    while (v319133) {
+try { if (Inst14 <= 1000 && typeof (FloatArr0[1]) != "undefined") {_RecordType("<760,772,18>",(FloatArr0[1])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (FloatArr0) != "undefined") {_RecordType("<760,769,18>",(FloatArr0)); Inst15++; } } catch(e) {}
+      FloatArr0[1];
+    }
+  }
+}
+
+try { if (Inst16 <= 1000 && typeof (test17) != "undefined") {_RecordType("<787,793,23>",(test17)); Inst16++; } } catch(e) {}
+test17();
+try { if (Inst17 <= 1000 && typeof (test17) != "undefined") {_RecordType("<797,803,24>",(test17)); Inst17++; } } catch(e) {}
+test17();
+try { if (Inst18 <= 1000 && typeof (print) != "undefined") {_RecordType("<807,812,25>",(print)); Inst18++; } } catch(e) {}
+print("PASSED");
+

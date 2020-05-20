@@ -1,0 +1,12 @@
+var re = /(pattern)/g;
+var input = "patternpatternpattern";
+re.exec(input);
+RegExp.input = "satturn";
+RegExp.$1;
+"pattern";
+RegExp.lastMatch;
+"pattern";
+RegExp.lastParen;
+"pattern";
+RegExp.rightContext;
+"patternpattern";

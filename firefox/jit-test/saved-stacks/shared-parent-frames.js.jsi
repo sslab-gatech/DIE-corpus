@@ -1,0 +1,96 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that parent frames are shared when the older portions of two stacks are
+// the same.
+let f1, f2;
+try { if (Inst0 <= 1000 && typeof (f1) != "undefined") {_RecordType("<97,99,3>",(f1)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (f2) != "undefined") {_RecordType("<101,103,3>",(f2)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (dos) != "undefined") {_RecordType("<115,118,5>",(dos)); Inst2++; } } catch(e) {}
+function dos() {
+try { if (Inst4 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<130,139,6>",(saveStack)); Inst4++; } } catch(e) {}
+  f1 = saveStack();
+try { if (Inst3 <= 1000 && typeof (f1) != "undefined") {_RecordType("<125,127,6>",(f1)); Inst3++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (saveStack) != "undefined") {_RecordType("<150,159,7>",(saveStack)); Inst6++; } } catch(e) {}
+  f2 = saveStack();
+try { if (Inst5 <= 1000 && typeof (f2) != "undefined") {_RecordType("<145,147,7>",(f2)); Inst5++; } } catch(e) {}
+}
+
+try { if (Inst7 <= 1000 && typeof (uno) != "undefined") {_RecordType("<176,179,10>",(uno)); Inst7++; } } catch(e) {}
+(function uno() {
+try { if (Inst8 <= 1000 && typeof (dos) != "undefined") {_RecordType("<186,189,11>",(dos)); Inst8++; } } catch(e) {}
+  dos();
+})(); // Different youngest frames.
+
+
+try { if (Inst9 <= 1000 && typeof (f1) != "undefined") {_RecordType("<231,233,15>",(f1)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (f2) != "undefined") {_RecordType("<237,239,15>",(f2)); Inst10++; } } catch(e) {}
+f1 == f2;
+false;
+try { if (Inst11 <= 1000 && typeof (f1.parent) != "undefined") {_RecordType("<248,257,17>",(f1.parent)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (f1) != "undefined") {_RecordType("<248,250,17>",(f1)); Inst12++; } } catch(e) {}
+f1.parent;
+try { if (Inst13 <= 1000 && typeof (f2.parent) != "undefined") {_RecordType("<259,268,18>",(f2.parent)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (f2) != "undefined") {_RecordType("<259,261,18>",(f2)); Inst14++; } } catch(e) {}
+f2.parent;
+

@@ -1,0 +1,345 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --harmony-await-optimization
+// test basic interleaving
+(function () {
+  const actual = [];
+try { if (Inst0 <= 1000 && typeof (actual) != "undefined") {_RecordType("<256,262,7>",(actual)); Inst0++; } } catch(e) {}
+  const expected = ['await', 1, 'await', 2];
+try { if (Inst1 <= 1000 && typeof (expected) != "undefined") {_RecordType("<277,285,8>",(expected)); Inst1++; } } catch(e) {}
+  const iterations = 2;
+try { if (Inst2 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<322,332,9>",(iterations)); Inst2++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (pushAwait) != "undefined") {_RecordType("<356,365,11>",(pushAwait)); Inst3++; } } catch(e) {}
+  async function pushAwait() {
+try { if (Inst4 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<374,385,12>",(actual.push)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (actual) != "undefined") {_RecordType("<374,380,12>",(actual)); Inst5++; } } catch(e) {}
+    actual.push('await');
+  }
+
+try { if (Inst6 <= 1000 && typeof (callAsync) != "undefined") {_RecordType("<418,427,15>",(callAsync)); Inst6++; } } catch(e) {}
+  async function callAsync() {
+    for (let i = 0; i < iterations; i++) {
+try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<445,446,16>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<452,453,16>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<456,466,16>",(iterations)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<468,469,16>",(i)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (pushAwait) != "undefined") {_RecordType("<487,496,17>",(pushAwait)); Inst11++; } } catch(e) {}
+      await pushAwait();
+    }
+
+    return 0;
+  }
+
+try { if (Inst12 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<537,552,23>",(checkAssertions)); Inst12++; } } catch(e) {}
+  function checkAssertions() {
+try { if (Inst13 <= 1000 && typeof (expected) != "undefined") {_RecordType("<561,569,24>",(expected)); Inst13++; } } catch(e) {}
+    expected;
+try { if (Inst14 <= 1000 && typeof (actual) != "undefined") {_RecordType("<575,581,25>",(actual)); Inst14++; } } catch(e) {}
+    actual;
+    'Async/await and promises should be interleaved.';
+  }
+
+  (async () => {
+try { if (Inst15 <= 1000 && typeof (callAsync) != "undefined") {_RecordType("<664,673,30>",(callAsync)); Inst15++; } } catch(e) {}
+    callAsync();
+try { if (Inst16 <= 1000 && typeof (new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then(function () {
+      actual.push(2);
+    }).then) != "undefined") {_RecordType("<688,819,31>",(new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then(function () {
+      actual.push(2);
+    }).then)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then) != "undefined") {_RecordType("<688,771,31>",(new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<692,699,31>",(Promise)); Inst18++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<820,835,36>",(checkAssertions)); Inst25++; } } catch(e) {}
+    return new Promise(function (resolve) {
+try { if (Inst19 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<710,717,31>",(resolve)); Inst19++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<727,738,32>",(actual.push)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (actual) != "undefined") {_RecordType("<727,733,32>",(actual)); Inst21++; } } catch(e) {}
+      actual.push(1);
+try { if (Inst22 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<749,756,33>",(resolve)); Inst22++; } } catch(e) {}
+      resolve();
+    }).then(function () {
+try { if (Inst23 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<792,803,35>",(actual.push)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (actual) != "undefined") {_RecordType("<792,798,35>",(actual)); Inst24++; } } catch(e) {}
+      actual.push(2);
+    }).then(checkAssertions);
+  })();
+})(); // test async generators
+
+
+(function () {
+  const actual = [];
+try { if (Inst26 <= 1000 && typeof (actual) != "undefined") {_RecordType("<902,908,42>",(actual)); Inst26++; } } catch(e) {}
+  const expected = ['await', 1, 'await', 2];
+try { if (Inst27 <= 1000 && typeof (expected) != "undefined") {_RecordType("<923,931,43>",(expected)); Inst27++; } } catch(e) {}
+  const iterations = 2;
+try { if (Inst28 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<968,978,44>",(iterations)); Inst28++; } } catch(e) {}
+
+try { if (Inst29 <= 1000 && typeof (pushAwait) != "undefined") {_RecordType("<1002,1011,46>",(pushAwait)); Inst29++; } } catch(e) {}
+  async function pushAwait() {
+try { if (Inst30 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<1020,1031,47>",(actual.push)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1020,1026,47>",(actual)); Inst31++; } } catch(e) {}
+    actual.push('await');
+  }
+
+try { if (Inst32 <= 1000 && typeof (callAsync) != "undefined") {_RecordType("<1065,1074,50>",(callAsync)); Inst32++; } } catch(e) {}
+  async function* callAsync() {
+    for (let i = 0; i < iterations; i++) {
+try { if (Inst33 <= 1000 && typeof (i) != "undefined") {_RecordType("<1092,1093,51>",(i)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (i) != "undefined") {_RecordType("<1099,1100,51>",(i)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<1103,1113,51>",(iterations)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (i) != "undefined") {_RecordType("<1115,1116,51>",(i)); Inst36++; } } catch(e) {}
+try { if (Inst37 <= 1000 && typeof (pushAwait) != "undefined") {_RecordType("<1134,1143,52>",(pushAwait)); Inst37++; } } catch(e) {}
+      await pushAwait();
+    }
+
+    return 0;
+  }
+
+try { if (Inst38 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<1184,1199,58>",(checkAssertions)); Inst38++; } } catch(e) {}
+  function checkAssertions() {
+try { if (Inst39 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1208,1216,59>",(expected)); Inst39++; } } catch(e) {}
+    expected;
+try { if (Inst40 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1222,1228,60>",(actual)); Inst40++; } } catch(e) {}
+    actual;
+    'Async/await and promises should be interleaved when using async generators.';
+  }
+
+  (async () => {
+try { if (Inst41 <= 1000 && typeof (callAsync().next) != "undefined") {_RecordType("<1339,1355,65>",(callAsync().next)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (callAsync) != "undefined") {_RecordType("<1339,1348,65>",(callAsync)); Inst42++; } } catch(e) {}
+    callAsync().next();
+try { if (Inst43 <= 1000 && typeof (new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then(function () {
+      actual.push(2);
+    }).then) != "undefined") {_RecordType("<1370,1501,66>",(new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then(function () {
+      actual.push(2);
+    }).then)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then) != "undefined") {_RecordType("<1370,1453,66>",(new Promise(function (resolve) {
+      actual.push(1);
+      resolve();
+    }).then)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<1374,1381,66>",(Promise)); Inst45++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<1502,1517,71>",(checkAssertions)); Inst52++; } } catch(e) {}
+    return new Promise(function (resolve) {
+try { if (Inst46 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<1392,1399,66>",(resolve)); Inst46++; } } catch(e) {}
+try { if (Inst47 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<1409,1420,67>",(actual.push)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1409,1415,67>",(actual)); Inst48++; } } catch(e) {}
+      actual.push(1);
+try { if (Inst49 <= 1000 && typeof (resolve) != "undefined") {_RecordType("<1431,1438,68>",(resolve)); Inst49++; } } catch(e) {}
+      resolve();
+    }).then(function () {
+try { if (Inst50 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<1474,1485,70>",(actual.push)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1474,1480,70>",(actual)); Inst51++; } } catch(e) {}
+      actual.push(2);
+    }).then(checkAssertions);
+  })();
+})(); // test yielding from async generators
+
+
+(function () {
+  const actual = [];
+try { if (Inst53 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1598,1604,77>",(actual)); Inst53++; } } catch(e) {}
+  const expected = ['Promise: 6', 'Promise: 5', 'Await: 3', 'Promise: 4', 'Promise: 3', 'Await: 2', 'Promise: 2', 'Promise: 1', 'Await: 1', 'Promise: 0'];
+try { if (Inst54 <= 1000 && typeof (expected) != "undefined") {_RecordType("<1619,1627,78>",(expected)); Inst54++; } } catch(e) {}
+  const iterations = 3;
+try { if (Inst55 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<1774,1784,79>",(iterations)); Inst55++; } } catch(e) {}
+
+try { if (Inst56 <= 1000 && typeof (naturalNumbers) != "undefined") {_RecordType("<1809,1823,81>",(naturalNumbers)); Inst56++; } } catch(e) {}
+  async function* naturalNumbers(start) {
+try { if (Inst57 <= 1000 && typeof (start) != "undefined") {_RecordType("<1824,1829,81>",(start)); Inst57++; } } catch(e) {}
+try { if (Inst59 <= 1000 && typeof (start) != "undefined") {_RecordType("<1851,1856,82>",(start)); Inst59++; } } catch(e) {}
+    let current = start;
+try { if (Inst58 <= 1000 && typeof (current) != "undefined") {_RecordType("<1841,1848,82>",(current)); Inst58++; } } catch(e) {}
+
+try { if (Inst60 <= 1000 && typeof (current) != "undefined") {_RecordType("<1870,1877,84>",(current)); Inst60++; } } catch(e) {}
+    while (current > 0) {
+try { if (Inst61 <= 1000 && typeof (Promise.resolve) != "undefined") {_RecordType("<1897,1912,85>",(Promise.resolve)); Inst61++; } } catch(e) {}try { if (Inst62 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<1897,1904,85>",(Promise)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (current) != "undefined") {_RecordType("<1913,1920,85>",(current)); Inst63++; } } catch(e) {}
+      yield Promise.resolve(current--);
+    }
+  }
+
+try { if (Inst64 <= 1000 && typeof (trigger) != "undefined") {_RecordType("<1953,1960,89>",(trigger)); Inst64++; } } catch(e) {}
+  async function trigger() {
+    for await (const num of naturalNumbers(iterations)) {
+try { if (Inst65 <= 1000 && typeof (num) != "undefined") {_RecordType("<1986,1989,90>",(num)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (naturalNumbers) != "undefined") {_RecordType("<1993,2007,90>",(naturalNumbers)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<2008,2018,90>",(iterations)); Inst67++; } } catch(e) {}
+try { if (Inst68 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<2029,2040,91>",(actual.push)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2029,2035,91>",(actual)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (num) != "undefined") {_RecordType("<2053,2056,91>",(num)); Inst70++; } } catch(e) {}
+      actual.push('Await: ' + num);
+    }
+  }
+
+try { if (Inst71 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<2087,2102,95>",(checkAssertions)); Inst71++; } } catch(e) {}
+  async function checkAssertions() {
+try { if (Inst72 <= 1000 && typeof (expected) != "undefined") {_RecordType("<2111,2119,96>",(expected)); Inst72++; } } catch(e) {}
+    expected;
+try { if (Inst73 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2125,2131,97>",(actual)); Inst73++; } } catch(e) {}
+    actual;
+    'Async/await and promises should be interleaved when yielding.';
+  }
+
+try { if (Inst74 <= 1000 && typeof (countdown) != "undefined") {_RecordType("<2224,2233,101>",(countdown)); Inst74++; } } catch(e) {}
+  async function countdown(counter) {
+try { if (Inst75 <= 1000 && typeof (counter) != "undefined") {_RecordType("<2234,2241,101>",(counter)); Inst75++; } } catch(e) {}
+try { if (Inst76 <= 1000 && typeof (actual.push) != "undefined") {_RecordType("<2249,2260,102>",(actual.push)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (actual) != "undefined") {_RecordType("<2249,2255,102>",(actual)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (counter) != "undefined") {_RecordType("<2275,2282,102>",(counter)); Inst78++; } } catch(e) {}
+    actual.push('Promise: ' + counter);
+
+try { if (Inst79 <= 1000 && typeof (counter) != "undefined") {_RecordType("<2294,2301,104>",(counter)); Inst79++; } } catch(e) {}
+    if (counter > 0) {
+try { if (Inst80 <= 1000 && typeof (Promise.resolve(counter - 1).then) != "undefined") {_RecordType("<2322,2355,105>",(Promise.resolve(counter - 1).then)); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (Promise.resolve) != "undefined") {_RecordType("<2322,2337,105>",(Promise.resolve)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (Promise) != "undefined") {_RecordType("<2322,2329,105>",(Promise)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (counter) != "undefined") {_RecordType("<2338,2345,105>",(counter)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (countdown) != "undefined") {_RecordType("<2356,2365,105>",(countdown)); Inst84++; } } catch(e) {}
+      return Promise.resolve(counter - 1).then(countdown);
+    } else {
+try { if (Inst85 <= 1000 && typeof (checkAssertions) != "undefined") {_RecordType("<2393,2408,107>",(checkAssertions)); Inst85++; } } catch(e) {}
+      await checkAssertions();
+    }
+  }
+
+  (async () => {
+try { if (Inst86 <= 1000 && typeof (trigger) != "undefined") {_RecordType("<2444,2451,112>",(trigger)); Inst86++; } } catch(e) {}
+    trigger();
+try { if (Inst87 <= 1000 && typeof (countdown) != "undefined") {_RecordType("<2466,2475,113>",(countdown)); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (iterations) != "undefined") {_RecordType("<2476,2486,113>",(iterations)); Inst88++; } } catch(e) {}
+    return countdown(iterations * 2);
+  })();
+})();
+

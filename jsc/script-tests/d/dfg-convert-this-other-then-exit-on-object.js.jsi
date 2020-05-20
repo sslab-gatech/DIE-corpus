@@ -1,0 +1,104 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Tests that a convert_this optimized for the case where this is null behaves correctly when you then pass an object.");
+
+try { if (Inst2 <= 1000 && typeof (foo) != "undefined") {_RecordType("<142,145,3>",(foo)); Inst2++; } } catch(e) {}
+function foo() {
+try { if (Inst3 <= 1000 && typeof (this.x) != "undefined") {_RecordType("<159,165,4>",(this.x)); Inst3++; } } catch(e) {}
+  return this.x;
+}
+
+x = 42;
+try { if (Inst4 <= 1000 && typeof (x) != "undefined") {_RecordType("<170,171,7>",(x)); Inst4++; } } catch(e) {}
+silentTestPass = true;
+try { if (Inst5 <= 1000 && typeof (silentTestPass) != "undefined") {_RecordType("<178,192,8>",(silentTestPass)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<201,209,9>",(noInline)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (foo) != "undefined") {_RecordType("<210,213,9>",(foo)); Inst7++; } } catch(e) {}
+noInline(foo);
+
+for (var i = 0; i < 400; i++) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<226,227,11>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<233,234,11>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<242,243,11>",(i)); Inst10++; } } catch(e) {}
+  // i = dfgIncrement({f:foo, i:i + 1, n:100})) {
+  var me;
+try { if (Inst11 <= 1000 && typeof (me) != "undefined") {_RecordType("<305,307,13>",(me)); Inst11++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<316,317,15>",(i)); Inst12++; } } catch(e) {}
+  if (i < 150) {
+    me = null;
+try { if (Inst13 <= 1000 && typeof (me) != "undefined") {_RecordType("<331,333,16>",(me)); Inst13++; } } catch(e) {}
+  } else {
+    me = this;
+try { if (Inst14 <= 1000 && typeof (me) != "undefined") {_RecordType("<357,359,18>",(me)); Inst14++; } } catch(e) {}
+  }
+
+try { if (Inst15 <= 1000 && typeof (foo.call) != "undefined") {_RecordType("<375,383,21>",(foo.call)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (foo) != "undefined") {_RecordType("<375,378,21>",(foo)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (me) != "undefined") {_RecordType("<384,386,21>",(me)); Inst17++; } } catch(e) {}
+  foo.call(me);
+}
+

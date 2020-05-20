@@ -1,0 +1,181 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax
+// This tests that NumberAdd passes on the right truncations
+// even if it figures out during SimplifiedLowering that it
+// can indeed do a Word32 operation (based on the feedback
+// baked in for its inputs by other operators).
+(function () {
+  // We need a + with Number feedback to get to a NumberAdd
+  // during the typed lowering pass of TurboFan's frontend.
+try { if (Inst0 <= 1000 && typeof (foo) != "undefined") {_RecordType("<574,577,12>",(foo)); Inst0++; } } catch(e) {}
+  function foo(x, y) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<578,579,12>",(x)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (y) != "undefined") {_RecordType("<581,582,12>",(y)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<597,598,13>",(x)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (y) != "undefined") {_RecordType("<601,602,13>",(y)); Inst4++; } } catch(e) {}
+    return x + y;
+  }
+
+try { if (Inst5 <= 1000 && typeof (foo) != "undefined") {_RecordType("<611,614,16>",(foo)); Inst5++; } } catch(e) {}
+  foo(0.1, 0.2);
+try { if (Inst6 <= 1000 && typeof (foo) != "undefined") {_RecordType("<628,631,17>",(foo)); Inst6++; } } catch(e) {}
+  foo(0.1, 0.2); // Now we need to fool TurboFan to think that it has to
+  // perform the `foo(x,-1)` on Float64 values until the
+  // very last moment (after the RETYPE phase of the
+  // SimplifiedLowering) where it realizes that the inputs
+  // and outputs of the NumberAdd allow it perform the
+  // operation on Word32.
+
+try { if (Inst7 <= 1000 && typeof (bar) != "undefined") {_RecordType("<961,964,24>",(bar)); Inst7++; } } catch(e) {}
+  function bar(x) {
+try { if (Inst8 <= 1000 && typeof (x) != "undefined") {_RecordType("<965,966,24>",(x)); Inst8++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (Math.trunc) != "undefined") {_RecordType("<978,988,25>",(Math.trunc)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Math) != "undefined") {_RecordType("<978,982,25>",(Math)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (foo) != "undefined") {_RecordType("<989,992,25>",(foo)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<993,994,25>",(x)); Inst13++; } } catch(e) {}
+    x = Math.trunc(foo(x - 1, 1));
+try { if (Inst9 <= 1000 && typeof (x) != "undefined") {_RecordType("<974,975,25>",(x)); Inst9++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1016,1019,26>",(foo)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (x) != "undefined") {_RecordType("<1020,1021,26>",(x)); Inst15++; } } catch(e) {}
+    return foo(x, -1);
+  }
+
+  0;
+try { if (Inst16 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1040,1043,30>",(bar)); Inst16++; } } catch(e) {}
+  bar(1);
+  1;
+try { if (Inst17 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1055,1058,32>",(bar)); Inst17++; } } catch(e) {}
+  bar(2);
+  2;
+try { if (Inst18 <= 1000 && typeof (bar) != "undefined") {_RecordType("<1070,1073,34>",(bar)); Inst18++; } } catch(e) {}
+  bar(3);
+})(); // This tests that SpeculativeNumberAdd can still lower to
+// Int32Add in SimplifiedLowering, which requires some magic
+// to make sure that SpeculativeNumberAdd survives to that
+// point, especially the JSTypedLowering needs to be unable
+// to tell that the inputs to SpeculativeNumberAdd are non
+// String primitives.
+
+
+(function () {
+  // We need a function that has a + with feedback Number or
+  // NumberOrOddball, but for whose inputs the JSTypedLowering
+  // cannot reduce it to NumberAdd (with SpeculativeToNumber
+  // conversions). We achieve this utilizing an object literal
+  // indirection here.
+try { if (Inst19 <= 1000 && typeof (baz) != "undefined") {_RecordType("<1703,1706,49>",(baz)); Inst19++; } } catch(e) {}
+  function baz(x) {
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<1707,1708,49>",(x)); Inst20++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof ({
+      x
+    }.x) != "undefined") {_RecordType("<1723,1740,50>",({
+      x
+    }.x)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (x) != "undefined") {_RecordType("<1731,1732,51>",(x)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (x) != "undefined") {_RecordType("<1743,1744,52>",(x)); Inst23++; } } catch(e) {}
+    return {
+      x
+    }.x + x;
+  }
+
+try { if (Inst24 <= 1000 && typeof (baz) != "undefined") {_RecordType("<1753,1756,55>",(baz)); Inst24++; } } catch(e) {}
+  baz(null);
+try { if (Inst25 <= 1000 && typeof (baz) != "undefined") {_RecordType("<1766,1769,56>",(baz)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1770,1779,56>",(undefined)); Inst26++; } } catch(e) {}
+  baz(undefined); // Now we just need to truncate the result.
+
+try { if (Inst27 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1838,1841,58>",(foo)); Inst27++; } } catch(e) {}
+  function foo(x) {
+try { if (Inst28 <= 1000 && typeof (x) != "undefined") {_RecordType("<1842,1843,58>",(x)); Inst28++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (baz) != "undefined") {_RecordType("<1858,1861,59>",(baz)); Inst29++; } } catch(e) {}
+    return baz(1) | 0;
+  }
+
+  2;
+try { if (Inst30 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1882,1885,63>",(foo)); Inst30++; } } catch(e) {}
+  foo();
+  2;
+try { if (Inst31 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1896,1899,65>",(foo)); Inst31++; } } catch(e) {}
+  foo();
+  2;
+try { if (Inst32 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1910,1913,67>",(foo)); Inst32++; } } catch(e) {}
+  foo();
+})();
+

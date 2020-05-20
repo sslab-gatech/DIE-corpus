@@ -1,0 +1,368 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ * Creation Date:   30 May 2001
+ * Correction Date: 14 Aug 2001
+ *
+ * SUMMARY:  Regression test for bugs 83293, 103351
+ * See http://bugzilla.mozilla.org/show_bug.cgi?id=83293
+ *     http://bugzilla.mozilla.org/show_bug.cgi?id=103351
+ *     http://bugzilla.mozilla.org/show_bug.cgi?id=92942
+ *
+ *
+ * ********************   CORRECTION !!!  *****************************
+ *
+ * When I originally wrote this test, I thought this was true:
+ * str.replace(strA, strB) == str.replace(new RegExp(strA),strB).
+ * See ECMA-262 Final Draft, 15.5.4.11 String.prototype.replace
+ *
+ * However, in http://bugzilla.mozilla.org/show_bug.cgi?id=83293
+ * Jim Ley points out the ECMA-262 Final Edition changed on this.
+ * String.prototype.replace (searchValue, replaceValue), if provided
+ * a searchValue that is not a RegExp, is NO LONGER to replace it with
+ *
+ *                  new RegExp(searchValue)
+ * but rather:
+ *                  String(searchValue)
+ *
+ * This puts the replace() method at variance with search() and match(),
+ * which continue to follow the RegExp conversion of the Final Draft.
+ * It also makes most of this testcase, as originally written, invalid.
+ **********************************************************************
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 103351; // <--- (Outgrowth of original bug 83293)
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<1585,1594,38>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+
+var summ_OLD = 'Testing str.replace(strA, strB) == str.replace(new RegExp(strA),strB)';
+try { if (Inst1 <= 1000 && typeof (summ_OLD) != "undefined") {_RecordType("<1652,1660,40>",(summ_OLD)); Inst1++; } } catch(e) {}
+var summ_NEW = 'Testing String.prototype.replace(x,y) when x is a string';
+try { if (Inst2 <= 1000 && typeof (summ_NEW) != "undefined") {_RecordType("<1740,1748,41>",(summ_NEW)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (summ_NEW) != "undefined") {_RecordType("<1825,1833,42>",(summ_NEW)); Inst4++; } } catch(e) {}
+var summary = summ_NEW;
+try { if (Inst3 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1815,1822,42>",(summary)); Inst3++; } } catch(e) {}
+var status = '';
+try { if (Inst5 <= 1000 && typeof (status) != "undefined") {_RecordType("<1839,1845,43>",(status)); Inst5++; } } catch(e) {}
+var actual = '';
+try { if (Inst6 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1856,1862,44>",(actual)); Inst6++; } } catch(e) {}
+var expect = '';
+try { if (Inst7 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1873,1879,45>",(expect)); Inst7++; } } catch(e) {}
+var cnEmptyString = '';
+try { if (Inst8 <= 1000 && typeof (cnEmptyString) != "undefined") {_RecordType("<1890,1903,46>",(cnEmptyString)); Inst8++; } } catch(e) {}
+var str = 'abc';
+try { if (Inst9 <= 1000 && typeof (str) != "undefined") {_RecordType("<1914,1917,47>",(str)); Inst9++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (cnEmptyString) != "undefined") {_RecordType("<1938,1951,48>",(cnEmptyString)); Inst11++; } } catch(e) {}
+var strA = cnEmptyString;
+try { if (Inst10 <= 1000 && typeof (strA) != "undefined") {_RecordType("<1931,1935,48>",(strA)); Inst10++; } } catch(e) {}
+var strB = 'Z'; //-----------------------------------------------------------------------------
+try { if (Inst12 <= 1000 && typeof (strB) != "undefined") {_RecordType("<1957,1961,49>",(strB)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (test) != "undefined") {_RecordType("<2050,2054,51>",(test)); Inst13++; } } catch(e) {}
+test(); //-----------------------------------------------------------------------------
+
+/*
+ * In this test, it's important to reportCompare() each other case
+ * BEFORE the last two cases are attempted. Don't store all results
+ * in an array and reportCompare() them at the end, as we usually do.
+ *
+ * When this bug was filed, str.replace(strA, strB) would return no value
+ * whatsoever if strA == cnEmptyString, and no error, either -
+ */
+
+try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<2501,2505,62>",(test)); Inst14++; } } catch(e) {}
+function test() {
+try { if (Inst15 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<2512,2526,63>",(printBugNumber)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<2527,2536,63>",(BUGNUMBER)); Inst16++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst17 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<2541,2552,64>",(printStatus)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (summary) != "undefined") {_RecordType("<2553,2560,64>",(summary)); Inst18++; } } catch(e) {}
+  printStatus(summary);
+  /*******************  THESE WERE INCORRECT; SEE ABOVE  ************************
+    status = 'Section A of test';
+    strA = 'a';
+    actual = str.replace(strA, strB);
+    expect = str.replace(new RegExp(strA), strB);
+    reportCompare(expect, actual, status);
+     status = 'Section B of test';
+    strA = 'x';
+    actual = str.replace(strA, strB);
+    expect = str.replace(new RegExp(strA), strB);
+    reportCompare(expect, actual, status);
+     status = 'Section C of test';
+    strA = undefined;
+    actual = str.replace(strA, strB);
+    expect = str.replace(new RegExp(strA), strB);
+    reportCompare(expect, actual, status);
+     status = 'Section D of test';
+    strA = null;
+    actual = str.replace(strA, strB);
+    expect = str.replace(new RegExp(strA), strB);
+    reportCompare(expect, actual, status);
+      * This example is from jim@jibbering.com (see Bugzilla bug 92942)
+    * It is a variation on the example below.
+    *
+    * Namely, we are using the regexp /$/ instead of the regexp //.
+    * The regexp /$/ means we should match the "empty string" at the
+    * end-boundary of the word, instead of the one at the beginning.
+    *
+    status = 'Section E of test';
+    var strJim = 'aa$aa';
+    strA = '$';
+    actual = strJim.replace(strA, strB);             // bug -> 'aaZaa'
+    expect = strJim.replace(new RegExp(strA), strB); // expect 'aa$aaZ'
+    reportCompare(expect, actual, status);
+      *
+    * Note: 'Zabc' is the result we expect for 'abc'.replace('', 'Z').
+    *
+    * The string '' is supposed to be equivalent to new RegExp('') = //.
+    * The regexp // means we should match the "empty string" conceived of
+    * at the beginning boundary of the word, before the first character.
+    *
+    status = 'Section F of test';
+    strA = cnEmptyString;
+    actual = str.replace(strA, strB);
+    expect = 'Zabc';
+    reportCompare(expect, actual, status);
+     status = 'Section G of test';
+    strA = cnEmptyString;
+    actual = str.replace(strA, strB);
+    expect = str.replace(new RegExp(strA), strB);
+    reportCompare(expect, actual, status);
+     *************************  END OF INCORRECT CASES ****************************/
+  //////////////////////////  OK, LET'S START OVER //////////////////////////////
+
+  status = 'Section 1 of test';
+try { if (Inst19 <= 1000 && typeof (status) != "undefined") {_RecordType("<4812,4818,119>",(status)); Inst19++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<4853,4866,120>",('abc'.replace)); Inst21++; } } catch(e) {}
+  actual = 'abc'.replace('a', 'Z');
+try { if (Inst20 <= 1000 && typeof (actual) != "undefined") {_RecordType("<4844,4850,120>",(actual)); Inst20++; } } catch(e) {}
+  expect = 'Zbc';
+try { if (Inst22 <= 1000 && typeof (expect) != "undefined") {_RecordType("<4880,4886,121>",(expect)); Inst22++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<4898,4911,122>",(reportCompare)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (expect) != "undefined") {_RecordType("<4912,4918,122>",(expect)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (actual) != "undefined") {_RecordType("<4920,4926,122>",(actual)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (status) != "undefined") {_RecordType("<4928,4934,122>",(status)); Inst26++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 2 of test';
+try { if (Inst27 <= 1000 && typeof (status) != "undefined") {_RecordType("<4939,4945,123>",(status)); Inst27++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<4980,4993,124>",('abc'.replace)); Inst29++; } } catch(e) {}
+  actual = 'abc'.replace('b', 'Z');
+try { if (Inst28 <= 1000 && typeof (actual) != "undefined") {_RecordType("<4971,4977,124>",(actual)); Inst28++; } } catch(e) {}
+  expect = 'aZc';
+try { if (Inst30 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5007,5013,125>",(expect)); Inst30++; } } catch(e) {}
+try { if (Inst31 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5025,5038,126>",(reportCompare)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5039,5045,126>",(expect)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5047,5053,126>",(actual)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (status) != "undefined") {_RecordType("<5055,5061,126>",(status)); Inst34++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 3 of test';
+try { if (Inst35 <= 1000 && typeof (status) != "undefined") {_RecordType("<5066,5072,127>",(status)); Inst35++; } } catch(e) {}
+try { if (Inst37 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<5107,5120,128>",('abc'.replace)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<5121,5130,128>",(undefined)); Inst38++; } } catch(e) {}
+  actual = 'abc'.replace(undefined, 'Z');
+try { if (Inst36 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5098,5104,128>",(actual)); Inst36++; } } catch(e) {}
+  expect = 'abc'; // String(undefined) == 'undefined'; no replacement possible
+try { if (Inst39 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5140,5146,129>",(expect)); Inst39++; } } catch(e) {}
+
+try { if (Inst40 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5220,5233,131>",(reportCompare)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5234,5240,131>",(expect)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5242,5248,131>",(actual)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (status) != "undefined") {_RecordType("<5250,5256,131>",(status)); Inst43++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 4 of test';
+try { if (Inst44 <= 1000 && typeof (status) != "undefined") {_RecordType("<5261,5267,132>",(status)); Inst44++; } } catch(e) {}
+try { if (Inst46 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<5302,5315,133>",('abc'.replace)); Inst46++; } } catch(e) {}
+  actual = 'abc'.replace(null, 'Z');
+try { if (Inst45 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5293,5299,133>",(actual)); Inst45++; } } catch(e) {}
+  expect = 'abc'; // String(null) == 'null'; no replacement possible
+try { if (Inst47 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5330,5336,134>",(expect)); Inst47++; } } catch(e) {}
+
+try { if (Inst48 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5400,5413,136>",(reportCompare)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5414,5420,136>",(expect)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5422,5428,136>",(actual)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (status) != "undefined") {_RecordType("<5430,5436,136>",(status)); Inst51++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 5 of test';
+try { if (Inst52 <= 1000 && typeof (status) != "undefined") {_RecordType("<5441,5447,137>",(status)); Inst52++; } } catch(e) {}
+try { if (Inst54 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<5482,5495,138>",('abc'.replace)); Inst54++; } } catch(e) {}
+  actual = 'abc'.replace(true, 'Z');
+try { if (Inst53 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5473,5479,138>",(actual)); Inst53++; } } catch(e) {}
+  expect = 'abc'; // String(true) == 'true'; no replacement possible
+try { if (Inst55 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5510,5516,139>",(expect)); Inst55++; } } catch(e) {}
+
+try { if (Inst56 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5580,5593,141>",(reportCompare)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5594,5600,141>",(expect)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5602,5608,141>",(actual)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (status) != "undefined") {_RecordType("<5610,5616,141>",(status)); Inst59++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 6 of test';
+try { if (Inst60 <= 1000 && typeof (status) != "undefined") {_RecordType("<5621,5627,142>",(status)); Inst60++; } } catch(e) {}
+try { if (Inst62 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<5662,5675,143>",('abc'.replace)); Inst62++; } } catch(e) {}
+  actual = 'abc'.replace(false, 'Z');
+try { if (Inst61 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5653,5659,143>",(actual)); Inst61++; } } catch(e) {}
+  expect = 'abc'; // String(false) == 'false'; no replacement possible
+try { if (Inst63 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5691,5697,144>",(expect)); Inst63++; } } catch(e) {}
+
+try { if (Inst64 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5763,5776,146>",(reportCompare)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5777,5783,146>",(expect)); Inst65++; } } catch(e) {}try { if (Inst66 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5785,5791,146>",(actual)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (status) != "undefined") {_RecordType("<5793,5799,146>",(status)); Inst67++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 7 of test';
+try { if (Inst68 <= 1000 && typeof (status) != "undefined") {_RecordType("<5804,5810,147>",(status)); Inst68++; } } catch(e) {}
+try { if (Inst70 <= 1000 && typeof ('aa$aa'.replace) != "undefined") {_RecordType("<5845,5860,148>",('aa$aa'.replace)); Inst70++; } } catch(e) {}
+  actual = 'aa$aa'.replace('$', 'Z');
+try { if (Inst69 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5836,5842,148>",(actual)); Inst69++; } } catch(e) {}
+  expect = 'aaZaa'; // NOT 'aa$aaZ' as in ECMA Final Draft; see above
+try { if (Inst71 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5874,5880,149>",(expect)); Inst71++; } } catch(e) {}
+
+try { if (Inst72 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<5945,5958,151>",(reportCompare)); Inst72++; } } catch(e) {}try { if (Inst73 <= 1000 && typeof (expect) != "undefined") {_RecordType("<5959,5965,151>",(expect)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (actual) != "undefined") {_RecordType("<5967,5973,151>",(actual)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (status) != "undefined") {_RecordType("<5975,5981,151>",(status)); Inst75++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 8 of test';
+try { if (Inst76 <= 1000 && typeof (status) != "undefined") {_RecordType("<5986,5992,152>",(status)); Inst76++; } } catch(e) {}
+try { if (Inst78 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<6027,6040,153>",('abc'.replace)); Inst78++; } } catch(e) {}
+  actual = 'abc'.replace('.*', 'Z');
+try { if (Inst77 <= 1000 && typeof (actual) != "undefined") {_RecordType("<6018,6024,153>",(actual)); Inst77++; } } catch(e) {}
+  expect = 'abc'; // not 'Z' as in EMCA Final Draft
+try { if (Inst79 <= 1000 && typeof (expect) != "undefined") {_RecordType("<6055,6061,154>",(expect)); Inst79++; } } catch(e) {}
+
+try { if (Inst80 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<6108,6121,156>",(reportCompare)); Inst80++; } } catch(e) {}try { if (Inst81 <= 1000 && typeof (expect) != "undefined") {_RecordType("<6122,6128,156>",(expect)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (actual) != "undefined") {_RecordType("<6130,6136,156>",(actual)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (status) != "undefined") {_RecordType("<6138,6144,156>",(status)); Inst83++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+  status = 'Section 9 of test';
+try { if (Inst84 <= 1000 && typeof (status) != "undefined") {_RecordType("<6149,6155,157>",(status)); Inst84++; } } catch(e) {}
+try { if (Inst86 <= 1000 && typeof ('abc'.replace) != "undefined") {_RecordType("<6190,6203,158>",('abc'.replace)); Inst86++; } } catch(e) {}
+  actual = 'abc'.replace('', 'Z');
+try { if (Inst85 <= 1000 && typeof (actual) != "undefined") {_RecordType("<6181,6187,158>",(actual)); Inst85++; } } catch(e) {}
+  expect = 'Zabc'; // Still expect 'Zabc' for this
+try { if (Inst87 <= 1000 && typeof (expect) != "undefined") {_RecordType("<6216,6222,159>",(expect)); Inst87++; } } catch(e) {}
+
+try { if (Inst88 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<6268,6281,161>",(reportCompare)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (expect) != "undefined") {_RecordType("<6282,6288,161>",(expect)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (actual) != "undefined") {_RecordType("<6290,6296,161>",(actual)); Inst90++; } } catch(e) {}try { if (Inst91 <= 1000 && typeof (status) != "undefined") {_RecordType("<6298,6304,161>",(status)); Inst91++; } } catch(e) {}
+  reportCompare(expect, actual, status);
+}
+

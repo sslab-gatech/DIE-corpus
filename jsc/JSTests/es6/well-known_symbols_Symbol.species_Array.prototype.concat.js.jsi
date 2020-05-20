@@ -1,0 +1,92 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<9,13,1>",(test)); Inst0++; } } catch(e) {}
+function test() {
+  var obj = [];
+try { if (Inst1 <= 1000 && typeof (obj) != "undefined") {_RecordType("<24,27,2>",(obj)); Inst1++; } } catch(e) {}
+  obj.constructor = {};
+try { if (Inst2 <= 1000 && typeof (obj.constructor) != "undefined") {_RecordType("<36,51,3>",(obj.constructor)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (obj) != "undefined") {_RecordType("<36,39,3>",(obj)); Inst3++; } } catch(e) {}
+
+  obj.constructor[Symbol.species] = function () {
+    return {
+      foo: 1
+    };
+  };
+try { if (Inst4 <= 1000 && typeof (obj.constructor[Symbol.species]) != "undefined") {_RecordType("<61,92,5>",(obj.constructor[Symbol.species])); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (obj.constructor) != "undefined") {_RecordType("<61,76,5>",(obj.constructor)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (obj) != "undefined") {_RecordType("<61,64,5>",(obj)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Symbol.species) != "undefined") {_RecordType("<77,91,5>",(Symbol.species)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<77,83,5>",(Symbol)); Inst8++; } } catch(e) {}
+
+try { if (Inst9 <= 1000 && typeof (Array.prototype.concat.call(obj, []).foo) != "undefined") {_RecordType("<157,197,11>",(Array.prototype.concat.call(obj, []).foo)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<157,184,11>",(Array.prototype.concat.call)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<157,179,11>",(Array.prototype.concat)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<157,172,11>",(Array.prototype)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Array) != "undefined") {_RecordType("<157,162,11>",(Array)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (obj) != "undefined") {_RecordType("<185,188,11>",(obj)); Inst14++; } } catch(e) {}
+  return Array.prototype.concat.call(obj, []).foo === 1;
+}
+
+try { if (Inst15 <= 1000 && typeof (test) != "undefined") {_RecordType("<213,217,14>",(test)); Inst15++; } } catch(e) {}
+if (!test()) {
+try { if (Inst16 <= 1000 && typeof (Error) != "undefined") {_RecordType("<235,240,15>",(Error)); Inst16++; } } catch(e) {}
+  throw new Error("Test failed");
+}
+

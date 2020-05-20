@@ -1,0 +1,152 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2012 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Flags: --expose-gc
+// Create a transition tree A (no descriptors) -> B (descriptor for a) -> C
+// (descriptor for a and c), that all share the descriptor array [a,c]. C is the
+// owner of the descriptor array.
+var o = {};
+try { if (Inst0 <= 1000 && typeof (o) != "undefined") {_RecordType("<1814,1815,31>",(o)); Inst0++; } } catch(e) {}
+o.a = 1;
+try { if (Inst1 <= 1000 && typeof (o.a) != "undefined") {_RecordType("<1822,1825,32>",(o.a)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (o) != "undefined") {_RecordType("<1822,1823,32>",(o)); Inst2++; } } catch(e) {}
+o.c = 2; // Add a transition B -> D where D has its own descriptor array [a,b] where b is
+try { if (Inst3 <= 1000 && typeof (o.c) != "undefined") {_RecordType("<1831,1834,33>",(o.c)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (o) != "undefined") {_RecordType("<1831,1832,33>",(o)); Inst4++; } } catch(e) {}
+// a constant function.
+
+var o1 = {};
+try { if (Inst5 <= 1000 && typeof (o1) != "undefined") {_RecordType("<1950,1952,36>",(o1)); Inst5++; } } catch(e) {}
+o1.a = 1; // Install an enumeration cache in the descriptor array [a,c] at map B.
+try { if (Inst6 <= 1000 && typeof (o1.a) != "undefined") {_RecordType("<1959,1963,37>",(o1.a)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (o1) != "undefined") {_RecordType("<1959,1961,37>",(o1)); Inst7++; } } catch(e) {}
+
+for (var x in o1) {
+try { if (Inst8 <= 1000 && typeof (x) != "undefined") {_RecordType("<2051,2052,39>",(x)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (o1) != "undefined") {_RecordType("<2056,2058,39>",(o1)); Inst9++; } } catch(e) {}
+  ;
+}
+
+o1.b = function () {
+  return 1;
+}; // Return ownership of the descriptor array [a,c] to B and trim it to [a].
+try { if (Inst10 <= 1000 && typeof (o1.b) != "undefined") {_RecordType("<2069,2073,43>",(o1.b)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (o1) != "undefined") {_RecordType("<2069,2071,43>",(o1)); Inst11++; } } catch(e) {}
+
+
+o = null;
+try { if (Inst12 <= 1000 && typeof (o) != "undefined") {_RecordType("<2182,2183,48>",(o)); Inst12++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (gc) != "undefined") {_RecordType("<2192,2194,49>",(gc)); Inst13++; } } catch(e) {}
+gc(); // Convert the transition B -> D into a transition to B -> E so that E uses the
+// instance descriptors [a,b] with b being a field.
+
+var o2 = {};
+try { if (Inst14 <= 1000 && typeof (o2) != "undefined") {_RecordType("<2335,2337,52>",(o2)); Inst14++; } } catch(e) {}
+o2.a = 1;
+try { if (Inst15 <= 1000 && typeof (o2.a) != "undefined") {_RecordType("<2344,2348,53>",(o2.a)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (o2) != "undefined") {_RecordType("<2344,2346,53>",(o2)); Inst16++; } } catch(e) {}
+o2.b = 10; // Create an object with map B and iterate over it.
+try { if (Inst17 <= 1000 && typeof (o2.b) != "undefined") {_RecordType("<2354,2358,54>",(o2.b)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (o2) != "undefined") {_RecordType("<2354,2356,54>",(o2)); Inst18++; } } catch(e) {}
+
+var o3 = {};
+try { if (Inst19 <= 1000 && typeof (o3) != "undefined") {_RecordType("<2422,2424,56>",(o3)); Inst19++; } } catch(e) {}
+o3.a = 1;
+try { if (Inst20 <= 1000 && typeof (o3.a) != "undefined") {_RecordType("<2431,2435,57>",(o3.a)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (o3) != "undefined") {_RecordType("<2431,2433,57>",(o3)); Inst21++; } } catch(e) {}
+
+for (var y in o3) {
+try { if (Inst22 <= 1000 && typeof (y) != "undefined") {_RecordType("<2451,2452,59>",(y)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (o3) != "undefined") {_RecordType("<2456,2458,59>",(o3)); Inst23++; } } catch(e) {}
+  ;
+}
+

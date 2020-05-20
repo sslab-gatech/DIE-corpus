@@ -1,0 +1,130 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2008 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Test that we can compare two strings that are not 4-byte aligned.
+// This situation can arise with sliced strings.  This tests for an ARM bug
+// that was fixed in r554.
+var base = "Now is the time for all good men to come to the aid of the party. " + "Now is the time for all good men to come to the aid of the party.";
+try { if (Inst0 <= 1000 && typeof (base) != "undefined") {_RecordType("<1773,1777,30>",(base)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (base.substring) != "undefined") {_RecordType("<1929,1943,31>",(base.substring)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (base) != "undefined") {_RecordType("<1929,1933,31>",(base)); Inst3++; } } catch(e) {}
+var s1 = base.substring(0, 64);
+try { if (Inst1 <= 1000 && typeof (s1) != "undefined") {_RecordType("<1924,1926,31>",(s1)); Inst1++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (base.substring) != "undefined") {_RecordType("<1961,1975,32>",(base.substring)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (base) != "undefined") {_RecordType("<1961,1965,32>",(base)); Inst6++; } } catch(e) {}
+var s2 = base.substring(66, 130);
+try { if (Inst4 <= 1000 && typeof (s2) != "undefined") {_RecordType("<1956,1958,32>",(s2)); Inst4++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1998,2004,33>",(Object)); Inst8++; } } catch(e) {}
+var o = new Object();
+try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<1990,1991,33>",(o)); Inst7++; } } catch(e) {}
+o[s1] = 1;
+try { if (Inst9 <= 1000 && typeof (o[s1]) != "undefined") {_RecordType("<2008,2013,34>",(o[s1])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (o) != "undefined") {_RecordType("<2008,2009,34>",(o)); Inst10++; } } catch(e) {}
+o[s2] = 2;
+try { if (Inst11 <= 1000 && typeof (o[s2]) != "undefined") {_RecordType("<2019,2024,35>",(o[s2])); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (o) != "undefined") {_RecordType("<2019,2020,35>",(o)); Inst12++; } } catch(e) {}
+var first_time = true;
+try { if (Inst13 <= 1000 && typeof (first_time) != "undefined") {_RecordType("<2034,2044,36>",(first_time)); Inst13++; } } catch(e) {}
+
+for (var x in o) {
+try { if (Inst14 <= 1000 && typeof (x) != "undefined") {_RecordType("<2063,2064,38>",(x)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (o) != "undefined") {_RecordType("<2068,2069,38>",(o)); Inst15++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (o[x]) != "undefined") {_RecordType("<2075,2079,39>",(o[x])); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (o) != "undefined") {_RecordType("<2075,2076,39>",(o)); Inst17++; } } catch(e) {}
+  o[x] == 2;
+  "expect 2";
+try { if (Inst18 <= 1000 && typeof (first_time) != "undefined") {_RecordType("<2102,2112,41>",(first_time)); Inst18++; } } catch(e) {}
+  first_time;
+  "once only";
+  first_time = false;
+try { if (Inst19 <= 1000 && typeof (first_time) != "undefined") {_RecordType("<2131,2141,43>",(first_time)); Inst19++; } } catch(e) {}
+}
+

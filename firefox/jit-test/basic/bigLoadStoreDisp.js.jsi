@@ -1,0 +1,102 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// In Nanojit, loads and stores have a maximum displacement of 16-bits.  Any
+// displacements larger than that should be split off into a separate
+// instruction that adds the displacement to the base pointer.  This
+// program tests if this is done correctly.
+//
+// x.y ends up having a dslot offset of 79988, because of the 20000 array
+// elements before it.  If Nanojit incorrectly stores this offset into a
+// 16-bit value it will truncate to 14452 (because 79988 - 65536 == 14452).
+// This means that the increments in the second loop will be done to one of
+// the array elements instead of x.y.  And so x.y's final value will be
+// (99 + 8) instead of 1099.
+//
+// Note that setting x.y to 99 and checking its value at the end will
+// access the correct location because those lines are interpreted.  Phew.
+var x = {};
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<815,816,15>",(x)); Inst0++; } } catch(e) {}
+
+for (var i = 0; i < 20000; i++) {
+try { if (Inst1 <= 1000 && typeof (i) != "undefined") {_RecordType("<833,834,17>",(i)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (i) != "undefined") {_RecordType("<840,841,17>",(i)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<851,852,17>",(i)); Inst3++; } } catch(e) {}
+  x[i] = 0;
+try { if (Inst4 <= 1000 && typeof (x[i]) != "undefined") {_RecordType("<860,864,18>",(x[i])); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (x) != "undefined") {_RecordType("<860,861,18>",(x)); Inst5++; } } catch(e) {}
+}
+
+x.y = 99; // not traced, correctly accessed
+try { if (Inst6 <= 1000 && typeof (x.y) != "undefined") {_RecordType("<873,876,21>",(x.y)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<873,874,21>",(x)); Inst7++; } } catch(e) {}
+
+for (var i = 0; i < 1000; ++i) {
+try { if (Inst8 <= 1000 && typeof (i) != "undefined") {_RecordType("<927,928,23>",(i)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<934,935,23>",(i)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<946,947,23>",(i)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (x.y) != "undefined") {_RecordType("<953,956,24>",(x.y)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<953,954,24>",(x)); Inst12++; } } catch(e) {}
+  x.y++; // traced, will access an array elem if disp was truncated
+}
+
+try { if (Inst13 <= 1000 && typeof (x.y) != "undefined") {_RecordType("<1022,1025,27>",(x.y)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (x) != "undefined") {_RecordType("<1022,1023,27>",(x)); Inst14++; } } catch(e) {}
+x.y;
+1099;
+

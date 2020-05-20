@@ -1,0 +1,10 @@
+var loc = Reflect.parse("f()").body[0].expression.loc;
+loc.start.column;
+0;
+loc.end.column;
+3;
+loc = Reflect.parse("f(x)").body[0].expression.loc;
+loc.start.column;
+0;
+loc.end.column;
+4;

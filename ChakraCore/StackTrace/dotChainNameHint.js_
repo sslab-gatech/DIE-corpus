@@ -1,0 +1,40 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function t1() {
+  try {
+    // This block is derived directly from the OSS-Fuzz test case.
+    const M = 1e6;
+    var u;
+
+    for (var i = 0; i < M; i++) {
+      u = u + ".prototype";
+    }
+
+    eval(u);
+  } catch (e) {
+    ;
+  }
+}
+
+t1();
+
+function t2() {
+  try {
+    // There is nothing special about the names/patterns used in the above test case.
+    // This bug is strictly about SOE caused by stack depth from chaining the dot `.` operator.
+    const M = 1e6;
+    var u = "foo"; // explicit name
+
+    for (var i = 0; i < M; i++) {
+      u = u + ".a"; // not a special property
+    }
+
+    eval(u);
+  } catch (e) {
+    ;
+  }
+}
+
+t2();

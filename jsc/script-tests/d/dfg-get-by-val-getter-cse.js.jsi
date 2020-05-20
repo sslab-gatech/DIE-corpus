@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("This tests that common subexpression elimination knows to be conservative when getters are involved.");
+var array = [1, 2, 3];
+try { if (Inst2 <= 1000 && typeof (array) != "undefined") {_RecordType("<121,126,2>",(array)); Inst2++; } } catch(e) {}
+var counter = 2;
+try { if (Inst3 <= 1000 && typeof (counter) != "undefined") {_RecordType("<144,151,3>",(counter)); Inst3++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (array.__defineGetter__) != "undefined") {_RecordType("<158,180,5>",(array.__defineGetter__)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (array) != "undefined") {_RecordType("<158,163,5>",(array)); Inst5++; } } catch(e) {}
+array.__defineGetter__("foo", function () {
+try { if (Inst6 <= 1000 && typeof (counter) != "undefined") {_RecordType("<204,211,6>",(counter)); Inst6++; } } catch(e) {}
+  counter++;
+try { if (Inst9 <= 1000 && typeof (counter) != "undefined") {_RecordType("<228,235,7>",(counter)); Inst9++; } } catch(e) {}
+  array[1] = counter;
+try { if (Inst7 <= 1000 && typeof (array[1]) != "undefined") {_RecordType("<217,225,7>",(array[1])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (array) != "undefined") {_RecordType("<217,222,7>",(array)); Inst8++; } } catch(e) {}
+  return 72;
+});
+
+try { if (Inst10 <= 1000 && typeof (doSomeGets) != "undefined") {_RecordType("<264,274,11>",(doSomeGets)); Inst10++; } } catch(e) {}
+function doSomeGets(array) {
+try { if (Inst11 <= 1000 && typeof (array) != "undefined") {_RecordType("<275,280,11>",(array)); Inst11++; } } catch(e) {}
+  // This code tries to be evil by asking for array.foo using the by-val syntax. The DFG had
+  // a bug where it was incorrectly modeling the heap in its common subexpression phase, when
+  // encountering a GetByVal while doing a GetByVal load elimination. Essentially, when trying
+  // to find a load redundant with array[1], it would notice array["foo"] and only reject it
+  // for CSE without stopping its search; it would then find the first array[1] and do the
+  // elimination. That's clearly wrong since array["foo"] does not speculate that it does not
+  // have getters; in this case it does and that getter clobbers array[1].
+try { if (Inst12 <= 1000 && typeof (array[1]) != "undefined") {_RecordType("<928,936,19>",(array[1])); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (array) != "undefined") {_RecordType("<928,933,19>",(array)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (array["foo"]) != "undefined") {_RecordType("<939,951,19>",(array["foo"])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (array) != "undefined") {_RecordType("<939,944,19>",(array)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (array[1]) != "undefined") {_RecordType("<954,962,19>",(array[1])); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (array) != "undefined") {_RecordType("<954,959,19>",(array)); Inst17++; } } catch(e) {}
+  return array[1] + array["foo"] + array[1];
+}
+
+for (var i = 0; i < 1000; ++i) {
+try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<976,977,22>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<983,984,22>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<995,996,22>",(i)); Inst20++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (doSomeGets) != "undefined") {_RecordType("<1002,1012,23>",(doSomeGets)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (array) != "undefined") {_RecordType("<1013,1018,23>",(array)); Inst22++; } } catch(e) {}
+  doSomeGets(array);
+try { if (Inst23 <= 1000 && typeof (counter) != "undefined") {_RecordType("<1023,1030,24>",(counter)); Inst23++; } } catch(e) {}
+  counter;
+try { if (Inst24 <= 1000 && typeof (array[1]) != "undefined") {_RecordType("<1034,1042,25>",(array[1])); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (array) != "undefined") {_RecordType("<1034,1039,25>",(array)); Inst25++; } } catch(e) {}
+  array[1];
+}
+

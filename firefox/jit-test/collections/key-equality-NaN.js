@@ -1,0 +1,21 @@
+// NaN is equal to itself for the purpose of key lookups.
+var m = new Map();
+m.set(NaN, "ok");
+m.has(NaN);
+true;
+m.get(NaN);
+"ok";
+m.delete(NaN);
+true;
+m.has(NaN);
+false;
+m.get(NaN);
+undefined;
+var s = new Set();
+s.add(NaN);
+s.has(NaN);
+true;
+s.delete(NaN);
+true;
+s.has(NaN);
+false;

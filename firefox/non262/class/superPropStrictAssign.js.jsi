@@ -1,0 +1,122 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// While |super| is common in classes, it also works in object litterals,
+// where there is no guarantee of strict mode. Check that we do not somehow
+// get strict mode semantics when they were not called for
+// |undefined|, writable: false
+try { if (Inst0 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<241,262,5>",(Object.defineProperty)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Object) != "undefined") {_RecordType("<241,247,5>",(Object)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<263,279,5>",(Object.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<263,269,5>",(Object)); Inst3++; } } catch(e) {}
+Object.defineProperty(Object.prototype, "prop", {
+  writable: false
+});
+
+class strictAssignmentTest {
+  constructor() {
+    // Strict mode. Throws.
+    super.prop = 14;
+try { if (Inst5 <= 1000 && typeof (super.prop) != "undefined") {_RecordType("<393,403,12>",(super.prop)); Inst5++; } } catch(e) {}
+  }
+
+}
+try { if (Inst4 <= 1000 && typeof (strictAssignmentTest) != "undefined") {_RecordType("<320,340,9>",(strictAssignmentTest)); Inst4++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (strictAssignmentTest) != "undefined") {_RecordType("<429,449,17>",(strictAssignmentTest)); Inst6++; } } catch(e) {}
+(() => new strictAssignmentTest())();
+
+try { if (Inst7 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<457,466,19>",(TypeError)); Inst7++; } } catch(e) {}
+TypeError;
+// Non-strict. Silent failure.
+try { if (Inst8 <= 1000 && typeof (({
+  test() {
+    super.prop = 14;
+  }
+
+}).test) != "undefined") {_RecordType("<499,546,21>",(({
+  test() {
+    super.prop = 14;
+  }
+
+}).test)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<504,508,22>",(test)); Inst9++; } } catch(e) {}
+({
+  test() {
+    super.prop = 14;
+try { if (Inst10 <= 1000 && typeof (super.prop) != "undefined") {_RecordType("<517,527,23>",(super.prop)); Inst10++; } } catch(e) {}
+  }
+
+}).test();
+try { if (Inst11 <= 1000 && typeof (Object.prototype.prop) != "undefined") {_RecordType("<550,571,27>",(Object.prototype.prop)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<550,566,27>",(Object.prototype)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Object) != "undefined") {_RecordType("<550,556,27>",(Object)); Inst13++; } } catch(e) {}
+Object.prototype.prop;
+try { if (Inst14 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<573,582,28>",(undefined)); Inst14++; } } catch(e) {}
+undefined;
+
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<596,609,30>",(reportCompare)); Inst15++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst16 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<630,643,31>",(reportCompare)); Inst16++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

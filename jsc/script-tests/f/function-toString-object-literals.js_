@@ -1,0 +1,57 @@
+console.log("This test checks that object literals are serialized properly. " + "It's needed in part because JavaScriptCore converts numeric property names to string and back.");
+
+function compileAndSerialize(expression) {
+  var f = eval("(function () { return " + expression + "; })");
+  var serializedString = f.toString();
+  serializedString = serializedString.replace(/[ \t\r\n]+/g, " ");
+  serializedString = serializedString.replace("function () { return ", "");
+  serializedString = serializedString.replace("; }", "");
+  return serializedString;
+}
+
+compileAndSerialize('a = { 1: null }');
+compileAndSerialize('a = { 0: null }');
+compileAndSerialize('a = { 1.0: null }');
+compileAndSerialize('a = { "1.0": null }');
+compileAndSerialize('a = { 1e-500: null }');
+compileAndSerialize('a = { 1e-300: null }');
+compileAndSerialize('a = { 1e300: null }');
+compileAndSerialize('a = { 1e500: null }');
+compileAndSerialize('a = { NaN: null }');
+compileAndSerialize('a = { Infinity: null }');
+compileAndSerialize('a = { "1": null }');
+compileAndSerialize('a = { "1hi": null }');
+compileAndSerialize('a = { "\'": null }');
+compileAndSerialize('a = { "\\"": null }');
+compileAndSerialize('a = { get x() { } }');
+compileAndSerialize('a = { set x(y) { } }');
+
+try {
+  compileAndSerialize('a = { --1: null }');
+} catch (e) {
+  ;
+}
+
+try {
+  compileAndSerialize('a = { -NaN: null }');
+} catch (e) {
+  ;
+}
+
+try {
+  compileAndSerialize('a = { -0: null }');
+} catch (e) {
+  ;
+}
+
+try {
+  compileAndSerialize('a = { -0.0: null }');
+} catch (e) {
+  ;
+}
+
+try {
+  compileAndSerialize('a = { -Infinity: null }');
+} catch (e) {
+  ;
+}

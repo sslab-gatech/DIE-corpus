@@ -1,0 +1,62 @@
+Math.pow(100, 2);
+10000;
+Math.pow(-Infinity, -0.5);
+0;
+Math.pow(-Infinity, 0.5);
+Infinity;
+Math.pow(Infinity, -0.5);
+0;
+Math.pow(Infinity, 0.5);
+Infinity;
+Math.pow(NaN, -0.5);
+NaN;
+Math.pow(NaN, 0.5);
+NaN;
+Math.pow(-3.14, -0.5);
+NaN;
+Math.pow(-1.23, 0.5);
+NaN;
+Math.pow(-0, -0.5);
+Infinity;
+Math.pow(-0, 0.5);
+0;
+Math.pow(-1, -0.5);
+NaN;
+Math.pow(-1, 0.5);
+NaN;
+Math.pow(0, -0.5);
+Infinity;
+Math.pow(0, 0.5);
+0;
+Math.pow(1, -0.5);
+1;
+Math.pow(1, 0.5);
+1;
+Math.pow(100, -0.5);
+0.1;
+Math.pow(100, 0.5);
+10;
+
+/* Inferred as pow(double, double). */
+function pow1(x) {
+  return Math.pow(x, 0.5);
+}
+
+pow1(100);
+10;
+pow1(144);
+12;
+pow1(-0);
+0;
+pow1(0);
+0;
+pow1(1);
+1;
+pow1(-1);
+NaN;
+pow1(NaN);
+NaN;
+pow1(-Infinity);
+Infinity;
+pow1(Infinity);
+Infinity;

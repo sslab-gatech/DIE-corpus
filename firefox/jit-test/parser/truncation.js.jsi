@@ -1,0 +1,69 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var cases = ["{", "{ ;", "var", "var x,", "var x =", "let x,", "let x =", "const", "const x =", "const x = 1,", "if", "if (", "if (0) ; else", "do", "do ;", "do ; while", "do ; while (", "do ; while (1", "while", "while (", "while (1", "while (1)", "for", "for (", "for (;", "for (;;", "for (;;)", "for (var", "for (x", "for (x in", "for (x in y", "for (x in y)", "for (x of", "for (x of y", "for (x of y)", "switch", "switch (", "switch (x", "switch (x)", "with", "with (", "with (x", "with (x)", "a:", "throw", "try", "try {", "try {} catch", "try {} catch (", "try {} catch (exc", "try {} catch (exc if", "try {} catch (exc if 1", "try {} finally", "try {} finally {", "function", "function f", "function f(", "function f()", "function f() {", "(function", "(function f", "(function f(", "(function f()"];
+try { if (Inst0 <= 1000 && typeof (cases) != "undefined") {_RecordType("<4,9,1>",(cases)); Inst0++; } } catch(e) {}
+
+for (var s of cases) {
+try { if (Inst1 <= 1000 && typeof (s) != "undefined") {_RecordType("<819,820,3>",(s)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (cases) != "undefined") {_RecordType("<824,829,3>",(cases)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Function) != "undefined") {_RecordType("<842,850,4>",(Function)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (s) != "undefined") {_RecordType("<851,852,4>",(s)); Inst4++; } } catch(e) {}
+  (() => Function(s))();
+
+try { if (Inst5 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<861,872,6>",(SyntaxError)); Inst5++; } } catch(e) {}
+  SyntaxError;
+}
+

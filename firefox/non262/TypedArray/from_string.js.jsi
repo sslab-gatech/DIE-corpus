@@ -1,0 +1,154 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// %TypedArray%.from called on Array should also handle strings correctly.
+try { if (Inst1 <= 1000 && typeof (Int8Array.from.bind) != "undefined") {_RecordType("<86,105,2>",(Int8Array.from.bind)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Int8Array.from) != "undefined") {_RecordType("<86,100,2>",(Int8Array.from)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Int8Array) != "undefined") {_RecordType("<86,95,2>",(Int8Array)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Uint32Array) != "undefined") {_RecordType("<106,117,2>",(Uint32Array)); Inst4++; } } catch(e) {}
+var from = Int8Array.from.bind(Uint32Array);
+try { if (Inst0 <= 1000 && typeof (from) != "undefined") {_RecordType("<79,83,2>",(from)); Inst0++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (s) != "undefined") {_RecordType("<139,140,4>",(s)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (s.codePointAt) != "undefined") {_RecordType("<144,157,4>",(s.codePointAt)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (s) != "undefined") {_RecordType("<144,145,4>",(s)); Inst8++; } } catch(e) {}
+var toCodePoint = s => s.codePointAt(0); // %TypedArray%.from on a string iterates over the string.
+try { if (Inst5 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<125,136,4>",(toCodePoint)); Inst5++; } } catch(e) {}
+
+
+try { if (Inst9 <= 1000 && typeof (from) != "undefined") {_RecordType("<223,227,7>",(from)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<243,254,7>",(toCodePoint)); Inst10++; } } catch(e) {}
+from("test string", toCodePoint);
+try { if (Inst11 <= 1000 && typeof (['t', 'e', 's', 't', ' ', 's', 't', 'r', 'i', 'n', 'g'].map) != "undefined") {_RecordType("<257,316,8>",(['t', 'e', 's', 't', ' ', 's', 't', 'r', 'i', 'n', 'g'].map)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<317,328,8>",(toCodePoint)); Inst12++; } } catch(e) {}
+['t', 'e', 's', 't', ' ', 's', 't', 'r', 'i', 'n', 'g'].map(toCodePoint);
+// %TypedArray%.from on a string handles surrogate pairs correctly.
+var gclef = "\uD834\uDD1E"; // U+1D11E MUSICAL SYMBOL G CLEF
+try { if (Inst13 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<403,408,10>",(gclef)); Inst13++; } } catch(e) {}
+
+try { if (Inst14 <= 1000 && typeof (from) != "undefined") {_RecordType("<461,465,12>",(from)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<466,471,12>",(gclef)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<473,484,12>",(toCodePoint)); Inst16++; } } catch(e) {}
+from(gclef, toCodePoint);
+try { if (Inst17 <= 1000 && typeof ([gclef].map) != "undefined") {_RecordType("<487,498,13>",([gclef].map)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<488,493,13>",(gclef)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<499,510,13>",(toCodePoint)); Inst19++; } } catch(e) {}
+[gclef].map(toCodePoint);
+try { if (Inst20 <= 1000 && typeof (from) != "undefined") {_RecordType("<513,517,14>",(from)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<518,523,14>",(gclef)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<532,543,14>",(toCodePoint)); Inst22++; } } catch(e) {}
+from(gclef + " G", toCodePoint);
+try { if (Inst23 <= 1000 && typeof ([gclef, " ", "G"].map) != "undefined") {_RecordType("<546,567,15>",([gclef, " ", "G"].map)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<547,552,15>",(gclef)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<568,579,15>",(toCodePoint)); Inst25++; } } catch(e) {}
+[gclef, " ", "G"].map(toCodePoint);
+
+// %TypedArray%.from on a string calls the @@iterator method.
+String.prototype[Symbol.iterator] = function* () {
+  yield 1;
+  yield 2;
+};
+try { if (Inst26 <= 1000 && typeof (String.prototype[Symbol.iterator]) != "undefined") {_RecordType("<645,678,18>",(String.prototype[Symbol.iterator])); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (String.prototype) != "undefined") {_RecordType("<645,661,18>",(String.prototype)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (String) != "undefined") {_RecordType("<645,651,18>",(String)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<662,677,18>",(Symbol.iterator)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<662,668,18>",(Symbol)); Inst30++; } } catch(e) {}
+
+try { if (Inst31 <= 1000 && typeof (from) != "undefined") {_RecordType("<722,726,23>",(from)); Inst31++; } } catch(e) {}
+from("anything");
+[1, 2];
+// If the iterator method is deleted, Strings are still arraylike.
+try { if (Inst32 <= 1000 && typeof (String.prototype[Symbol.iterator]) != "undefined") {_RecordType("<822,855,26>",(String.prototype[Symbol.iterator])); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (String.prototype) != "undefined") {_RecordType("<822,838,26>",(String.prototype)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (String) != "undefined") {_RecordType("<822,828,26>",(String)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<839,854,26>",(Symbol.iterator)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<839,845,26>",(Symbol)); Inst36++; } } catch(e) {}
+delete String.prototype[Symbol.iterator];
+try { if (Inst37 <= 1000 && typeof (from) != "undefined") {_RecordType("<857,861,27>",(from)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<871,882,27>",(toCodePoint)); Inst38++; } } catch(e) {}
+from("works", toCodePoint);
+try { if (Inst39 <= 1000 && typeof (['w', 'o', 'r', 'k', 's'].map) != "undefined") {_RecordType("<885,914,28>",(['w', 'o', 'r', 'k', 's'].map)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<915,926,28>",(toCodePoint)); Inst40++; } } catch(e) {}
+['w', 'o', 'r', 'k', 's'].map(toCodePoint);
+try { if (Inst41 <= 1000 && typeof (from) != "undefined") {_RecordType("<929,933,29>",(from)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (gclef) != "undefined") {_RecordType("<934,939,29>",(gclef)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<941,952,29>",(toCodePoint)); Inst43++; } } catch(e) {}
+from(gclef, toCodePoint);
+try { if (Inst44 <= 1000 && typeof (['\uD834', '\uDD1E'].map) != "undefined") {_RecordType("<955,979,30>",(['\uD834', '\uDD1E'].map)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (toCodePoint) != "undefined") {_RecordType("<980,991,30>",(toCodePoint)); Inst45++; } } catch(e) {}
+['\uD834', '\uDD1E'].map(toCodePoint);
+
+try { if (Inst46 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1006,1019,32>",(reportCompare)); Inst46++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst47 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1040,1053,33>",(reportCompare)); Inst47++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

@@ -1,0 +1,148 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 668024;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<196,205,6>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Array.prototype.splice, when it deletes elements, should make sure any ' + 'deleted but not visited elements are suppressed from subsequent enumeration';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<220,227,7>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<385,390,8>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<391,400,8>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<410,417,8>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+var arr = [0, 1, 2, 3, 4, 5,, 7];
+try { if (Inst5 <= 1000 && typeof (arr) != "undefined") {_RecordType("<474,477,13>",(arr)); Inst5++; } } catch(e) {}
+var seen = [];
+try { if (Inst6 <= 1000 && typeof (seen) != "undefined") {_RecordType("<508,512,14>",(seen)); Inst6++; } } catch(e) {}
+var sawOneBeforeThree = true;
+try { if (Inst7 <= 1000 && typeof (sawOneBeforeThree) != "undefined") {_RecordType("<523,540,15>",(sawOneBeforeThree)); Inst7++; } } catch(e) {}
+
+for (var p in arr) {
+try { if (Inst8 <= 1000 && typeof (p) != "undefined") {_RecordType("<559,560,17>",(p)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arr) != "undefined") {_RecordType("<564,567,17>",(arr)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (p) != "undefined") {_RecordType("<577,578,18>",(p)); Inst10++; } } catch(e) {}
+  if (p === "1") {
+    // The order of enumeration of properties is unspecified, so technically,
+    // it would be kosher to enumerate "1" last, say, such that all properties
+    // in the array actually were enumerated, including an index which splice
+    // would delete.  Don't flag that case as a failure.  (SpiderMonkey doesn't
+    // do this, and neither do any of the other browser engines, but it is
+    // permissible behavior.)
+try { if (Inst11 <= 1000 && typeof (seen.indexOf) != "undefined") {_RecordType("<1018,1030,25>",(seen.indexOf)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (seen) != "undefined") {_RecordType("<1018,1022,25>",(seen)); Inst12++; } } catch(e) {}
+    if (seen.indexOf("3") >= 0) {
+      sawOneBeforeThree = false;
+try { if (Inst13 <= 1000 && typeof (sawOneBeforeThree) != "undefined") {_RecordType("<1050,1067,26>",(sawOneBeforeThree)); Inst13++; } } catch(e) {}
+      break;
+    }
+
+try { if (Inst14 <= 1000 && typeof (arr.splice) != "undefined") {_RecordType("<1101,1111,30>",(arr.splice)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1101,1104,30>",(arr)); Inst15++; } } catch(e) {}
+    arr.splice(2, 3);
+  }
+
+try { if (Inst16 <= 1000 && typeof (seen.push) != "undefined") {_RecordType("<1126,1135,33>",(seen.push)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (seen) != "undefined") {_RecordType("<1126,1130,33>",(seen)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (p) != "undefined") {_RecordType("<1136,1137,33>",(p)); Inst18++; } } catch(e) {}
+  seen.push(p);
+}
+
+try { if (Inst19 <= 1000 && typeof (sawOneBeforeThree) != "undefined") {_RecordType("<1147,1164,36>",(sawOneBeforeThree)); Inst19++; } } catch(e) {}
+if (sawOneBeforeThree) {
+  // ES5 12.6.4 states:
+  //
+  //   If a property that has not yet been visited during enumeration is
+  //   deleted, then it will not be visited.
+  //
+  // So if we haven't seen "3" by the time we see "1", the splice call above
+  // will delete "3", and therefore we must not see it.
+try { if (Inst20 <= 1000 && typeof (seen.indexOf) != "undefined") {_RecordType("<1455,1467,44>",(seen.indexOf)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (seen) != "undefined") {_RecordType("<1455,1459,44>",(seen)); Inst21++; } } catch(e) {}
+  seen.indexOf("3");
+  -1;
+}
+/******************************************************************************/
+
+
+try { if (Inst22 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1576,1589,50>",(reportCompare)); Inst22++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1610,1623,51>",(reportCompare)); Inst23++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst24 <= 1000 && typeof (print) != "undefined") {_RecordType("<1640,1645,54>",(print)); Inst24++; } } catch(e) {}
+print("Tests complete");
+

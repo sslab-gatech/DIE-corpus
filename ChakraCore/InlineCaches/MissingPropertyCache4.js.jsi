@@ -1,0 +1,97 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (fn) != "undefined") {_RecordType("<376,378,5>",(fn)); Inst0++; } } catch(e) {}
+function fn() {
+  var o = {};
+try { if (Inst1 <= 1000 && typeof (o) != "undefined") {_RecordType("<389,390,6>",(o)); Inst1++; } } catch(e) {}
+  var p = {};
+try { if (Inst2 <= 1000 && typeof (p) != "undefined") {_RecordType("<403,404,7>",(p)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (p) != "undefined") {_RecordType("<427,428,8>",(p)); Inst5++; } } catch(e) {}
+  o.__proto__ = p;
+try { if (Inst3 <= 1000 && typeof (o.__proto__) != "undefined") {_RecordType("<413,424,8>",(o.__proto__)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (o) != "undefined") {_RecordType("<413,414,8>",(o)); Inst4++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (o.pizza) != "undefined") {_RecordType("<432,439,9>",(o.pizza)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<432,433,9>",(o)); Inst7++; } } catch(e) {}
+  o.pizza; // Fill missing property cache
+
+  p.__proto__ = {
+    pizza: 'pizza'
+  }; // Add property to o's prototype chain: should invalidate cache
+try { if (Inst8 <= 1000 && typeof (p.__proto__) != "undefined") {_RecordType("<475,486,11>",(p.__proto__)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (p) != "undefined") {_RecordType("<475,476,11>",(p)); Inst9++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (o.pizza) != "undefined") {_RecordType("<589,596,15>",(o.pizza)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (o) != "undefined") {_RecordType("<589,590,15>",(o)); Inst11++; } } catch(e) {}
+  return o.pizza; // Look for property again
+}
+
+try { if (Inst12 <= 1000 && typeof (fn) != "undefined") {_RecordType("<632,634,18>",(fn)); Inst12++; } } catch(e) {}
+if (fn() === 'pizza') {
+try { if (Inst13 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<654,665,19>",(console.log)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (console) != "undefined") {_RecordType("<654,661,19>",(console)); Inst14++; } } catch(e) {}
+  console.log('pass');
+}
+

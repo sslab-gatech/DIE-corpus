@@ -1,0 +1,496 @@
+console.log('Tests for ES6 class syntax "super"');
+var baseMethodValue = {};
+var valueInSetter = null;
+
+class Base {
+  constructor() {
+    ;
+  }
+
+  baseMethod() {
+    return baseMethodValue;
+  }
+
+  chainMethod() {
+    return 'base';
+  }
+
+  static staticMethod() {
+    return 'base3';
+  }
+
+}
+
+class Derived extends Base {
+  constructor() {
+    super();
+  }
+
+  chainMethod() {
+    return [super.chainMethod(), 'derived'];
+  }
+
+  callBaseMethod() {
+    return super.baseMethod();
+  }
+
+  get callBaseMethodInGetter() {
+    return super['baseMethod']();
+  }
+
+  set callBaseMethodInSetter(x) {
+    valueInSetter = super.baseMethod();
+  }
+
+  get baseMethodInGetterSetter() {
+    return super.baseMethod;
+  }
+
+  set baseMethodInGetterSetter(x) {
+    valueInSetter = super['baseMethod'];
+  }
+
+  static staticMethod() {
+    return super.staticMethod();
+  }
+
+}
+
+class SecondDerived extends Derived {
+  constructor() {
+    super();
+  }
+
+  chainMethod() {
+    return super.chainMethod().concat(['secondDerived']);
+  }
+
+}
+
+class DerivedWithEval extends Base {
+  constructor(throwTDZ) {
+    if (throwTDZ) {
+      this.id = '';
+    }
+
+    eval("super()");
+  }
+
+}
+
+new Base() instanceof Base;
+new Derived() instanceof Derived;
+new DerivedWithEval() instanceof DerivedWithEval;
+
+try {
+  new DerivedWithEval(true);
+} catch (e) {
+  ;
+}
+
+new Derived().callBaseMethod();
+x = new Derived().callBaseMethod;
+x();
+new Derived().callBaseMethodInGetter;
+new Derived().callBaseMethodInSetter = 1;
+valueInSetter;
+new Derived().baseMethodInGetterSetter;
+new Derived().baseMethodInGetterSetter = 1;
+valueInSetter;
+Derived.staticMethod();
+new SecondDerived().chainMethod().toString();
+
+try {
+  x = class extends Base {
+    constructor() {
+      super();
+    }
+
+    super() {
+      ;
+    }
+
+  };
+} catch (e) {
+  ;
+} // shouldThrow('x = class extends Base { constructor() { super(); } method() { super() } }',
+// '"SyntaxError: super is not valid in this context."');
+// try { x = class extends Base { constructor() { super(); } method() { super } }; } catch(e) {}
+// try { x = class extends Base { constructor() { super(); } method() { return new super } }; } catch(e) {}
+
+
+try {
+  x = class extends Base {
+    constructor() {
+      super();
+    }
+
+    method1() {
+      delete super.foo;
+    }
+
+    method2() {
+      delete super["foo"];
+    }
+
+  };
+} catch (e) {
+  ;
+}
+
+try {
+  new x().method1();
+} catch (e) {
+  ;
+}
+
+try {
+  new x().method2();
+} catch (e) {
+  ;
+}
+
+new class {
+  constructor() {
+    super.property = "ABC";
+  }
+
+}().property === "ABC";
+new class extends Base {
+  constructor() {
+    super();
+    super.property = "ABC";
+  }
+
+}().property === "ABC";
+new class {
+  constructor() {
+    var arr = () => super.property = "ABC";
+
+    arr();
+  }
+
+}().property === "ABC";
+new class {
+  constructor() {
+    var async_arr = async () => super.property = "ABC";
+
+    async_arr();
+  }
+
+}().property === "ABC";
+new class {
+  constructor() {
+    eval('super.property = "ABC"');
+  }
+
+}().property === "ABC";
+new class {
+  constructor() {
+    var arr = () => eval('super.property = "ABC"');
+
+    arr();
+  }
+
+}().property === "ABC";
+new class {
+  constructor() {
+    return undefined;
+  }
+
+}() instanceof Object;
+new class {
+  constructor() {
+    return 1;
+  }
+
+}() instanceof Object;
+
+try {
+  new class extends Base {
+    constructor() {
+      return undefined;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+new class extends Base {
+  constructor() {
+    super();
+    return undefined;
+  }
+
+}() instanceof Object;
+x = {};
+new class extends Base {
+  constructor() {
+    return x;
+  }
+
+}();
+;
+x instanceof Base;
+
+try {
+  new class extends Base {
+    constructor() {
+      ;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends Base {
+    constructor() {
+      return 1;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends null {
+    constructor() {
+      return undefined;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends null {
+    constructor() {
+      super();
+      return undefined;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+x = {};
+new class extends null {
+  constructor() {
+    return x;
+  }
+
+}();
+;
+x instanceof Object;
+
+try {
+  new class extends null {
+    constructor() {
+      ;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends null {
+    constructor() {
+      return 1;
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends null {
+    constructor() {
+      super();
+    }
+
+  }();
+} catch (e) {
+  ;
+} // try { new (class { constructor() { super() } }); } catch(e) {}
+// try { function x() { super(); }; } catch(e) {}
+// try { new (class extends Object { constructor() { function x() { super() } } }); } catch(e) {}
+// try { new (class extends Object { constructor() { function x() { super.method } } }); } catch(e) {}
+// try { function x() { super.method(); }; } catch(e) {}
+// try { function x() { super(); }; } catch(e) {}
+
+
+try {
+  eval("super.method()");
+} catch (e) {
+  ;
+}
+
+try {
+  eval("super()");
+} catch (e) {
+  ;
+}
+
+try {
+  (function () {
+    eval("super.method()");
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function () {
+    eval("super()");
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  new class {
+    constructor() {
+      (function () {
+        eval("super()");
+      })();
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class {
+    method() {
+      (function () {
+        eval("super.method()");
+      })();
+    }
+
+  }().method();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends Base {
+    constructor() {
+      super();
+      super();
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class D extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor() {
+      eval('super["m"]()');
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor() {
+      super["m"](super());
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class D extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor(f) {
+      super[f()]();
+    }
+
+  }(() => "m");
+} catch (e) {
+  ;
+}
+
+try {
+  new class D extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor() {
+      super();
+      eval('super["m"]()');
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor() {
+      super();
+      super["m"](super());
+    }
+
+  }();
+} catch (e) {
+  ;
+}
+
+try {
+  new class D extends class {
+    m() {
+      ;
+    }
+
+  } {
+    constructor(f) {
+      super();
+      super[f()]();
+    }
+
+  }(() => "m");
+} catch (e) {
+  ;
+}
+
+var successfullyParsed = true;

@@ -1,0 +1,90 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function f1(x) {
+  try {
+    throw 'catch';
+  } catch (x) {
+    var f2 = function () {
+      print(x);
+    };
+
+    f2();
+
+    function f3() {
+      print(x);
+
+      try {
+        throw 'catch2';
+      } catch (y) {
+        f2();
+
+        var f4 = function () {
+          print(x, y);
+        };
+
+        function f5() {
+          print(x, y);
+        }
+      }
+
+      f4();
+      f5();
+    }
+
+    f3();
+  }
+}
+
+y = 'y';
+f1('param');
+
+function f10() {
+  var ex = 'Carey Price';
+
+  try {
+    throw 1;
+  } catch (ex) {
+    try {
+      throw 2;
+    } catch (ex) {
+      function f11() {
+        ;
+      }
+
+      ;
+
+      function f12() {
+        print(ex);
+      }
+
+      ;
+    }
+  }
+
+  f12();
+}
+
+;
+f10();
+
+function outer(g) {
+  function inner() {
+    try {
+      throw 1;
+    } catch (g) {
+      if (g !== 1) {
+        print('g === ' + g + ' in catch');
+      }
+    }
+  }
+
+  inner();
+
+  if (g !== 'g') {
+    print('g === ' + g + ' in "inner"');
+  }
+}
+
+outer('g');

@@ -1,0 +1,375 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// ES6 new.target tests
+function t1() {
+  function target() {
+    return {
+      name: 'something'
+    };
+  }
+
+  var t = new target(); // implicitly 'new target()'
+
+  console.log('something', t.name);
+}
+
+t1();
+
+function t2() {
+  try {
+    {
+      new.target;
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    {
+      {
+        new.target;
+      }
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    with ({}) {
+      new.target;
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    function parent(x) {
+      new x();
+    }
+
+    ;
+
+    function child() {
+      with (new.target) {
+        toString();
+      }
+    }
+
+    ;
+    parent(child);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    {
+      if (true) {
+        new.target;
+      }
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    try {
+      throw Error;
+    } catch (e) {
+      new.target;
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    var a = b = c = 1;
+
+    try {
+      ;
+    } catch ([a, b, c]) {
+      new.target;
+    }
+  } catch (e) {
+    ;
+  }
+
+  try {
+    var x = function () {
+      new.target;
+    };
+
+    x();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    var o = {
+      "foo": function () {
+        new.target;
+      }
+    };
+    o.foo();
+  } catch (e) {
+    ;
+  }
+}
+
+t2();
+
+function t3() {
+  try {
+    return new ['target']();
+  } catch (e) {
+    ;
+  }
+
+  try {
+    return eval('new.');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    return eval('new.target2');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    return eval('new.something');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    return eval('new.eval');
+  } catch (e) {
+    ;
+  }
+}
+
+t3();
+
+function t4() {
+  var obj = {
+    target: 'something'
+  };
+  console.log('something', obj.target);
+}
+
+t4();
+
+function t5() {
+  var called = false;
+
+  class SimpleBaseClass {
+    constructor() {
+      console.log(new.target === SimpleBaseClass);
+      called = true;
+    }
+
+  }
+
+  var myObj = new SimpleBaseClass();
+  console.log(called);
+}
+
+t5();
+
+function t6() {
+  var called = false;
+
+  class BaseClassForB {
+    constructor() {
+      console.log(new.target === DerivedClassForB);
+      called = true;
+    }
+
+  }
+
+  class DerivedClassForB extends BaseClassForB {
+    constructor() {
+      console.log(new.target === DerivedClassForB);
+      super();
+    }
+
+  }
+
+  var myB = new DerivedClassForB();
+  console.log(called);
+}
+
+t6();
+
+function t7() {
+  var called = false;
+
+  class SimpleBaseClass {
+    constructor() {
+      var arrow = () => {
+        console.log(new.target === SimpleBaseClass);
+        called = true;
+      };
+
+      arrow();
+    }
+
+  }
+
+  var myObj = new SimpleBaseClass();
+  console.log(called);
+}
+
+t7();
+
+function t8() {
+  let constructed = false;
+
+  class C {
+    constructor() {
+      let arrow = () => {
+        console.log(D === new.target);
+        constructed = true;
+      };
+
+      arrow();
+    }
+
+  }
+
+  class D extends C {
+    constructor() {
+      let arrow = () => {
+        console.log(D === new.target);
+      };
+
+      arrow();
+      super();
+    }
+
+  }
+
+  let myD = new D();
+  console.log(constructed);
+}
+
+t8();
+
+function t9() {
+  function foo() {
+    console.log(undefined === new.target);
+    return new.target;
+  }
+
+  console.log(undefined === foo());
+}
+
+t9();
+
+function t10() {
+  function foo() {
+    console.log(foo === new.target);
+    return new.target;
+  }
+
+  console.log(foo === new foo());
+}
+
+t10();
+
+function t11() {
+  function foo() {
+    let arrow = () => {
+      console.log(undefined === new.target);
+      return new.target;
+    };
+
+    return arrow();
+  }
+
+  console.log(undefined === foo());
+}
+
+t11();
+
+function t12() {
+  function foo() {
+    let arrow = () => {
+      console.log(foo === new.target);
+      return new.target;
+    };
+
+    return arrow();
+  }
+
+  console.log(foo === new foo());
+}
+
+t12();
+
+function t13() {
+  class base {
+    constructor() {
+      let arrow = () => {
+        console.log(derived === new.target);
+        return new.target;
+      };
+
+      return arrow;
+    }
+
+  }
+
+  class derived extends base {
+    constructor() {
+      return super();
+    }
+
+  }
+
+  let arrow = new derived();
+  console.log(derived === arrow());
+}
+
+t13();
+
+function t14() {
+  function foo() {
+    return new.target;
+  }
+
+  function bar() {
+    return new foo(); //foo will be inlined here
+  }
+
+  console.log(bar() == foo);
+}
+
+t14();
+
+function t15() {
+  function foo() {
+    return new.target;
+  }
+
+  function bar() {
+    return foo(); //foo will be inlined here
+  }
+
+  console.log(bar() == undefined);
+}
+
+t15();
+
+function t16() {
+  function* foo() {
+    yield new.target;
+  }
+
+  console.log(foo().next().value == undefined);
+}
+
+t16();

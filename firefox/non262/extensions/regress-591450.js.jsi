@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+
+/*
+ * This was causing the parser to assert at one point. Now it's not. Yay!
+ */
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<260,261,11>",(f)); Inst0++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<266,267,11>",(x)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (y) != "undefined") {_RecordType("<269,270,11>",(y)); Inst3++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (w) != "undefined") {_RecordType("<277,278,11>",(w)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (z) != "undefined") {_RecordType("<280,281,11>",(z)); Inst6++; } } catch(e) {}
+function f(a, [x, y], b, [w, z], c) {
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<262,263,11>",(a)); Inst1++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<273,274,11>",(b)); Inst4++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (c) != "undefined") {_RecordType("<284,285,11>",(c)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<300,301,12>",(b)); Inst8++; } } catch(e) {}
+  function b() {
+    ;
+  }
+}
+
+try { if (Inst9 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<319,332,17>",(reportCompare)); Inst9++; } } catch(e) {}
+reportCompare(0, 0, "don't crash");
+

@@ -1,0 +1,136 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Define a test object
+var test = {
+  x: 1,
+  y: 2
+}; // Put the object into dictionary mode by deleting 
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<28,32,2>",(test)); Inst0++; } } catch(e) {}
+// a property that was not the last one added.
+
+try { if (Inst1 <= 1000 && typeof (test.x) != "undefined") {_RecordType("<162,168,8>",(test.x)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (test) != "undefined") {_RecordType("<162,166,8>",(test)); Inst2++; } } catch(e) {}
+delete test.x; // Define a an accessor property with a setter that 
+// itself calls Object.defineProperty
+
+try { if (Inst3 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<262,283,11>",(Object.defineProperty)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Object) != "undefined") {_RecordType("<262,268,11>",(Object)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (test) != "undefined") {_RecordType("<284,288,11>",(test)); Inst5++; } } catch(e) {}
+Object.defineProperty(test, "foo", {
+  get: function () {
+    return 1;
+  },
+  set: function (v) {
+try { if (Inst6 <= 1000 && typeof (v) != "undefined") {_RecordType("<356,357,15>",(v)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<365,386,16>",(Object.defineProperty)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object) != "undefined") {_RecordType("<365,371,16>",(Object)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (v) != "undefined") {_RecordType("<415,416,17>",(v)); Inst9++; } } catch(e) {}
+    Object.defineProperty(this, "foo", {
+      value: v
+    }); // Prints the correct object descriptor
+
+try { if (Inst10 <= 1000 && typeof (this.foo) != "undefined") {_RecordType("<470,478,20>",(this.foo)); Inst10++; } } catch(e) {}
+    this.foo;
+    33;
+  },
+  configurable: true
+}); // Add another property, so generateOwnShape does not replace the foo property.
+
+test.other = 0; // This line prints 1, as expected
+try { if (Inst11 <= 1000 && typeof (test.other) != "undefined") {_RecordType("<599,609,26>",(test.other)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (test) != "undefined") {_RecordType("<599,603,26>",(test)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (test.foo) != "undefined") {_RecordType("<651,659,28>",(test.foo)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (test) != "undefined") {_RecordType("<651,655,28>",(test)); Inst14++; } } catch(e) {}
+test.foo;
+1;
+// Now set the property.  This calls the setter method above.
+// And the setter method prints the expected value and property descriptor.
+test.foo = 33; // Finally read the newly set value.
+try { if (Inst15 <= 1000 && typeof (test.foo) != "undefined") {_RecordType("<802,810,32>",(test.foo)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (test) != "undefined") {_RecordType("<802,806,32>",(test)); Inst16++; } } catch(e) {}
+
+try { if (Inst17 <= 1000 && typeof (test.foo) != "undefined") {_RecordType("<855,863,34>",(test.foo)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (test) != "undefined") {_RecordType("<855,859,34>",(test)); Inst18++; } } catch(e) {}
+test.foo;
+33;
+// Check that enumeration order is correct.
+var arr = [];
+try { if (Inst19 <= 1000 && typeof (arr) != "undefined") {_RecordType("<917,920,37>",(arr)); Inst19++; } } catch(e) {}
+
+for (var x in test) {
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<937,938,39>",(x)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (test) != "undefined") {_RecordType("<942,946,39>",(test)); Inst21++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (arr.push) != "undefined") {_RecordType("<952,960,40>",(arr.push)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (arr) != "undefined") {_RecordType("<952,955,40>",(arr)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (x) != "undefined") {_RecordType("<961,962,40>",(x)); Inst24++; } } catch(e) {}
+  arr.push(x);
+}
+
+try { if (Inst25 <= 1000 && typeof (arr) != "undefined") {_RecordType("<973,976,43>",(arr)); Inst25++; } } catch(e) {}
+"" + arr;
+"y,other";
+

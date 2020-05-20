@@ -1,0 +1,257 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function test1() {
+  var sym = Symbol();
+  let out = 'nothing';
+  var obj = {
+    get a() {
+      return 'get a';
+    },
+
+    set a(v) {
+      out = 'set a';
+    },
+
+    b() {
+      return 'b';
+    },
+
+    ['c']() {
+      return 'c';
+    },
+
+    [sym]() {
+      return 'sym';
+    },
+
+    async d() {
+      return 'd';
+    },
+
+    *e() {
+      yield 'e';
+    },
+
+    get ['f']() {
+      return 'get f';
+    },
+
+    set ['f'](v) {
+      out = 'set f';
+    },
+
+    async ['g']() {
+      return 'g';
+    },
+
+    *['h']() {
+      yield 'h';
+    },
+
+    async async() {
+      return 'async async';
+    }
+
+  };
+  var obj2 = {
+    async() {
+      return 'async';
+    }
+
+  };
+  var obj3 = {
+    get async() {
+      return 'get async';
+    },
+
+    set async(v) {
+      out = 'set async';
+    }
+
+  };
+  var obj4 = {
+    async *e() {
+      yield 'generator async';
+    }
+
+  };
+  obj.a;
+  obj.a = 123;
+  out;
+  obj.b();
+  obj.c();
+  obj[sym]();
+  obj.d();
+  obj.e().next().value;
+  obj.f;
+  obj.f = 123;
+  out;
+  obj.g();
+  obj.h().next().value;
+  obj.async();
+  obj2.async();
+  obj3.async;
+  obj3.async = 123;
+  out;
+  obj4.async().next().value;
+}
+
+test1();
+
+function test2() {
+  var out = 'nothing';
+  var obj = {
+    "s1"() {
+      return "s1";
+    },
+
+    async "s2"() {
+      return "s2";
+    },
+
+    *"s3"() {
+      return "s3";
+    },
+
+    get "s4"() {
+      return "s4";
+    },
+
+    set "s4"(v) {
+      out = "s4";
+    },
+
+    0.1() {
+      return 0.1;
+    },
+
+    async 0.2() {
+      return 0.2;
+    },
+
+    *0.3() {
+      return 0.3;
+    },
+
+    get 0.4() {
+      return 0.4;
+    },
+
+    set 0.4(v) {
+      out = 0.4;
+    },
+
+    123() {
+      return 123;
+    },
+
+    async 456() {
+      return 456;
+    },
+
+    *789() {
+      yield 789;
+    },
+
+    get 123456() {
+      return 123456;
+    },
+
+    set 123456(v) {
+      out = 123456;
+    },
+
+    while() {
+      return "while";
+    },
+
+    async else() {
+      return "else";
+    },
+
+    *if() {
+      return "if";
+    },
+
+    get catch() {
+      return "catch";
+    },
+
+    set catch(v) {
+      out = "catch";
+    }
+
+  };
+  console.log('s1', obj.s1());
+  console.log(0.1, obj[0.1]());
+  console.log(123, obj[123]());
+  console.log('while', obj.while());
+  obj.s2();
+  obj[0.2]();
+  obj[456]();
+  obj.else();
+  console.log('s3', obj.s3().next().value);
+  console.log(0.3, obj[0.3]().next().value);
+  console.log(789, obj[789]().next().value);
+  console.log('if', obj.if().next().value);
+  console.log('s4', obj.s4);
+  console.log(0.4, obj[0.4]);
+  console.log(123456, obj[123456]);
+  console.log('catch', obj.catch);
+  obj.s4 = 123;
+  out;
+  obj[0.4] = 123;
+  out;
+  obj[123456] = 123;
+  out;
+  obj.catch = 123;
+  out;
+}
+
+test2();
+
+function test3() {
+  var obj = {
+    m() {
+      function foo() {
+        return 'foo';
+      }
+
+      return foo();
+    }
+
+  };
+  obj.m();
+}
+
+test3();
+
+function test4() {
+  var obj = {
+    m() {
+      return () => super.bar();
+    }
+
+  };
+  Object.setPrototypeOf(obj, {
+    bar() {
+      return this;
+    }
+
+  });
+  console.log(obj === obj.m()());
+}
+
+test4();
+
+function test5() {
+  var a = async () => {
+    ;
+  };
+
+  console.log(a());
+}
+
+test5();

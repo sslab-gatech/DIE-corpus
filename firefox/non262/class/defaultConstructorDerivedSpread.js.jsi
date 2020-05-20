@@ -1,0 +1,106 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* Make sure that the default derived class constructor has the required spread semantics.
+ *
+ * Test credit André Bargull
+ */
+Array.prototype[Symbol.iterator] = function* () {
+  yield 1;
+  yield 2;
+};
+try { if (Inst0 <= 1000 && typeof (Array.prototype[Symbol.iterator]) != "undefined") {_RecordType("<127,159,5>",(Array.prototype[Symbol.iterator])); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<127,142,5>",(Array.prototype)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Array) != "undefined") {_RecordType("<127,132,5>",(Array)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<143,158,5>",(Symbol.iterator)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<143,149,5>",(Symbol)); Inst4++; } } catch(e) {}
+
+class Base {
+  constructor(a, b) {
+try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<230,231,11>",(a)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (b) != "undefined") {_RecordType("<233,234,11>",(b)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<242,243,12>",(a)); Inst8++; } } catch(e) {}
+    a;
+    1;
+try { if (Inst9 <= 1000 && typeof (b) != "undefined") {_RecordType("<256,257,14>",(b)); Inst9++; } } catch(e) {}
+    b;
+    2;
+  }
+
+}
+try { if (Inst5 <= 1000 && typeof (Base) != "undefined") {_RecordType("<209,213,10>",(Base)); Inst5++; } } catch(e) {}
+
+;
+
+try { if (Inst11 <= 1000 && typeof (Base) != "undefined") {_RecordType("<299,303,22>",(Base)); Inst11++; } } catch(e) {}
+class Derived extends Base {}
+try { if (Inst10 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<283,290,22>",(Derived)); Inst10++; } } catch(e) {}
+
+;
+try { if (Inst12 <= 1000 && typeof (Derived) != "undefined") {_RecordType("<314,321,25>",(Derived)); Inst12++; } } catch(e) {}
+new Derived();
+
+try { if (Inst13 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<337,350,27>",(reportCompare)); Inst13++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst14 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<371,384,28>",(reportCompare)); Inst14++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

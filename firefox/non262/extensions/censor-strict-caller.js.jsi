@@ -1,0 +1,120 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/licenses/publicdomain/
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 588251;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<189,198,4>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "fun.caller should throw if that value corresponds to a strict mode " + "function";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<213,220,5>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<307,312,6>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<313,322,6>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<332,339,6>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst5 <= 1000 && typeof (nonstrict) != "undefined") {_RecordType("<401,410,11>",(nonstrict)); Inst5++; } } catch(e) {}
+function nonstrict() {
+try { if (Inst6 <= 1000 && typeof (nonstrict.caller) != "undefined") {_RecordType("<424,440,12>",(nonstrict.caller)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (nonstrict) != "undefined") {_RecordType("<424,433,12>",(nonstrict)); Inst7++; } } catch(e) {}
+  return nonstrict.caller;
+}
+
+try { if (Inst8 <= 1000 && typeof (strict) != "undefined") {_RecordType("<454,460,15>",(strict)); Inst8++; } } catch(e) {}
+function strict() {
+  "use strict";
+
+try { if (Inst9 <= 1000 && typeof (nonstrict) != "undefined") {_RecordType("<491,500,18>",(nonstrict)); Inst9++; } } catch(e) {}
+  return nonstrict();
+}
+
+try { if (Inst11 <= 1000 && typeof (e) != "undefined") {_RecordType("<546,547,24>",(e)); Inst11++; } } catch(e) {}
+try {
+try { if (Inst10 <= 1000 && typeof (strict) != "undefined") {_RecordType("<515,521,22>",(strict)); Inst10++; } } catch(e) {}
+  strict();
+  throw 17;
+} catch (e) {
+try { if (Inst12 <= 1000 && typeof (e) != "undefined") {_RecordType("<553,554,25>",(e)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<566,575,25>",(TypeError)); Inst13++; } } catch(e) {}
+  e instanceof TypeError;
+  true;
+try { if (Inst14 <= 1000 && typeof (e) != "undefined") {_RecordType("<646,647,27>",(e)); Inst14++; } } catch(e) {}
+  "expected TypeError accessing strict mode caller, got: " + e;
+}
+/******************************************************************************/
+
+
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<745,758,32>",(reportCompare)); Inst15++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst16 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<779,792,33>",(reportCompare)); Inst16++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst17 <= 1000 && typeof (print) != "undefined") {_RecordType("<809,814,36>",(print)); Inst17++; } } catch(e) {}
+print("All tests passed!");
+

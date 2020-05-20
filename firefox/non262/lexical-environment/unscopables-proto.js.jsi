@@ -1,0 +1,168 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// @@unscopables treats properties found on prototype chains the same as other
+// properties.
+const x = "global x";
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<100,101,3>",(x)); Inst0++; } } catch(e) {}
+const y = "global y"; // obj[@@unscopables].x works when obj.x is inherited via the prototype chain.
+try { if (Inst1 <= 1000 && typeof (y) != "undefined") {_RecordType("<122,123,4>",(y)); Inst1++; } } catch(e) {}
+
+let proto = {
+  x: "object x",
+  y: "object y"
+};
+try { if (Inst2 <= 1000 && typeof (proto) != "undefined") {_RecordType("<222,227,6>",(proto)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<278,291,10>",(Object.create)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Object) != "undefined") {_RecordType("<278,284,10>",(Object)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (proto) != "undefined") {_RecordType("<292,297,10>",(proto)); Inst6++; } } catch(e) {}
+let env = Object.create(proto);
+try { if (Inst3 <= 1000 && typeof (env) != "undefined") {_RecordType("<272,275,10>",(env)); Inst3++; } } catch(e) {}
+env[Symbol.unscopables] = {
+  x: true,
+  y: false
+};
+try { if (Inst7 <= 1000 && typeof (env[Symbol.unscopables]) != "undefined") {_RecordType("<300,323,11>",(env[Symbol.unscopables])); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (env) != "undefined") {_RecordType("<300,303,11>",(env)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Symbol.unscopables) != "undefined") {_RecordType("<304,322,11>",(Symbol.unscopables)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<304,310,11>",(Symbol)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (env) != "undefined") {_RecordType("<359,362,15>",(env)); Inst11++; } } catch(e) {}
+with (env) {
+try { if (Inst12 <= 1000 && typeof (x) != "undefined") {_RecordType("<368,369,16>",(x)); Inst12++; } } catch(e) {}
+  x;
+  "global x";
+try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<394,395,18>",(x)); Inst13++; } } catch(e) {}
+  delete x;
+  false;
+try { if (Inst14 <= 1000 && typeof (y) != "undefined") {_RecordType("<408,409,20>",(y)); Inst14++; } } catch(e) {}
+  y;
+  "object y";
+}
+try { if (Inst15 <= 1000 && typeof (env.x) != "undefined") {_RecordType("<427,432,23>",(env.x)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (env) != "undefined") {_RecordType("<427,430,23>",(env)); Inst16++; } } catch(e) {}
+env.x;
+"object x";
+// @@unscopables works if is inherited via the prototype chain.
+env = {
+  x: "object",
+  [Symbol.unscopables]: {
+    x: true,
+    y: true
+  }
+};
+try { if (Inst17 <= 1000 && typeof (env) != "undefined") {_RecordType("<510,513,26>",(env)); Inst17++; } } catch(e) {}
+
+for (let i = 0; i < 50; i++) {
+try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<601,602,34>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<608,609,34>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<616,617,34>",(i)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<631,644,35>",(Object.create)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Object) != "undefined") {_RecordType("<631,637,35>",(Object)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (env) != "undefined") {_RecordType("<645,648,35>",(env)); Inst24++; } } catch(e) {}
+  env = Object.create(env);
+try { if (Inst21 <= 1000 && typeof (env) != "undefined") {_RecordType("<625,628,35>",(env)); Inst21++; } } catch(e) {}
+}
+
+env.y = 1;
+try { if (Inst25 <= 1000 && typeof (env.y) != "undefined") {_RecordType("<654,659,38>",(env.y)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (env) != "undefined") {_RecordType("<654,657,38>",(env)); Inst26++; } } catch(e) {}
+try { if (Inst27 <= 1000 && typeof (env) != "undefined") {_RecordType("<671,674,39>",(env)); Inst27++; } } catch(e) {}
+with (env) {
+try { if (Inst28 <= 1000 && typeof (x) != "undefined") {_RecordType("<680,681,40>",(x)); Inst28++; } } catch(e) {}
+  x;
+  "global x";
+try { if (Inst29 <= 1000 && typeof (y) != "undefined") {_RecordType("<699,700,42>",(y)); Inst29++; } } catch(e) {}
+  y;
+  "global y";
+} // @@unscopables works if the obj[@@unscopables][id] property is inherited.
+
+try { if (Inst31 <= 1000 && typeof (Object.create) != "undefined") {_RecordType("<842,855,48>",(Object.create)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (Object) != "undefined") {_RecordType("<842,848,48>",(Object)); Inst32++; } } catch(e) {}
+env = {
+  x: "object",
+  [Symbol.unscopables]: Object.create({
+    x: true
+  })
+};
+try { if (Inst30 <= 1000 && typeof (env) != "undefined") {_RecordType("<795,798,46>",(env)); Inst30++; } } catch(e) {}
+try { if (Inst33 <= 1000 && typeof (env) != "undefined") {_RecordType("<884,887,52>",(env)); Inst33++; } } catch(e) {}
+with (env) {
+try { if (Inst34 <= 1000 && typeof (x) != "undefined") {_RecordType("<893,894,53>",(x)); Inst34++; } } catch(e) {}
+  x;
+  "global x";
+}
+try { if (Inst35 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<912,925,56>",(reportCompare)); Inst35++; } } catch(e) {}
+reportCompare(0, 0);
+

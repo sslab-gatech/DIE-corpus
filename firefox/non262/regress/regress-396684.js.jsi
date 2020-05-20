@@ -1,0 +1,143 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 396684;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<346,355,7>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Function call with stack arena exhausted';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<370,377,8>",(summary)); Inst1++; } } catch(e) {}
+var actual = '';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<428,434,9>",(actual)); Inst2++; } } catch(e) {}
+var expect = '';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<445,451,10>",(expect)); Inst3++; } } catch(e) {}
+/*
+  The test case builds a function containing f(0,0,...,0,Math.atan2()) with
+  enough zero arguments to exhaust the current stack arena fully. Thus, when
+  Math.atan2 is loaded into the stack, there would be no room for the extra 2
+  args required by Math.atan2 and args will be allocated from the new arena.
+*/
+//-----------------------------------------------------------------------------
+
+try { if (Inst4 <= 1000 && typeof (test) != "undefined") {_RecordType("<853,857,19>",(test)); Inst4++; } } catch(e) {}
+test(); //-----------------------------------------------------------------------------
+
+try { if (Inst5 <= 1000 && typeof (f) != "undefined") {_RecordType("<951,952,21>",(f)); Inst5++; } } catch(e) {}
+function f() {
+try { if (Inst6 <= 1000 && typeof (arguments[arguments.length - 1]) != "undefined") {_RecordType("<966,997,22>",(arguments[arguments.length - 1])); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<966,975,22>",(arguments)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (arguments.length) != "undefined") {_RecordType("<976,992,22>",(arguments.length)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arguments) != "undefined") {_RecordType("<976,985,22>",(arguments)); Inst9++; } } catch(e) {}
+  return arguments[arguments.length - 1];
+}
+
+try { if (Inst10 <= 1000 && typeof (test) != "undefined") {_RecordType("<1011,1015,25>",(test)); Inst10++; } } catch(e) {}
+function test() {
+try { if (Inst11 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<1022,1036,26>",(printBugNumber)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<1037,1046,26>",(BUGNUMBER)); Inst12++; } } catch(e) {}
+  printBugNumber(BUGNUMBER);
+try { if (Inst13 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<1051,1062,27>",(printStatus)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1063,1070,27>",(summary)); Inst14++; } } catch(e) {}
+  printStatus(summary);
+  expect = 'PASS';
+try { if (Inst15 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1075,1081,28>",(expect)); Inst15++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (Array(10 * 1000).join) != "undefined") {_RecordType("<1118,1139,29>",(Array(10 * 1000).join)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1118,1123,29>",(Array)); Inst18++; } } catch(e) {}
+  var src = "return f(" + Array(10 * 1000).join("0,") + "Math.atan2());";
+try { if (Inst16 <= 1000 && typeof (src) != "undefined") {_RecordType("<1098,1101,29>",(src)); Inst16++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1185,1193,30>",(Function)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (src) != "undefined") {_RecordType("<1194,1197,30>",(src)); Inst21++; } } catch(e) {}
+  var result = new Function(src)();
+try { if (Inst19 <= 1000 && typeof (result) != "undefined") {_RecordType("<1172,1178,30>",(result)); Inst19++; } } catch(e) {}
+
+try { if (Inst22 <= 1000 && typeof (result) != "undefined") {_RecordType("<1216,1222,32>",(result)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (isNaN) != "undefined") {_RecordType("<1239,1244,32>",(isNaN)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (result) != "undefined") {_RecordType("<1245,1251,32>",(result)); Inst24++; } } catch(e) {}
+  if (typeof result != "number" || !isNaN(result)) {
+try { if (Inst26 <= 1000 && typeof (result) != "undefined") {_RecordType("<1293,1299,33>",(result)); Inst26++; } } catch(e) {}
+    actual = "unexpected result: " + result;
+try { if (Inst25 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1260,1266,33>",(actual)); Inst25++; } } catch(e) {}
+  } else {
+    actual = 'PASS';
+try { if (Inst27 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1316,1322,35>",(actual)); Inst27++; } } catch(e) {}
+  }
+
+try { if (Inst28 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1340,1353,38>",(reportCompare)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (expect) != "undefined") {_RecordType("<1354,1360,38>",(expect)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (actual) != "undefined") {_RecordType("<1362,1368,38>",(actual)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (summary) != "undefined") {_RecordType("<1370,1377,38>",(summary)); Inst31++; } } catch(e) {}
+  reportCompare(expect, actual, summary);
+}
+

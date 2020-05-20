@@ -1,0 +1,105 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst1 <= 1000 && typeof (hello) != "undefined") {_RecordType("<21,26,2>",(hello)); Inst1++; } } catch(e) {}
+var object = {
+  get hello() {
+    return 42;
+  }
+
+};
+try { if (Inst0 <= 1000 && typeof (object) != "undefined") {_RecordType("<4,10,1>",(object)); Inst0++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<67,73,7>",(Symbol)); Inst3++; } } catch(e) {}
+var symbol = Symbol();
+try { if (Inst2 <= 1000 && typeof (symbol) != "undefined") {_RecordType("<58,64,7>",(symbol)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<77,98,8>",(Object.defineProperty)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (Object) != "undefined") {_RecordType("<77,83,8>",(Object)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (object) != "undefined") {_RecordType("<99,105,8>",(object)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (symbol) != "undefined") {_RecordType("<107,113,8>",(symbol)); Inst7++; } } catch(e) {}
+Object.defineProperty(object, symbol, {
+  get: function () {
+    return 42;
+  }
+});
+
+try { if (Inst8 <= 1000 && typeof (ok) != "undefined") {_RecordType("<171,173,14>",(ok)); Inst8++; } } catch(e) {}
+function ok() {
+try { if (Inst9 <= 1000 && typeof (object[symbol]) != "undefined") {_RecordType("<184,198,15>",(object[symbol])); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (object) != "undefined") {_RecordType("<184,190,15>",(object)); Inst10++; } } catch(e) {}
+  if (object[symbol] + 20 !== 62) {
+try { if (Inst11 <= 1000 && typeof (Error) != "undefined") {_RecordType("<228,233,16>",(Error)); Inst11++; } } catch(e) {}
+    throw new Error();
+  }
+}
+
+try { if (Inst12 <= 1000 && typeof (noInline) != "undefined") {_RecordType("<244,252,20>",(noInline)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (ok) != "undefined") {_RecordType("<253,255,20>",(ok)); Inst13++; } } catch(e) {}
+noInline(ok);
+
+for (var i = 0; i < 10000; ++i) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<268,269,22>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<275,276,22>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<288,289,22>",(i)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (ok) != "undefined") {_RecordType("<295,297,23>",(ok)); Inst17++; } } catch(e) {}
+  ok();
+}
+

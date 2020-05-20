@@ -1,0 +1,269 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// ES6 Subclassable tests -- verifies subclass construction behavior
+function t1() {
+  class MyBoolean extends Boolean {
+    constructor(...val) {
+      super(...val);
+      this.prop = 'mybool';
+    }
+
+    method() {
+      return this.prop;
+    }
+
+  }
+
+  console.log('mybool', new MyBoolean(true).method());
+  console.log(new MyBoolean(true) == true);
+  console.log(new MyBoolean(false) == false);
+}
+
+t1();
+
+function t2() {
+  function verifySubclassError(constructor, constructorName) {
+    class MyError extends constructor {
+      constructor(...val) {
+        super(...val);
+        this.prop = 'myerrorsubclass of ' + constructorName;
+      }
+
+      method() {
+        return this.prop;
+      }
+
+    }
+
+    console.log('myerrorsubclass of ' + constructorName, new MyError('message').method());
+    console.log(constructorName + ": message", new MyError('message').toString());
+  }
+
+  verifySubclassError(Error, 'Error');
+  verifySubclassError(EvalError, 'EvalError');
+  verifySubclassError(RangeError, 'RangeError');
+  verifySubclassError(ReferenceError, 'ReferenceError');
+  verifySubclassError(SyntaxError, 'SyntaxError');
+  verifySubclassError(TypeError, 'TypeError');
+  verifySubclassError(URIError, 'URIError');
+}
+
+t2();
+
+function t3() {
+  class MyNumber extends Number {
+    constructor(...val) {
+      super(...val);
+      this.prop = 'mynumber';
+    }
+
+    method() {
+      return this.prop;
+    }
+
+  }
+
+  console.log('mynumber', new MyNumber(0).method());
+  console.log(new MyNumber(123) == 123);
+  console.log(new MyNumber() == 0);
+}
+
+t3();
+
+function t4() {
+  class MyArray extends Array {
+    constructor(...val) {
+      super(...val);
+      this.prop = 'myarray';
+    }
+
+    method() {
+      return this.prop;
+    }
+
+  }
+
+  console.log('myarray', new MyArray().method());
+  console.log(0, new MyArray().length);
+  console.log(100, new MyArray(100).length);
+  console.log(50, new MyArray(50.0).length);
+  console.log(1, new MyArray('something').length);
+  console.log('something', new MyArray('something')[0]);
+  var a = new MyArray(1, 2, 3);
+  console.log(3, a.length);
+  console.log(1, a[0]);
+  console.log(2, a[1]);
+  console.log(3, a[2]);
+  console.log(Array.isArray(a));
+}
+
+t4();
+
+function t5() {
+  class MyArray extends Array {
+    constructor(...args) {
+      super(...args);
+    }
+
+    getFirstElement() {
+      return this.length > 0 ? this[0] : undefined;
+    }
+
+    getLastElement() {
+      return this.length > 0 ? this[this.length - 1] : undefined;
+    }
+
+  }
+
+  class OurArray extends MyArray {
+    constructor(...args) {
+      super(...args);
+    }
+
+    getLength() {
+      return this.length;
+    }
+
+  }
+
+  function verifyProtoChain(obj, length, newElement, firstElement) {
+    console.log(false, obj instanceof Function);
+    console.log(true, obj instanceof Array);
+    console.log(true, obj instanceof MyArray);
+    console.log(true, obj instanceof OurArray);
+    console.log(OurArray.prototype, obj.__proto__);
+    console.log(MyArray.prototype, obj.__proto__.__proto__);
+    console.log(Array.prototype, obj.__proto__.__proto__.__proto__);
+    console.log(length, obj.length);
+    obj[length] = newElement;
+    console.log(length + 1, obj.length);
+    console.log(length + 1, obj.getLength());
+    console.log(firstElement, obj.getFirstElement());
+    console.log(newElement, obj.getLastElement());
+  }
+
+  console.log(MyArray, OurArray.__proto__);
+  console.log(Array, MyArray.__proto__);
+  verifyProtoChain(new OurArray(), 0, 1, 1);
+  verifyProtoChain(new OurArray('e'), 1, 'element', 'e');
+  verifyProtoChain(new OurArray('xyz', 2), 2, function () {
+    ;
+  }, 'xyz');
+  verifyProtoChain(new OurArray(1, 2, 3), 3, 4, 1);
+  verifyProtoChain(new OurArray('a', 'b', 'c', 'd'), 4, 'e', 'a');
+  verifyProtoChain(new OurArray(100), 100, 'element', undefined);
+}
+
+t5();
+
+function t6() {
+  function testProtoChain(Type, isFunction, ctorArgs) {
+    class MyType extends Type {
+      constructor(...args) {
+        super(...args);
+        this.prop1 = "method1";
+      }
+
+      method1() {
+        return ">" + this.prop1;
+      }
+
+    }
+
+    class OurType extends MyType {
+      constructor(...args) {
+        super(...args);
+        this.prop0 = "method0";
+      }
+
+      method0() {
+        return ">" + this.prop0;
+      }
+
+    }
+
+    function verifyProtoChain(obj) {
+      console.log(isFunction, obj instanceof Function);
+      console.log(true, obj instanceof Type);
+      console.log(true, obj instanceof MyType);
+      console.log(true, obj instanceof OurType);
+      console.log(OurType.prototype, obj.__proto__);
+      console.log(MyType.prototype, obj.__proto__.__proto__);
+      console.log(Type.prototype, obj.__proto__.__proto__.__proto__);
+      console.log(">method0", obj.method0());
+      console.log(">method1", obj.method1());
+    }
+
+    console.log(MyType, OurType.__proto__);
+    console.log(Type, MyType.__proto__);
+    verifyProtoChain(eval("new OurType(" + ctorArgs + ")"));
+  }
+
+  function testReflectConstructNewTarget(Type, isFunction, ctorArgs) {
+    class MyType extends Type {}
+
+    let obj = Reflect.construct(Type, eval("[" + ctorArgs + "]"), MyType);
+    console.log(true, obj instanceof MyType);
+  }
+
+  function forEachBuiltinSubclassable(test) {
+    let GeneratorFunction = function* g() {
+      ;
+    }.constructor;
+
+    let TypedArray = Int8Array.__proto__;
+    test(Array, false, "");
+    test(ArrayBuffer, false, "");
+    test(SharedArrayBuffer, false, "");
+    test(Boolean, false, "");
+    test(DataView, false, "new ArrayBuffer()");
+    test(Date, false, "");
+    test(Error, false, "");
+    test(EvalError, false, "");
+    test(RangeError, false, "");
+    test(ReferenceError, false, "");
+    test(SyntaxError, false, "");
+    test(TypeError, false, "");
+    test(URIError, false, "");
+    test(Function, true, "");
+    test(GeneratorFunction, true, "");
+    test(Map, false, "");
+    test(Number, false, "");
+    test(Object, false, "");
+    test(Promise, false, "function() {}");
+    test(RegExp, false, "");
+    test(Set, false, "");
+    test(String, false, "");
+
+    try {
+      test(Symbol, false, "");
+    } catch (e) {
+      ;
+    }
+
+    try {
+      test(TypedArray, false, "");
+    } catch (e) {
+      ;
+    }
+
+    test(Int8Array, false, "");
+    test(Int16Array, false, "");
+    test(Int32Array, false, "");
+    test(Uint8Array, false, "");
+    test(Uint8ClampedArray, false, "");
+    test(Uint16Array, false, "");
+    test(Uint32Array, false, "");
+    test(Float32Array, false, "");
+    test(Float64Array, false, "");
+    test(WeakMap, false, "");
+    test(WeakSet, false, "");
+  }
+
+  forEachBuiltinSubclassable(testProtoChain);
+  forEachBuiltinSubclassable(testReflectConstructNewTarget);
+}
+
+t6();

@@ -1,0 +1,752 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var emptyIterator = function () {
+  return {
+    next: function () {
+      return {
+        done: true,
+        value: 0
+      };
+    }
+  };
+};
+
+var simpleIterator = function (args) {
+  var iter = function (args) {
+    var j = 0;
+    var length = args.length;
+    return function Iterator() {
+      return {
+        next: function () {
+          if (j < length) {
+            return {
+              value: args[j++],
+              done: false
+            };
+          } else {
+            j = 0;
+            return {
+              done: true
+            };
+          }
+        }
+      };
+    };
+  }(args);
+
+  return iter;
+};
+
+function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c,,];
+    var iterable = {
+      next: function () {
+        return {
+          value: arr.shift(),
+          done: arr.length <= 0
+        };
+      }
+    };
+
+    iterable[Symbol.iterator] = function () {
+      return iterable;
+    };
+
+    return iterable;
+  } else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}
+
+function t1() {
+  var a = [1, 2];
+  a[Symbol.iterator] = 0;
+
+  try {
+    var b = [...1];
+  } catch (e) {
+    ;
+  }
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+
+  var noNextIterator = function () {
+    return {
+      done: true,
+      value: 0
+    };
+  };
+
+  a[Symbol.iterator] = noNextIterator;
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+
+  a = function () {
+    ;
+  };
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+
+  a = {};
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+
+  a = /r/g;
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+}
+
+t1();
+
+function t2() {
+  console.log("𠮷", Array(..."𠮷")[0]);
+  console.log("a", Array(..."a")[0]);
+  console.log("𠮷", [..."𠮷"][0]);
+  console.log("a", [..."a"][0]);
+
+  var iterableNum = __createIterableObject(1, 2, 3); //assert.areEqual(3, Math.max(...Object.create(iterableNum))); //TODO look into why this doesn't work
+
+
+  console.log(3, Math.max(...iterableNum));
+
+  var iterableStr = __createIterableObject("b", "c", "d");
+
+  console.log("d", ["a", ...iterableStr, "e"][3]); //assert.areEqual("d", ["a", ...Object.create(iterableStr), "e"][3]);
+}
+
+t2();
+
+function t3() {
+  var a = [1, 2];
+
+  a[Symbol.iterator] = function () {
+    ;
+  };
+
+  try {
+    var b = [...a];
+  } catch (e) {
+    ;
+  }
+}
+
+t3();
+
+function t4() {
+  var a = [1, 2];
+  var c = [4, 5];
+  count = 0;
+
+  a[Symbol.iterator] = function () {
+    return {
+      next: function () {
+        if (count < 3) {
+          return {
+            value: count++,
+            done: false
+          };
+        } else {
+          return {
+            done: true
+          };
+        }
+      }
+    };
+  };
+
+  var result = [-1, 0, 1, 2, 3, 4, 5, 6];
+  var b = [-1, ...a, 3, ...c, 6];
+  console.log(result, b);
+  console.log(3, count);
+  c[Symbol.iterator] = simpleIterator(c);
+  count = 0;
+  var b = [-1, ...a, 3, ...c, 6];
+  console.log(result, b);
+}
+
+t4();
+
+function t5() {
+  var a = [1, 2];
+  var b = 4;
+  var c = {
+    0: false
+  };
+  var d = "foo";
+
+  var e = function foo() {
+    ;
+  };
+
+  var simpleIteratorWithParamSideEffect = function (args) {
+    var iter = function (args) {
+      var j = 0;
+      var length = args.length;
+      return function Iterator() {
+        b = 5;
+        c[0] = true;
+        d = "bar";
+
+        e = function goo() {
+          ;
+        };
+
+        return {
+          next: function () {
+            if (j < length) {
+              return {
+                value: args[j++],
+                done: false
+              };
+            } else {
+              j = 0;
+              return {
+                done: true
+              };
+            }
+          }
+        };
+      };
+    }(args);
+
+    return iter;
+  };
+
+  a[Symbol.iterator] = simpleIteratorWithParamSideEffect(a);
+  var result = [...a, b, c, d, e];
+  console.log(1, result[0]);
+  console.log(2, result[1]);
+  console.log(5, result[2]);
+  console.log(true, result[3][0]);
+  result[4];
+  result[5].name;
+}
+
+t5();
+
+function t6() {
+  var a = "foobar";
+  var b = [1, 2, ...a, 4];
+  var results = [1, 2, 'f', 'o', 'o', 'b', 'a', 'r', 4];
+  console.log(results, b);
+  var aa = new String(a);
+  aa[Symbol.iterator] = simpleIterator(aa);
+  var b = [1, 2, ...aa, 4];
+  console.log(results, b);
+  aa[Symbol.iterator] = emptyIterator;
+  var b = [1, 2, ...aa, 4];
+  console.log([1, 2, 4], b);
+}
+
+t6();
+
+function t7() {
+  var buf = [2, 3, 4, 5];
+  var typedArrays = [new Int8Array(buf), new Uint8Array(buf), new Uint8ClampedArray(buf), new Uint16Array(buf), new Int16Array(buf), new Int32Array(buf), new Uint32Array(buf), new Float32Array(buf), new Float64Array(buf)];
+
+  for (var i = 0; i < typedArrays.length; i++) {
+    var a = typedArrays[i];
+    var b = [1, ...a, 6];
+    var results = [1, ...buf, 6];
+    console.log(results, b);
+    a[Symbol.iterator] = simpleIterator(a);
+    var b = [1, ...a, 6];
+    console.log(results, b);
+    a[Symbol.iterator] = emptyIterator;
+    var b = [1, ...a, 6];
+    console.log([1, 6], b);
+  }
+}
+
+t7();
+
+function t8() {
+  var kvArray = [["one", 1], ["two", 2]];
+  var myMap = new Map(kvArray);
+  var b = [0, ...myMap];
+  console.log(b);
+  var mapIter = myMap.keys();
+  var b = [0, ...mapIter];
+  console.log([0, "one", "two"], b);
+  var mapIter = myMap.values();
+  var b = [0, ...mapIter];
+  console.log([0, 1, 2], b);
+  var aSet = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
+  var b = [0, ...aSet, 6];
+  console.log([0, 1, 2, 3, 4, 5, 6], b);
+}
+
+t8();
+
+function t9() {
+  var obj = {
+    0: 1,
+    1: 1,
+    2: 1,
+    3: 1,
+    length: 4
+  };
+
+  try {
+    var b = [...obj];
+  } catch (e) {
+    ;
+  }
+
+  obj[Symbol.iterator] = simpleIterator(obj);
+  var b = [...obj];
+  console.log([1, 1, 1, 1], b);
+}
+
+t9();
+
+function t10() {
+  var kvArray = [[{
+    animal: "dog"
+  }, "foo"], [{
+    animal: "cat"
+  }, "bar"]];
+  var myMap = new WeakMap(kvArray);
+  myMap[Symbol.iterator] = emptyIterator;
+  var b = [0, ...myMap];
+  console.log([0], b);
+  var aSet = new WeakSet([{}, {}, {}, [4], [5], [5], [5], [5]]);
+  aSet[Symbol.iterator] = emptyIterator;
+  var b = [0, ...aSet, 6];
+  console.log([0, 6], b);
+}
+
+t10();
+
+function t11() {
+  var b = [];
+
+  function bar(a, a) {
+    b = [...arguments];
+  }
+
+  bar([1], [2]);
+  console.log([[1], [2]], b);
+
+  class d {
+    constructor() {
+      arguments[Symbol.iterator] = simpleIterator(arguments);
+      b = [...arguments];
+    }
+
+  }
+
+  ;
+  new d(1, 2, 3);
+  console.log([1, 2, 3], b);
+  new d();
+  console.log([], b);
+
+  function foo(a, b, c, ...rest) {
+    return [a, b, c, ...rest];
+  }
+
+  b = foo(1, 2, 3, 4, 5, 6);
+  console.log([1, 2, 3, 4, 5, 6], b);
+  b = foo(1, 2, 3);
+  console.log([1, 2, 3], b);
+  b = foo(1, 2);
+  console.log([1, 2, undefined], b);
+}
+
+t11();
+
+function t12() {
+  var buf = [2, 3, 4];
+
+  function test1(a, b, c, d, e) {
+    var expected = [a, ...buf, e];
+    var results = [a, b, c, d, e];
+    console.log(results, expected);
+  }
+
+  function test2(a, b, c, d, e) {
+    console.log(1, a);
+    console.log(5, b);
+    console.log(undefined, c);
+    console.log(undefined, d);
+    console.log(undefined, e);
+  }
+
+  var typedArrays = [new Int8Array(buf), new Uint8Array(buf), new Uint8ClampedArray(buf), new Uint16Array(buf), new Int16Array(buf), new Int32Array(buf), new Uint32Array(buf), new Float32Array(buf), new Float64Array(buf)];
+
+  for (var i = 0; i < typedArrays.length; i++) {
+    var a = typedArrays[i];
+    test1(1, ...a, 5);
+    a[Symbol.iterator] = simpleIterator(a);
+    test1(1, ...a, 5);
+    a[Symbol.iterator] = emptyIterator;
+    test2(1, ...a, 5);
+  }
+}
+
+t12();
+
+function t13() {
+  var a = [1, 2, 3];
+  a[Symbol.iterator] = 0;
+
+  function f(z, ...v) {
+    ;
+  }
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+
+  var noNextIterator = function () {
+    return {
+      done: true,
+      value: 0
+    };
+  };
+
+  a[Symbol.iterator] = noNextIterator;
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+
+  a = function () {
+    ;
+  };
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+
+  a = {};
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+
+  a = /r/g;
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+
+  var b = 11;
+
+  try {
+    f(0, ...b);
+  } catch (e) {
+    ;
+  }
+}
+
+t13();
+
+function t14() {
+  var a = [1, 2];
+
+  a[Symbol.iterator] = function () {
+    ;
+  };
+
+  function f(z, v) {
+    ;
+  }
+
+  try {
+    f(0, ...a);
+  } catch (e) {
+    ;
+  }
+}
+
+t14();
+
+function t15() {
+  // constructor() { super(...arguments); } (equivalent to constructor(...args) { super(...args); } )
+  class base {}
+
+  class child extends base {}
+
+  try {
+    var o = new child();
+  } catch (e) {
+    ;
+  }
+
+  var a = [1];
+  var b = 'a';
+  var c = new Set([1, 1, 1, 1]);
+
+  function test(a, b, c) {
+    console.log([1], a);
+    console.log('a', b);
+    console.log([1], [...c]);
+  }
+
+  class child2 extends base {
+    constructor(a, b, c) {
+      super(...arguments);
+      test(...arguments);
+    }
+
+  }
+
+  ;
+  var o = new child2(a, b, c);
+
+  class child3 extends base {
+    constructor(a, b, c) {
+      arguments[Symbol.iterator] = simpleIterator(arguments);
+      super(...arguments);
+      test(...arguments);
+    }
+
+  }
+
+  ;
+  var o = new child3(a, b, c);
+}
+
+t15();
+
+function t16() {
+  var a = new String("fox");
+  var b = [1, 2, 3];
+  var c = {
+    0: 1,
+    1: 2,
+    2: 3,
+    length: 3
+  };
+  a[Symbol.iterator] = simpleIterator(a);
+  b[Symbol.iterator] = simpleIterator(b);
+  c[Symbol.iterator] = simpleIterator(c);
+
+  function f(a, b, c, d, e, f, w, x, y, z) {
+    console.log('f', a);
+    console.log('o', b);
+    console.log('x', c);
+    console.log(1, d);
+    console.log(2, e);
+    console.log(3, f);
+    console.log(1, w);
+    console.log(2, x);
+    console.log(3, y);
+    console.log(4, z);
+  }
+
+  f(...a, ...b, ...c, 4);
+
+  function d(a, b, c, d, e, f, w, x, y, z) {
+    console.log(4, a);
+    console.log(undefined, b);
+    console.log(undefined, c);
+    console.log(undefined, d);
+    console.log(undefined, e);
+    console.log(undefined, f);
+    console.log(undefined, w);
+    console.log(undefined, x);
+    console.log(undefined, y);
+    console.log(undefined, z);
+  }
+
+  a[Symbol.iterator] = emptyIterator;
+  b[Symbol.iterator] = emptyIterator;
+  c[Symbol.iterator] = emptyIterator;
+  d(...a, ...b, ...c, 4);
+}
+
+t16();
+
+function t17() {
+  var a = [1, 2];
+  var b = [4, 5];
+  var c = [7, 8];
+
+  var simpleIteratorWithParamSideEffect = function (args) {
+    var iter = function (args) {
+      var j = 0;
+      var length = args.length;
+      return function Iterator() {
+        c[Symbol.iterator] = emptyIterator;
+        a[Symbol.iterator] = emptyIterator;
+        return {
+          next: function () {
+            if (j < length) {
+              return {
+                value: args[j++],
+                done: false
+              };
+            } else {
+              j = 0;
+              return {
+                done: true
+              };
+            }
+          }
+        };
+      };
+    }(args);
+
+    return iter;
+  };
+
+  b[Symbol.iterator] = simpleIteratorWithParamSideEffect(b);
+
+  function test(a, b, c, d, e, f) {
+    console.log(1, a);
+    console.log(2, b);
+    console.log(4, c);
+    console.log(5, d);
+    console.log(undefined, e);
+    console.log(undefined, f);
+  }
+
+  test(...a, ...b, ...c);
+}
+
+t17();
+
+function t18() {
+  var a = [1, 2];
+  var b = 4;
+  var c = {
+    0: false
+  };
+  var d = "foo";
+
+  var e = function foo() {
+    ;
+  };
+
+  var simpleIteratorWithParamSideEffect = function (args) {
+    var iter = function (args) {
+      var j = 0;
+      var length = args.length;
+      return function Iterator() {
+        b = 5;
+        c[0] = true;
+        d = "bar";
+
+        e = function goo() {
+          ;
+        };
+
+        return {
+          next: function () {
+            if (j < length) {
+              return {
+                value: args[j++],
+                done: false
+              };
+            } else {
+              j = 0;
+              return {
+                done: true
+              };
+            }
+          }
+        };
+      };
+    }(args);
+
+    return iter;
+  };
+
+  a[Symbol.iterator] = simpleIteratorWithParamSideEffect(a);
+
+  function test(a, b, c, d, e, f) {
+    console.log(1, a);
+    console.log(2, b);
+    console.log(5, c);
+    console.log(true, d[0]);
+    e;
+    f.name;
+  }
+
+  test(...a, b, c, d, e);
+}
+
+t18();
+
+function t19() {
+  var a = new String("fox");
+  var b = [1, 2, 3];
+  var c = {
+    0: 1,
+    1: 2,
+    2: 3,
+    length: 3
+  };
+  a[Symbol.iterator] = simpleIterator(a);
+  c[Symbol.iterator] = simpleIterator(c);
+
+  function f(a, b, c, d, e, f, w, x, y, z) {
+    console.log('f', a);
+    console.log('o', b);
+    console.log('x', c);
+    console.log(1, d);
+    console.log(2, e);
+    console.log(3, f);
+    console.log(1, w);
+    console.log(2, x);
+    console.log(3, y);
+    console.log(4, z);
+  }
+
+  f(...a, ...b, ...c, 4);
+
+  function d(a, b, c, d, e, f, w, x, y, z) {
+    console.log(1, a);
+    console.log(2, b);
+    console.log(3, c);
+    console.log(4, d);
+    console.log(undefined, e);
+    console.log(undefined, f);
+    console.log(undefined, w);
+    console.log(undefined, x);
+    console.log(undefined, y);
+    console.log(undefined, z);
+  }
+
+  a[Symbol.iterator] = emptyIterator;
+  c[Symbol.iterator] = emptyIterator;
+  d(...a, ...b, ...c, 4);
+}
+
+t19();

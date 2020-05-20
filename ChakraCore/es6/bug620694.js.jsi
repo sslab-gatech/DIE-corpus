@@ -1,0 +1,97 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// OS: Bug 620694: Assertion when evaluating 'new Map();' in F12
+//
+//     Object.toString() incorrectly returns Var from temporary allocator.
+//
+// Run with: -es6all  (To make it more likely to repro, add -recyclerstress)
+//
+// Bug: "x" is from temp allocator. Supposed to contain string "[object Map]".
+try { if (Inst1 <= 1000 && typeof (new Map().toString) != "undefined") {_RecordType("<680,698,12>",(new Map().toString)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Map) != "undefined") {_RecordType("<684,687,12>",(Map)); Inst2++; } } catch(e) {}
+var x = new Map().toString(); // Try to overwrite memory of "x" with other similar Vars also from temp allocator, "[object Set]".
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<676,677,12>",(x)); Inst0++; } } catch(e) {}
+
+for (var i = 0; i < 10; i++) {
+try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<812,813,14>",(i)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<819,820,14>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<827,828,14>",(i)); Inst5++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Set) != "undefined") {_RecordType("<850,853,15>",(Set)); Inst7++; } } catch(e) {}
+  var tmp = new Set();
+try { if (Inst6 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<840,843,15>",(tmp)); Inst6++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (tmp.toString) != "undefined") {_RecordType("<865,877,16>",(tmp.toString)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<865,868,16>",(tmp)); Inst10++; } } catch(e) {}
+  tmp = tmp.toString();
+try { if (Inst8 <= 1000 && typeof (tmp) != "undefined") {_RecordType("<859,862,16>",(tmp)); Inst8++; } } catch(e) {}
+}
+
+try { if (Inst11 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<884,895,19>",(console.log)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (console) != "undefined") {_RecordType("<884,891,19>",(console)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<896,897,19>",(x)); Inst13++; } } catch(e) {}
+console.log(x);
+try { if (Inst14 <= 1000 && typeof (WScript.Echo) != "undefined") {_RecordType("<900,912,20>",(WScript.Echo)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (WScript) != "undefined") {_RecordType("<900,907,20>",(WScript)); Inst15++; } } catch(e) {}
+WScript.Echo("pass");
+

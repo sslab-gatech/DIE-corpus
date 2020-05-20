@@ -1,0 +1,132 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("instanceof test");
+getterCalled = false;
+try { if (Inst2 <= 1000 && typeof (getterCalled) != "undefined") {_RecordType("<32,44,2>",(getterCalled)); Inst2++; } } catch(e) {}
+
+try { if (Inst5 <= 1000 && typeof (e) != "undefined") {_RecordType("<151,152,11>",(e)); Inst5++; } } catch(e) {}
+try {
+try { if (Inst3 <= 1000 && typeof (prototype) != "undefined") {_RecordType("<89,98,6>",(prototype)); Inst3++; } } catch(e) {}
+  ({}) instanceof {
+    get prototype() {
+      getterCalled = true;
+try { if (Inst4 <= 1000 && typeof (getterCalled) != "undefined") {_RecordType("<109,121,7>",(getterCalled)); Inst4++; } } catch(e) {}
+    }
+
+  };
+} catch (e) {
+  ;
+}
+
+try { if (Inst6 <= 1000 && typeof (getterCalled) != "undefined") {_RecordType("<163,175,15>",(getterCalled)); Inst6++; } } catch(e) {}
+getterCalled; // Regression test for <https://webkit.org/b/129768>.
+// This test should not crash.
+
+try { if (Inst7 <= 1000 && typeof (dummyFunction) != "undefined") {_RecordType("<272,285,18>",(dummyFunction)); Inst7++; } } catch(e) {}
+function dummyFunction() {
+  ;
+}
+
+try { if (Inst9 <= 1000 && typeof (dummyFunction.bind) != "undefined") {_RecordType("<305,323,22>",(dummyFunction.bind)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (dummyFunction) != "undefined") {_RecordType("<305,318,22>",(dummyFunction)); Inst10++; } } catch(e) {}
+var c = dummyFunction.bind();
+try { if (Inst8 <= 1000 && typeof (c) != "undefined") {_RecordType("<301,302,22>",(c)); Inst8++; } } catch(e) {}
+
+try { if (Inst11 <= 1000 && typeof (foo) != "undefined") {_RecordType("<337,340,24>",(foo)); Inst11++; } } catch(e) {}
+function foo() {
+  // To reproduce the issue of <https://webkit.org/b/129768>, we need to do
+  // an instanceof test against an object that has the following attributes:
+  // ImplementsHasInstance, and OverridesHasInstance.  A bound function fits
+  // the bill.
+try { if (Inst13 <= 1000 && typeof (c) != "undefined") {_RecordType("<605,606,29>",(c)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (c) != "undefined") {_RecordType("<618,619,29>",(c)); Inst14++; } } catch(e) {}
+  var result = c instanceof c; // This is where the op_check_has_instance bytecode jumps to after the
+try { if (Inst12 <= 1000 && typeof (result) != "undefined") {_RecordType("<596,602,29>",(result)); Inst12++; } } catch(e) {}
+  // instanceof test. At this location, we need the word at offset 1 to be
+  // a ridiculously large value that can't be a valid stack register index.
+  // To achieve that, we use an op_loop_hint followed by any other bytecode
+  // instruction. The op_loop_hint takes up exactly 1 word, and the word at
+  // offset 1 that follows after is the opcode of the next instruction.  In
+  // the LLINT, that opcode value will be a pointer to the opcode handler
+  // which will be large and exactly what we need.  Hence, we plant a loop
+  // here for the op_loop_hint, and have some instruction inside the loop.
+
+  while (true) {
+    var dummy2 = 123456789;
+try { if (Inst15 <= 1000 && typeof (dummy2) != "undefined") {_RecordType("<1321,1327,40>",(dummy2)); Inst15++; } } catch(e) {}
+    break;
+  }
+
+try { if (Inst16 <= 1000 && typeof (result) != "undefined") {_RecordType("<1366,1372,44>",(result)); Inst16++; } } catch(e) {}
+  return result;
+}
+
+try { if (Inst17 <= 1000 && typeof (foo) != "undefined") {_RecordType("<1377,1380,47>",(foo)); Inst17++; } } catch(e) {}
+foo();
+

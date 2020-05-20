@@ -1,0 +1,97 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Array.prototype.pop does a strict assignment to this.length even if the
+// caller is nonstrict. Bug 886087.
+// obj.length is read-only
+try { if (Inst1 <= 1000 && typeof ([].pop) != "undefined") {_RecordType("<157,163,5>",([].pop)); Inst1++; } } catch(e) {}
+var obj = {
+  pop: [].pop,
+  0: "zero"
+};
+try { if (Inst0 <= 1000 && typeof (obj) != "undefined") {_RecordType("<142,145,4>",(obj)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<180,201,8>",(Object.defineProperty)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object) != "undefined") {_RecordType("<180,186,8>",(Object)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (obj) != "undefined") {_RecordType("<202,205,8>",(obj)); Inst4++; } } catch(e) {}
+Object.defineProperty(obj, "length", {
+  configurable: true,
+  value: 1,
+  writable: false
+});
+
+
+try { if (Inst5 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<277,286,15>",(TypeError)); Inst5++; } } catch(e) {}
+TypeError;
+// obj.length has only a getter
+try { if (Inst7 <= 1000 && typeof ([].pop) != "undefined") {_RecordType("<335,341,18>",([].pop)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (length) != "undefined") {_RecordType("<363,369,21>",(length)); Inst8++; } } catch(e) {}
+obj = {
+  pop: [].pop,
+  0: "zero",
+
+  get length() {
+    return 1;
+  }
+
+};
+try { if (Inst6 <= 1000 && typeof (obj) != "undefined") {_RecordType("<320,323,17>",(obj)); Inst6++; } } catch(e) {}
+
+
+try { if (Inst9 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<398,407,28>",(TypeError)); Inst9++; } } catch(e) {}
+TypeError;
+

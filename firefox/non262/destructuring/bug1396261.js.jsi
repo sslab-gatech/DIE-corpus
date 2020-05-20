@@ -1,0 +1,186 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Ensure array or object literals with trailing property accessors are not
+// treated as nested destructuring patterns in assignment destructuring
+// contexts.
+// Array destructuring with normal element.
+[{
+  a: 0
+}.x] = [];
+try { if (Inst0 <= 1000 && typeof ({
+  a: 0
+}.x) != "undefined") {_RecordType("<206,218,5>",({
+  a: 0
+}.x)); Inst0++; } } catch(e) {}
+[[0].x] = []; // Array destructuring with spread element.
+try { if (Inst1 <= 1000 && typeof ([0].x) != "undefined") {_RecordType("<227,232,8>",([0].x)); Inst1++; } } catch(e) {}
+
+[...{
+  a: 0
+}.x] = [];
+try { if (Inst2 <= 1000 && typeof ({
+  a: 0
+}.x) != "undefined") {_RecordType("<289,301,10>",({
+  a: 0
+}.x)); Inst2++; } } catch(e) {}
+[...[0].x] = []; // Object destructuring with normal property.
+try { if (Inst3 <= 1000 && typeof ([0].x) != "undefined") {_RecordType("<313,318,13>",([0].x)); Inst3++; } } catch(e) {}
+
+({
+  a: {
+    b: 0
+  }.x
+} = {});
+try { if (Inst4 <= 1000 && typeof ({
+    b: 0
+  }.x) != "undefined") {_RecordType("<381,397,16>",({
+    b: 0
+  }.x)); Inst4++; } } catch(e) {}
+({
+  a: [0].x
+} = {}); // Object destructuring with spread property.
+try { if (Inst5 <= 1000 && typeof ([0].x) != "undefined") {_RecordType("<415,420,21>",([0].x)); Inst5++; } } catch(e) {}
+
+({ ...{
+    b: 0
+  }.x
+} = {});
+try { if (Inst6 <= 1000 && typeof ({
+    b: 0
+  }.x) != "undefined") {_RecordType("<483,499,24>",({
+    b: 0
+  }.x)); Inst6++; } } catch(e) {}
+({ ...[0].x
+} = {}); // Object literal with initializer shorthand in destructuring context.
+try { if (Inst7 <= 1000 && typeof ([0].x) != "undefined") {_RecordType("<515,520,28>",([0].x)); Inst7++; } } catch(e) {}
+
+try { if (Inst8 <= 1000 && typeof (Function) != "undefined") {_RecordType("<609,617,31>",(Function)); Inst8++; } } catch(e) {}
+(() => Function(`[{a = 0}.x] = [];`))();
+
+try { if (Inst9 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<644,655,33>",(SyntaxError)); Inst9++; } } catch(e) {}
+SyntaxError;
+
+try { if (Inst10 <= 1000 && typeof (Function) != "undefined") {_RecordType("<665,673,35>",(Function)); Inst10++; } } catch(e) {}
+(() => Function(`[...{a = 0}.x] = [];`))();
+
+try { if (Inst11 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<703,714,37>",(SyntaxError)); Inst11++; } } catch(e) {}
+SyntaxError;
+
+try { if (Inst12 <= 1000 && typeof (Function) != "undefined") {_RecordType("<724,732,39>",(Function)); Inst12++; } } catch(e) {}
+(() => Function(`({a: {b = 0}.x} = {});`))();
+
+try { if (Inst13 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<764,775,41>",(SyntaxError)); Inst13++; } } catch(e) {}
+SyntaxError;
+
+try { if (Inst14 <= 1000 && typeof (Function) != "undefined") {_RecordType("<785,793,43>",(Function)); Inst14++; } } catch(e) {}
+(() => Function(`({...{b = 0}.x} = {});`))();
+
+try { if (Inst15 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<825,836,45>",(SyntaxError)); Inst15++; } } catch(e) {}
+SyntaxError;
+
+// Object destructuring with "eval" or "arguments" shorthand in strict mode.
+(function () {
+  "use strict"; // Ensure "eval" resp. "arguments" is not treated as an assignment.
+
+  [{}.x] = [];
+try { if (Inst16 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1019,1023,51>",({}.x)); Inst16++; } } catch(e) {}
+  [...{}.x] = [];
+try { if (Inst17 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1037,1041,52>",({}.x)); Inst17++; } } catch(e) {}
+  ({
+    a: {}.x
+  } = {});
+try { if (Inst18 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1061,1065,54>",({}.x)); Inst18++; } } catch(e) {}
+  ({ ...{}.x
+  } = {});
+try { if (Inst19 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1085,1089,56>",({}.x)); Inst19++; } } catch(e) {}
+  [{}.x] = [];
+try { if (Inst20 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1104,1108,58>",({}.x)); Inst20++; } } catch(e) {}
+  [...{}.x] = [];
+try { if (Inst21 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1122,1126,59>",({}.x)); Inst21++; } } catch(e) {}
+  ({
+    a: {}.x
+  } = {});
+try { if (Inst22 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1146,1150,61>",({}.x)); Inst22++; } } catch(e) {}
+  ({ ...{}.x
+  } = {});
+try { if (Inst23 <= 1000 && typeof ({}.x) != "undefined") {_RecordType("<1170,1174,63>",({}.x)); Inst23++; } } catch(e) {}
+})();
+
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1204,1217,67>",(reportCompare)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1234,1247,67>",(reportCompare)); Inst25++; } } catch(e) {}
+if (typeof reportCompare === "function") reportCompare(0, 0);
+

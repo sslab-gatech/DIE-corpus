@@ -1,0 +1,214 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test ToInteger conversion in %TypedArray%.prototype.set(array|typedArray, offset).
+try { if (Inst1 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<99,109,2>",(Int32Array)); Inst1++; } } catch(e) {}
+let ta = new Int32Array(4); // %TypedArray%.prototype.set has two different implementations for typed array
+try { if (Inst0 <= 1000 && typeof (ta) != "undefined") {_RecordType("<90,92,2>",(ta)); Inst0++; } } catch(e) {}
+// and non-typed array arguments. Test with both input types.
+
+try { if (Inst3 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<285,295,5>",(Int32Array)); Inst3++; } } catch(e) {}
+let emptySources = [[], new Int32Array(0)];
+try { if (Inst2 <= 1000 && typeof (emptySources) != "undefined") {_RecordType("<261,273,5>",(emptySources)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<332,342,6>",(Int32Array)); Inst5++; } } catch(e) {}
+let nonEmptySource = [[0], new Int32Array(1)];
+try { if (Inst4 <= 1000 && typeof (nonEmptySource) != "undefined") {_RecordType("<305,319,6>",(nonEmptySource)); Inst4++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (emptySources) != "undefined") {_RecordType("<366,378,7>",(emptySources)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (nonEmptySource) != "undefined") {_RecordType("<383,397,7>",(nonEmptySource)); Inst8++; } } catch(e) {}
+let sources = [...emptySources, ...nonEmptySource]; // Test when ToInteger(offset) is in (-1, 4).
+try { if (Inst6 <= 1000 && typeof (sources) != "undefined") {_RecordType("<352,359,7>",(sources)); Inst6++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<544,547,11>",(NaN)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<589,598,12>",(undefined)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (valueOf) != "undefined") {_RecordType("<651,658,13>",(valueOf)); Inst12++; } } catch(e) {}
+let validOffsets = [// Values in [+0, 4).
+0, 0.1, 3, 3.9, // Values in (-1, -0].
+-0, -0.1, -0.9, NaN, // Also include some non-number values.
+undefined, null, true, "", "3", "  1\t\n", "some string", {
+  valueOf() {
+    return 2;
+  }
+
+}];
+try { if (Inst9 <= 1000 && typeof (validOffsets) != "undefined") {_RecordType("<451,463,9>",(validOffsets)); Inst9++; } } catch(e) {}
+
+for (let offset of validOffsets) {
+try { if (Inst13 <= 1000 && typeof (offset) != "undefined") {_RecordType("<696,702,19>",(offset)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (validOffsets) != "undefined") {_RecordType("<706,718,19>",(validOffsets)); Inst14++; } } catch(e) {}
+  for (let source of sources) {
+try { if (Inst15 <= 1000 && typeof (source) != "undefined") {_RecordType("<733,739,20>",(source)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (sources) != "undefined") {_RecordType("<743,750,20>",(sources)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<758,764,21>",(ta.set)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (ta) != "undefined") {_RecordType("<758,760,21>",(ta)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (source) != "undefined") {_RecordType("<765,771,21>",(source)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (offset) != "undefined") {_RecordType("<773,779,21>",(offset)); Inst20++; } } catch(e) {}
+    ta.set(source, offset);
+  }
+} // Test when ToInteger(offset) isn't in (-1, 4).
+
+
+try { if (Inst22 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<982,990,27>",(Infinity)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<1101,1109,28>",(Infinity)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (valueOf) != "undefined") {_RecordType("<1188,1195,30>",(valueOf)); Inst24++; } } catch(e) {}
+let invalidOffsets = [// Values exceeding the typed array's length.
+5, 2147483647, 2147483648, 2147483649, 4294967295, 4294967296, 4294967297, Infinity, // Negative values.
+-1, -1.1, -2147483647, -2147483648, -2147483649, -4294967295, -4294967296, -4294967297, -Infinity, // Also include some non-number values.
+"8", "Infinity", "  Infinity  ", {
+  valueOf() {
+    return 10;
+  }
+
+}];
+try { if (Inst21 <= 1000 && typeof (invalidOffsets) != "undefined") {_RecordType("<843,857,26>",(invalidOffsets)); Inst21++; } } catch(e) {}
+
+for (let offset of invalidOffsets) {
+try { if (Inst25 <= 1000 && typeof (offset) != "undefined") {_RecordType("<1234,1240,36>",(offset)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (invalidOffsets) != "undefined") {_RecordType("<1244,1258,36>",(invalidOffsets)); Inst26++; } } catch(e) {}
+  for (let source of sources) {
+try { if (Inst27 <= 1000 && typeof (source) != "undefined") {_RecordType("<1273,1279,37>",(source)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (sources) != "undefined") {_RecordType("<1283,1290,37>",(sources)); Inst28++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1305,1311,38>",(ta.set)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1305,1307,38>",(ta)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (source) != "undefined") {_RecordType("<1312,1318,38>",(source)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (offset) != "undefined") {_RecordType("<1320,1326,38>",(offset)); Inst32++; } } catch(e) {}
+    (() => ta.set(source, offset))();
+
+try { if (Inst33 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<1337,1347,40>",(RangeError)); Inst33++; } } catch(e) {}
+    RangeError;
+  }
+} // Test when ToInteger(offset) is in [4, 5).
+
+
+for (let source of emptySources) {
+try { if (Inst34 <= 1000 && typeof (source) != "undefined") {_RecordType("<1411,1417,45>",(source)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (emptySources) != "undefined") {_RecordType("<1421,1433,45>",(emptySources)); Inst35++; } } catch(e) {}
+try { if (Inst36 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1439,1445,46>",(ta.set)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1439,1441,46>",(ta)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (source) != "undefined") {_RecordType("<1446,1452,46>",(source)); Inst38++; } } catch(e) {}
+  ta.set(source, 4);
+try { if (Inst39 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1460,1466,47>",(ta.set)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1460,1462,47>",(ta)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (source) != "undefined") {_RecordType("<1467,1473,47>",(source)); Inst41++; } } catch(e) {}
+  ta.set(source, 4.9);
+}
+
+for (let source of nonEmptySource) {
+try { if (Inst42 <= 1000 && typeof (source) != "undefined") {_RecordType("<1493,1499,50>",(source)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (nonEmptySource) != "undefined") {_RecordType("<1503,1517,50>",(nonEmptySource)); Inst43++; } } catch(e) {}
+try { if (Inst44 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1530,1536,51>",(ta.set)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1530,1532,51>",(ta)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (source) != "undefined") {_RecordType("<1537,1543,51>",(source)); Inst46++; } } catch(e) {}
+  (() => ta.set(source, 4))();
+
+try { if (Inst47 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<1555,1565,53>",(RangeError)); Inst47++; } } catch(e) {}
+  RangeError;
+
+try { if (Inst48 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1577,1583,55>",(ta.set)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1577,1579,55>",(ta)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (source) != "undefined") {_RecordType("<1584,1590,55>",(source)); Inst50++; } } catch(e) {}
+  (() => ta.set(source, 4.9))();
+
+try { if (Inst51 <= 1000 && typeof (RangeError) != "undefined") {_RecordType("<1604,1614,57>",(RangeError)); Inst51++; } } catch(e) {}
+  RangeError;
+} // ToInteger(symbol value) throws a TypeError.
+
+
+for (let source of sources) {
+try { if (Inst52 <= 1000 && typeof (source) != "undefined") {_RecordType("<1676,1682,61>",(source)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (sources) != "undefined") {_RecordType("<1686,1693,61>",(sources)); Inst53++; } } catch(e) {}
+try { if (Inst54 <= 1000 && typeof (ta.set) != "undefined") {_RecordType("<1706,1712,62>",(ta.set)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (ta) != "undefined") {_RecordType("<1706,1708,62>",(ta)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (source) != "undefined") {_RecordType("<1713,1719,62>",(source)); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1721,1727,62>",(Symbol)); Inst57++; } } catch(e) {}
+  (() => ta.set(source, Symbol()))();
+
+try { if (Inst58 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<1738,1747,64>",(TypeError)); Inst58++; } } catch(e) {}
+  TypeError;
+}
+
+try { if (Inst59 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1763,1776,67>",(reportCompare)); Inst59++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst60 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1797,1810,68>",(reportCompare)); Inst60++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

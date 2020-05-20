@@ -1,0 +1,91 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+try { if (Inst1 <= 1000 && typeof (AsmModule) != "undefined") {_RecordType("<392,401,5>",(AsmModule)); Inst1++; } } catch(e) {}
+let asmModule = function AsmModule(stdlib) {
+try { if (Inst2 <= 1000 && typeof (stdlib) != "undefined") {_RecordType("<402,408,5>",(stdlib)); Inst2++; } } catch(e) {}
+  'use asm';
+
+try { if (Inst3 <= 1000 && typeof (empty) != "undefined") {_RecordType("<437,442,8>",(empty)); Inst3++; } } catch(e) {}
+  function empty() {
+    ;
+  }
+
+try { if (Inst4 <= 1000 && typeof (changeType) != "undefined") {_RecordType("<469,479,12>",(changeType)); Inst4++; } } catch(e) {}
+  function changeType() {
+try { if (Inst5 <= 1000 && typeof (empty) != "undefined") {_RecordType("<495,500,13>",(empty)); Inst5++; } } catch(e) {}
+    return empty() | 0;
+  }
+
+try { if (Inst6 <= 1000 && typeof (empty) != "undefined") {_RecordType("<535,540,17>",(empty)); Inst6++; } } catch(e) {}
+  return {
+    empty: empty
+  };
+}({});
+try { if (Inst0 <= 1000 && typeof (asmModule) != "undefined") {_RecordType("<371,380,5>",(asmModule)); Inst0++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<554,559,21>",(print)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (asmModule.empty) != "undefined") {_RecordType("<560,575,21>",(asmModule.empty)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (asmModule) != "undefined") {_RecordType("<560,569,21>",(asmModule)); Inst9++; } } catch(e) {}
+print(asmModule.empty());
+

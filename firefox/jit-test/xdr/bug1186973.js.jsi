@@ -1,0 +1,103 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: cache does not have the same size
+var test = function () {
+try { if (Inst1 <= 1000 && typeof (f) != "undefined") {_RecordType("<91,92,3>",(f)); Inst1++; } } catch(e) {}
+  function f(x) {
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<93,94,3>",(x)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (ifTrue) != "undefined") {_RecordType("<111,117,4>",(ifTrue)); Inst3++; } } catch(e) {}
+    function ifTrue() {
+      ;
+    }
+
+    ;
+
+try { if (Inst4 <= 1000 && typeof (ifFalse) != "undefined") {_RecordType("<157,164,10>",(ifFalse)); Inst4++; } } catch(e) {}
+    function ifFalse() {
+      ;
+    }
+
+    ;
+
+try { if (Inst5 <= 1000 && typeof (generation) != "undefined") {_RecordType("<199,209,16>",(generation)); Inst5++; } } catch(e) {}
+    if (generation % 2 == 0) {
+try { if (Inst6 <= 1000 && typeof (ifTrue) != "undefined") {_RecordType("<235,241,17>",(ifTrue)); Inst6++; } } catch(e) {}
+      return ifTrue();
+    }
+
+try { if (Inst7 <= 1000 && typeof (ifFalse) != "undefined") {_RecordType("<263,270,20>",(ifFalse)); Inst7++; } } catch(e) {}
+    return ifFalse();
+  }
+
+try { if (Inst8 <= 1000 && typeof (f.toSource) != "undefined") {_RecordType("<288,298,23>",(f.toSource)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (f) != "undefined") {_RecordType("<288,289,23>",(f)); Inst9++; } } catch(e) {}
+  return f.toSource() + "; f()";
+}();
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<59,63,2>",(test)); Inst0++; } } catch(e) {}
+
+try { if (Inst10 <= 1000 && typeof (evalWithCache) != "undefined") {_RecordType("<318,331,26>",(evalWithCache)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (test) != "undefined") {_RecordType("<332,336,26>",(test)); Inst11++; } } catch(e) {}
+evalWithCache(test, {
+  assertEqBytecode: true,
+  assertEqResult: true
+});
+

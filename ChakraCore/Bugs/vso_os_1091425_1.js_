@@ -1,0 +1,119 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function assertPropertyExists(o, p, v) {
+  if (!o.hasOwnProperty(p)) {
+    throw new Error("Object does not have expected property '" + p + "'");
+  }
+
+  if (o[p] !== v) {
+    throw new Error("Object has property '" + p + "' but its value does not match the expected value");
+  }
+}
+
+function assertPropertyDoesNotExist(o, p) {
+  if (o.hasOwnProperty(p)) {
+    throw new Error("Object has unexpected property '" + p + "'");
+  }
+}
+
+(function addAccessorPropertiesToGlobal() {
+  var getter = function () {
+    throw new Error("This getter should not get called");
+  };
+
+  var setter = function () {
+    throw new Error("This setter should not get called");
+  };
+
+  Object.defineProperty(this, "foo", {
+    get: getter,
+    set: setter,
+    configurable: true
+  });
+  Object.defineProperty(this, "bar", {
+    get: getter,
+    set: setter,
+    configurable: true
+  });
+  Object.defineProperty(this, "nonConfigurableFoo", {
+    get: getter,
+    set: setter,
+    configurable: false
+  });
+  Object.defineProperty(this, "nonConfigurableBar", {
+    get: getter,
+    set: setter,
+    configurable: false
+  }); // double check that the property is added as expected according to spec
+
+  var d = Object.getOwnPropertyDescriptor(this, "foo");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  true;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  d = Object.getOwnPropertyDescriptor(this, "bar");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  true;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  var d = Object.getOwnPropertyDescriptor(this, "nonConfigurableFoo");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  false;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+  var d = Object.getOwnPropertyDescriptor(this, "nonConfigurableBar");
+  d;
+  'get';
+  getter;
+  d;
+  'set';
+  setter;
+  d;
+  'configurable';
+  false;
+  d;
+  'enumerable';
+  false;
+  d;
+  'writable';
+  d;
+  'value';
+}).call(this);

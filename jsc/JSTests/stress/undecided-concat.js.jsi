@@ -1,0 +1,76 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// This is guaranteed to scribble free cells.
+//@ runNoCJITValidate
+try { if (Inst1 <= 1000 && typeof (new Array(64).concat(new Array(64)).concat) != "undefined") {_RecordType("<81,123,3>",(new Array(64).concat(new Array(64)).concat)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (new Array(64).concat) != "undefined") {_RecordType("<81,101,3>",(new Array(64).concat)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Array) != "undefined") {_RecordType("<85,90,3>",(Array)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Array) != "undefined") {_RecordType("<106,111,3>",(Array)); Inst4++; } } catch(e) {}
+var result = new Array(64).concat(new Array(64)).concat(["hello"]);
+try { if (Inst0 <= 1000 && typeof (result) != "undefined") {_RecordType("<72,78,3>",(result)); Inst0++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (result[0]) != "undefined") {_RecordType("<148,157,4>",(result[0])); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (result) != "undefined") {_RecordType("<148,154,4>",(result)); Inst7++; } } catch(e) {}
+var value = result[0];
+try { if (Inst5 <= 1000 && typeof (value) != "undefined") {_RecordType("<140,145,4>",(value)); Inst5++; } } catch(e) {}
+
+try { if (Inst8 <= 1000 && typeof (value) != "undefined") {_RecordType("<164,169,6>",(value)); Inst8++; } } catch(e) {}
+if (value !== void 0) {
+try { if (Inst9 <= 1000 && typeof (value) != "undefined") {_RecordType("<216,221,7>",(value)); Inst9++; } } catch(e) {}
+  throw "Error: bad result: " + value;
+}
+

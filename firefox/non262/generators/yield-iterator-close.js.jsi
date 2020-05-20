@@ -1,0 +1,171 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test that IteratorClose is called when a Generator is abruptly completed by
+// Generator.return.
+var returnCalled = 0;
+try { if (Inst0 <= 1000 && typeof (returnCalled) != "undefined") {_RecordType("<104,116,3>",(returnCalled)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (wrapNoThrow) != "undefined") {_RecordType("<133,144,5>",(wrapNoThrow)); Inst1++; } } catch(e) {}
+function* wrapNoThrow() {
+try { if (Inst3 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<169,184,7>",(Symbol.iterator)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<169,175,7>",(Symbol)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (next) != "undefined") {_RecordType("<221,225,11>",(next)); Inst5++; } } catch(e) {}
+  let iter = {
+    [Symbol.iterator]() {
+      return this;
+    },
+
+    next() {
+      return {
+        value: 10,
+        done: false
+      };
+    },
+
+    return() {
+try { if (Inst6 <= 1000 && typeof (returnCalled) != "undefined") {_RecordType("<322,334,19>",(returnCalled)); Inst6++; } } catch(e) {}
+      returnCalled++;
+      return {};
+    }
+
+  };
+try { if (Inst2 <= 1000 && typeof (iter) != "undefined") {_RecordType("<155,159,6>",(iter)); Inst2++; } } catch(e) {}
+
+  for (const i of iter) {
+try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<381,382,25>",(i)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (iter) != "undefined") {_RecordType("<386,390,25>",(iter)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (i) != "undefined") {_RecordType("<404,405,26>",(i)); Inst9++; } } catch(e) {}
+    yield i;
+  }
+} // Breaking calls Generator.return, which causes the yield above to resume with
+// an abrupt completion of kind "return", which then calls
+// iter.return.
+
+
+for (const i of wrapNoThrow()) {
+try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<581,582,33>",(i)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (wrapNoThrow) != "undefined") {_RecordType("<586,597,33>",(wrapNoThrow)); Inst11++; } } catch(e) {}
+  break;
+}
+
+try { if (Inst12 <= 1000 && typeof (returnCalled) != "undefined") {_RecordType("<615,627,37>",(returnCalled)); Inst12++; } } catch(e) {}
+returnCalled;
+1;
+
+try { if (Inst13 <= 1000 && typeof (wrapThrow) != "undefined") {_RecordType("<643,652,40>",(wrapThrow)); Inst13++; } } catch(e) {}
+function* wrapThrow() {
+try { if (Inst15 <= 1000 && typeof (Symbol.iterator) != "undefined") {_RecordType("<677,692,42>",(Symbol.iterator)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<677,683,42>",(Symbol)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (next) != "undefined") {_RecordType("<729,733,46>",(next)); Inst17++; } } catch(e) {}
+  let iter = {
+    [Symbol.iterator]() {
+      return this;
+    },
+
+    next() {
+      return {
+        value: 10,
+        done: false
+      };
+    },
+
+    return() {
+      throw 42;
+    }
+
+  };
+try { if (Inst14 <= 1000 && typeof (iter) != "undefined") {_RecordType("<663,667,41>",(iter)); Inst14++; } } catch(e) {}
+
+  for (const i of iter) {
+try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<866,867,59>",(i)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (iter) != "undefined") {_RecordType("<871,875,59>",(iter)); Inst19++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<889,890,60>",(i)); Inst20++; } } catch(e) {}
+    yield i;
+  }
+} // Breaking calls Generator.return, which, like above, calls iter.return. If
+// iter.return throws, since the yield is resuming with an abrupt completion of
+// kind "return", the newly thrown value takes precedence over returning.
+
+
+(() => {
+  for (const i of wrapThrow()) {
+try { if (Inst21 <= 1000 && typeof (i) != "undefined") {_RecordType("<1153,1154,68>",(i)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (wrapThrow) != "undefined") {_RecordType("<1158,1167,68>",(wrapThrow)); Inst22++; } } catch(e) {}
+    break;
+  }
+})();
+
+42;
+
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1211,1224,75>",(reportCompare)); Inst23++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst24 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1245,1258,76>",(reportCompare)); Inst24++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

@@ -1,0 +1,176 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// @@unscopables checks can call getters.
+// The @@unscopables property itself can be a getter.
+let hit1 = 0;
+try { if (Inst0 <= 1000 && typeof (hit1) != "undefined") {_RecordType("<100,104,3>",(hit1)); Inst0++; } } catch(e) {}
+let x = "global x";
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<114,115,4>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Symbol.unscopables) != "undefined") {_RecordType("<166,184,8>",(Symbol.unscopables)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<166,172,8>",(Symbol)); Inst4++; } } catch(e) {}
+let env1 = {
+  x: "env1.x",
+
+  get [Symbol.unscopables]() {
+try { if (Inst5 <= 1000 && typeof (hit1) != "undefined") {_RecordType("<194,198,9>",(hit1)); Inst5++; } } catch(e) {}
+    hit1++;
+    return {
+      x: true
+    };
+  }
+
+};
+try { if (Inst2 <= 1000 && typeof (env1) != "undefined") {_RecordType("<134,138,5>",(env1)); Inst2++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (env1) != "undefined") {_RecordType("<250,254,16>",(env1)); Inst6++; } } catch(e) {}
+with (env1) {
+try { if (Inst7 <= 1000 && typeof (x) != "undefined") {_RecordType("<260,261,17>",(x)); Inst7++; } } catch(e) {}
+  x;
+  "global x";
+}
+try { if (Inst8 <= 1000 && typeof (hit1) != "undefined") {_RecordType("<279,283,20>",(hit1)); Inst8++; } } catch(e) {}
+hit1;
+1;
+
+// It can throw; the exception is propagated out.
+try { if (Inst9 <= 1000 && typeof (Fit) != "undefined") {_RecordType("<348,351,24>",(Fit)); Inst9++; } } catch(e) {}
+function Fit() {
+  ;
+}
+
+try { if (Inst10 <= 1000 && typeof (Symbol.unscopables) != "undefined") {_RecordType("<387,405,31>",(Symbol.unscopables)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<387,393,31>",(Symbol)); Inst11++; } } catch(e) {}
+with ({
+  x: 0,
+
+  get [Symbol.unscopables]() {
+try { if (Inst12 <= 1000 && typeof (Fit) != "undefined") {_RecordType("<425,428,32>",(Fit)); Inst12++; } } catch(e) {}
+    throw new Fit();
+  }
+
+}) {
+try { if (Inst13 <= 1000 && typeof (x) != "undefined") {_RecordType("<451,452,36>",(x)); Inst13++; } } catch(e) {}
+  (() => x)();
+
+try { if (Inst14 <= 1000 && typeof (Fit) != "undefined") {_RecordType("<460,463,38>",(Fit)); Inst14++; } } catch(e) {}
+  Fit();
+} // Individual properties on the @@unscopables object can have getters.
+
+let hit2 = 0;
+try { if (Inst15 <= 1000 && typeof (hit2) != "undefined") {_RecordType("<545,549,41>",(hit2)); Inst15++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (x) != "undefined") {_RecordType("<617,618,45>",(x)); Inst17++; } } catch(e) {}
+let env2 = {
+  x: "env2.x",
+  [Symbol.unscopables]: {
+    get x() {
+try { if (Inst18 <= 1000 && typeof (hit2) != "undefined") {_RecordType("<629,633,46>",(hit2)); Inst18++; } } catch(e) {}
+      hit2++;
+      return true;
+    }
+
+  }
+};
+try { if (Inst16 <= 1000 && typeof (env2) != "undefined") {_RecordType("<559,563,42>",(env2)); Inst16++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (env2) != "undefined") {_RecordType("<676,680,52>",(env2)); Inst19++; } } catch(e) {}
+with (env2) {
+try { if (Inst20 <= 1000 && typeof (x) != "undefined") {_RecordType("<686,687,53>",(x)); Inst20++; } } catch(e) {}
+  x;
+  "global x";
+}
+try { if (Inst21 <= 1000 && typeof (hit2) != "undefined") {_RecordType("<705,709,56>",(hit2)); Inst21++; } } catch(e) {}
+hit2;
+1;
+// And they can throw.
+try { if (Inst22 <= 1000 && typeof (x) != "undefined") {_RecordType("<787,788,62>",(x)); Inst22++; } } catch(e) {}
+with ({
+  x: 0,
+  [Symbol.unscopables]: {
+    get x() {
+try { if (Inst23 <= 1000 && typeof (Fit) != "undefined") {_RecordType("<809,812,63>",(Fit)); Inst23++; } } catch(e) {}
+      throw new Fit();
+    }
+
+  }
+}) {
+try { if (Inst24 <= 1000 && typeof (x) != "undefined") {_RecordType("<841,842,68>",(x)); Inst24++; } } catch(e) {}
+  (() => x)();
+
+try { if (Inst25 <= 1000 && typeof (Fit) != "undefined") {_RecordType("<850,853,70>",(Fit)); Inst25++; } } catch(e) {}
+  Fit();
+}
+try { if (Inst26 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<859,872,72>",(reportCompare)); Inst26++; } } catch(e) {}
+reportCompare(0, 0);
+

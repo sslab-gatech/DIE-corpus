@@ -1,0 +1,378 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2008 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+/**
+ * @fileoverview Check that the global escape and unescape functions work
+ * right.
+ */
+// Section B.2.1 of ECMAScript 3
+var unescaped = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*_+-./"; // Check the unescape chars are not escaped
+try { if (Inst0 <= 1000 && typeof (unescaped) != "undefined") {_RecordType("<1727,1736,33>",(unescaped)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (unescaped) != "undefined") {_RecordType("<1857,1866,35>",(unescaped)); Inst1++; } } catch(e) {}
+unescaped;
+try { if (Inst2 <= 1000 && typeof (escape) != "undefined") {_RecordType("<1868,1874,36>",(escape)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (unescaped) != "undefined") {_RecordType("<1875,1884,36>",(unescaped)); Inst3++; } } catch(e) {}
+escape(unescaped);
+"%20/%20";
+try { if (Inst4 <= 1000 && typeof (escape) != "undefined") {_RecordType("<1898,1904,38>",(escape)); Inst4++; } } catch(e) {}
+escape(" / ");
+"%000";
+try { if (Inst5 <= 1000 && typeof (escape) != "undefined") {_RecordType("<1921,1927,40>",(escape)); Inst5++; } } catch(e) {}
+escape("\0" + "0");
+"A%20B%u1234%00%20C";
+try { if (Inst6 <= 1000 && typeof (escape) != "undefined") {_RecordType("<1963,1969,42>",(escape)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<1970,1989,42>",(String.fromCharCode)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (String) != "undefined") {_RecordType("<1970,1976,42>",(String)); Inst8++; } } catch(e) {}
+escape(String.fromCharCode(0x41, 0x20, 0x42, 0x1234, 0, 0x20, 0x43));
+"%u0123";
+try { if (Inst9 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2043,2049,44>",(escape)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2050,2069,44>",(String.fromCharCode)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (String) != "undefined") {_RecordType("<2050,2056,44>",(String)); Inst11++; } } catch(e) {}
+escape(String.fromCharCode(0x123));
+"%uABCD";
+try { if (Inst12 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2089,2095,46>",(escape)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2096,2115,46>",(String.fromCharCode)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (String) != "undefined") {_RecordType("<2096,2102,46>",(String)); Inst14++; } } catch(e) {}
+escape(String.fromCharCode(0xabcd));
+"%AB";
+try { if (Inst15 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2133,2139,48>",(escape)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2140,2159,48>",(String.fromCharCode)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (String) != "undefined") {_RecordType("<2140,2146,48>",(String)); Inst17++; } } catch(e) {}
+escape(String.fromCharCode(0xab));
+"%0A";
+try { if (Inst18 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2175,2181,50>",(escape)); Inst18++; } } catch(e) {}
+escape("\n");
+
+// Check first 1000 chars individually for escaped/not escaped
+for (var i = 0; i < 1000; i++) {
+try { if (Inst19 <= 1000 && typeof (i) != "undefined") {_RecordType("<2262,2263,53>",(i)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (i) != "undefined") {_RecordType("<2269,2270,53>",(i)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (i) != "undefined") {_RecordType("<2279,2280,53>",(i)); Inst21++; } } catch(e) {}
+try { if (Inst23 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2296,2315,54>",(String.fromCharCode)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (String) != "undefined") {_RecordType("<2296,2302,54>",(String)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (i) != "undefined") {_RecordType("<2316,2317,54>",(i)); Inst25++; } } catch(e) {}
+  var s = String.fromCharCode(i);
+try { if (Inst22 <= 1000 && typeof (s) != "undefined") {_RecordType("<2292,2293,54>",(s)); Inst22++; } } catch(e) {}
+
+try { if (Inst26 <= 1000 && typeof (unescaped.indexOf) != "undefined") {_RecordType("<2327,2344,56>",(unescaped.indexOf)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (unescaped) != "undefined") {_RecordType("<2327,2336,56>",(unescaped)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (s) != "undefined") {_RecordType("<2345,2346,56>",(s)); Inst28++; } } catch(e) {}
+  if (unescaped.indexOf(s, 0) == -1) {
+try { if (Inst29 <= 1000 && typeof (s) != "undefined") {_RecordType("<2364,2365,57>",(s)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2369,2375,57>",(escape)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (s) != "undefined") {_RecordType("<2376,2377,57>",(s)); Inst31++; } } catch(e) {}
+    s == escape(s);
+  } else {
+try { if (Inst32 <= 1000 && typeof (s) != "undefined") {_RecordType("<2395,2396,59>",(s)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2400,2406,59>",(escape)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (s) != "undefined") {_RecordType("<2407,2408,59>",(s)); Inst34++; } } catch(e) {}
+    s == escape(s);
+  }
+} // Check all chars up to 1000 in groups of 10 using unescape as a check
+
+
+for (var i = 0; i < 1000; i += 10) {
+try { if (Inst35 <= 1000 && typeof (i) != "undefined") {_RecordType("<2500,2501,64>",(i)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (i) != "undefined") {_RecordType("<2507,2508,64>",(i)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (i) != "undefined") {_RecordType("<2517,2518,64>",(i)); Inst37++; } } catch(e) {}
+try { if (Inst39 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2538,2557,65>",(String.fromCharCode)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (String) != "undefined") {_RecordType("<2538,2544,65>",(String)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (i) != "undefined") {_RecordType("<2558,2559,65>",(i)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (i) != "undefined") {_RecordType("<2561,2562,65>",(i)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (i) != "undefined") {_RecordType("<2568,2569,65>",(i)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (i) != "undefined") {_RecordType("<2575,2576,65>",(i)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (i) != "undefined") {_RecordType("<2582,2583,65>",(i)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (i) != "undefined") {_RecordType("<2589,2590,65>",(i)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (i) != "undefined") {_RecordType("<2596,2597,65>",(i)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (i) != "undefined") {_RecordType("<2603,2604,65>",(i)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (i) != "undefined") {_RecordType("<2610,2611,65>",(i)); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (i) != "undefined") {_RecordType("<2617,2618,65>",(i)); Inst50++; } } catch(e) {}
+  var s = String.fromCharCode(i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9);
+try { if (Inst38 <= 1000 && typeof (s) != "undefined") {_RecordType("<2534,2535,65>",(s)); Inst38++; } } catch(e) {}
+try { if (Inst51 <= 1000 && typeof (s) != "undefined") {_RecordType("<2627,2628,66>",(s)); Inst51++; } } catch(e) {}
+  s;
+try { if (Inst52 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<2632,2640,67>",(unescape)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (escape) != "undefined") {_RecordType("<2641,2647,67>",(escape)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (s) != "undefined") {_RecordType("<2648,2649,67>",(s)); Inst54++; } } catch(e) {}
+  unescape(escape(s));
+} // Benchmark
+
+
+var example = "Now is the time for all good men to come to the aid of the party.";
+try { if (Inst55 <= 1000 && typeof (example) != "undefined") {_RecordType("<2674,2681,71>",(example)); Inst55++; } } catch(e) {}
+try { if (Inst57 <= 1000 && typeof (example) != "undefined") {_RecordType("<2763,2770,72>",(example)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2773,2792,72>",(String.fromCharCode)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (String) != "undefined") {_RecordType("<2773,2779,72>",(String)); Inst59++; } } catch(e) {}
+example = example + String.fromCharCode(267, 0x1234, 0x6667, 0xabcd);
+try { if (Inst56 <= 1000 && typeof (example) != "undefined") {_RecordType("<2753,2760,72>",(example)); Inst56++; } } catch(e) {}
+try { if (Inst61 <= 1000 && typeof (example) != "undefined") {_RecordType("<2833,2840,73>",(example)); Inst61++; } } catch(e) {}
+example = example + " The quick brown fox jumps over the lazy dog.";
+try { if (Inst60 <= 1000 && typeof (example) != "undefined") {_RecordType("<2823,2830,73>",(example)); Inst60++; } } catch(e) {}
+try { if (Inst63 <= 1000 && typeof (example) != "undefined") {_RecordType("<2902,2909,74>",(example)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (String.fromCharCode) != "undefined") {_RecordType("<2912,2931,74>",(String.fromCharCode)); Inst64++; } } catch(e) {}try { if (Inst65 <= 1000 && typeof (String) != "undefined") {_RecordType("<2912,2918,74>",(String)); Inst65++; } } catch(e) {}
+example = example + String.fromCharCode(171, 172, 173, 174, 175, 176, 178, 179);
+try { if (Inst62 <= 1000 && typeof (example) != "undefined") {_RecordType("<2892,2899,74>",(example)); Inst62++; } } catch(e) {}
+
+for (var i = 0; i < 3000; i++) {
+try { if (Inst66 <= 1000 && typeof (i) != "undefined") {_RecordType("<2983,2984,76>",(i)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (i) != "undefined") {_RecordType("<2990,2991,76>",(i)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (i) != "undefined") {_RecordType("<3000,3001,76>",(i)); Inst68++; } } catch(e) {}
+try { if (Inst69 <= 1000 && typeof (example) != "undefined") {_RecordType("<3009,3016,77>",(example)); Inst69++; } } catch(e) {}
+  example;
+try { if (Inst70 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3020,3028,78>",(unescape)); Inst70++; } } catch(e) {}try { if (Inst71 <= 1000 && typeof (escape) != "undefined") {_RecordType("<3029,3035,78>",(escape)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (example) != "undefined") {_RecordType("<3036,3043,78>",(example)); Inst72++; } } catch(e) {}
+  unescape(escape(example));
+} // Check unescape can cope with upper and lower case
+
+
+try { if (Inst73 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3104,3112,82>",(unescape)); Inst73++; } } catch(e) {}
+unescape("%41%4A%4a");
+"AJJ";
+"%U1234";
+try { if (Inst74 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3144,3152,85>",(unescape)); Inst74++; } } catch(e) {}
+unescape("%U1234");
+"%";
+try { if (Inst75 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3169,3177,87>",(unescape)); Inst75++; } } catch(e) {}
+unescape("%");
+"%4";
+try { if (Inst76 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3190,3198,89>",(unescape)); Inst76++; } } catch(e) {}
+unescape("%4");
+"%u";
+try { if (Inst77 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3212,3220,91>",(unescape)); Inst77++; } } catch(e) {}
+unescape("%u");
+"%u4";
+try { if (Inst78 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3235,3243,93>",(unescape)); Inst78++; } } catch(e) {}
+unescape("%u4");
+"%u44";
+try { if (Inst79 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3260,3268,95>",(unescape)); Inst79++; } } catch(e) {}
+unescape("%u44");
+"%u444";
+try { if (Inst80 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3287,3295,97>",(unescape)); Inst80++; } } catch(e) {}
+unescape("%u444");
+"%4z";
+try { if (Inst81 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3313,3321,99>",(unescape)); Inst81++; } } catch(e) {}
+unescape("%4z");
+"%uzzzz";
+try { if (Inst82 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3340,3348,101>",(unescape)); Inst82++; } } catch(e) {}
+unescape("%uzzzz");
+"%u4zzz";
+try { if (Inst83 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3370,3378,103>",(unescape)); Inst83++; } } catch(e) {}
+unescape("%u4zzz");
+"%u44zz";
+try { if (Inst84 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3400,3408,105>",(unescape)); Inst84++; } } catch(e) {}
+unescape("%u44zz");
+"%u444z";
+try { if (Inst85 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3430,3438,107>",(unescape)); Inst85++; } } catch(e) {}
+unescape("%u444z");
+"%4<";
+try { if (Inst86 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3457,3465,109>",(unescape)); Inst86++; } } catch(e) {}
+unescape("%4<");
+"%u<<<<";
+try { if (Inst87 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3484,3492,111>",(unescape)); Inst87++; } } catch(e) {}
+unescape("%u<<<<");
+"%u4<<<";
+try { if (Inst88 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3514,3522,113>",(unescape)); Inst88++; } } catch(e) {}
+unescape("%u4<<<");
+"%u44<<";
+try { if (Inst89 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3544,3552,115>",(unescape)); Inst89++; } } catch(e) {}
+unescape("%u44<<");
+"%u444<";
+try { if (Inst90 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3574,3582,117>",(unescape)); Inst90++; } } catch(e) {}
+unescape("%u444<");
+"foo%4<";
+try { if (Inst91 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3604,3612,119>",(unescape)); Inst91++; } } catch(e) {}
+unescape("foo%4<");
+"foo%u<<<<";
+try { if (Inst92 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3637,3645,121>",(unescape)); Inst92++; } } catch(e) {}
+unescape("foo%u<<<<");
+"foo%u4<<<";
+try { if (Inst93 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3673,3681,123>",(unescape)); Inst93++; } } catch(e) {}
+unescape("foo%u4<<<");
+"foo%u44<<";
+try { if (Inst94 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3709,3717,125>",(unescape)); Inst94++; } } catch(e) {}
+unescape("foo%u44<<");
+"foo%u444<";
+try { if (Inst95 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3745,3753,127>",(unescape)); Inst95++; } } catch(e) {}
+unescape("foo%u444<");
+"foo%4<bar";
+try { if (Inst96 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3781,3789,129>",(unescape)); Inst96++; } } catch(e) {}
+unescape("foo%4<bar");
+"foo%u<<<<bar";
+try { if (Inst97 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3820,3828,131>",(unescape)); Inst97++; } } catch(e) {}
+unescape("foo%u<<<<bar");
+"foo%u4<<<bar";
+try { if (Inst98 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3862,3870,133>",(unescape)); Inst98++; } } catch(e) {}
+unescape("foo%u4<<<bar");
+"foo%u44<<bar";
+try { if (Inst99 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3904,3912,135>",(unescape)); Inst99++; } } catch(e) {}
+unescape("foo%u44<<bar");
+"foo%u444<bar";
+try { if (Inst100 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3946,3954,137>",(unescape)); Inst100++; } } catch(e) {}
+unescape("foo%u444<bar");
+"% ";
+try { if (Inst101 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<3978,3986,139>",(unescape)); Inst101++; } } catch(e) {}
+unescape("%%20");
+"%% ";
+try { if (Inst102 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<4003,4011,141>",(unescape)); Inst102++; } } catch(e) {}
+unescape("%%%20");
+// Unescape stress
+try { if (Inst104 <= 1000 && typeof (escape) != "undefined") {_RecordType("<4056,4062,143>",(escape)); Inst104++; } } catch(e) {}try { if (Inst105 <= 1000 && typeof (example) != "undefined") {_RecordType("<4063,4070,143>",(example)); Inst105++; } } catch(e) {}
+var eexample = escape(example);
+try { if (Inst103 <= 1000 && typeof (eexample) != "undefined") {_RecordType("<4045,4053,143>",(eexample)); Inst103++; } } catch(e) {}
+
+for (var i = 1; i < 3000; i++) {
+try { if (Inst106 <= 1000 && typeof (i) != "undefined") {_RecordType("<4083,4084,145>",(i)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (i) != "undefined") {_RecordType("<4090,4091,145>",(i)); Inst107++; } } catch(e) {}try { if (Inst108 <= 1000 && typeof (i) != "undefined") {_RecordType("<4100,4101,145>",(i)); Inst108++; } } catch(e) {}
+try { if (Inst109 <= 1000 && typeof (example) != "undefined") {_RecordType("<4109,4116,146>",(example)); Inst109++; } } catch(e) {}
+  example;
+try { if (Inst110 <= 1000 && typeof (unescape) != "undefined") {_RecordType("<4120,4128,147>",(unescape)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (eexample) != "undefined") {_RecordType("<4129,4137,147>",(eexample)); Inst111++; } } catch(e) {}
+  unescape(eexample);
+}
+

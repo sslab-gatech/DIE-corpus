@@ -1,0 +1,137 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Ensure that when sorting TypedArrays we don't
+// ignore byte offsets (bug 1290579).
+try { if (Inst1 <= 1000 && typeof (Int32Array.prototype.sort) != "undefined") {_RecordType("<108,133,3>",(Int32Array.prototype.sort)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Int32Array.prototype) != "undefined") {_RecordType("<108,128,3>",(Int32Array.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Int32Array) != "undefined") {_RecordType("<108,118,3>",(Int32Array)); Inst3++; } } catch(e) {}
+var sortFunctions = [Int32Array.prototype.sort]; // Also test with cross-compartment wrapped typed arrays.
+try { if (Inst0 <= 1000 && typeof (sortFunctions) != "undefined") {_RecordType("<91,104,3>",(sortFunctions)); Inst0++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<206,215,5>",(newGlobal)); Inst4++; } } catch(e) {}
+if (typeof newGlobal === "function") {
+try { if (Inst6 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<254,263,6>",(newGlobal)); Inst6++; } } catch(e) {}
+  var otherGlobal = newGlobal();
+try { if (Inst5 <= 1000 && typeof (otherGlobal) != "undefined") {_RecordType("<240,251,6>",(otherGlobal)); Inst5++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (sortFunctions.push) != "undefined") {_RecordType("<269,287,7>",(sortFunctions.push)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (sortFunctions) != "undefined") {_RecordType("<269,282,7>",(sortFunctions)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (newGlobal().Int32Array.prototype.sort) != "undefined") {_RecordType("<288,325,7>",(newGlobal().Int32Array.prototype.sort)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (newGlobal().Int32Array.prototype) != "undefined") {_RecordType("<288,320,7>",(newGlobal().Int32Array.prototype)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (newGlobal().Int32Array) != "undefined") {_RecordType("<288,310,7>",(newGlobal().Int32Array)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (newGlobal) != "undefined") {_RecordType("<288,297,7>",(newGlobal)); Inst12++; } } catch(e) {}
+  sortFunctions.push(newGlobal().Int32Array.prototype.sort);
+} // The bug manifests itself only with Float arrays,
+// but checking everything here just for sanity.
+
+
+for (var ctor of anyTypedArrayConstructors) {
+try { if (Inst13 <= 1000 && typeof (ctor) != "undefined") {_RecordType("<442,446,12>",(ctor)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (anyTypedArrayConstructors) != "undefined") {_RecordType("<450,475,12>",(anyTypedArrayConstructors)); Inst14++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (ArrayBuffer) != "undefined") {_RecordType("<494,505,13>",(ArrayBuffer)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (ctor.BYTES_PER_ELEMENT) != "undefined") {_RecordType("<513,535,13>",(ctor.BYTES_PER_ELEMENT)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (ctor) != "undefined") {_RecordType("<513,517,13>",(ctor)); Inst18++; } } catch(e) {}
+  var ab = new ArrayBuffer(1025 * ctor.BYTES_PER_ELEMENT);
+try { if (Inst15 <= 1000 && typeof (ab) != "undefined") {_RecordType("<485,487,13>",(ab)); Inst15++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (ctor) != "undefined") {_RecordType("<553,557,14>",(ctor)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (ab) != "undefined") {_RecordType("<558,560,14>",(ab)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (ctor.BYTES_PER_ELEMENT) != "undefined") {_RecordType("<562,584,14>",(ctor.BYTES_PER_ELEMENT)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (ctor) != "undefined") {_RecordType("<562,566,14>",(ctor)); Inst23++; } } catch(e) {}
+  var ta = new ctor(ab, ctor.BYTES_PER_ELEMENT, 1024); // |testArray[0]| shouldn't be modified when sort() is called below.
+try { if (Inst19 <= 1000 && typeof (ta) != "undefined") {_RecordType("<544,546,14>",(ta)); Inst19++; } } catch(e) {}
+
+try { if (Inst25 <= 1000 && typeof (ctor) != "undefined") {_RecordType("<685,689,16>",(ctor)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (ab) != "undefined") {_RecordType("<690,692,16>",(ab)); Inst26++; } } catch(e) {}
+  var testArray = new ctor(ab, 0, 1);
+try { if (Inst24 <= 1000 && typeof (testArray) != "undefined") {_RecordType("<669,678,16>",(testArray)); Inst24++; } } catch(e) {}
+  testArray[0] = 1;
+try { if (Inst27 <= 1000 && typeof (testArray[0]) != "undefined") {_RecordType("<703,715,17>",(testArray[0])); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (testArray) != "undefined") {_RecordType("<703,712,17>",(testArray)); Inst28++; } } catch(e) {}
+
+  for (var sortFn of sortFunctions) {
+try { if (Inst29 <= 1000 && typeof (sortFn) != "undefined") {_RecordType("<733,739,19>",(sortFn)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (sortFunctions) != "undefined") {_RecordType("<743,756,19>",(sortFunctions)); Inst30++; } } catch(e) {}
+try { if (Inst31 <= 1000 && typeof (sortFn.call) != "undefined") {_RecordType("<764,775,20>",(sortFn.call)); Inst31++; } } catch(e) {}try { if (Inst32 <= 1000 && typeof (sortFn) != "undefined") {_RecordType("<764,770,20>",(sortFn)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (ta) != "undefined") {_RecordType("<776,778,20>",(ta)); Inst33++; } } catch(e) {}
+    sortFn.call(ta);
+try { if (Inst34 <= 1000 && typeof (testArray[0]) != "undefined") {_RecordType("<785,797,21>",(testArray[0])); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (testArray) != "undefined") {_RecordType("<785,794,21>",(testArray)); Inst35++; } } catch(e) {}
+    testArray[0];
+    1;
+  }
+}
+
+try { if (Inst36 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<824,837,26>",(reportCompare)); Inst36++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst37 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<858,871,27>",(reportCompare)); Inst37++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

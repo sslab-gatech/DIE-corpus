@@ -1,0 +1,114 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+class base {
+  method() {
+    return 1;
+  }
+
+  *gen() {
+    return 2;
+  }
+
+  static sMethod() {
+    return 3;
+  }
+
+  get answer() {
+    return 42;
+  }
+
+} // Having a default constructor should work, and also not make you lose
+try { if (Inst0 <= 1000 && typeof (base) != "undefined") {_RecordType("<6,10,1>",(base)); Inst0++; } } catch(e) {}
+// everything for no good reason
+
+
+try { if (Inst1 <= 1000 && typeof (Object.getPrototypeOf) != "undefined") {_RecordType("<261,282,22>",(Object.getPrototypeOf)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<261,267,22>",(Object)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (base) != "undefined") {_RecordType("<287,291,22>",(base)); Inst3++; } } catch(e) {}
+Object.getPrototypeOf(new base());
+try { if (Inst4 <= 1000 && typeof (base.prototype) != "undefined") {_RecordType("<296,310,23>",(base.prototype)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (base) != "undefined") {_RecordType("<296,300,23>",(base)); Inst5++; } } catch(e) {}
+base.prototype;
+try { if (Inst6 <= 1000 && typeof (new base().method) != "undefined") {_RecordType("<312,329,24>",(new base().method)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (base) != "undefined") {_RecordType("<316,320,24>",(base)); Inst7++; } } catch(e) {}
+new base().method();
+1;
+try { if (Inst8 <= 1000 && typeof (new base().gen().next().value) != "undefined") {_RecordType("<336,365,26>",(new base().gen().next().value)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (new base().gen().next) != "undefined") {_RecordType("<336,357,26>",(new base().gen().next)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (new base().gen) != "undefined") {_RecordType("<336,350,26>",(new base().gen)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (base) != "undefined") {_RecordType("<340,344,26>",(base)); Inst11++; } } catch(e) {}
+new base().gen().next().value;
+2;
+try { if (Inst12 <= 1000 && typeof (base.sMethod) != "undefined") {_RecordType("<370,382,28>",(base.sMethod)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (base) != "undefined") {_RecordType("<370,374,28>",(base)); Inst13++; } } catch(e) {}
+base.sMethod();
+3;
+try { if (Inst14 <= 1000 && typeof (new base().answer) != "undefined") {_RecordType("<389,406,30>",(new base().answer)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (base) != "undefined") {_RecordType("<393,397,30>",(base)); Inst15++; } } catch(e) {}
+new base().answer;
+42;
+
+try { if (Inst16 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<424,437,33>",(reportCompare)); Inst16++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst17 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<458,471,34>",(reportCompare)); Inst17++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

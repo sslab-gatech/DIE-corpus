@@ -1,0 +1,134 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 203278;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<346,355,7>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Don\'t crash in recursive js_MarkGCThing';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<370,377,8>",(summary)); Inst1++; } } catch(e) {}
+var actual = 'FAIL';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<428,434,9>",(actual)); Inst2++; } } catch(e) {}
+var expect = 'PASS';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<449,455,10>",(expect)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<466,480,11>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<481,490,11>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<493,504,12>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<505,512,12>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary); // Prepare  array a to cause O(a.length^2) behaviour in the current
+// DeutschSchorrWaite implementation
+
+try { if (Inst9 <= 1000 && typeof (Array) != "undefined") {_RecordType("<633,638,15>",(Array)); Inst9++; } } catch(e) {}
+var a = new Array(1000 * 100);
+try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<625,626,15>",(a)); Inst8++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (a.length) != "undefined") {_RecordType("<660,668,16>",(a.length)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<660,661,16>",(a)); Inst12++; } } catch(e) {}
+var i = a.length;
+try { if (Inst10 <= 1000 && typeof (i) != "undefined") {_RecordType("<656,657,16>",(i)); Inst10++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<678,679,18>",(i)); Inst13++; } } catch(e) {}
+while (i-- != 0) {
+  a[i] = {};
+try { if (Inst14 <= 1000 && typeof (a[i]) != "undefined") {_RecordType("<692,696,19>",(a[i])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (a) != "undefined") {_RecordType("<692,693,19>",(a)); Inst15++; } } catch(e) {}
+} // Prepare linked list that causes recursion during GC with
+// depth O(list size)
+
+
+for (i = 0; i != 50 * 1000; ++i) {
+try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<794,795,24>",(i)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (i) != "undefined") {_RecordType("<801,802,24>",(i)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (i) != "undefined") {_RecordType("<819,820,24>",(i)); Inst18++; } } catch(e) {}
+try { if (Inst20 <= 1000 && typeof (a) != "undefined") {_RecordType("<831,832,25>",(a)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (a.concat) != "undefined") {_RecordType("<834,842,25>",(a.concat)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (a) != "undefined") {_RecordType("<834,835,25>",(a)); Inst22++; } } catch(e) {}
+  a = [a, a.concat()];
+try { if (Inst19 <= 1000 && typeof (a) != "undefined") {_RecordType("<826,827,25>",(a)); Inst19++; } } catch(e) {}
+}
+
+try { if (Inst23 <= 1000 && typeof (gc) != "undefined") {_RecordType("<861,863,28>",(gc)); Inst23++; } } catch(e) {}
+if (typeof gc == 'function') {
+try { if (Inst24 <= 1000 && typeof (gc) != "undefined") {_RecordType("<883,885,29>",(gc)); Inst24++; } } catch(e) {}
+  gc();
+}
+
+actual = 'PASS';
+try { if (Inst25 <= 1000 && typeof (actual) != "undefined") {_RecordType("<892,898,32>",(actual)); Inst25++; } } catch(e) {}
+try { if (Inst26 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<909,922,33>",(reportCompare)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (expect) != "undefined") {_RecordType("<923,929,33>",(expect)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (actual) != "undefined") {_RecordType("<931,937,33>",(actual)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (summary) != "undefined") {_RecordType("<939,946,33>",(summary)); Inst29++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

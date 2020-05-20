@@ -1,0 +1,143 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Type conversion error should report its type.
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<58,62,2>",(test)); Inst0++; } } catch(e) {}
+function test() {
+try { if (Inst2 <= 1000 && typeof (ctypes.StructType) != "undefined") {_RecordType("<87,104,3>",(ctypes.StructType)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<87,93,3>",(ctypes)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<132,146,4>",(ctypes.int32_t)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<132,138,4>",(ctypes)); Inst5++; } } catch(e) {}
+  let test_struct = ctypes.StructType("test_struct", [{
+    "x": ctypes.int32_t
+  }]);
+try { if (Inst1 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<73,84,3>",(test_struct)); Inst1++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<173,184,6>",(test_struct)); Inst7++; } } catch(e) {}
+  let struct_val = test_struct(); // constructor
+try { if (Inst6 <= 1000 && typeof (struct_val) != "undefined") {_RecordType("<160,170,6>",(struct_val)); Inst6++; } } catch(e) {}
+
+  (() => {
+try { if (Inst8 <= 1000 && typeof (ctypes.int32_t.ptr) != "undefined") {_RecordType("<219,237,9>",(ctypes.int32_t.ptr)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<219,233,9>",(ctypes.int32_t)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<219,225,9>",(ctypes)); Inst10++; } } catch(e) {}
+    ctypes.int32_t.ptr("foo");
+  })();
+
+  "can't convert the string \"foo\" to the type ctypes.int32_t.ptr";
+
+  (() => {
+    test_struct.ptr().value = "foo";
+try { if (Inst11 <= 1000 && typeof (test_struct.ptr().value) != "undefined") {_RecordType("<340,363,15>",(test_struct.ptr().value)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (test_struct.ptr) != "undefined") {_RecordType("<340,355,15>",(test_struct.ptr)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<340,351,15>",(test_struct)); Inst13++; } } catch(e) {}
+  })();
+
+  "can't convert the string \"foo\" to the type test_struct.ptr";
+
+  (() => {
+    test_struct.ptr().value = {};
+try { if (Inst14 <= 1000 && typeof (test_struct.ptr().value) != "undefined") {_RecordType("<464,487,21>",(test_struct.ptr().value)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (test_struct.ptr) != "undefined") {_RecordType("<464,479,21>",(test_struct.ptr)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<464,475,21>",(test_struct)); Inst16++; } } catch(e) {}
+  })();
+
+  "can't convert the object ({}) to the type test_struct.ptr";
+
+  (() => {
+    test_struct.ptr().value = [1, 2];
+try { if (Inst17 <= 1000 && typeof (test_struct.ptr().value) != "undefined") {_RecordType("<582,605,27>",(test_struct.ptr().value)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (test_struct.ptr) != "undefined") {_RecordType("<582,597,27>",(test_struct.ptr)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<582,593,27>",(test_struct)); Inst19++; } } catch(e) {}
+  })();
+
+  "can't convert the array [1, 2] to the type test_struct.ptr";
+
+  (() => {
+try { if (Inst23 <= 1000 && typeof (Int8Array) != "undefined") {_RecordType("<735,744,33>",(Int8Array)); Inst23++; } } catch(e) {}
+    test_struct.ptr().value = new Int8Array([1, 2]);
+try { if (Inst20 <= 1000 && typeof (test_struct.ptr().value) != "undefined") {_RecordType("<705,728,33>",(test_struct.ptr().value)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (test_struct.ptr) != "undefined") {_RecordType("<705,720,33>",(test_struct.ptr)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (test_struct) != "undefined") {_RecordType("<705,716,33>",(test_struct)); Inst22++; } } catch(e) {}
+  })();
+
+  "can't convert the typed array ({0:1, 1:2}) to the type test_struct.ptr";
+
+  (() => {
+    ctypes.int32_t().address().contents = {};
+try { if (Inst24 <= 1000 && typeof (ctypes.int32_t().address().contents) != "undefined") {_RecordType("<855,890,39>",(ctypes.int32_t().address().contents)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (ctypes.int32_t().address) != "undefined") {_RecordType("<855,879,39>",(ctypes.int32_t().address)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (ctypes.int32_t) != "undefined") {_RecordType("<855,869,39>",(ctypes.int32_t)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<855,861,39>",(ctypes)); Inst27++; } } catch(e) {}
+  })();
+
+  "can't convert the object ({}) to the type int32_t";
+}
+
+try { if (Inst28 <= 1000 && typeof (ctypes) != "undefined") {_RecordType("<975,981,45>",(ctypes)); Inst28++; } } catch(e) {}
+if (typeof ctypes === "object") {
+try { if (Inst29 <= 1000 && typeof (test) != "undefined") {_RecordType("<1000,1004,46>",(test)); Inst29++; } } catch(e) {}
+  test();
+}
+

@@ -1,0 +1,93 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Array.of does a strict assignment to the new object's .length.
+// The assignment is strict even if the code we're calling from is not strict.
+try { if (Inst0 <= 1000 && typeof (Empty) != "undefined") {_RecordType("<154,159,3>",(Empty)); Inst0++; } } catch(e) {}
+function Empty() {
+  ;
+}
+
+try { if (Inst3 <= 1000 && typeof (Array.of) != "undefined") {_RecordType("<182,190,7>",(Array.of)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Array) != "undefined") {_RecordType("<182,187,7>",(Array)); Inst4++; } } catch(e) {}
+Empty.of = Array.of;
+try { if (Inst1 <= 1000 && typeof (Empty.of) != "undefined") {_RecordType("<171,179,7>",(Empty.of)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Empty) != "undefined") {_RecordType("<171,176,7>",(Empty)); Inst2++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<192,213,8>",(Object.defineProperty)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Object) != "undefined") {_RecordType("<192,198,8>",(Object)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Empty.prototype) != "undefined") {_RecordType("<214,229,8>",(Empty.prototype)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Empty) != "undefined") {_RecordType("<214,219,8>",(Empty)); Inst8++; } } catch(e) {}
+Object.defineProperty(Empty.prototype, "length", {
+  get: () => 0
+});
+try { if (Inst10 <= 1000 && typeof (Empty) != "undefined") {_RecordType("<280,285,11>",(Empty)); Inst10++; } } catch(e) {}
+var nothing = new Empty();
+try { if (Inst9 <= 1000 && typeof (nothing) != "undefined") {_RecordType("<266,273,11>",(nothing)); Inst9++; } } catch(e) {}
+nothing.length = 2; // no exception; this is not a strict mode assignment
+try { if (Inst11 <= 1000 && typeof (nothing.length) != "undefined") {_RecordType("<289,303,12>",(nothing.length)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (nothing) != "undefined") {_RecordType("<289,296,12>",(nothing)); Inst12++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (Empty.of) != "undefined") {_RecordType("<371,379,14>",(Empty.of)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (Empty) != "undefined") {_RecordType("<371,376,14>",(Empty)); Inst14++; } } catch(e) {}
+(() => Empty.of())();
+
+try { if (Inst15 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<387,396,16>",(TypeError)); Inst15++; } } catch(e) {}
+TypeError;
+

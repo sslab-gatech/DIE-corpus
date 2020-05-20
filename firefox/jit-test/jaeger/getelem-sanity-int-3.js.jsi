@@ -1,0 +1,124 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var a = [1, 2];
+try { if (Inst0 <= 1000 && typeof (a) != "undefined") {_RecordType("<4,5,1>",(a)); Inst0++; } } catch(e) {}
+a[3.1415926535] = 'value';
+try { if (Inst1 <= 1000 && typeof (a[3.1415926535]) != "undefined") {_RecordType("<16,31,2>",(a[3.1415926535])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<16,17,2>",(a)); Inst2++; } } catch(e) {}
+
+for (var i = 0; i < 3; i++) {
+try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<53,54,4>",(i)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (i) != "undefined") {_RecordType("<60,61,4>",(i)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<67,68,4>",(i)); Inst5++; } } catch(e) {}
+  var attr;
+try { if (Inst6 <= 1000 && typeof (attr) != "undefined") {_RecordType("<80,84,5>",(attr)); Inst6++; } } catch(e) {}
+
+try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<97,98,7>",(i)); Inst7++; } } catch(e) {}
+  switch (i) {
+    case 0:
+      attr = 0;
+try { if (Inst8 <= 1000 && typeof (attr) != "undefined") {_RecordType("<120,124,9>",(attr)); Inst8++; } } catch(e) {}
+      break;
+
+    case 1:
+      attr = 1;
+try { if (Inst9 <= 1000 && typeof (attr) != "undefined") {_RecordType("<162,166,13>",(attr)); Inst9++; } } catch(e) {}
+      break;
+
+    case 2:
+      attr = 3.1415926535;
+try { if (Inst10 <= 1000 && typeof (attr) != "undefined") {_RecordType("<204,208,17>",(attr)); Inst10++; } } catch(e) {}
+      break;
+  }
+
+try { if (Inst12 <= 1000 && typeof (a[attr]) != "undefined") {_RecordType("<258,265,21>",(a[attr])); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (a) != "undefined") {_RecordType("<258,259,21>",(a)); Inst13++; } } catch(e) {}
+  var result = a[attr];
+try { if (Inst11 <= 1000 && typeof (result) != "undefined") {_RecordType("<249,255,21>",(result)); Inst11++; } } catch(e) {}
+
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<278,279,23>",(i)); Inst14++; } } catch(e) {}
+  switch (i) {
+    case 0:
+try { if (Inst15 <= 1000 && typeof (result) != "undefined") {_RecordType("<301,307,25>",(result)); Inst15++; } } catch(e) {}
+      result;
+      1;
+      break;
+
+    case 1:
+try { if (Inst16 <= 1000 && typeof (result) != "undefined") {_RecordType("<350,356,30>",(result)); Inst16++; } } catch(e) {}
+      result;
+      2;
+      break;
+
+    case 2:
+try { if (Inst17 <= 1000 && typeof (result) != "undefined") {_RecordType("<399,405,35>",(result)); Inst17++; } } catch(e) {}
+      result;
+      'value';
+      break;
+  }
+}
+/* int32_t and string getelem for non-dense array. */
+

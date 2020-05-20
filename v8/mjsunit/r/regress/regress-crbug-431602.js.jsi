@@ -1,0 +1,112 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2014 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --always-opt
+var heap_number_producer = {
+  y: 1.5
+};
+try { if (Inst0 <= 1000 && typeof (heap_number_producer) != "undefined") {_RecordType("<194,214,5>",(heap_number_producer)); Inst0++; } } catch(e) {}
+heap_number_producer.y = 0;
+try { if (Inst1 <= 1000 && typeof (heap_number_producer.y) != "undefined") {_RecordType("<231,253,8>",(heap_number_producer.y)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (heap_number_producer) != "undefined") {_RecordType("<231,251,8>",(heap_number_producer)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (heap_number_producer.y) != "undefined") {_RecordType("<282,304,9>",(heap_number_producer.y)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (heap_number_producer) != "undefined") {_RecordType("<282,302,9>",(heap_number_producer)); Inst5++; } } catch(e) {}
+var heap_number_zero = heap_number_producer.y;
+try { if (Inst3 <= 1000 && typeof (heap_number_zero) != "undefined") {_RecordType("<263,279,9>",(heap_number_zero)); Inst3++; } } catch(e) {}
+var non_constant_eight = {};
+try { if (Inst6 <= 1000 && typeof (non_constant_eight) != "undefined") {_RecordType("<310,328,10>",(non_constant_eight)); Inst6++; } } catch(e) {}
+non_constant_eight = 8;
+try { if (Inst7 <= 1000 && typeof (non_constant_eight) != "undefined") {_RecordType("<335,353,11>",(non_constant_eight)); Inst7++; } } catch(e) {}
+
+try { if (Inst8 <= 1000 && typeof (BreakIt) != "undefined") {_RecordType("<369,376,13>",(BreakIt)); Inst8++; } } catch(e) {}
+function BreakIt() {
+try { if (Inst9 <= 1000 && typeof (heap_number_zero) != "undefined") {_RecordType("<390,406,14>",(heap_number_zero)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (non_constant_eight) != "undefined") {_RecordType("<414,432,14>",(non_constant_eight)); Inst10++; } } catch(e) {}
+  return heap_number_zero | (1 | non_constant_eight);
+}
+
+try { if (Inst11 <= 1000 && typeof (expose) != "undefined") {_RecordType("<447,453,17>",(expose)); Inst11++; } } catch(e) {}
+function expose(a, b, c) {
+try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<454,455,17>",(a)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (b) != "undefined") {_RecordType("<457,458,17>",(b)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (c) != "undefined") {_RecordType("<460,461,17>",(c)); Inst14++; } } catch(e) {}
+try { if (Inst15 <= 1000 && typeof (b) != "undefined") {_RecordType("<474,475,18>",(b)); Inst15++; } } catch(e) {}
+  return b;
+}
+
+9;
+try { if (Inst16 <= 1000 && typeof (expose) != "undefined") {_RecordType("<483,489,22>",(expose)); Inst16++; } } catch(e) {}
+expose(8, 9, 10);
+9;
+try { if (Inst17 <= 1000 && typeof (expose) != "undefined") {_RecordType("<504,510,24>",(expose)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (BreakIt) != "undefined") {_RecordType("<514,521,24>",(BreakIt)); Inst18++; } } catch(e) {}
+expose(8, BreakIt(), 10);
+9;
+try { if (Inst19 <= 1000 && typeof (BreakIt) != "undefined") {_RecordType("<533,540,26>",(BreakIt)); Inst19++; } } catch(e) {}
+BreakIt();
+

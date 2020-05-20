@@ -1,0 +1,177 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2010 the V8 project authors. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Whenever we enter a with-scope, we copy the context. This in itself is fine
+// (contexts may escape), but when leaving a with-scope, we currently also copy
+// the context instead of reverting to the original. This does not work because
+// inner functions may already have been created using the original context. In
+// the failing test case below, the inner function is run in the original context
+// (where x is undefined), but the assignment to x after the with-statement is
+// run in the copied context:
+// RegExp caching doesn't set lastIndex correctly.
+// See http://code.google.com/p/chromium/issues/detail?id=52801
+var re = /a/g;
+try { if (Inst0 <= 1000 && typeof (re) != "undefined") {_RecordType("<2226,2228,36>",(re)); Inst0++; } } catch(e) {}
+var str = "bbbbabbbbabbbb"; // Test
+try { if (Inst1 <= 1000 && typeof (str) != "undefined") {_RecordType("<2241,2244,37>",(str)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (re.test) != "undefined") {_RecordType("<2274,2281,39>",(re.test)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (re) != "undefined") {_RecordType("<2274,2276,39>",(re)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (str) != "undefined") {_RecordType("<2282,2285,39>",(str)); Inst4++; } } catch(e) {}
+re.test(str);
+5;
+try { if (Inst5 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2291,2303,41>",(re.lastIndex)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (re) != "undefined") {_RecordType("<2291,2293,41>",(re)); Inst6++; } } catch(e) {}
+re.lastIndex;
+re.lastIndex = 0;
+try { if (Inst7 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2305,2317,42>",(re.lastIndex)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (re) != "undefined") {_RecordType("<2305,2307,42>",(re)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (re.test) != "undefined") {_RecordType("<2323,2330,43>",(re.test)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (re) != "undefined") {_RecordType("<2323,2325,43>",(re)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (str) != "undefined") {_RecordType("<2331,2334,43>",(str)); Inst11++; } } catch(e) {}
+re.test(str);
+5;
+try { if (Inst12 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2340,2352,45>",(re.lastIndex)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (re) != "undefined") {_RecordType("<2340,2342,45>",(re)); Inst13++; } } catch(e) {}
+re.lastIndex;
+// Fails if caching.
+re.lastIndex = 0;
+try { if (Inst14 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2375,2387,47>",(re.lastIndex)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (re) != "undefined") {_RecordType("<2375,2377,47>",(re)); Inst15++; } } catch(e) {}
+try { if (Inst16 <= 1000 && typeof (re.test) != "undefined") {_RecordType("<2393,2400,48>",(re.test)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (re) != "undefined") {_RecordType("<2393,2395,48>",(re)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (str) != "undefined") {_RecordType("<2401,2404,48>",(str)); Inst18++; } } catch(e) {}
+re.test(str);
+5;
+try { if (Inst19 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2410,2422,50>",(re.lastIndex)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (re) != "undefined") {_RecordType("<2410,2412,50>",(re)); Inst20++; } } catch(e) {}
+re.lastIndex;
+// Fails if caching.
+// Exec
+re = /a/g;
+try { if (Inst21 <= 1000 && typeof (re) != "undefined") {_RecordType("<2453,2455,53>",(re)); Inst21++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (re.exec) != "undefined") {_RecordType("<2464,2471,54>",(re.exec)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (re) != "undefined") {_RecordType("<2464,2466,54>",(re)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (str) != "undefined") {_RecordType("<2472,2475,54>",(str)); Inst24++; } } catch(e) {}
+re.exec(str);
+5;
+try { if (Inst25 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2481,2493,56>",(re.lastIndex)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (re) != "undefined") {_RecordType("<2481,2483,56>",(re)); Inst26++; } } catch(e) {}
+re.lastIndex;
+re.lastIndex = 0;
+try { if (Inst27 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2495,2507,57>",(re.lastIndex)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (re) != "undefined") {_RecordType("<2495,2497,57>",(re)); Inst28++; } } catch(e) {}
+try { if (Inst29 <= 1000 && typeof (re.exec) != "undefined") {_RecordType("<2513,2520,58>",(re.exec)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (re) != "undefined") {_RecordType("<2513,2515,58>",(re)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (str) != "undefined") {_RecordType("<2521,2524,58>",(str)); Inst31++; } } catch(e) {}
+re.exec(str);
+5;
+try { if (Inst32 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2530,2542,60>",(re.lastIndex)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (re) != "undefined") {_RecordType("<2530,2532,60>",(re)); Inst33++; } } catch(e) {}
+re.lastIndex;
+// Fails if caching.
+re.lastIndex = 0;
+try { if (Inst34 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2565,2577,62>",(re.lastIndex)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (re) != "undefined") {_RecordType("<2565,2567,62>",(re)); Inst35++; } } catch(e) {}
+try { if (Inst36 <= 1000 && typeof (re.exec) != "undefined") {_RecordType("<2583,2590,63>",(re.exec)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (re) != "undefined") {_RecordType("<2583,2585,63>",(re)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (str) != "undefined") {_RecordType("<2591,2594,63>",(str)); Inst38++; } } catch(e) {}
+re.exec(str);
+5;
+try { if (Inst39 <= 1000 && typeof (re.lastIndex) != "undefined") {_RecordType("<2600,2612,65>",(re.lastIndex)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (re) != "undefined") {_RecordType("<2600,2602,65>",(re)); Inst40++; } } catch(e) {}
+re.lastIndex;
+

@@ -1,0 +1,121 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2018 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --harmony-string-matchall
+class MyRegExp {
+  exec() {
+    return null;
+  }
+
+}
+try { if (Inst0 <= 1000 && typeof (MyRegExp) != "undefined") {_RecordType("<232,240,5>",(MyRegExp)); Inst0++; } } catch(e) {}
+
+var r = /c/;
+try { if (Inst1 <= 1000 && typeof (r) != "undefined") {_RecordType("<283,284,12>",(r)); Inst1++; } } catch(e) {}
+["ab", ""];
+try { if (Inst2 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<304,315,14>",("abc".split)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (r) != "undefined") {_RecordType("<316,317,14>",(r)); Inst3++; } } catch(e) {}
+"abc".split(r);
+[["c"]];
+try { if (Inst4 <= 1000 && typeof ("c".matchAll) != "undefined") {_RecordType("<333,345,16>",("c".matchAll)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (r) != "undefined") {_RecordType("<346,347,16>",(r)); Inst5++; } } catch(e) {}
+[..."c".matchAll(r)];
+try { if (Inst8 <= 1000 && typeof (MyRegExp) != "undefined") {_RecordType("<389,397,18>",(MyRegExp)); Inst8++; } } catch(e) {}
+r.constructor = {
+  [Symbol.species]: MyRegExp
+};
+try { if (Inst6 <= 1000 && typeof (r.constructor) != "undefined") {_RecordType("<351,364,17>",(r.constructor)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (r) != "undefined") {_RecordType("<351,352,17>",(r)); Inst7++; } } catch(e) {}
+["abc"];
+try { if (Inst9 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<410,421,21>",("abc".split)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (r) != "undefined") {_RecordType("<422,423,21>",(r)); Inst10++; } } catch(e) {}
+"abc".split(r);
+[];
+try { if (Inst11 <= 1000 && typeof ("c".matchAll) != "undefined") {_RecordType("<434,446,23>",("c".matchAll)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (r) != "undefined") {_RecordType("<447,448,23>",(r)); Inst12++; } } catch(e) {}
+[..."c".matchAll(r)];
+["ab", ""];
+try { if (Inst13 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<464,475,25>",("abc".split)); Inst13++; } } catch(e) {}
+"abc".split(/c/);
+[["c"]];
+try { if (Inst14 <= 1000 && typeof ("c".matchAll) != "undefined") {_RecordType("<495,507,27>",("c".matchAll)); Inst14++; } } catch(e) {}
+[..."c".matchAll(/c/)];
+try { if (Inst18 <= 1000 && typeof (MyRegExp) != "undefined") {_RecordType("<568,576,29>",(MyRegExp)); Inst18++; } } catch(e) {}
+RegExp.prototype.constructor = {
+  [Symbol.species]: MyRegExp
+};
+try { if (Inst15 <= 1000 && typeof (RegExp.prototype.constructor) != "undefined") {_RecordType("<515,543,28>",(RegExp.prototype.constructor)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (RegExp.prototype) != "undefined") {_RecordType("<515,531,28>",(RegExp.prototype)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (RegExp) != "undefined") {_RecordType("<515,521,28>",(RegExp)); Inst17++; } } catch(e) {}
+["abc"];
+try { if (Inst19 <= 1000 && typeof ("abc".split) != "undefined") {_RecordType("<589,600,32>",("abc".split)); Inst19++; } } catch(e) {}
+"abc".split(/c/);
+[];
+try { if (Inst20 <= 1000 && typeof ("c".matchAll) != "undefined") {_RecordType("<615,627,34>",("c".matchAll)); Inst20++; } } catch(e) {}
+[..."c".matchAll(/c/)];
+

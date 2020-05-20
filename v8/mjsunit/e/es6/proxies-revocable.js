@@ -1,0 +1,27 @@
+// Copyright 2015 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+traps = ["getPrototypeOf", "setPrototypeOf", "isExtensible", "preventExtensions", "getOwnPropertyDescriptor", "has", "get", "set", "deleteProperty", "defineProperty", "ownKeys", "apply", "construct"];
+var {
+  proxy,
+  revoke
+} = Proxy.revocable({}, {});
+0;
+revoke.length;
+undefined;
+revoke();
+
+for (var trap of traps) {
+  (() => Reflect[trap](proxy))();
+
+  TypeError;
+}
+
+undefined;
+revoke();
+
+for (var trap of traps) {
+  (() => Reflect[trap](proxy))();
+
+  TypeError;
+}

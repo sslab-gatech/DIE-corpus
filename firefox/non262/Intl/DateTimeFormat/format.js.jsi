@@ -1,0 +1,197 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Tests the format function with a diverse set of locales and options.
+// Always use UTC to avoid dependencies on test environment.
+var format;
+try { if (Inst0 <= 1000 && typeof (format) != "undefined") {_RecordType("<394,400,8>",(format)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (Date.UTC) != "undefined") {_RecordType("<413,421,9>",(Date.UTC)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Date) != "undefined") {_RecordType("<413,417,9>",(Date)); Inst3++; } } catch(e) {}
+var date = Date.UTC(2012, 11, 12, 3, 0, 0);
+try { if (Inst1 <= 1000 && typeof (date) != "undefined") {_RecordType("<406,410,9>",(date)); Inst1++; } } catch(e) {}
+var longFormatOptions = {
+  timeZone: "UTC",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric"
+}; // Locale en-US; default options.
+try { if (Inst4 <= 1000 && typeof (longFormatOptions) != "undefined") {_RecordType("<450,467,10>",(longFormatOptions)); Inst4++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<656,675,20>",(Intl.DateTimeFormat)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<656,660,20>",(Intl)); Inst7++; } } catch(e) {}
+format = new Intl.DateTimeFormat("en-us", {
+  timeZone: "UTC"
+});
+try { if (Inst5 <= 1000 && typeof (format) != "undefined") {_RecordType("<643,649,20>",(format)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<709,722,23>",(format.format)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (format) != "undefined") {_RecordType("<709,715,23>",(format)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (date) != "undefined") {_RecordType("<723,727,23>",(date)); Inst10++; } } catch(e) {}
+format.format(date);
+"12/12/2012";
+// Locale th-TH; default options.
+// Thailand uses the Buddhist calendar.
+try { if (Inst12 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<831,850,27>",(Intl.DateTimeFormat)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<831,835,27>",(Intl)); Inst13++; } } catch(e) {}
+format = new Intl.DateTimeFormat("th-th", {
+  timeZone: "UTC"
+});
+try { if (Inst11 <= 1000 && typeof (format) != "undefined") {_RecordType("<818,824,27>",(format)); Inst11++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<884,897,30>",(format.format)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (format) != "undefined") {_RecordType("<884,890,30>",(format)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (date) != "undefined") {_RecordType("<898,902,30>",(date)); Inst16++; } } catch(e) {}
+format.format(date);
+"12/12/2555";
+// Locale th-TH; long format, Thai digits.
+try { if (Inst18 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<975,994,33>",(Intl.DateTimeFormat)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<975,979,33>",(Intl)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (longFormatOptions) != "undefined") {_RecordType("<1014,1031,33>",(longFormatOptions)); Inst20++; } } catch(e) {}
+format = new Intl.DateTimeFormat("th-th-u-nu-thai", longFormatOptions);
+try { if (Inst17 <= 1000 && typeof (format) != "undefined") {_RecordType("<962,968,33>",(format)); Inst17++; } } catch(e) {}
+try { if (Inst21 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<1034,1047,34>",(format.format)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (format) != "undefined") {_RecordType("<1034,1040,34>",(format)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (date) != "undefined") {_RecordType("<1048,1052,34>",(date)); Inst23++; } } catch(e) {}
+format.format(date);
+"๑๒ ธันวาคม ๒๕๕๕ ๐๓:๐๐:๐๐";
+// Locale ja-JP; long format.
+try { if (Inst25 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<1126,1145,37>",(Intl.DateTimeFormat)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<1126,1130,37>",(Intl)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (longFormatOptions) != "undefined") {_RecordType("<1155,1172,37>",(longFormatOptions)); Inst27++; } } catch(e) {}
+format = new Intl.DateTimeFormat("ja-jp", longFormatOptions);
+try { if (Inst24 <= 1000 && typeof (format) != "undefined") {_RecordType("<1113,1119,37>",(format)); Inst24++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<1175,1188,38>",(format.format)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (format) != "undefined") {_RecordType("<1175,1181,38>",(format)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (date) != "undefined") {_RecordType("<1189,1193,38>",(date)); Inst30++; } } catch(e) {}
+format.format(date);
+"2012年12月12日 3:00:00";
+// Locale ar-MA; long format, Islamic civilian calendar.
+try { if (Inst32 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<1289,1308,41>",(Intl.DateTimeFormat)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<1289,1293,41>",(Intl)); Inst33++; } } catch(e) {}try { if (Inst34 <= 1000 && typeof (longFormatOptions) != "undefined") {_RecordType("<1332,1349,41>",(longFormatOptions)); Inst34++; } } catch(e) {}
+format = new Intl.DateTimeFormat("ar-ma-u-ca-islamicc", longFormatOptions);
+try { if (Inst31 <= 1000 && typeof (format) != "undefined") {_RecordType("<1276,1282,41>",(format)); Inst31++; } } catch(e) {}
+try { if (Inst35 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<1352,1365,42>",(format.format)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (format) != "undefined") {_RecordType("<1352,1358,42>",(format)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (date) != "undefined") {_RecordType("<1366,1370,42>",(date)); Inst37++; } } catch(e) {}
+format.format(date);
+"28 محرم 1434 03:00:00";
+// Locale en-IE: timeZoneName for crash test
+try { if (Inst39 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<1456,1475,45>",(Intl.DateTimeFormat)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<1456,1460,45>",(Intl)); Inst40++; } } catch(e) {}
+format = new Intl.DateTimeFormat("en-IE", {
+  timeZone: "UTC",
+  timeZoneName: "short"
+});
+try { if (Inst38 <= 1000 && typeof (format) != "undefined") {_RecordType("<1443,1449,45>",(format)); Inst38++; } } catch(e) {}
+try { if (Inst41 <= 1000 && typeof (format.format) != "undefined") {_RecordType("<1534,1547,49>",(format.format)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (format) != "undefined") {_RecordType("<1534,1540,49>",(format)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (date) != "undefined") {_RecordType("<1548,1552,49>",(date)); Inst43++; } } catch(e) {}
+format.format(date);
+"12/12/2012, UTC";
+// Test the .name property of the "format" getter.
+try { if (Inst45 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<1636,1667,52>",(Object.getOwnPropertyDescriptor)); Inst45++; } } catch(e) {}try { if (Inst46 <= 1000 && typeof (Object) != "undefined") {_RecordType("<1636,1642,52>",(Object)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (Intl.DateTimeFormat.prototype) != "undefined") {_RecordType("<1668,1697,52>",(Intl.DateTimeFormat.prototype)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (Intl.DateTimeFormat) != "undefined") {_RecordType("<1668,1687,52>",(Intl.DateTimeFormat)); Inst48++; } } catch(e) {}try { if (Inst49 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<1668,1672,52>",(Intl)); Inst49++; } } catch(e) {}
+var desc = Object.getOwnPropertyDescriptor(Intl.DateTimeFormat.prototype, "format");
+try { if (Inst44 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1629,1633,52>",(desc)); Inst44++; } } catch(e) {}
+try { if (Inst50 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1710,1714,53>",(desc)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1719,1728,53>",(undefined)); Inst51++; } } catch(e) {}
+desc !== undefined;
+true;
+try { if (Inst52 <= 1000 && typeof (desc.get) != "undefined") {_RecordType("<1743,1751,55>",(desc.get)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1743,1747,55>",(desc)); Inst53++; } } catch(e) {}
+typeof desc.get;
+"function";
+try { if (Inst54 <= 1000 && typeof (desc.get.name) != "undefined") {_RecordType("<1765,1778,57>",(desc.get.name)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (desc.get) != "undefined") {_RecordType("<1765,1773,57>",(desc.get)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (desc) != "undefined") {_RecordType("<1765,1769,57>",(desc)); Inst56++; } } catch(e) {}
+desc.get.name;
+"get format";
+try { if (Inst57 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1794,1807,59>",(reportCompare)); Inst57++; } } catch(e) {}
+reportCompare(0, 0, 'ok');
+

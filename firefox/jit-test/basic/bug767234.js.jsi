@@ -1,0 +1,90 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (gen) != "undefined") {_RecordType("<10,13,1>",(gen)); Inst0++; } } catch(e) {}
+function* gen() {
+try { if (Inst2 <= 1000 && typeof (Date) != "undefined") {_RecordType("<36,40,2>",(Date)); Inst2++; } } catch(e) {}
+  var local = new Date();
+try { if (Inst1 <= 1000 && typeof (local) != "undefined") {_RecordType("<24,29,2>",(local)); Inst1++; } } catch(e) {}
+  yield 1;
+  local = null;
+try { if (Inst3 <= 1000 && typeof (local) != "undefined") {_RecordType("<57,62,4>",(local)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (gc) != "undefined") {_RecordType("<73,75,5>",(gc)); Inst4++; } } catch(e) {}
+  gc();
+try { if (Inst5 <= 1000 && typeof (gcslice) != "undefined") {_RecordType("<81,88,6>",(gcslice)); Inst5++; } } catch(e) {}
+  gcslice(0); // Start IGC, but don't mark anything.
+
+  yield 2;
+}
+
+try { if (Inst7 <= 1000 && typeof (gen) != "undefined") {_RecordType("<155,158,11>",(gen)); Inst7++; } } catch(e) {}
+var g = gen();
+try { if (Inst6 <= 1000 && typeof (g) != "undefined") {_RecordType("<151,152,11>",(g)); Inst6++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (g.next) != "undefined") {_RecordType("<162,168,12>",(g.next)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (g) != "undefined") {_RecordType("<162,163,12>",(g)); Inst9++; } } catch(e) {}
+g.next();
+try { if (Inst10 <= 1000 && typeof (g.next) != "undefined") {_RecordType("<172,178,13>",(g.next)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (g) != "undefined") {_RecordType("<172,173,13>",(g)); Inst11++; } } catch(e) {}
+g.next();
+try { if (Inst12 <= 1000 && typeof (gcslice) != "undefined") {_RecordType("<182,189,14>",(gcslice)); Inst12++; } } catch(e) {}
+gcslice();
+

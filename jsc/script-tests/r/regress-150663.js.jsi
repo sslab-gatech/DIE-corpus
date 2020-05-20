@@ -1,0 +1,121 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("Regression test for 150663"); // We should be able to tail call a native function from a JS callee of C++
+
+"use strict";
+
+class Test {
+  constructor(a, b) {
+try { if (Inst3 <= 1000 && typeof (a) != "undefined") {_RecordType("<162,163,6>",(a)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<165,166,6>",(b)); Inst4++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<183,184,7>",(a)); Inst6++; } } catch(e) {}
+    this.a = a;
+try { if (Inst5 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<174,180,7>",(this.a)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<199,200,8>",(b)); Inst8++; } } catch(e) {}
+    this.b = b;
+try { if (Inst7 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<190,196,8>",(this.b)); Inst7++; } } catch(e) {}
+  }
+
+  get sum() {
+try { if (Inst9 <= 1000 && typeof (Number) != "undefined") {_RecordType("<232,238,12>",(Number)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<239,245,12>",(this.a)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<248,254,12>",(this.b)); Inst11++; } } catch(e) {}
+    return Number(this.a + this.b);
+  }
+
+}
+try { if (Inst2 <= 1000 && typeof (Test) != "undefined") {_RecordType("<141,145,5>",(Test)); Inst2++; } } catch(e) {}
+
+try { if (Inst13 <= 1000 && typeof (Test) != "undefined") {_RecordType("<283,287,17>",(Test)); Inst13++; } } catch(e) {}
+var testObj = new Test(40, 2);
+try { if (Inst12 <= 1000 && typeof (testObj) != "undefined") {_RecordType("<269,276,17>",(testObj)); Inst12++; } } catch(e) {}
+
+for (var i = 0; i < 100000; i++) {
+try { if (Inst14 <= 1000 && typeof (i) != "undefined") {_RecordType("<306,307,19>",(i)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<313,314,19>",(i)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (i) != "undefined") {_RecordType("<325,326,19>",(i)); Inst16++; } } catch(e) {}
+try { if (Inst18 <= 1000 && typeof (testObj.sum) != "undefined") {_RecordType("<347,358,20>",(testObj.sum)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (testObj) != "undefined") {_RecordType("<347,354,20>",(testObj)); Inst19++; } } catch(e) {}
+  var result = testObj.sum;
+try { if (Inst17 <= 1000 && typeof (result) != "undefined") {_RecordType("<338,344,20>",(result)); Inst17++; } } catch(e) {}
+
+try { if (Inst20 <= 1000 && typeof (result) != "undefined") {_RecordType("<367,373,22>",(result)); Inst20++; } } catch(e) {}
+  if (result != 42) {
+try { if (Inst21 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<387,398,23>",(console.log)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (console) != "undefined") {_RecordType("<387,394,23>",(console)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (result) != "undefined") {_RecordType("<441,447,23>",(result)); Inst23++; } } catch(e) {}
+    console.log("Expected 42 from \"sum\" getter, got " + result);
+  }
+}
+
+try { if (Inst24 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<457,468,27>",(console.log)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (console) != "undefined") {_RecordType("<457,464,27>",(console)); Inst25++; } } catch(e) {}
+console.log("Able to tail call a native function from a JS callee of C++ code");
+

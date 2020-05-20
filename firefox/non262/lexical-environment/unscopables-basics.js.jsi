@@ -1,0 +1,118 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Basics of @@unscopables support.
+// In with(obj), if obj[@@unscopables][id] is truthy, then the identifier id
+// is not present as a binding in the with-block's scope.
+var x = "global";
+try { if (Inst0 <= 1000 && typeof (x) != "undefined") {_RecordType("<175,176,4>",(x)); Inst0++; } } catch(e) {}
+with ({
+  x: "with",
+  [Symbol.unscopables]: {
+    x: true
+  }
+}) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<259,260,11>",(x)); Inst1++; } } catch(e) {}
+  x;
+  "global";
+} // But if obj[@@unscopables][id] is false or not present, there is a binding.
+
+with ({
+  y: "with",
+  z: "with",
+  [Symbol.unscopables]: {
+    y: false
+  }
+}) {
+try { if (Inst2 <= 1000 && typeof (y) != "undefined") {_RecordType("<439,440,22>",(y)); Inst2++; } } catch(e) {}
+  y;
+  "with";
+try { if (Inst3 <= 1000 && typeof (z) != "undefined") {_RecordType("<454,455,24>",(z)); Inst3++; } } catch(e) {}
+  z;
+  "with";
+} // ToBoolean(obj[@@unscopables][id]) determines whether there's a binding.
+
+try { if (Inst5 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<570,573,28>",(NaN)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<579,588,28>",(undefined)); Inst6++; } } catch(e) {}
+let someValues = [0, -0, NaN, "", undefined, null, "x", {}, []];
+try { if (Inst4 <= 1000 && typeof (someValues) != "undefined") {_RecordType("<549,559,28>",(someValues)); Inst4++; } } catch(e) {}
+
+for (let v of someValues) {
+try { if (Inst7 <= 1000 && typeof (v) != "undefined") {_RecordType("<620,621,30>",(v)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (someValues) != "undefined") {_RecordType("<625,635,30>",(someValues)); Inst8++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (v) != "undefined") {_RecordType("<701,702,34>",(v)); Inst9++; } } catch(e) {}
+  with ({
+    x: "with",
+    [Symbol.unscopables]: {
+      x: v
+    }
+  }) {
+try { if (Inst10 <= 1000 && typeof (x) != "undefined") {_RecordType("<720,721,37>",(x)); Inst10++; } } catch(e) {}
+    x;
+try { if (Inst11 <= 1000 && typeof (v) != "undefined") {_RecordType("<727,728,38>",(v)); Inst11++; } } catch(e) {}
+    v ? "global" : "with";
+  }
+}
+
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<757,770,42>",(reportCompare)); Inst12++; } } catch(e) {}
+reportCompare(0, 0);
+

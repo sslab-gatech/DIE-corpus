@@ -1,0 +1,256 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ * Contributor:
+ *   Jeff Walden <jwalden+code@mit.edu>
+ */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 858381;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<252,261,8>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "Array length setting/truncating with non-dense, indexed elements";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<276,283,9>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<354,359,10>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<360,369,10>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<379,386,10>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+
+try { if (Inst5 <= 1000 && typeof (testTruncateDenseAndSparse) != "undefined") {_RecordType("<448,474,15>",(testTruncateDenseAndSparse)); Inst5++; } } catch(e) {}
+function testTruncateDenseAndSparse() {
+  var arr; // initialized length 16, capacity same
+try { if (Inst6 <= 1000 && typeof (arr) != "undefined") {_RecordType("<485,488,16>",(arr)); Inst6++; } } catch(e) {}
+
+  arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]; // plus a sparse element
+try { if (Inst7 <= 1000 && typeof (arr) != "undefined") {_RecordType("<533,536,18>",(arr)); Inst7++; } } catch(e) {}
+
+  arr[987654321] = 987654321; // lop off the sparse element and half the dense elements, shrink capacity
+try { if (Inst8 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<623,637,20>",(arr[987654321])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (arr) != "undefined") {_RecordType("<623,626,20>",(arr)); Inst9++; } } catch(e) {}
+
+  arr.length = 8;
+try { if (Inst10 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<729,739,22>",(arr.length)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (arr) != "undefined") {_RecordType("<729,732,22>",(arr)); Inst11++; } } catch(e) {}
+try { if (Inst12 <= 1000 && typeof (arr) != "undefined") {_RecordType("<760,763,23>",(arr)); Inst12++; } } catch(e) {}
+  987654321 in arr;
+  false;
+try { if (Inst13 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<776,790,25>",(arr[987654321])); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (arr) != "undefined") {_RecordType("<776,779,25>",(arr)); Inst14++; } } catch(e) {}
+  arr[987654321];
+try { if (Inst15 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<794,803,26>",(undefined)); Inst15++; } } catch(e) {}
+  undefined;
+try { if (Inst16 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<807,817,27>",(arr.length)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (arr) != "undefined") {_RecordType("<807,810,27>",(arr)); Inst17++; } } catch(e) {}
+  arr.length;
+  8;
+}
+
+try { if (Inst18 <= 1000 && typeof (testTruncateDenseAndSparse) != "undefined") {_RecordType("<827,853,31>",(testTruncateDenseAndSparse)); Inst18++; } } catch(e) {}
+testTruncateDenseAndSparse();
+
+try { if (Inst19 <= 1000 && typeof (testTruncateSparse) != "undefined") {_RecordType("<867,885,33>",(testTruncateSparse)); Inst19++; } } catch(e) {}
+function testTruncateSparse() {
+  // initialized length 8, capacity same
+  var arr = [0, 1, 2, 3, 4, 5, 6, 7]; // plus a sparse element
+try { if (Inst20 <= 1000 && typeof (arr) != "undefined") {_RecordType("<937,940,35>",(arr)); Inst20++; } } catch(e) {}
+
+  arr[987654321] = 987654321; // lop off the sparse element, leave initialized length/capacity unchanged
+try { if (Inst21 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<997,1011,37>",(arr[987654321])); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (arr) != "undefined") {_RecordType("<997,1000,37>",(arr)); Inst22++; } } catch(e) {}
+
+  arr.length = 8;
+try { if (Inst23 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<1103,1113,39>",(arr.length)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1103,1106,39>",(arr)); Inst24++; } } catch(e) {}
+try { if (Inst25 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1134,1137,40>",(arr)); Inst25++; } } catch(e) {}
+  987654321 in arr;
+  false;
+try { if (Inst26 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<1150,1164,42>",(arr[987654321])); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1150,1153,42>",(arr)); Inst27++; } } catch(e) {}
+  arr[987654321];
+try { if (Inst28 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1168,1177,43>",(undefined)); Inst28++; } } catch(e) {}
+  undefined;
+try { if (Inst29 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<1181,1191,44>",(arr.length)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1181,1184,44>",(arr)); Inst30++; } } catch(e) {}
+  arr.length;
+  8;
+}
+
+try { if (Inst31 <= 1000 && typeof (testTruncateSparse) != "undefined") {_RecordType("<1201,1219,48>",(testTruncateSparse)); Inst31++; } } catch(e) {}
+testTruncateSparse();
+
+try { if (Inst32 <= 1000 && typeof (testTruncateDenseAndSparseShrinkCapacity) != "undefined") {_RecordType("<1233,1273,50>",(testTruncateDenseAndSparseShrinkCapacity)); Inst32++; } } catch(e) {}
+function testTruncateDenseAndSparseShrinkCapacity() {
+  // initialized length 11, capacity...somewhat larger, likely 16
+  var arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // plus a sparse element
+try { if (Inst33 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1350,1353,52>",(arr)); Inst33++; } } catch(e) {}
+
+  arr[987654321] = 987654321; // lop off the sparse element, reduce initialized length, reduce capacity
+try { if (Inst34 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<1420,1434,54>",(arr[987654321])); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1420,1423,54>",(arr)); Inst35++; } } catch(e) {}
+
+  arr.length = 8;
+try { if (Inst36 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<1525,1535,56>",(arr.length)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1525,1528,56>",(arr)); Inst37++; } } catch(e) {}
+try { if (Inst38 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1556,1559,57>",(arr)); Inst38++; } } catch(e) {}
+  987654321 in arr;
+  false;
+try { if (Inst39 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<1572,1586,59>",(arr[987654321])); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1572,1575,59>",(arr)); Inst40++; } } catch(e) {}
+  arr[987654321];
+try { if (Inst41 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<1590,1599,60>",(undefined)); Inst41++; } } catch(e) {}
+  undefined;
+try { if (Inst42 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<1603,1613,61>",(arr.length)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1603,1606,61>",(arr)); Inst43++; } } catch(e) {}
+  arr.length;
+  8;
+}
+
+try { if (Inst44 <= 1000 && typeof (testTruncateDenseAndSparseShrinkCapacity) != "undefined") {_RecordType("<1623,1663,65>",(testTruncateDenseAndSparseShrinkCapacity)); Inst44++; } } catch(e) {}
+testTruncateDenseAndSparseShrinkCapacity();
+
+try { if (Inst45 <= 1000 && typeof (testTruncateSparseShrinkCapacity) != "undefined") {_RecordType("<1677,1709,67>",(testTruncateSparseShrinkCapacity)); Inst45++; } } catch(e) {}
+function testTruncateSparseShrinkCapacity() {
+  // initialized length 8, capacity same
+  var arr = [0, 1, 2, 3, 4, 5, 6, 7]; // capacity expands to accommodate, initialized length remains same (not equal
+try { if (Inst46 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1761,1764,69>",(arr)); Inst46++; } } catch(e) {}
+  // to capacity or length)
+
+  arr[15] = 15; // now no elements past initialized length
+try { if (Inst47 <= 1000 && typeof (arr[15]) != "undefined") {_RecordType("<1903,1910,72>",(arr[15])); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1903,1906,72>",(arr)); Inst48++; } } catch(e) {}
+
+try { if (Inst49 <= 1000 && typeof (arr[15]) != "undefined") {_RecordType("<1970,1977,74>",(arr[15])); Inst49++; } } catch(e) {}try { if (Inst50 <= 1000 && typeof (arr) != "undefined") {_RecordType("<1970,1973,74>",(arr)); Inst50++; } } catch(e) {}
+  delete arr[15]; // ...except a sparse element
+
+  arr[987654321] = 987654321; // trims sparse element, doesn't change initialized length, shrinks capacity
+try { if (Inst51 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<2012,2026,76>",(arr[987654321])); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (arr) != "undefined") {_RecordType("<2012,2015,76>",(arr)); Inst52++; } } catch(e) {}
+
+  arr.length = 8;
+try { if (Inst53 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<2120,2130,78>",(arr.length)); Inst53++; } } catch(e) {}try { if (Inst54 <= 1000 && typeof (arr) != "undefined") {_RecordType("<2120,2123,78>",(arr)); Inst54++; } } catch(e) {}
+try { if (Inst55 <= 1000 && typeof (arr) != "undefined") {_RecordType("<2151,2154,79>",(arr)); Inst55++; } } catch(e) {}
+  987654321 in arr;
+  false;
+try { if (Inst56 <= 1000 && typeof (arr[987654321]) != "undefined") {_RecordType("<2167,2181,81>",(arr[987654321])); Inst56++; } } catch(e) {}try { if (Inst57 <= 1000 && typeof (arr) != "undefined") {_RecordType("<2167,2170,81>",(arr)); Inst57++; } } catch(e) {}
+  arr[987654321];
+try { if (Inst58 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<2185,2194,82>",(undefined)); Inst58++; } } catch(e) {}
+  undefined;
+try { if (Inst59 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<2198,2208,83>",(arr.length)); Inst59++; } } catch(e) {}try { if (Inst60 <= 1000 && typeof (arr) != "undefined") {_RecordType("<2198,2201,83>",(arr)); Inst60++; } } catch(e) {}
+  arr.length;
+  8;
+}
+
+try { if (Inst61 <= 1000 && typeof (testTruncateSparseShrinkCapacity) != "undefined") {_RecordType("<2218,2250,87>",(testTruncateSparseShrinkCapacity)); Inst61++; } } catch(e) {}
+testTruncateSparseShrinkCapacity();
+/******************************************************************************/
+
+try { if (Inst62 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2347,2360,90>",(reportCompare)); Inst62++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst63 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2381,2394,91>",(reportCompare)); Inst63++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst64 <= 1000 && typeof (print) != "undefined") {_RecordType("<2411,2416,94>",(print)); Inst64++; } } catch(e) {}
+print("Tests complete");
+

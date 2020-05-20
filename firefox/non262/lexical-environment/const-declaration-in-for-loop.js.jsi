@@ -1,0 +1,175 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/*
+ * Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/
+ */
+var gTestfile = "const-declaration-in-for-loop.js"; //-----------------------------------------------------------------------------
+try { if (Inst0 <= 1000 && typeof (gTestfile) != "undefined") {_RecordType("<116,125,5>",(gTestfile)); Inst0++; } } catch(e) {}
+
+var BUGNUMBER = 1146644;
+try { if (Inst1 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<249,258,7>",(BUGNUMBER)); Inst1++; } } catch(e) {}
+var summary = "Don't crash compiling a non-body-level for-loop whose loop declaration is " + "a const";
+try { if (Inst2 <= 1000 && typeof (summary) != "undefined") {_RecordType("<274,281,8>",(summary)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<374,379,9>",(print)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<380,389,9>",(BUGNUMBER)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (summary) != "undefined") {_RecordType("<399,406,9>",(summary)); Inst5++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+/**************
+ * BEGIN TEST *
+ **************/
+// Don't attempt execution as a script if we can't properly emulate it.  We
+// could perhaps use eval, but eval, while also doing global execution, is its
+// own can of messiness.  Ongoing work on for-loop scoping for lexical
+// declarations will likely make these tests redundant with other tests to be
+// added, anyway, in the very short term.
+
+try { if (Inst7 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<838,846,19>",(evaluate)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (evaluate) != "undefined") {_RecordType("<864,872,19>",(evaluate)); Inst8++; } } catch(e) {}
+var executeGlobalScript = typeof evaluate === "function" ? evaluate : function (s) {
+try { if (Inst9 <= 1000 && typeof (s) != "undefined") {_RecordType("<885,886,19>",(s)); Inst9++; } } catch(e) {}
+  ;
+};
+try { if (Inst6 <= 1000 && typeof (executeGlobalScript) != "undefined") {_RecordType("<809,828,19>",(executeGlobalScript)); Inst6++; } } catch(e) {}
+
+for (const a1 = 3; false;) {
+try { if (Inst10 <= 1000 && typeof (a1) != "undefined") {_RecordType("<909,911,23>",(a1)); Inst10++; } } catch(e) {}
+  continue;
+}
+
+try { if (Inst11 <= 1000 && typeof (Function) != "undefined") {_RecordType("<942,950,27>",(Function)); Inst11++; } } catch(e) {}
+Function(`for (const a2 = 3; false; )
+            continue;
+         `)();
+
+if (true) {
+  for (const a3 = 3; false;) {
+try { if (Inst12 <= 1000 && typeof (a3) != "undefined") {_RecordType("<1043,1045,32>",(a3)); Inst12++; } } catch(e) {}
+    continue;
+  }
+}
+
+try { if (Inst13 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1082,1090,37>",(Function)); Inst13++; } } catch(e) {}
+Function(`if (true)
+          {
+            for (const a4 = 3; false; )
+              continue;
+          }`)();
+try { if (Inst14 <= 1000 && typeof (executeGlobalScript) != "undefined") {_RecordType("<1195,1214,42>",(executeGlobalScript)); Inst14++; } } catch(e) {}
+executeGlobalScript(`for (const a5 of [])
+                       continue;`);
+try { if (Inst15 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1273,1281,44>",(Function)); Inst15++; } } catch(e) {}
+Function(`for (const a6 of [])
+            continue;`)();
+try { if (Inst16 <= 1000 && typeof (executeGlobalScript) != "undefined") {_RecordType("<1331,1350,46>",(executeGlobalScript)); Inst16++; } } catch(e) {}
+executeGlobalScript(`if (true)
+                     {
+                       for (const a7 of [])
+                         continue;
+                     }`);
+try { if (Inst17 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1490,1498,51>",(Function)); Inst17++; } } catch(e) {}
+Function(`if (true)
+          {
+            for (const a8 of [])
+              continue;
+          }`)();
+try { if (Inst18 <= 1000 && typeof (executeGlobalScript) != "undefined") {_RecordType("<1596,1615,56>",(executeGlobalScript)); Inst18++; } } catch(e) {}
+executeGlobalScript(`for (const a9 in {})
+                       continue;`);
+try { if (Inst19 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1674,1682,58>",(Function)); Inst19++; } } catch(e) {}
+Function(`for (const a10 in {})
+            continue;`)();
+try { if (Inst20 <= 1000 && typeof (executeGlobalScript) != "undefined") {_RecordType("<1733,1752,60>",(executeGlobalScript)); Inst20++; } } catch(e) {}
+executeGlobalScript(`if (true)
+                     {
+                       for (const a11 in {})
+                         continue;
+                     }`);
+try { if (Inst21 <= 1000 && typeof (Function) != "undefined") {_RecordType("<1893,1901,65>",(Function)); Inst21++; } } catch(e) {}
+Function(`if (true)
+          {
+            for (const a12 in {})
+              continue;
+          }`)();
+/******************************************************************************/
+
+try { if (Inst22 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2093,2106,72>",(reportCompare)); Inst22++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst23 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<2127,2140,73>",(reportCompare)); Inst23++; } } catch(e) {}
+  reportCompare(true, true);
+}
+
+try { if (Inst24 <= 1000 && typeof (print) != "undefined") {_RecordType("<2157,2162,76>",(print)); Inst24++; } } catch(e) {}
+print("Tests complete");
+

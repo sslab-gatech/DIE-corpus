@@ -1,0 +1,133 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// Make sure we invalidate missing property caches, if the property is shadowed on the proto chain.  Also verify it all works with object type specialization.
+var SimpleObject = function () {
+  this.a = 1;
+try { if (Inst1 <= 1000 && typeof (this.a) != "undefined") {_RecordType("<561,567,7>",(this.a)); Inst1++; } } catch(e) {}
+  this.b = 2;
+try { if (Inst2 <= 1000 && typeof (this.b) != "undefined") {_RecordType("<575,581,8>",(this.b)); Inst2++; } } catch(e) {}
+};
+try { if (Inst0 <= 1000 && typeof (SimpleObject) != "undefined") {_RecordType("<530,542,6>",(SimpleObject)); Inst0++; } } catch(e) {}
+
+var p = {};
+try { if (Inst3 <= 1000 && typeof (p) != "undefined") {_RecordType("<595,596,11>",(p)); Inst3++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (p) != "undefined") {_RecordType("<628,629,12>",(p)); Inst6++; } } catch(e) {}
+SimpleObject.prototype = p;
+try { if (Inst4 <= 1000 && typeof (SimpleObject.prototype) != "undefined") {_RecordType("<603,625,12>",(SimpleObject.prototype)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (SimpleObject) != "undefined") {_RecordType("<603,615,12>",(SimpleObject)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (SimpleObject) != "undefined") {_RecordType("<643,655,13>",(SimpleObject)); Inst8++; } } catch(e) {}
+var o = new SimpleObject();
+try { if (Inst7 <= 1000 && typeof (o) != "undefined") {_RecordType("<635,636,13>",(o)); Inst7++; } } catch(e) {}
+
+try { if (Inst9 <= 1000 && typeof (test) != "undefined") {_RecordType("<669,673,15>",(test)); Inst9++; } } catch(e) {}
+function test() {
+try { if (Inst11 <= 1000 && typeof (o.a) != "undefined") {_RecordType("<688,691,16>",(o.a)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (o) != "undefined") {_RecordType("<688,689,16>",(o)); Inst12++; } } catch(e) {}
+  var a = o.a;
+try { if (Inst10 <= 1000 && typeof (a) != "undefined") {_RecordType("<684,685,16>",(a)); Inst10++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (o.b) != "undefined") {_RecordType("<703,706,17>",(o.b)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (o) != "undefined") {_RecordType("<703,704,17>",(o)); Inst15++; } } catch(e) {}
+  var b = o.b;
+try { if (Inst13 <= 1000 && typeof (b) != "undefined") {_RecordType("<699,700,17>",(b)); Inst13++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (o.m) != "undefined") {_RecordType("<718,721,18>",(o.m)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (o) != "undefined") {_RecordType("<718,719,18>",(o)); Inst18++; } } catch(e) {}
+  var m = o.m;
+try { if (Inst16 <= 1000 && typeof (m) != "undefined") {_RecordType("<714,715,18>",(m)); Inst16++; } } catch(e) {}
+try { if (Inst19 <= 1000 && typeof (print) != "undefined") {_RecordType("<725,730,19>",(print)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (m) != "undefined") {_RecordType("<742,743,19>",(m)); Inst20++; } } catch(e) {}
+  print("o.m = " + m);
+} // Run once, walk the proto chain on the slow path not finding property v anywhere, cache it.
+
+
+try { if (Inst21 <= 1000 && typeof (test) != "undefined") {_RecordType("<844,848,23>",(test)); Inst21++; } } catch(e) {}
+test(); // Time to do simple JIT
+// From JIT-ed code retrieve the value of v (undefined) from the missing property cache.
+
+try { if (Inst22 <= 1000 && typeof (test) != "undefined") {_RecordType("<967,971,26>",(test)); Inst22++; } } catch(e) {}
+test(); // Time to do full JIT (including object type specialization).
+// From JIT-ed code retrieve the value of v (undefined) from the missing property cache.
+
+try { if (Inst23 <= 1000 && typeof (test) != "undefined") {_RecordType("<1128,1132,29>",(test)); Inst23++; } } catch(e) {}
+test(); // Now add the property to the prototype, which should invalidate the cache, and force bailout from JIT-ed code.
+
+p.m = 0; // Verify we get the new value now.
+try { if (Inst24 <= 1000 && typeof (p.m) != "undefined") {_RecordType("<1250,1253,31>",(p.m)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (p) != "undefined") {_RecordType("<1250,1251,31>",(p)); Inst25++; } } catch(e) {}
+
+try { if (Inst26 <= 1000 && typeof (test) != "undefined") {_RecordType("<1296,1300,33>",(test)); Inst26++; } } catch(e) {}
+test();
+

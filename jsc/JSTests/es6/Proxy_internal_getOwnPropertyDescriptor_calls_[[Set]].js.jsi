@@ -1,0 +1,101 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (test) != "undefined") {_RecordType("<9,13,1>",(test)); Inst0++; } } catch(e) {}
+function test() {
+  // [[Set]] -> [[GetOwnProperty]]
+  var gopd = [];
+try { if (Inst1 <= 1000 && typeof (gopd) != "undefined") {_RecordType("<59,63,3>",(gopd)); Inst1++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<84,89,4>",(Proxy)); Inst3++; } } catch(e) {}
+  var p = new Proxy({}, {
+    getOwnPropertyDescriptor: function (o, v) {
+try { if (Inst4 <= 1000 && typeof (o) != "undefined") {_RecordType("<136,137,5>",(o)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (v) != "undefined") {_RecordType("<139,140,5>",(v)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (gopd.push) != "undefined") {_RecordType("<150,159,6>",(gopd.push)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (gopd) != "undefined") {_RecordType("<150,154,6>",(gopd)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (v) != "undefined") {_RecordType("<160,161,6>",(v)); Inst8++; } } catch(e) {}
+      gopd.push(v);
+try { if (Inst9 <= 1000 && typeof (Object.getOwnPropertyDescriptor) != "undefined") {_RecordType("<177,208,7>",(Object.getOwnPropertyDescriptor)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (Object) != "undefined") {_RecordType("<177,183,7>",(Object)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (o) != "undefined") {_RecordType("<209,210,7>",(o)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (v) != "undefined") {_RecordType("<212,213,7>",(v)); Inst12++; } } catch(e) {}
+      return Object.getOwnPropertyDescriptor(o, v);
+    }
+  });
+try { if (Inst2 <= 1000 && typeof (p) != "undefined") {_RecordType("<76,77,4>",(p)); Inst2++; } } catch(e) {}
+  p.foo = 1;
+try { if (Inst13 <= 1000 && typeof (p.foo) != "undefined") {_RecordType("<230,235,10>",(p.foo)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (p) != "undefined") {_RecordType("<230,231,10>",(p)); Inst14++; } } catch(e) {}
+  p.bar = 1;
+try { if (Inst15 <= 1000 && typeof (p.bar) != "undefined") {_RecordType("<243,248,11>",(p.bar)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (p) != "undefined") {_RecordType("<243,244,11>",(p)); Inst16++; } } catch(e) {}
+try { if (Inst17 <= 1000 && typeof (gopd) != "undefined") {_RecordType("<263,267,12>",(gopd)); Inst17++; } } catch(e) {}
+  return gopd + '' === "foo,bar";
+}
+
+try { if (Inst18 <= 1000 && typeof (test) != "undefined") {_RecordType("<296,300,15>",(test)); Inst18++; } } catch(e) {}
+if (!test()) {
+try { if (Inst19 <= 1000 && typeof (Error) != "undefined") {_RecordType("<318,323,16>",(Error)); Inst19++; } } catch(e) {}
+  throw new Error("Test failed");
+}
+

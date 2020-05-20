@@ -1,0 +1,94 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (console.log) != "undefined") {_RecordType("<0,11,1>",(console.log)); Inst0++; } } catch(e) {}try { if (Inst1 <= 1000 && typeof (console) != "undefined") {_RecordType("<0,7,1>",(console)); Inst1++; } } catch(e) {}
+console.log("This tests that converting a boxed double to an integer does not crash the register allocator.");
+
+try { if (Inst2 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<121,137,3>",(boxedDoubleToInt)); Inst2++; } } catch(e) {}
+function boxedDoubleToInt(x, y) {
+try { if (Inst3 <= 1000 && typeof (x) != "undefined") {_RecordType("<138,139,3>",(x)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (y) != "undefined") {_RecordType("<141,142,3>",(y)); Inst4++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (x) != "undefined") {_RecordType("<156,157,4>",(x)); Inst6++; } } catch(e) {}
+  var y = x / 2;
+try { if (Inst5 <= 1000 && typeof (y) != "undefined") {_RecordType("<152,153,4>",(y)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (y) != "undefined") {_RecordType("<173,174,5>",(y)); Inst8++; } } catch(e) {}
+  var z = y + 2;
+try { if (Inst7 <= 1000 && typeof (z) != "undefined") {_RecordType("<169,170,5>",(z)); Inst7++; } } catch(e) {}
+try { if (Inst9 <= 1000 && typeof (y) != "undefined") {_RecordType("<190,191,6>",(y)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (z) != "undefined") {_RecordType("<199,200,6>",(z)); Inst10++; } } catch(e) {}
+  return (y | 1) + z;
+}
+
+try { if (Inst11 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<205,221,9>",(boxedDoubleToInt)); Inst11++; } } catch(e) {}
+boxedDoubleToInt(1, 2);
+try { if (Inst12 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<229,245,10>",(boxedDoubleToInt)); Inst12++; } } catch(e) {}
+boxedDoubleToInt(3, 4);
+try { if (Inst13 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<253,269,11>",(boxedDoubleToInt)); Inst13++; } } catch(e) {}
+boxedDoubleToInt(5, 6);
+try { if (Inst14 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<277,293,12>",(boxedDoubleToInt)); Inst14++; } } catch(e) {}
+boxedDoubleToInt(7, 8);
+try { if (Inst15 <= 1000 && typeof (boxedDoubleToInt) != "undefined") {_RecordType("<301,317,13>",(boxedDoubleToInt)); Inst15++; } } catch(e) {}
+boxedDoubleToInt(9, 10);
+

@@ -1,0 +1,211 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2015 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --noverify-heap --noenable-slow-asserts
+// Flags: --opt --no-always-opt
+// --noverify-heap and --noenable-slow-asserts are set because the test is too
+// slow with it on.
+// Ensure that keyed stores work, and optimized functions learn if the
+// store required change to dictionary mode. Verify that stores that grow
+// the array into large object space don't cause a deopt.
+(function () {
+  var a = [];
+try { if (Inst0 <= 1000 && typeof (a) != "undefined") {_RecordType("<595,596,12>",(a)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (foo) != "undefined") {_RecordType("<615,618,14>",(foo)); Inst1++; } } catch(e) {}
+  function foo(a, i) {
+try { if (Inst2 <= 1000 && typeof (a) != "undefined") {_RecordType("<619,620,14>",(a)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (i) != "undefined") {_RecordType("<622,623,14>",(i)); Inst3++; } } catch(e) {}
+    a[i] = 5.3;
+try { if (Inst4 <= 1000 && typeof (a[i]) != "undefined") {_RecordType("<631,635,15>",(a[i])); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (a) != "undefined") {_RecordType("<631,632,15>",(a)); Inst5++; } } catch(e) {}
+  }
+
+try { if (Inst6 <= 1000 && typeof (foo) != "undefined") {_RecordType("<650,653,18>",(foo)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<654,655,18>",(a)); Inst7++; } } catch(e) {}
+  foo(a, 1);
+try { if (Inst8 <= 1000 && typeof (foo) != "undefined") {_RecordType("<663,666,19>",(foo)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<667,668,19>",(a)); Inst9++; } } catch(e) {}
+  foo(a, 2);
+try { if (Inst10 <= 1000 && typeof (foo) != "undefined") {_RecordType("<676,679,20>",(foo)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (a) != "undefined") {_RecordType("<680,681,20>",(a)); Inst11++; } } catch(e) {}
+  foo(a, 3);
+  a[3] = 0;
+try { if (Inst12 <= 1000 && typeof (a[3]) != "undefined") {_RecordType("<689,693,21>",(a[3])); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (a) != "undefined") {_RecordType("<689,690,21>",(a)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (foo) != "undefined") {_RecordType("<701,704,22>",(foo)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (a) != "undefined") {_RecordType("<705,706,22>",(a)); Inst15++; } } catch(e) {}
+  foo(a, 3);
+try { if (Inst16 <= 1000 && typeof (a[3]) != "undefined") {_RecordType("<714,718,23>",(a[3])); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (a) != "undefined") {_RecordType("<714,715,23>",(a)); Inst17++; } } catch(e) {}
+  a[3];
+  5.3;
+try { if (Inst18 <= 1000 && typeof (foo) != "undefined") {_RecordType("<729,732,25>",(foo)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (a) != "undefined") {_RecordType("<733,734,25>",(a)); Inst19++; } } catch(e) {}
+  foo(a, 50000);
+try { if (Inst20 <= 1000 && typeof (foo) != "undefined") {_RecordType("<746,749,26>",(foo)); Inst20++; } } catch(e) {}
+  foo();
+  var b = [];
+try { if (Inst21 <= 1000 && typeof (b) != "undefined") {_RecordType("<759,760,27>",(b)); Inst21++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (foo) != "undefined") {_RecordType("<769,772,28>",(foo)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (b) != "undefined") {_RecordType("<773,774,28>",(b)); Inst23++; } } catch(e) {}
+  foo(b, 1);
+try { if (Inst24 <= 1000 && typeof (foo) != "undefined") {_RecordType("<782,785,29>",(foo)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (b) != "undefined") {_RecordType("<786,787,29>",(b)); Inst25++; } } catch(e) {}
+  foo(b, 2); // Put b in dictionary mode.
+
+  b[10000] = 5;
+try { if (Inst26 <= 1000 && typeof (b[10000]) != "undefined") {_RecordType("<825,833,31>",(b[10000])); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (b) != "undefined") {_RecordType("<825,826,31>",(b)); Inst27++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (foo) != "undefined") {_RecordType("<841,844,32>",(foo)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (b) != "undefined") {_RecordType("<845,846,32>",(b)); Inst29++; } } catch(e) {}
+  foo(b, 3);
+try { if (Inst30 <= 1000 && typeof (foo) != "undefined") {_RecordType("<854,857,33>",(foo)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (b) != "undefined") {_RecordType("<858,859,33>",(b)); Inst31++; } } catch(e) {}
+  foo(b, 50000);
+try { if (Inst32 <= 1000 && typeof (foo) != "undefined") {_RecordType("<871,874,34>",(foo)); Inst32++; } } catch(e) {}
+  foo();
+})();
+
+(function () {
+try { if (Inst34 <= 1000 && typeof (Array) != "undefined") {_RecordType("<914,919,38>",(Array)); Inst34++; } } catch(e) {}
+  var a = new Array(10);
+try { if (Inst33 <= 1000 && typeof (a) != "undefined") {_RecordType("<906,907,38>",(a)); Inst33++; } } catch(e) {}
+
+try { if (Inst35 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<937,941,40>",(foo2)); Inst35++; } } catch(e) {}
+  function foo2(a, i) {
+try { if (Inst36 <= 1000 && typeof (a) != "undefined") {_RecordType("<942,943,40>",(a)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (i) != "undefined") {_RecordType("<945,946,40>",(i)); Inst37++; } } catch(e) {}
+    a[i] = 50;
+try { if (Inst38 <= 1000 && typeof (a[i]) != "undefined") {_RecordType("<954,958,41>",(a[i])); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (a) != "undefined") {_RecordType("<954,955,41>",(a)); Inst39++; } } catch(e) {}
+  } // The KeyedStoreIC will learn GROW_MODE.
+
+
+try { if (Inst40 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1015,1019,45>",(foo2)); Inst40++; } } catch(e) {}try { if (Inst41 <= 1000 && typeof (a) != "undefined") {_RecordType("<1020,1021,45>",(a)); Inst41++; } } catch(e) {}
+  foo2(a, 10);
+try { if (Inst42 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1030,1034,46>",(foo2)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (a) != "undefined") {_RecordType("<1035,1036,46>",(a)); Inst43++; } } catch(e) {}
+  foo2(a, 12);
+try { if (Inst44 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1045,1049,47>",(foo2)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (a) != "undefined") {_RecordType("<1050,1051,47>",(a)); Inst45++; } } catch(e) {}
+  foo2(a, 31);
+try { if (Inst46 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1060,1064,48>",(foo2)); Inst46++; } } catch(e) {}try { if (Inst47 <= 1000 && typeof (a) != "undefined") {_RecordType("<1065,1066,48>",(a)); Inst47++; } } catch(e) {}
+  foo2(a, 40);
+try { if (Inst48 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1075,1079,49>",(foo2)); Inst48++; } } catch(e) {}
+  foo2();
+  // Grow a large array into large object space through the keyed store
+  // without deoptimizing. Grow by 9s. If we set elements too sparsely, the
+  // array will convert to dictionary mode.
+try { if (Inst50 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1285,1290,53>",(Array)); Inst50++; } } catch(e) {}
+  a = new Array(99999);
+try { if (Inst49 <= 1000 && typeof (a) != "undefined") {_RecordType("<1277,1278,53>",(a)); Inst49++; } } catch(e) {}
+
+  for (var i = 0; i < 263000; i += 9) {
+try { if (Inst51 <= 1000 && typeof (i) != "undefined") {_RecordType("<1311,1312,55>",(i)); Inst51++; } } catch(e) {}try { if (Inst52 <= 1000 && typeof (i) != "undefined") {_RecordType("<1318,1319,55>",(i)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (i) != "undefined") {_RecordType("<1330,1331,55>",(i)); Inst53++; } } catch(e) {}
+try { if (Inst54 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1344,1348,56>",(foo2)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (a) != "undefined") {_RecordType("<1349,1350,56>",(a)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (i) != "undefined") {_RecordType("<1352,1353,56>",(i)); Inst56++; } } catch(e) {}
+    foo2(a, i);
+  } // Verify that we are over 1 page in size, and foo2 remains optimized.
+  // This means we've smoothly transitioned to allocating in large object
+  // space.
+
+
+try { if (Inst57 <= 1000 && typeof (a.length) != "undefined") {_RecordType("<1521,1529,62>",(a.length)); Inst57++; } } catch(e) {}try { if (Inst58 <= 1000 && typeof (a) != "undefined") {_RecordType("<1521,1522,62>",(a)); Inst58++; } } catch(e) {}
+  a.length * 4 > 1024 * 1024;
+try { if (Inst59 <= 1000 && typeof (foo2) != "undefined") {_RecordType("<1551,1555,63>",(foo2)); Inst59++; } } catch(e) {}
+  foo2();
+})();
+

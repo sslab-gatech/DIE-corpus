@@ -1,0 +1,136 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+
+/*
+ *******************************UNIT TEST FOR SWITCH CASE OPTIMIZATION*******************************
+ *   Testing for normal execution with repeat integers and empty case statements
+ */
+
+/*
+ ************************************************** TEST 1******************************************************
+ *   Tests with all integer arguments
+ */
+try { if (Inst0 <= 1000 && typeof (f) != "undefined") {_RecordType("<726,727,15>",(f)); Inst0++; } } catch(e) {}
+function f(x) {
+try { if (Inst1 <= 1000 && typeof (x) != "undefined") {_RecordType("<728,729,15>",(x)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (x) != "undefined") {_RecordType("<743,744,16>",(x)); Inst2++; } } catch(e) {}
+  switch (x) {
+    case 1:
+    case 2:
+    case 2:
+    case 4:
+    case 4:
+try { if (Inst3 <= 1000 && typeof (print) != "undefined") {_RecordType("<814,819,22>",(print)); Inst3++; } } catch(e) {}
+      print(5);
+      break;
+
+    case 4:
+try { if (Inst4 <= 1000 && typeof (print) != "undefined") {_RecordType("<856,861,26>",(print)); Inst4++; } } catch(e) {}
+      print(6);
+      break;
+
+    case 6:
+try { if (Inst5 <= 1000 && typeof (print) != "undefined") {_RecordType("<898,903,30>",(print)); Inst5++; } } catch(e) {}
+      print(7);
+      break;
+
+    case 8:
+try { if (Inst6 <= 1000 && typeof (print) != "undefined") {_RecordType("<940,945,34>",(print)); Inst6++; } } catch(e) {}
+      print(8);
+      break;
+
+    case 9:
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<982,987,38>",(print)); Inst7++; } } catch(e) {}
+      print(9);
+      break;
+
+    case 10:
+try { if (Inst8 <= 1000 && typeof (print) != "undefined") {_RecordType("<1025,1030,42>",(print)); Inst8++; } } catch(e) {}
+      print(10);
+      break;
+
+    default:
+try { if (Inst9 <= 1000 && typeof (print) != "undefined") {_RecordType("<1069,1074,46>",(print)); Inst9++; } } catch(e) {}
+      print('default');
+      break;
+  }
+}
+
+try { if (Inst10 <= 1000 && typeof (f) != "undefined") {_RecordType("<1107,1108,51>",(f)); Inst10++; } } catch(e) {}
+f(1);
+
+for (i = 1; i <= 10; i++) {
+try { if (Inst11 <= 1000 && typeof (i) != "undefined") {_RecordType("<1119,1120,53>",(i)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (i) != "undefined") {_RecordType("<1126,1127,53>",(i)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (i) != "undefined") {_RecordType("<1135,1136,53>",(i)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (f) != "undefined") {_RecordType("<1144,1145,54>",(f)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i) != "undefined") {_RecordType("<1146,1147,54>",(i)); Inst15++; } } catch(e) {}
+  f(i);
+}
+

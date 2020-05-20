@@ -1,0 +1,140 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* Any copyright is dedicated to the Public Domain.
+ * http://creativecommons.org/licenses/publicdomain/ */
+// Test details of the implementation of ToPropertyDescriptor exposed to scripts
+// thanks to scriptable proxies.
+// A LoggingProxy object logs certain operations performed on it.
+var log = [];
+try { if (Inst0 <= 1000 && typeof (log) != "undefined") {_RecordType("<292,295,6>",(log)); Inst0++; } } catch(e) {}
+
+try { if (Inst1 <= 1000 && typeof (LoggingProxy) != "undefined") {_RecordType("<312,324,8>",(LoggingProxy)); Inst1++; } } catch(e) {}
+function LoggingProxy(target) {
+try { if (Inst2 <= 1000 && typeof (target) != "undefined") {_RecordType("<325,331,8>",(target)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<348,353,9>",(Proxy)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (target) != "undefined") {_RecordType("<354,360,9>",(target)); Inst4++; } } catch(e) {}
+  return new Proxy(target, {
+    has: function (t, id) {
+try { if (Inst5 <= 1000 && typeof (t) != "undefined") {_RecordType("<383,384,10>",(t)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (id) != "undefined") {_RecordType("<386,388,10>",(id)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (log.push) != "undefined") {_RecordType("<398,406,11>",(log.push)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (log) != "undefined") {_RecordType("<398,401,11>",(log)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (id) != "undefined") {_RecordType("<416,418,11>",(id)); Inst9++; } } catch(e) {}
+      log.push("has " + id);
+try { if (Inst10 <= 1000 && typeof (id) != "undefined") {_RecordType("<434,436,12>",(id)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (t) != "undefined") {_RecordType("<440,441,12>",(t)); Inst11++; } } catch(e) {}
+      return id in t;
+    },
+    get: function (t, id) {
+try { if (Inst12 <= 1000 && typeof (t) != "undefined") {_RecordType("<469,470,14>",(t)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (id) != "undefined") {_RecordType("<472,474,14>",(id)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (log.push) != "undefined") {_RecordType("<484,492,15>",(log.push)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (log) != "undefined") {_RecordType("<484,487,15>",(log)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (id) != "undefined") {_RecordType("<502,504,15>",(id)); Inst16++; } } catch(e) {}
+      log.push("get " + id);
+try { if (Inst17 <= 1000 && typeof (t[id]) != "undefined") {_RecordType("<520,525,16>",(t[id])); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (t) != "undefined") {_RecordType("<520,521,16>",(t)); Inst18++; } } catch(e) {}
+      return t[id];
+    }
+  });
+} // Tragically, we use separate code to implement Object.defineProperty on
+// arrays and on proxies. So run the test three times.
+
+
+try { if (Inst20 <= 1000 && typeof (Proxy) != "undefined") {_RecordType("<704,709,23>",(Proxy)); Inst20++; } } catch(e) {}
+var testSubjects = [{}, [], new Proxy({}, {})];
+try { if (Inst19 <= 1000 && typeof (testSubjects) != "undefined") {_RecordType("<676,688,23>",(testSubjects)); Inst19++; } } catch(e) {}
+
+for (var obj of testSubjects) {
+try { if (Inst21 <= 1000 && typeof (obj) != "undefined") {_RecordType("<730,733,25>",(obj)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (testSubjects) != "undefined") {_RecordType("<737,749,25>",(testSubjects)); Inst22++; } } catch(e) {}
+  log = []; // Object.defineProperty is one public method that performs a
+try { if (Inst23 <= 1000 && typeof (log) != "undefined") {_RecordType("<755,758,26>",(log)); Inst23++; } } catch(e) {}
+  // ToPropertyDescriptor call.
+
+try { if (Inst24 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<862,883,29>",(Object.defineProperty)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (Object) != "undefined") {_RecordType("<862,868,29>",(Object)); Inst25++; } } catch(e) {}try { if (Inst26 <= 1000 && typeof (obj) != "undefined") {_RecordType("<884,887,29>",(obj)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (LoggingProxy) != "undefined") {_RecordType("<898,910,29>",(LoggingProxy)); Inst27++; } } catch(e) {}
+  Object.defineProperty(obj, "x", new LoggingProxy({
+    enumerable: true,
+    configurable: true,
+    value: 3,
+    writable: true
+  })); // It should have performed exactly these operations on the proxy, in this
+  // order. See ES6 rev 24 (2014 April 27) 6.2.4.5 ToPropertyDescriptor.
+
+try { if (Inst28 <= 1000 && typeof (log) != "undefined") {_RecordType("<1150,1153,37>",(log)); Inst28++; } } catch(e) {}
+  log;
+  ["has enumerable", "get enumerable", "has configurable", "get configurable", "has value", "get value", "has writable", "get writable", "has get", "has set"];
+}
+
+try { if (Inst29 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1318,1331,41>",(reportCompare)); Inst29++; } } catch(e) {}
+reportCompare(0, 0);
+

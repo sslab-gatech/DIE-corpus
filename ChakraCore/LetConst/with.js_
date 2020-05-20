@@ -1,0 +1,80 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// 0
+{
+  with ({
+    x: 0
+  }) {
+    print(x);
+  }
+  let x = 1;
+} // 0
+
+{
+  eval('with({x:0}) { print(x) }');
+  let x = 1;
+} // 0
+
+{
+  let f = function () {
+    with ({
+      x: 0
+    }) {
+      print(x);
+    }
+  };
+
+  let x = 1;
+  f();
+} // Reference error.
+
+{
+  try {
+    with ({}) {
+      print(x);
+    }
+    let x = 1;
+  } catch (e) {
+    print(e);
+  }
+} // Reference error.
+
+{
+  try {
+    eval('with({}) { print(x) }');
+    let x = 1;
+  } catch (e) {
+    print(e);
+  }
+} // 1
+
+{
+  with ({
+    x: 0
+  }) {
+    let x = 1;
+    print(x);
+  }
+} // Reference error.
+
+{
+  try {
+    with ({
+      x: 0
+    }) {
+      print(x);
+      let x = 1;
+    }
+  } catch (e) {
+    print(e);
+  }
+} // string
+
+with ({
+  x: 'x'
+}) {
+  print(typeof x);
+}
+let x = 5;

@@ -1,0 +1,93 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |reftest| skip-if(!this.hasOwnProperty("Intl"))
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// So many non-existent four letter language codes to pick from.
+const languageTags = {
+  "Flob": "flob",
+  "ZORK": "zork",
+  "Blah-latn": "blah-Latn",
+  "QuuX-latn-us": "quux-Latn-US",
+  "SPAM-gb-x-Sausages-BACON-eggs": "spam-GB-x-sausages-bacon-eggs"
+};
+try { if (Inst0 <= 1000 && typeof (languageTags) != "undefined") {_RecordType("<328,340,7>",(languageTags)); Inst0++; } } catch(e) {}
+
+for (let [tag, canonical] of Object.entries(languageTags)) {
+try { if (Inst1 <= 1000 && typeof (tag) != "undefined") {_RecordType("<524,527,15>",(tag)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (canonical) != "undefined") {_RecordType("<529,538,15>",(canonical)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Object.entries) != "undefined") {_RecordType("<543,557,15>",(Object.entries)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (Object) != "undefined") {_RecordType("<543,549,15>",(Object)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (languageTags) != "undefined") {_RecordType("<558,570,15>",(languageTags)); Inst5++; } } catch(e) {}
+try { if (Inst6 <= 1000 && typeof (Intl.getCanonicalLocales(tag)[0]) != "undefined") {_RecordType("<577,609,16>",(Intl.getCanonicalLocales(tag)[0])); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Intl.getCanonicalLocales) != "undefined") {_RecordType("<577,601,16>",(Intl.getCanonicalLocales)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Intl) != "undefined") {_RecordType("<577,581,16>",(Intl)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (tag) != "undefined") {_RecordType("<602,605,16>",(tag)); Inst9++; } } catch(e) {}
+  Intl.getCanonicalLocales(tag)[0];
+try { if (Inst10 <= 1000 && typeof (canonical) != "undefined") {_RecordType("<613,622,17>",(canonical)); Inst10++; } } catch(e) {}
+  canonical;
+}
+
+try { if (Inst11 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<638,651,20>",(reportCompare)); Inst11++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst12 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<672,685,21>",(reportCompare)); Inst12++; } } catch(e) {}
+  reportCompare(0, 0);
+}
+

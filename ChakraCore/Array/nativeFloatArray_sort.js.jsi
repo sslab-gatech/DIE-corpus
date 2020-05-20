@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var a = [3.3, 2.2, 1];
+try { if (Inst0 <= 1000 && typeof (a) != "undefined") {_RecordType("<371,372,5>",(a)); Inst0++; } } catch(e) {}
+Array.prototype[4] = 10;
+try { if (Inst1 <= 1000 && typeof (Array.prototype[4]) != "undefined") {_RecordType("<390,408,6>",(Array.prototype[4])); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<390,405,6>",(Array.prototype)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (Array) != "undefined") {_RecordType("<390,395,6>",(Array)); Inst3++; } } catch(e) {}
+
+try { if (Inst4 <= 1000 && typeof (Test) != "undefined") {_RecordType("<425,429,8>",(Test)); Inst4++; } } catch(e) {}
+function Test() {
+try { if (Inst5 <= 1000 && typeof (a.sort) != "undefined") {_RecordType("<436,442,9>",(a.sort)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (a) != "undefined") {_RecordType("<436,437,9>",(a)); Inst6++; } } catch(e) {}
+  a.sort(function () {
+    return -1;
+  });
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<480,485,12>",(print)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (a) != "undefined") {_RecordType("<486,487,12>",(a)); Inst8++; } } catch(e) {}
+  print(a);
+}
+
+try { if (Inst9 <= 1000 && typeof (Test) != "undefined") {_RecordType("<493,497,15>",(Test)); Inst9++; } } catch(e) {}
+Test();
+

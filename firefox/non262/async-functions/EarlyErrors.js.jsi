@@ -1,0 +1,117 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+var BUGNUMBER = 1185106;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<4,13,1>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = "EarlyErrors for async function";
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<29,36,2>",(summary)); Inst1++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (print) != "undefined") {_RecordType("<73,78,3>",(print)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<79,88,3>",(BUGNUMBER)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (summary) != "undefined") {_RecordType("<98,105,3>",(summary)); Inst4++; } } catch(e) {}
+print(BUGNUMBER + ": " + summary);
+
+try { if (Inst5 <= 1000 && typeof (assertThrowsSE) != "undefined") {_RecordType("<118,132,5>",(assertThrowsSE)); Inst5++; } } catch(e) {}
+function assertThrowsSE(code) {
+try { if (Inst6 <= 1000 && typeof (code) != "undefined") {_RecordType("<133,137,5>",(code)); Inst6++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Reflect.parse) != "undefined") {_RecordType("<150,163,6>",(Reflect.parse)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Reflect) != "undefined") {_RecordType("<150,157,6>",(Reflect)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (code) != "undefined") {_RecordType("<164,168,6>",(code)); Inst9++; } } catch(e) {}
+  (() => Reflect.parse(code))();
+
+try { if (Inst10 <= 1000 && typeof (SyntaxError) != "undefined") {_RecordType("<177,188,8>",(SyntaxError)); Inst10++; } } catch(e) {}
+  SyntaxError;
+}
+
+try { if (Inst11 <= 1000 && typeof (Reflect) != "undefined") {_RecordType("<204,211,11>",(Reflect)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (Reflect.parse) != "undefined") {_RecordType("<231,244,11>",(Reflect.parse)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (Reflect) != "undefined") {_RecordType("<231,238,11>",(Reflect)); Inst13++; } } catch(e) {}
+if (typeof Reflect !== "undefined" && Reflect.parse) {
+  // If FormalParameters Contains AwaitExpression is true.
+  "async function a(k = await 3) {}";
+  "(async function(k = await 3) {})";
+  "(async function a(k = await 3) {})";
+  "'use strict'; async function eval() {}";
+  "'use strict'; (async function eval() {})";
+  "'use strict'; async function arguments() {}";
+  "'use strict'; (async function arguments() {})";
+  "async function a(x) { let x; }";
+  "(async function(x) { let x; })";
+  "(async function a(x) { let x; })";
+  "async function a(k = super.prop) { }";
+  "(async function(k = super.prop) {})";
+  "(async function a(k = super.prop) {})";
+  "async function a() { super.prop(); }";
+  "(async function() { super.prop(); })";
+  "(async function a() { super.prop(); })";
+  "async function a(k = super()) {}";
+  "(async function(k = super()) {})";
+  "(async function a(k = super()) {})";
+  "async function a() { super(); }";
+  "(async function() { super(); })";
+  "(async function a() { super(); })";
+}
+
+try { if (Inst14 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1220,1233,37>",(reportCompare)); Inst14++; } } catch(e) {}
+if (typeof reportCompare === "function") {
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1254,1267,38>",(reportCompare)); Inst15++; } } catch(e) {}
+  reportCompare(true, true);
+}
+

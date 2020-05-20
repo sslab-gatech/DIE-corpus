@@ -1,0 +1,750 @@
+console.log("Test behaviour of strict mode");
+var globalThisTest;
+
+function testThis() {
+  "use strict";
+
+  return this;
+}
+
+function testThisDotAccess() {
+  "use strict";
+
+  return this.length;
+}
+
+function testThisBracketAccess(prop) {
+  "use strict";
+
+  return this[prop];
+}
+
+function testGlobalAccess() {
+  return testThis();
+}
+
+function testLineContinuation() {
+  "use stric\
+t";
+
+  return this;
+}
+
+function testEscapeSequence() {
+  "use\u0020strict";
+
+  return this;
+}
+
+testThis.call(null);
+testThis.call(1);
+testThis.call(true);
+testThis.call(false);
+testThis.call(undefined);
+testLineContinuation.call(undefined) === undefined;
+testEscapeSequence.call(undefined) === undefined;
+testThis.call('a string');
+testThisDotAccess.call('a string');
+
+try {
+  testThisDotAccess.call(null);
+} catch (e) {
+  ;
+}
+
+try {
+  testThisDotAccess.call(undefined);
+} catch (e) {
+  ;
+}
+
+try {
+  testThisDotAccess.call(true);
+} catch (e) {
+  ;
+}
+
+try {
+  testThisDotAccess.call(false);
+} catch (e) {
+  ;
+}
+
+try {
+  testThisDotAccess.call(1);
+} catch (e) {
+  ;
+}
+
+testThisBracketAccess.call('a string', 'length');
+
+try {
+  testThisBracketAccess.call(null, 'length');
+} catch (e) {
+  ;
+}
+
+try {
+  testThisBracketAccess.call(undefined, 'length');
+} catch (e) {
+  ;
+}
+
+try {
+  testThisBracketAccess.call(true, 'length');
+} catch (e) {
+  ;
+}
+
+try {
+  testThisBracketAccess.call(false, 'length');
+} catch (e) {
+  ;
+}
+
+try {
+  testThisBracketAccess.call(1, 'length');
+} catch (e) {
+  ;
+}
+
+try {
+  Function('"use strict"; return this;')();
+} catch (e) {
+  ;
+}
+
+try {
+  Function('"use strict"; with({});');
+} catch (e) {
+  ;
+}
+
+testGlobalAccess();
+testThis.call();
+testThis.apply();
+testThis.call(undefined);
+testThis.apply(undefined);
+
+try {
+  (function () {
+    'use strict';
+
+    arguments.callee;
+  })();
+} catch (e) {
+  ;
+}
+
+(function () {
+  'use strict';
+
+  return arguments.caller;
+})();
+
+try {
+  (function f() {
+    'use strict';
+
+    f.arguments;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f() {
+    'use strict';
+
+    f.caller;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f() {
+    'use strict';
+
+    f.arguments = 5;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f() {
+    'use strict';
+
+    f.caller = 5;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function (arg) {
+    'use strict';
+
+    arguments.callee;
+  })();
+} catch (e) {
+  ;
+}
+
+(function (arg) {
+  'use strict';
+
+  return arguments.caller;
+})();
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    f.arguments;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    f.caller;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    f.arguments = 5;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    f.caller = 5;
+  })();
+} catch (e) {
+  ;
+}
+
+(function a(a) {
+  'use strict';
+
+  return a + 2;
+})(40);
+
+var foo = function a(a) {
+  'use strict';
+
+  return a + 2;
+};
+
+foo(40);
+var o = {
+  foo: function a(a) {
+    'use strict';
+
+    return a + 2;
+  }
+};
+o.foo(40); // arguments/caller poisoning should be visible but not throw with 'in' & 'hasOwnProperty'.
+
+"caller" in function () {
+  "use strict";
+
+  ;
+};
+(function () {
+  "use strict";
+
+  ;
+}).hasOwnProperty("caller");
+
+(function () {
+  "use strict";
+
+  ;
+}).__proto__.hasOwnProperty("caller");
+
+"arguments" in function () {
+  "use strict";
+
+  ;
+};
+(function () {
+  "use strict";
+
+  ;
+}).hasOwnProperty("arguments");
+
+(function () {
+  "use strict";
+
+  ;
+}).__proto__.hasOwnProperty("arguments");
+
+try {
+  'use strict';
+} catch (e) {
+  ;
+}
+
+try {
+  'use strict';
+
+  for (;;) {
+    ;
+  }
+} catch (e) {
+  ;
+}
+
+var someDeclaredGlobal;
+aDeletableProperty = 'test';
+'use strict';
+
+if (0) {
+  someGlobal = 'Shouldn\'t be able to assign this.';
+}
+
+;
+true;
+;
+
+try {
+  'use strict';
+
+  someGlobal = 'Shouldn\'t be able to assign this.';
+  ;
+} catch (e) {
+  ;
+}
+
+try {
+  'use strict';
+
+  (function f() {
+    f = 'shouldn\'t be able to assign to function expression name';
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  'use strict';
+
+  eval('var introducedVariable = "FAIL: variable introduced into containing scope";');
+  introducedVariable;
+} catch (e) {
+  ;
+}
+
+var objectWithReadonlyProperty = {};
+Object.defineProperty(objectWithReadonlyProperty, "prop", {
+  value: "value",
+  writable: false
+});
+
+try {
+  'use strict';
+
+  objectWithReadonlyProperty.prop = 'fail';
+} catch (e) {
+  ;
+}
+
+try {
+  'use strict';
+
+  delete objectWithReadonlyProperty.prop;
+} catch (e) {
+  ;
+}
+
+readonlyPropName = "prop";
+
+try {
+  'use strict';
+
+  delete objectWithReadonlyProperty[readonlyPropName];
+} catch (e) {
+  ;
+}
+
+var global = this;
+
+try {
+  global.eval('"use strict"; if (0) ++arguments; true;');
+} catch (e) {
+  ;
+}
+
+(function (a) {
+  'use strict';
+
+  a = false;
+  return a !== arguments[0];
+})(true);
+
+(function (a) {
+  'use strict';
+
+  arguments[0] = false;
+  return a !== arguments[0];
+})(true);
+
+(function (a) {
+  'use strict';
+
+  a = false;
+  return arguments;
+})(true)[0];
+
+(function (a) {
+  'use strict';
+
+  arguments[0] = false;
+  return a;
+})(true);
+
+(function (a) {
+  'use strict';
+
+  arguments[0] = true;
+  return arguments;
+})(false)[0];
+(function () {
+  'use strict';
+
+  arguments[0] = true;
+  return arguments;
+})(false)[0];
+(function (a) {
+  'use strict';
+
+  arguments[0] = true;
+  a = false;
+  return arguments;
+})()[0];
+
+(function (a) {
+  'use strict';
+
+  arguments[0] = false;
+  a = true;
+  return a;
+})();
+
+(function (a) {
+  'use strict';
+
+  arguments[0] = true;
+  return arguments;
+})()[0];
+(function () {
+  'use strict';
+
+  arguments[0] = true;
+  return arguments;
+})()[0]; // Same tests again, this time forcing an activation to be created as well
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  a = false;
+  return a !== arguments[0];
+})(true);
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = false;
+  return a !== arguments[0];
+})(true);
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  a = false;
+  return arguments;
+})(true)[0];
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = false;
+  return a;
+})(true);
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = true;
+  return arguments;
+})(false)[0];
+(function () {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = true;
+  return arguments;
+})(false)[0];
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = true;
+  a = false;
+  return arguments;
+})()[0];
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = true;
+  return arguments;
+})()[0];
+
+(function (a) {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = false;
+  a = true;
+  return a;
+})();
+
+(function () {
+  'use strict';
+
+  var local;
+
+  (function () {
+    local;
+  })();
+
+  arguments[0] = true;
+  return arguments;
+})()[0];
+'use strict';
+
+(function () {
+  var a = true;
+  eval('var a = false');
+  return a;
+})();
+
+(function () {
+  var a = true;
+  eval('"use strict"; var a = false');
+  return a;
+})();
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    return Object.getOwnPropertyDescriptor(f.__proto__, 'arguments').value;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    return Object.getOwnPropertyDescriptor(f.__proto__, 'caller').value;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    return Object.getOwnPropertyDescriptor(arguments, 'callee').value;
+  })();
+} catch (e) {
+  ;
+}
+
+try {
+  (function f(arg) {
+    'use strict';
+
+    return Object.getOwnPropertyDescriptor(arguments, 'caller');
+  })();
+} catch (e) {
+  ;
+}
+
+(function f(arg) {
+  'use strict';
+
+  var descriptor = Object.getOwnPropertyDescriptor(arguments, 'callee');
+  return descriptor.get === descriptor.set;
+})();
+
+(function f(arg) {
+  'use strict';
+
+  var descriptor = Object.getOwnPropertyDescriptor(f.__proto__, 'caller');
+  return descriptor.get === descriptor.set;
+})();
+
+(function f(arg) {
+  'use strict';
+
+  var descriptor = Object.getOwnPropertyDescriptor(f.__proto__, 'arguments');
+  return descriptor.get === descriptor.set;
+})();
+
+'use strict';
+
+(function f() {
+  for (var i in this) {
+    ;
+  }
+})();
+
+true;
+;
+var aGlobal = false;
+'use strict';
+
+try {
+  throw 1;
+} catch (e) {
+  aGlobal = true;
+}
+
+;
+aGlobal = false;
+'use strict';
+
+(function () {
+  try {
+    throw 1;
+  } catch (e) {
+    aGlobal = true;
+  }
+})();
+
+aGlobal;
+;
+aGlobal = false;
+
+(function () {
+  'use strict';
+
+  try {
+    throw 1;
+  } catch (e) {
+    aGlobal = true;
+  }
+})();
+
+aGlobal;
+;
+aGlobal = false;
+
+try {
+  throw 1;
+} catch (e) {
+  aGlobal = true;
+}
+
+;
+aGlobal = false;
+
+(function () {
+  try {
+    throw 1;
+  } catch (e) {
+    aGlobal = true;
+  }
+})();
+
+aGlobal;
+;
+aGlobal = false;
+
+(function () {
+  try {
+    throw 1;
+  } catch (e) {
+    aGlobal = true;
+  }
+})();
+
+aGlobal;
+; // Make sure this doesn't crash!
+
+String(Object.getOwnPropertyDescriptor(function () {
+  "use strict";
+
+  ;
+}.__proto__, "caller").get);

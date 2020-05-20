@@ -1,0 +1,24 @@
+console.log("Tests aliased uses of 'arguments'.");
+
+function foo() {
+  var result = 0;
+  var a = arguments;
+
+  for (var i = 0; i < a.length; ++i) {
+    result += a[i];
+  }
+
+  return result;
+}
+
+function bar(x) {
+  return foo(x);
+}
+
+silentTestPass = true;
+noInline(bar);
+
+for (var i = 0; i < 200; i++) {
+  // i = dfgIncrement({f:bar, i:i + 1, n:100}))
+  bar(42);
+}

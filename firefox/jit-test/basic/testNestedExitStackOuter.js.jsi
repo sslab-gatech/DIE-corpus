@@ -1,0 +1,139 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Test stack reconstruction after a nested exit
+try { if (Inst0 <= 1000 && typeof (testNestedExitStackInner) != "undefined") {_RecordType("<58,82,2>",(testNestedExitStackInner)); Inst0++; } } catch(e) {}
+function testNestedExitStackInner(j, counter) {
+try { if (Inst1 <= 1000 && typeof (j) != "undefined") {_RecordType("<83,84,2>",(j)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (counter) != "undefined") {_RecordType("<86,93,2>",(counter)); Inst2++; } } catch(e) {}
+try { if (Inst3 <= 1000 && typeof (counter) != "undefined") {_RecordType("<101,108,3>",(counter)); Inst3++; } } catch(e) {}
+  ++counter;
+  var b = 0;
+try { if (Inst4 <= 1000 && typeof (b) != "undefined") {_RecordType("<116,117,4>",(b)); Inst4++; } } catch(e) {}
+
+  for (var i = 1; i <= 9; i++) {
+try { if (Inst5 <= 1000 && typeof (i) != "undefined") {_RecordType("<135,136,6>",(i)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (i) != "undefined") {_RecordType("<142,143,6>",(i)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (i) != "undefined") {_RecordType("<150,151,6>",(i)); Inst7++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (b) != "undefined") {_RecordType("<163,164,7>",(b)); Inst8++; } } catch(e) {}
+    ++b;
+    var a; // Make sure that once everything has been traced we suddenly switch to
+try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<174,175,8>",(a)); Inst9++; } } catch(e) {}
+    // a different control flow the first time we run the outermost tree,
+    // triggering a side exit.
+
+try { if (Inst10 <= 1000 && typeof (j) != "undefined") {_RecordType("<363,364,12>",(j)); Inst10++; } } catch(e) {}
+    if (j < 9) {
+      a = 1;
+try { if (Inst11 <= 1000 && typeof (a) != "undefined") {_RecordType("<378,379,13>",(a)); Inst11++; } } catch(e) {}
+    } else {
+      a = 0;
+try { if (Inst12 <= 1000 && typeof (a) != "undefined") {_RecordType("<404,405,15>",(a)); Inst12++; } } catch(e) {}
+    }
+
+try { if (Inst13 <= 1000 && typeof (b) != "undefined") {_RecordType("<424,425,18>",(b)); Inst13++; } } catch(e) {}
+    ++b;
+try { if (Inst15 <= 1000 && typeof (a) != "undefined") {_RecordType("<436,437,19>",(a)); Inst15++; } } catch(e) {}
+    b += a;
+try { if (Inst14 <= 1000 && typeof (b) != "undefined") {_RecordType("<431,432,19>",(b)); Inst14++; } } catch(e) {}
+  }
+
+try { if (Inst16 <= 1000 && typeof (counter) != "undefined") {_RecordType("<453,460,22>",(counter)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (b) != "undefined") {_RecordType("<463,464,22>",(b)); Inst17++; } } catch(e) {}
+  return counter + b;
+}
+
+try { if (Inst18 <= 1000 && typeof (testNestedExitStackOuter) != "undefined") {_RecordType("<478,502,25>",(testNestedExitStackOuter)); Inst18++; } } catch(e) {}
+function testNestedExitStackOuter() {
+  var counter = 0;
+try { if (Inst19 <= 1000 && typeof (counter) != "undefined") {_RecordType("<513,520,26>",(counter)); Inst19++; } } catch(e) {}
+
+  for (var j = 1; j <= 9; ++j) {
+try { if (Inst20 <= 1000 && typeof (j) != "undefined") {_RecordType("<538,539,28>",(j)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (j) != "undefined") {_RecordType("<545,546,28>",(j)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (j) != "undefined") {_RecordType("<555,556,28>",(j)); Inst22++; } } catch(e) {}
+    for (var k = 1; k <= 9; ++k) {
+try { if (Inst23 <= 1000 && typeof (k) != "undefined") {_RecordType("<573,574,29>",(k)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (k) != "undefined") {_RecordType("<580,581,29>",(k)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (k) != "undefined") {_RecordType("<590,591,29>",(k)); Inst25++; } } catch(e) {}
+try { if (Inst27 <= 1000 && typeof (testNestedExitStackInner) != "undefined") {_RecordType("<611,635,30>",(testNestedExitStackInner)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (j) != "undefined") {_RecordType("<636,637,30>",(j)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (counter) != "undefined") {_RecordType("<639,646,30>",(counter)); Inst29++; } } catch(e) {}
+      counter = testNestedExitStackInner(j, counter);
+try { if (Inst26 <= 1000 && typeof (counter) != "undefined") {_RecordType("<601,608,30>",(counter)); Inst26++; } } catch(e) {}
+    }
+  }
+
+try { if (Inst30 <= 1000 && typeof (counter) != "undefined") {_RecordType("<669,676,34>",(counter)); Inst30++; } } catch(e) {}
+  return counter;
+} //assertEq(testNestedExitStackOuter(), 81);
+

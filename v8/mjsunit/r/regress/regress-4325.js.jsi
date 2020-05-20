@@ -1,0 +1,176 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2015 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Flags: --allow-natives-syntax --expose-gc
+try { if (Inst0 <= 1000 && typeof (Inner) != "undefined") {_RecordType("<221,226,5>",(Inner)); Inst0++; } } catch(e) {}
+function Inner() {
+  this.p1 = 0;
+try { if (Inst1 <= 1000 && typeof (this.p1) != "undefined") {_RecordType("<233,240,6>",(this.p1)); Inst1++; } } catch(e) {}
+  this.p2 = 3;
+try { if (Inst2 <= 1000 && typeof (this.p2) != "undefined") {_RecordType("<248,255,7>",(this.p2)); Inst2++; } } catch(e) {}
+}
+
+try { if (Inst3 <= 1000 && typeof (Outer) != "undefined") {_RecordType("<273,278,10>",(Outer)); Inst3++; } } catch(e) {}
+function Outer() {
+  this.p3 = 0;
+try { if (Inst4 <= 1000 && typeof (this.p3) != "undefined") {_RecordType("<285,292,11>",(this.p3)); Inst4++; } } catch(e) {}
+}
+
+try { if (Inst6 <= 1000 && typeof (Inner) != "undefined") {_RecordType("<314,319,14>",(Inner)); Inst6++; } } catch(e) {}
+var i1 = new Inner();
+try { if (Inst5 <= 1000 && typeof (i1) != "undefined") {_RecordType("<305,307,14>",(i1)); Inst5++; } } catch(e) {}
+try { if (Inst8 <= 1000 && typeof (Inner) != "undefined") {_RecordType("<336,341,15>",(Inner)); Inst8++; } } catch(e) {}
+var i2 = new Inner();
+try { if (Inst7 <= 1000 && typeof (i2) != "undefined") {_RecordType("<327,329,15>",(i2)); Inst7++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (Outer) != "undefined") {_RecordType("<358,363,16>",(Outer)); Inst10++; } } catch(e) {}
+var o1 = new Outer();
+try { if (Inst9 <= 1000 && typeof (o1) != "undefined") {_RecordType("<349,351,16>",(o1)); Inst9++; } } catch(e) {}
+try { if (Inst13 <= 1000 && typeof (i1) != "undefined") {_RecordType("<378,380,17>",(i1)); Inst13++; } } catch(e) {}
+o1.inner = i1; // o1.map now thinks "inner" has type Inner.map1.
+try { if (Inst11 <= 1000 && typeof (o1.inner) != "undefined") {_RecordType("<367,375,17>",(o1.inner)); Inst11++; } } catch(e) {}try { if (Inst12 <= 1000 && typeof (o1) != "undefined") {_RecordType("<367,369,17>",(o1)); Inst12++; } } catch(e) {}
+// Deprecate Inner.map1:
+
+i1.p1 = 0.5; // Let Inner.map1 die by migrating i2 to Inner.map2:
+try { if (Inst14 <= 1000 && typeof (i1.p1) != "undefined") {_RecordType("<458,463,20>",(i1.p1)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (i1) != "undefined") {_RecordType("<458,460,20>",(i1)); Inst15++; } } catch(e) {}
+
+try { if (Inst16 <= 1000 && typeof (print) != "undefined") {_RecordType("<525,530,22>",(print)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (i2.p1) != "undefined") {_RecordType("<531,536,22>",(i2.p1)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (i2) != "undefined") {_RecordType("<531,533,22>",(i2)); Inst18++; } } catch(e) {}
+print(i2.p1);
+try { if (Inst19 <= 1000 && typeof (gc) != "undefined") {_RecordType("<539,541,23>",(gc)); Inst19++; } } catch(e) {}
+gc(); // o1.map's descriptor for "inner" is now a cleared weak reference;
+// o1.inner's actual map is Inner.map2.
+// Prepare Inner.map3, deprecating Inner.map2.
+
+i2.p2 = 0.5; // Deprecate o1's map.
+try { if (Inst20 <= 1000 && typeof (i2.p2) != "undefined") {_RecordType("<701,706,27>",(i2.p2)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (i2) != "undefined") {_RecordType("<701,703,27>",(i2)); Inst21++; } } catch(e) {}
+
+try { if (Inst23 <= 1000 && typeof (Outer) != "undefined") {_RecordType("<751,756,29>",(Outer)); Inst23++; } } catch(e) {}
+var o2 = new Outer();
+try { if (Inst22 <= 1000 && typeof (o2) != "undefined") {_RecordType("<742,744,29>",(o2)); Inst22++; } } catch(e) {}
+o2.p3 = 0.5;
+try { if (Inst24 <= 1000 && typeof (o2.p3) != "undefined") {_RecordType("<760,765,30>",(o2.p3)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (o2) != "undefined") {_RecordType("<760,762,30>",(o2)); Inst25++; } } catch(e) {}
+try { if (Inst28 <= 1000 && typeof (i2) != "undefined") {_RecordType("<784,786,31>",(i2)); Inst28++; } } catch(e) {}
+o2.inner = i2; // o2.map (Outer.map2) now says that o2.inner's type is Inner.map3.
+try { if (Inst26 <= 1000 && typeof (o2.inner) != "undefined") {_RecordType("<773,781,31>",(o2.inner)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (o2) != "undefined") {_RecordType("<773,775,31>",(o2)); Inst27++; } } catch(e) {}
+// Migrate o1 to Outer.map2.
+
+try { if (Inst29 <= 1000 && typeof (print) != "undefined") {_RecordType("<886,891,34>",(print)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (o1.p3) != "undefined") {_RecordType("<892,897,34>",(o1.p3)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (o1) != "undefined") {_RecordType("<892,894,34>",(o1)); Inst31++; } } catch(e) {}
+print(o1.p3); // o1.map now thinks that o1.inner has map Inner.map3 just like o2.inner,
+// but in fact o1.inner.map is still Inner.map2!
+
+try { if (Inst32 <= 1000 && typeof (loader) != "undefined") {_RecordType("<1033,1039,37>",(loader)); Inst32++; } } catch(e) {}
+function loader(o) {
+try { if (Inst33 <= 1000 && typeof (o) != "undefined") {_RecordType("<1040,1041,37>",(o)); Inst33++; } } catch(e) {}
+try { if (Inst34 <= 1000 && typeof (o.inner.p2) != "undefined") {_RecordType("<1054,1064,38>",(o.inner.p2)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (o.inner) != "undefined") {_RecordType("<1054,1061,38>",(o.inner)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (o) != "undefined") {_RecordType("<1054,1055,38>",(o)); Inst36++; } } catch(e) {}
+  return o.inner.p2;
+}
+
+try { if (Inst37 <= 1000 && typeof (loader) != "undefined") {_RecordType("<1069,1075,41>",(loader)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (o2) != "undefined") {_RecordType("<1076,1078,41>",(o2)); Inst38++; } } catch(e) {}
+loader(o2);
+try { if (Inst39 <= 1000 && typeof (loader) != "undefined") {_RecordType("<1081,1087,42>",(loader)); Inst39++; } } catch(e) {}try { if (Inst40 <= 1000 && typeof (o2) != "undefined") {_RecordType("<1088,1090,42>",(o2)); Inst40++; } } catch(e) {}
+loader(o2);
+0.5;
+try { if (Inst41 <= 1000 && typeof (loader) != "undefined") {_RecordType("<1098,1104,44>",(loader)); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (o2) != "undefined") {_RecordType("<1105,1107,44>",(o2)); Inst42++; } } catch(e) {}
+loader(o2);
+3;
+try { if (Inst43 <= 1000 && typeof (loader) != "undefined") {_RecordType("<1113,1119,46>",(loader)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (o1) != "undefined") {_RecordType("<1120,1122,46>",(o1)); Inst44++; } } catch(e) {}
+loader(o1);
+try { if (Inst45 <= 1000 && typeof (gc) != "undefined") {_RecordType("<1125,1127,47>",(gc)); Inst45++; } } catch(e) {}
+gc(); // Crashes with --verify-heap.
+

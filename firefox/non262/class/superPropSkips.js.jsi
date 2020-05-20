@@ -1,0 +1,160 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Ensure that super lookups and sets skip over properties on the |this| object.
+// That is, super lookups start with the superclass, not the current class.
+// The whole point: an empty superclass
+class base {
+  constructor() {
+    ;
+  }
+
+}
+try { if (Inst0 <= 1000 && typeof (base) != "undefined") {_RecordType("<203,207,4>",(base)); Inst0++; } } catch(e) {}
+
+try { if (Inst15 <= 1000 && typeof (base) != "undefined") {_RecordType("<264,268,11>",(base)); Inst15++; } } catch(e) {}
+class derived extends base {
+  constructor() {
+    super();
+    this.prop = "flamingo";
+try { if (Inst2 <= 1000 && typeof (this.prop) != "undefined") {_RecordType("<306,315,14>",(this.prop)); Inst2++; } } catch(e) {}
+  }
+
+  toString() {
+    throw "No!";
+  }
+
+  testSkipGet() {
+try { if (Inst3 <= 1000 && typeof (super.prop) != "undefined") {_RecordType("<394,404,22>",(super.prop)); Inst3++; } } catch(e) {}
+    super.prop;
+try { if (Inst4 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<410,419,23>",(undefined)); Inst4++; } } catch(e) {}
+    undefined;
+  }
+
+  testSkipDerivedOverrides() {
+try { if (Inst5 <= 1000 && typeof (super["toString"]) != "undefined") {_RecordType("<461,478,27>",(super["toString"])); Inst5++; } } catch(e) {}
+    super["toString"]();
+try { if (Inst6 <= 1000 && typeof (Object.prototype.toString.call) != "undefined") {_RecordType("<486,516,28>",(Object.prototype.toString.call)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (Object.prototype.toString) != "undefined") {_RecordType("<486,511,28>",(Object.prototype.toString)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Object.prototype) != "undefined") {_RecordType("<486,502,28>",(Object.prototype)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (Object) != "undefined") {_RecordType("<486,492,28>",(Object)); Inst9++; } } catch(e) {}
+    Object.prototype.toString.call(this);
+  }
+
+  testSkipSet() {
+    // since there's no prop on the chain, we should set the data property
+    // on the receiver, |this|
+    super.prop = "rat";
+try { if (Inst10 <= 1000 && typeof (super.prop) != "undefined") {_RecordType("<657,667,34>",(super.prop)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (this.prop) != "undefined") {_RecordType("<681,690,35>",(this.prop)); Inst11++; } } catch(e) {}
+    this.prop;
+    "rat";
+try { if (Inst12 <= 1000 && typeof (this.nonWritableProp) != "undefined") {_RecordType("<707,727,37>",(this.nonWritableProp)); Inst12++; } } catch(e) {}
+    this.nonWritableProp;
+    "pony";
+    super.nonWritableProp = "bear";
+try { if (Inst13 <= 1000 && typeof (super.nonWritableProp) != "undefined") {_RecordType("<745,766,39>",(super.nonWritableProp)); Inst13++; } } catch(e) {}
+try { if (Inst14 <= 1000 && typeof (this.nonWritableProp) != "undefined") {_RecordType("<781,801,40>",(this.nonWritableProp)); Inst14++; } } catch(e) {}
+    this.nonWritableProp;
+    "bear";
+  }
+
+}
+try { if (Inst1 <= 1000 && typeof (derived) != "undefined") {_RecordType("<248,255,11>",(derived)); Inst1++; } } catch(e) {}
+
+try { if (Inst16 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<823,844,46>",(Object.defineProperty)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (Object) != "undefined") {_RecordType("<823,829,46>",(Object)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (derived.prototype) != "undefined") {_RecordType("<845,862,46>",(derived.prototype)); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (derived) != "undefined") {_RecordType("<845,852,46>",(derived)); Inst19++; } } catch(e) {}
+Object.defineProperty(derived.prototype, "nonWritableProp", {
+  writable: false,
+  value: "pony"
+});
+try { if (Inst21 <= 1000 && typeof (derived) != "undefined") {_RecordType("<943,950,50>",(derived)); Inst21++; } } catch(e) {}
+let instance = new derived();
+try { if (Inst20 <= 1000 && typeof (instance) != "undefined") {_RecordType("<928,936,50>",(instance)); Inst20++; } } catch(e) {}
+try { if (Inst22 <= 1000 && typeof (instance.testSkipGet) != "undefined") {_RecordType("<954,974,51>",(instance.testSkipGet)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (instance) != "undefined") {_RecordType("<954,962,51>",(instance)); Inst23++; } } catch(e) {}
+instance.testSkipGet();
+try { if (Inst24 <= 1000 && typeof (instance.testSkipDerivedOverrides) != "undefined") {_RecordType("<978,1011,52>",(instance.testSkipDerivedOverrides)); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (instance) != "undefined") {_RecordType("<978,986,52>",(instance)); Inst25++; } } catch(e) {}
+instance.testSkipDerivedOverrides();
+try { if (Inst26 <= 1000 && typeof (instance.testSkipSet) != "undefined") {_RecordType("<1015,1035,53>",(instance.testSkipSet)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (instance) != "undefined") {_RecordType("<1015,1023,53>",(instance)); Inst27++; } } catch(e) {}
+instance.testSkipSet();
+
+try { if (Inst28 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1051,1064,55>",(reportCompare)); Inst28++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst29 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<1085,1098,56>",(reportCompare)); Inst29++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

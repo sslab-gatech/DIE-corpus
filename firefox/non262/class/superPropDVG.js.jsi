@@ -1,0 +1,119 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Super property accesses should play nice with the pretty printer.
+class testNonExistent {
+  constructor() {
+try { if (Inst1 <= 1000 && typeof (super["prop"]) != "undefined") {_RecordType("<115,128,4>",(super["prop"])); Inst1++; } } catch(e) {}
+    super["prop"]();
+  }
+
+} // Should fold to super.prop
+try { if (Inst0 <= 1000 && typeof (testNonExistent) != "undefined") {_RecordType("<75,90,2>",(testNonExistent)); Inst0++; } } catch(e) {}
+
+
+try { if (Inst2 <= 1000 && typeof (testNonExistent) != "undefined") {_RecordType("<181,196,10>",(testNonExistent)); Inst2++; } } catch(e) {}
+(() => new testNonExistent())();
+
+'super.prop';
+try { if (Inst4 <= 1000 && typeof (testNonExistent) != "undefined") {_RecordType("<231,246,14>",(testNonExistent)); Inst4++; } } catch(e) {}
+var ol = {
+  testNonExistent() {
+try { if (Inst5 <= 1000 && typeof (super.prop) != "undefined") {_RecordType("<255,265,15>",(super.prop)); Inst5++; } } catch(e) {}
+    super.prop();
+  }
+
+};
+try { if (Inst3 <= 1000 && typeof (ol) != "undefined") {_RecordType("<222,224,13>",(ol)); Inst3++; } } catch(e) {}
+
+try { if (Inst6 <= 1000 && typeof (ol.testNonExistent) != "undefined") {_RecordType("<285,303,20>",(ol.testNonExistent)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (ol) != "undefined") {_RecordType("<285,287,20>",(ol)); Inst7++; } } catch(e) {}
+(() => ol.testNonExistent())();
+
+"super.prop";
+try { if (Inst9 <= 1000 && typeof (testNonExistent) != "undefined") {_RecordType("<342,357,24>",(testNonExistent)); Inst9++; } } catch(e) {}
+var olElem = {
+  testNonExistent() {
+    var prop = "prop";
+try { if (Inst10 <= 1000 && typeof (prop) != "undefined") {_RecordType("<370,374,25>",(prop)); Inst10++; } } catch(e) {}
+try { if (Inst11 <= 1000 && typeof (super[prop]) != "undefined") {_RecordType("<389,400,26>",(super[prop])); Inst11++; } } catch(e) {}
+    super[prop]();
+  }
+
+};
+try { if (Inst8 <= 1000 && typeof (olElem) != "undefined") {_RecordType("<329,335,23>",(olElem)); Inst8++; } } catch(e) {}
+
+try { if (Inst12 <= 1000 && typeof (olElem.testNonExistent) != "undefined") {_RecordType("<420,442,31>",(olElem.testNonExistent)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (olElem) != "undefined") {_RecordType("<420,426,31>",(olElem)); Inst13++; } } catch(e) {}
+(() => olElem.testNonExistent())();
+
+"super[prop]";
+
+try { if (Inst14 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<477,490,35>",(reportCompare)); Inst14++; } } catch(e) {}
+if (typeof reportCompare === 'function') {
+try { if (Inst15 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<511,524,36>",(reportCompare)); Inst15++; } } catch(e) {}
+  reportCompare(0, 0, "OK");
+}
+

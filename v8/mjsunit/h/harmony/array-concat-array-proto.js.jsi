@@ -1,0 +1,309 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+var Inst28 = 0;
+var Inst29 = 0;
+var Inst30 = 0;
+var Inst31 = 0;
+var Inst32 = 0;
+var Inst33 = 0;
+var Inst34 = 0;
+var Inst35 = 0;
+var Inst36 = 0;
+var Inst37 = 0;
+var Inst38 = 0;
+var Inst39 = 0;
+var Inst40 = 0;
+var Inst41 = 0;
+var Inst42 = 0;
+var Inst43 = 0;
+var Inst44 = 0;
+var Inst45 = 0;
+var Inst46 = 0;
+var Inst47 = 0;
+var Inst48 = 0;
+var Inst49 = 0;
+var Inst50 = 0;
+var Inst51 = 0;
+var Inst52 = 0;
+var Inst53 = 0;
+var Inst54 = 0;
+var Inst55 = 0;
+var Inst56 = 0;
+var Inst57 = 0;
+var Inst58 = 0;
+var Inst59 = 0;
+var Inst60 = 0;
+var Inst61 = 0;
+var Inst62 = 0;
+var Inst63 = 0;
+var Inst64 = 0;
+var Inst65 = 0;
+var Inst66 = 0;
+var Inst67 = 0;
+var Inst68 = 0;
+var Inst69 = 0;
+var Inst70 = 0;
+var Inst71 = 0;
+var Inst72 = 0;
+var Inst73 = 0;
+var Inst74 = 0;
+var Inst75 = 0;
+var Inst76 = 0;
+var Inst77 = 0;
+var Inst78 = 0;
+var Inst79 = 0;
+var Inst80 = 0;
+var Inst81 = 0;
+var Inst82 = 0;
+var Inst83 = 0;
+var Inst84 = 0;
+var Inst85 = 0;
+var Inst86 = 0;
+var Inst87 = 0;
+var Inst88 = 0;
+var Inst89 = 0;
+var Inst90 = 0;
+var Inst91 = 0;
+var Inst92 = 0;
+var Inst93 = 0;
+var Inst94 = 0;
+var Inst95 = 0;
+var Inst96 = 0;
+var Inst97 = 0;
+var Inst98 = 0;
+var Inst99 = 0;
+var Inst100 = 0;
+var Inst101 = 0;
+var Inst102 = 0;
+var Inst103 = 0;
+var Inst104 = 0;
+var Inst105 = 0;
+var Inst106 = 0;
+var Inst107 = 0;
+var Inst108 = 0;
+var Inst109 = 0;
+var Inst110 = 0;
+var Inst111 = 0;
+var Inst112 = 0;
+var Inst113 = 0;
+var Inst114 = 0;
+var Inst115 = 0;
+var Inst116 = 0;
+var Inst117 = 0;
+var Inst118 = 0;
+var Inst119 = 0;
+var Inst120 = 0;
+var Inst121 = 0;
+var Inst122 = 0;
+var Inst123 = 0;
+var Inst124 = 0;
+var Inst125 = 0;
+var Inst126 = 0;
+var Inst127 = 0;
+var Inst128 = 0;
+var Inst129 = 0;
+var Inst130 = 0;
+var Inst131 = 0;
+var Inst132 = 0;
+var Inst133 = 0;
+var Inst134 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// Copyright 2016 the V8 project authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Check that @@isConcatSpreadable is checked when set on Object.prototype
+"use strict";
+
+var array = [1, 2, 3];
+try { if (Inst0 <= 1000 && typeof (array) != "undefined") {_RecordType("<261,266,7>",(array)); Inst0++; } } catch(e) {}
+var object = {
+  length: 1,
+  '0': 'a'
+};
+try { if (Inst1 <= 1000 && typeof (object) != "undefined") {_RecordType("<284,290,8>",(object)); Inst1++; } } catch(e) {}
+
+try { if (Inst2 <= 1000 && typeof (testConcatDefaults) != "undefined") {_RecordType("<332,350,13>",(testConcatDefaults)); Inst2++; } } catch(e) {}
+function testConcatDefaults() {
+try { if (Inst3 <= 1000 && typeof (array) != "undefined") {_RecordType("<357,362,14>",(array)); Inst3++; } } catch(e) {}
+  array;
+try { if (Inst4 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<366,375,15>",([].concat)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (array) != "undefined") {_RecordType("<376,381,15>",(array)); Inst5++; } } catch(e) {}
+  [].concat(array);
+try { if (Inst6 <= 1000 && typeof (array) != "undefined") {_RecordType("<386,391,16>",(array)); Inst6++; } } catch(e) {}
+  array;
+try { if (Inst7 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<395,407,17>",(array.concat)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (array) != "undefined") {_RecordType("<395,400,17>",(array)); Inst8++; } } catch(e) {}
+  array.concat([]);
+  [1, 2, 3, 1, 2, 3];
+try { if (Inst9 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<437,449,19>",(array.concat)); Inst9++; } } catch(e) {}try { if (Inst10 <= 1000 && typeof (array) != "undefined") {_RecordType("<437,442,19>",(array)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (array) != "undefined") {_RecordType("<450,455,19>",(array)); Inst11++; } } catch(e) {}
+  array.concat(array);
+try { if (Inst12 <= 1000 && typeof (object) != "undefined") {_RecordType("<461,467,20>",(object)); Inst12++; } } catch(e) {}
+  [object];
+try { if (Inst13 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<472,481,21>",([].concat)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (object) != "undefined") {_RecordType("<482,488,21>",(object)); Inst14++; } } catch(e) {}
+  [].concat(object);
+try { if (Inst15 <= 1000 && typeof (object) != "undefined") {_RecordType("<503,509,22>",(object)); Inst15++; } } catch(e) {}
+  [1, 2, 3, object];
+try { if (Inst16 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<514,526,23>",(array.concat)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (array) != "undefined") {_RecordType("<514,519,23>",(array)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (object) != "undefined") {_RecordType("<527,533,23>",(object)); Inst18++; } } catch(e) {}
+  array.concat(object);
+try { if (Inst19 <= 1000 && typeof (object) != "undefined") {_RecordType("<539,545,24>",(object)); Inst19++; } } catch(e) {}
+  [object];
+try { if (Inst20 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<550,577,25>",(Array.prototype.concat.call)); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<550,572,25>",(Array.prototype.concat)); Inst21++; } } catch(e) {}try { if (Inst22 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<550,565,25>",(Array.prototype)); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (Array) != "undefined") {_RecordType("<550,555,25>",(Array)); Inst23++; } } catch(e) {}try { if (Inst24 <= 1000 && typeof (object) != "undefined") {_RecordType("<578,584,25>",(object)); Inst24++; } } catch(e) {}
+  Array.prototype.concat.call(object, []);
+try { if (Inst25 <= 1000 && typeof (object) != "undefined") {_RecordType("<594,600,26>",(object)); Inst25++; } } catch(e) {}
+  [object, 1, 2, 3];
+try { if (Inst26 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<614,641,27>",(Array.prototype.concat.call)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<614,636,27>",(Array.prototype.concat)); Inst27++; } } catch(e) {}try { if (Inst28 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<614,629,27>",(Array.prototype)); Inst28++; } } catch(e) {}try { if (Inst29 <= 1000 && typeof (Array) != "undefined") {_RecordType("<614,619,27>",(Array)); Inst29++; } } catch(e) {}try { if (Inst30 <= 1000 && typeof (object) != "undefined") {_RecordType("<642,648,27>",(object)); Inst30++; } } catch(e) {}try { if (Inst31 <= 1000 && typeof (array) != "undefined") {_RecordType("<650,655,27>",(array)); Inst31++; } } catch(e) {}
+  Array.prototype.concat.call(object, array);
+try { if (Inst32 <= 1000 && typeof (object) != "undefined") {_RecordType("<661,667,28>",(object)); Inst32++; } } catch(e) {}try { if (Inst33 <= 1000 && typeof (object) != "undefined") {_RecordType("<669,675,28>",(object)); Inst33++; } } catch(e) {}
+  [object, object];
+try { if (Inst34 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<680,707,29>",(Array.prototype.concat.call)); Inst34++; } } catch(e) {}try { if (Inst35 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<680,702,29>",(Array.prototype.concat)); Inst35++; } } catch(e) {}try { if (Inst36 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<680,695,29>",(Array.prototype)); Inst36++; } } catch(e) {}try { if (Inst37 <= 1000 && typeof (Array) != "undefined") {_RecordType("<680,685,29>",(Array)); Inst37++; } } catch(e) {}try { if (Inst38 <= 1000 && typeof (object) != "undefined") {_RecordType("<708,714,29>",(object)); Inst38++; } } catch(e) {}try { if (Inst39 <= 1000 && typeof (object) != "undefined") {_RecordType("<716,722,29>",(object)); Inst39++; } } catch(e) {}
+  Array.prototype.concat.call(object, object);
+}
+
+try { if (Inst40 <= 1000 && typeof (testConcatDefaults) != "undefined") {_RecordType("<728,746,32>",(testConcatDefaults)); Inst40++; } } catch(e) {}
+testConcatDefaults();
+Array.prototype[Symbol.isConcatSpreadable] = false;
+try { if (Inst41 <= 1000 && typeof (Array.prototype[Symbol.isConcatSpreadable]) != "undefined") {_RecordType("<750,792,33>",(Array.prototype[Symbol.isConcatSpreadable])); Inst41++; } } catch(e) {}try { if (Inst42 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<750,765,33>",(Array.prototype)); Inst42++; } } catch(e) {}try { if (Inst43 <= 1000 && typeof (Array) != "undefined") {_RecordType("<750,755,33>",(Array)); Inst43++; } } catch(e) {}try { if (Inst44 <= 1000 && typeof (Symbol.isConcatSpreadable) != "undefined") {_RecordType("<766,791,33>",(Symbol.isConcatSpreadable)); Inst44++; } } catch(e) {}try { if (Inst45 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<766,772,33>",(Symbol)); Inst45++; } } catch(e) {}
+try { if (Inst46 <= 1000 && typeof (array) != "undefined") {_RecordType("<807,812,34>",(array)); Inst46++; } } catch(e) {}
+[[], array];
+try { if (Inst47 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<815,824,35>",([].concat)); Inst47++; } } catch(e) {}try { if (Inst48 <= 1000 && typeof (array) != "undefined") {_RecordType("<825,830,35>",(array)); Inst48++; } } catch(e) {}
+[].concat(array);
+try { if (Inst49 <= 1000 && typeof (array) != "undefined") {_RecordType("<834,839,36>",(array)); Inst49++; } } catch(e) {}
+[array, []];
+try { if (Inst50 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<846,858,37>",(array.concat)); Inst50++; } } catch(e) {}try { if (Inst51 <= 1000 && typeof (array) != "undefined") {_RecordType("<846,851,37>",(array)); Inst51++; } } catch(e) {}
+array.concat([]);
+try { if (Inst52 <= 1000 && typeof (array) != "undefined") {_RecordType("<865,870,38>",(array)); Inst52++; } } catch(e) {}try { if (Inst53 <= 1000 && typeof (array) != "undefined") {_RecordType("<872,877,38>",(array)); Inst53++; } } catch(e) {}
+[array, array];
+try { if (Inst54 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<880,892,39>",(array.concat)); Inst54++; } } catch(e) {}try { if (Inst55 <= 1000 && typeof (array) != "undefined") {_RecordType("<880,885,39>",(array)); Inst55++; } } catch(e) {}try { if (Inst56 <= 1000 && typeof (array) != "undefined") {_RecordType("<893,898,39>",(array)); Inst56++; } } catch(e) {}
+array.concat(array);
+try { if (Inst57 <= 1000 && typeof (object) != "undefined") {_RecordType("<906,912,40>",(object)); Inst57++; } } catch(e) {}
+[[], object];
+try { if (Inst58 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<915,924,41>",([].concat)); Inst58++; } } catch(e) {}try { if (Inst59 <= 1000 && typeof (object) != "undefined") {_RecordType("<925,931,41>",(object)); Inst59++; } } catch(e) {}
+[].concat(object);
+try { if (Inst60 <= 1000 && typeof (array) != "undefined") {_RecordType("<935,940,42>",(array)); Inst60++; } } catch(e) {}try { if (Inst61 <= 1000 && typeof (object) != "undefined") {_RecordType("<942,948,42>",(object)); Inst61++; } } catch(e) {}
+[array, object];
+try { if (Inst62 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<951,963,43>",(array.concat)); Inst62++; } } catch(e) {}try { if (Inst63 <= 1000 && typeof (array) != "undefined") {_RecordType("<951,956,43>",(array)); Inst63++; } } catch(e) {}try { if (Inst64 <= 1000 && typeof (object) != "undefined") {_RecordType("<964,970,43>",(object)); Inst64++; } } catch(e) {}
+array.concat(object);
+try { if (Inst65 <= 1000 && typeof (object) != "undefined") {_RecordType("<974,980,44>",(object)); Inst65++; } } catch(e) {}
+[object, []];
+try { if (Inst66 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<987,1014,45>",(Array.prototype.concat.call)); Inst66++; } } catch(e) {}try { if (Inst67 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<987,1009,45>",(Array.prototype.concat)); Inst67++; } } catch(e) {}try { if (Inst68 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<987,1002,45>",(Array.prototype)); Inst68++; } } catch(e) {}try { if (Inst69 <= 1000 && typeof (Array) != "undefined") {_RecordType("<987,992,45>",(Array)); Inst69++; } } catch(e) {}try { if (Inst70 <= 1000 && typeof (object) != "undefined") {_RecordType("<1015,1021,45>",(object)); Inst70++; } } catch(e) {}
+Array.prototype.concat.call(object, []);
+try { if (Inst71 <= 1000 && typeof (object) != "undefined") {_RecordType("<1029,1035,46>",(object)); Inst71++; } } catch(e) {}try { if (Inst72 <= 1000 && typeof (array) != "undefined") {_RecordType("<1037,1042,46>",(array)); Inst72++; } } catch(e) {}
+[object, array];
+try { if (Inst73 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<1045,1072,47>",(Array.prototype.concat.call)); Inst73++; } } catch(e) {}try { if (Inst74 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<1045,1067,47>",(Array.prototype.concat)); Inst74++; } } catch(e) {}try { if (Inst75 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1045,1060,47>",(Array.prototype)); Inst75++; } } catch(e) {}try { if (Inst76 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1045,1050,47>",(Array)); Inst76++; } } catch(e) {}try { if (Inst77 <= 1000 && typeof (object) != "undefined") {_RecordType("<1073,1079,47>",(object)); Inst77++; } } catch(e) {}try { if (Inst78 <= 1000 && typeof (array) != "undefined") {_RecordType("<1081,1086,47>",(array)); Inst78++; } } catch(e) {}
+Array.prototype.concat.call(object, array);
+try { if (Inst79 <= 1000 && typeof (object) != "undefined") {_RecordType("<1090,1096,48>",(object)); Inst79++; } } catch(e) {}try { if (Inst80 <= 1000 && typeof (object) != "undefined") {_RecordType("<1098,1104,48>",(object)); Inst80++; } } catch(e) {}
+[object, object];
+try { if (Inst81 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<1107,1134,49>",(Array.prototype.concat.call)); Inst81++; } } catch(e) {}try { if (Inst82 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<1107,1129,49>",(Array.prototype.concat)); Inst82++; } } catch(e) {}try { if (Inst83 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1107,1122,49>",(Array.prototype)); Inst83++; } } catch(e) {}try { if (Inst84 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1107,1112,49>",(Array)); Inst84++; } } catch(e) {}try { if (Inst85 <= 1000 && typeof (object) != "undefined") {_RecordType("<1135,1141,49>",(object)); Inst85++; } } catch(e) {}try { if (Inst86 <= 1000 && typeof (object) != "undefined") {_RecordType("<1143,1149,49>",(object)); Inst86++; } } catch(e) {}
+Array.prototype.concat.call(object, object);
+Array.prototype[Symbol.isConcatSpreadable] = true;
+try { if (Inst87 <= 1000 && typeof (Array.prototype[Symbol.isConcatSpreadable]) != "undefined") {_RecordType("<1152,1194,50>",(Array.prototype[Symbol.isConcatSpreadable])); Inst87++; } } catch(e) {}try { if (Inst88 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1152,1167,50>",(Array.prototype)); Inst88++; } } catch(e) {}try { if (Inst89 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1152,1157,50>",(Array)); Inst89++; } } catch(e) {}try { if (Inst90 <= 1000 && typeof (Symbol.isConcatSpreadable) != "undefined") {_RecordType("<1168,1193,50>",(Symbol.isConcatSpreadable)); Inst90++; } } catch(e) {}try { if (Inst91 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1168,1174,50>",(Symbol)); Inst91++; } } catch(e) {}
+try { if (Inst92 <= 1000 && typeof (array) != "undefined") {_RecordType("<1203,1208,51>",(array)); Inst92++; } } catch(e) {}
+array;
+try { if (Inst93 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<1210,1219,52>",([].concat)); Inst93++; } } catch(e) {}try { if (Inst94 <= 1000 && typeof (array) != "undefined") {_RecordType("<1220,1225,52>",(array)); Inst94++; } } catch(e) {}
+[].concat(array);
+try { if (Inst95 <= 1000 && typeof (array) != "undefined") {_RecordType("<1228,1233,53>",(array)); Inst95++; } } catch(e) {}
+array;
+try { if (Inst96 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<1235,1247,54>",(array.concat)); Inst96++; } } catch(e) {}try { if (Inst97 <= 1000 && typeof (array) != "undefined") {_RecordType("<1235,1240,54>",(array)); Inst97++; } } catch(e) {}
+array.concat([]);
+[1, 2, 3, 1, 2, 3];
+try { if (Inst98 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<1273,1285,56>",(array.concat)); Inst98++; } } catch(e) {}try { if (Inst99 <= 1000 && typeof (array) != "undefined") {_RecordType("<1273,1278,56>",(array)); Inst99++; } } catch(e) {}try { if (Inst100 <= 1000 && typeof (array) != "undefined") {_RecordType("<1286,1291,56>",(array)); Inst100++; } } catch(e) {}
+array.concat(array);
+try { if (Inst101 <= 1000 && typeof (object) != "undefined") {_RecordType("<1295,1301,57>",(object)); Inst101++; } } catch(e) {}
+[object];
+try { if (Inst102 <= 1000 && typeof ([].concat) != "undefined") {_RecordType("<1304,1313,58>",([].concat)); Inst102++; } } catch(e) {}try { if (Inst103 <= 1000 && typeof (object) != "undefined") {_RecordType("<1314,1320,58>",(object)); Inst103++; } } catch(e) {}
+[].concat(object);
+try { if (Inst104 <= 1000 && typeof (object) != "undefined") {_RecordType("<1333,1339,59>",(object)); Inst104++; } } catch(e) {}
+[1, 2, 3, object];
+try { if (Inst105 <= 1000 && typeof (array.concat) != "undefined") {_RecordType("<1342,1354,60>",(array.concat)); Inst105++; } } catch(e) {}try { if (Inst106 <= 1000 && typeof (array) != "undefined") {_RecordType("<1342,1347,60>",(array)); Inst106++; } } catch(e) {}try { if (Inst107 <= 1000 && typeof (object) != "undefined") {_RecordType("<1355,1361,60>",(object)); Inst107++; } } catch(e) {}
+array.concat(object);
+try { if (Inst108 <= 1000 && typeof (object) != "undefined") {_RecordType("<1365,1371,61>",(object)); Inst108++; } } catch(e) {}
+[object];
+try { if (Inst109 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<1374,1401,62>",(Array.prototype.concat.call)); Inst109++; } } catch(e) {}try { if (Inst110 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<1374,1396,62>",(Array.prototype.concat)); Inst110++; } } catch(e) {}try { if (Inst111 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1374,1389,62>",(Array.prototype)); Inst111++; } } catch(e) {}try { if (Inst112 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1374,1379,62>",(Array)); Inst112++; } } catch(e) {}try { if (Inst113 <= 1000 && typeof (object) != "undefined") {_RecordType("<1402,1408,62>",(object)); Inst113++; } } catch(e) {}
+Array.prototype.concat.call(object, []);
+try { if (Inst114 <= 1000 && typeof (object) != "undefined") {_RecordType("<1416,1422,63>",(object)); Inst114++; } } catch(e) {}
+[object, 1, 2, 3];
+try { if (Inst115 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<1434,1461,64>",(Array.prototype.concat.call)); Inst115++; } } catch(e) {}try { if (Inst116 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<1434,1456,64>",(Array.prototype.concat)); Inst116++; } } catch(e) {}try { if (Inst117 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1434,1449,64>",(Array.prototype)); Inst117++; } } catch(e) {}try { if (Inst118 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1434,1439,64>",(Array)); Inst118++; } } catch(e) {}try { if (Inst119 <= 1000 && typeof (object) != "undefined") {_RecordType("<1462,1468,64>",(object)); Inst119++; } } catch(e) {}try { if (Inst120 <= 1000 && typeof (array) != "undefined") {_RecordType("<1470,1475,64>",(array)); Inst120++; } } catch(e) {}
+Array.prototype.concat.call(object, array);
+try { if (Inst121 <= 1000 && typeof (object) != "undefined") {_RecordType("<1479,1485,65>",(object)); Inst121++; } } catch(e) {}try { if (Inst122 <= 1000 && typeof (object) != "undefined") {_RecordType("<1487,1493,65>",(object)); Inst122++; } } catch(e) {}
+[object, object];
+try { if (Inst123 <= 1000 && typeof (Array.prototype.concat.call) != "undefined") {_RecordType("<1496,1523,66>",(Array.prototype.concat.call)); Inst123++; } } catch(e) {}try { if (Inst124 <= 1000 && typeof (Array.prototype.concat) != "undefined") {_RecordType("<1496,1518,66>",(Array.prototype.concat)); Inst124++; } } catch(e) {}try { if (Inst125 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1496,1511,66>",(Array.prototype)); Inst125++; } } catch(e) {}try { if (Inst126 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1496,1501,66>",(Array)); Inst126++; } } catch(e) {}try { if (Inst127 <= 1000 && typeof (object) != "undefined") {_RecordType("<1524,1530,66>",(object)); Inst127++; } } catch(e) {}try { if (Inst128 <= 1000 && typeof (object) != "undefined") {_RecordType("<1532,1538,66>",(object)); Inst128++; } } catch(e) {}
+Array.prototype.concat.call(object, object);
+try { if (Inst129 <= 1000 && typeof (Array.prototype[Symbol.isConcatSpreadable]) != "undefined") {_RecordType("<1548,1590,67>",(Array.prototype[Symbol.isConcatSpreadable])); Inst129++; } } catch(e) {}try { if (Inst130 <= 1000 && typeof (Array.prototype) != "undefined") {_RecordType("<1548,1563,67>",(Array.prototype)); Inst130++; } } catch(e) {}try { if (Inst131 <= 1000 && typeof (Array) != "undefined") {_RecordType("<1548,1553,67>",(Array)); Inst131++; } } catch(e) {}try { if (Inst132 <= 1000 && typeof (Symbol.isConcatSpreadable) != "undefined") {_RecordType("<1564,1589,67>",(Symbol.isConcatSpreadable)); Inst132++; } } catch(e) {}try { if (Inst133 <= 1000 && typeof (Symbol) != "undefined") {_RecordType("<1564,1570,67>",(Symbol)); Inst133++; } } catch(e) {}
+delete Array.prototype[Symbol.isConcatSpreadable];
+try { if (Inst134 <= 1000 && typeof (testConcatDefaults) != "undefined") {_RecordType("<1592,1610,68>",(testConcatDefaults)); Inst134++; } } catch(e) {}
+testConcatDefaults();
+

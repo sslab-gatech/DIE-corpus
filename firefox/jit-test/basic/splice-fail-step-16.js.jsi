@@ -1,0 +1,125 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+var Inst27 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* Test that arrays resize normally during splice, even if .length is non-writable. */
+var arr = [1, 2, 3, 4, 5, 6];
+try { if (Inst0 <= 1000 && typeof (arr) != "undefined") {_RecordType("<91,94,2>",(arr)); Inst0++; } } catch(e) {}
+try { if (Inst1 <= 1000 && typeof (Object.defineProperty) != "undefined") {_RecordType("<117,138,3>",(Object.defineProperty)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (Object) != "undefined") {_RecordType("<117,123,3>",(Object)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (arr) != "undefined") {_RecordType("<139,142,3>",(arr)); Inst3++; } } catch(e) {}
+Object.defineProperty(arr, "length", {
+  writable: false
+});
+
+try { if (Inst9 <= 1000 && typeof (e) != "undefined") {_RecordType("<310,311,10>",(e)); Inst9++; } } catch(e) {}
+try {
+try { if (Inst5 <= 1000 && typeof (arr.splice) != "undefined") {_RecordType("<201,211,8>",(arr.splice)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (arr) != "undefined") {_RecordType("<201,204,8>",(arr)); Inst6++; } } catch(e) {}
+  var removed = arr.splice(3, 3, 9, 9, 9, 9);
+try { if (Inst4 <= 1000 && typeof (removed) != "undefined") {_RecordType("<191,198,8>",(removed)); Inst4++; } } catch(e) {}
+try { if (Inst7 <= 1000 && typeof (Error) != "undefined") {_RecordType("<243,248,9>",(Error)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (removed) != "undefined") {_RecordType("<285,292,9>",(removed)); Inst8++; } } catch(e) {}
+  throw new Error("splice didn't throw, returned [" + removed + "]");
+} catch (e) {
+try { if (Inst10 <= 1000 && typeof (e) != "undefined") {_RecordType("<317,318,11>",(e)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<330,339,11>",(TypeError)); Inst11++; } } catch(e) {}
+  e instanceof TypeError;
+  true;
+try { if (Inst12 <= 1000 && typeof (e) != "undefined") {_RecordType("<402,403,13>",(e)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (arr) != "undefined") {_RecordType("<420,423,13>",(arr)); Inst13++; } } catch(e) {}
+  "should have thrown a TypeError, instead threw " + e + ", arr is " + arr;
+} // The exception should happen in step 16, which means we've already removed the array elements.
+
+
+try { if (Inst14 <= 1000 && typeof (arr[0]) != "undefined") {_RecordType("<526,532,17>",(arr[0])); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (arr) != "undefined") {_RecordType("<526,529,17>",(arr)); Inst15++; } } catch(e) {}
+arr[0];
+1;
+try { if (Inst16 <= 1000 && typeof (arr[1]) != "undefined") {_RecordType("<537,543,19>",(arr[1])); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (arr) != "undefined") {_RecordType("<537,540,19>",(arr)); Inst17++; } } catch(e) {}
+arr[1];
+2;
+try { if (Inst18 <= 1000 && typeof (arr[2]) != "undefined") {_RecordType("<548,554,21>",(arr[2])); Inst18++; } } catch(e) {}try { if (Inst19 <= 1000 && typeof (arr) != "undefined") {_RecordType("<548,551,21>",(arr)); Inst19++; } } catch(e) {}
+arr[2];
+3;
+try { if (Inst20 <= 1000 && typeof (arr[3]) != "undefined") {_RecordType("<559,565,23>",(arr[3])); Inst20++; } } catch(e) {}try { if (Inst21 <= 1000 && typeof (arr) != "undefined") {_RecordType("<559,562,23>",(arr)); Inst21++; } } catch(e) {}
+arr[3];
+9;
+try { if (Inst22 <= 1000 && typeof (arr[4]) != "undefined") {_RecordType("<570,576,25>",(arr[4])); Inst22++; } } catch(e) {}try { if (Inst23 <= 1000 && typeof (arr) != "undefined") {_RecordType("<570,573,25>",(arr)); Inst23++; } } catch(e) {}
+arr[4];
+9;
+try { if (Inst24 <= 1000 && typeof (arr[5]) != "undefined") {_RecordType("<581,587,27>",(arr[5])); Inst24++; } } catch(e) {}try { if (Inst25 <= 1000 && typeof (arr) != "undefined") {_RecordType("<581,584,27>",(arr)); Inst25++; } } catch(e) {}
+arr[5];
+9;
+try { if (Inst26 <= 1000 && typeof (arr.length) != "undefined") {_RecordType("<592,602,29>",(arr.length)); Inst26++; } } catch(e) {}try { if (Inst27 <= 1000 && typeof (arr) != "undefined") {_RecordType("<592,595,29>",(arr)); Inst27++; } } catch(e) {}
+arr.length;
+6;
+

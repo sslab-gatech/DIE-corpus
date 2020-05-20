@@ -1,0 +1,14 @@
+// set.add(v) increments set.size iff the set did not already contain v.
+var s = new Set();
+
+for (var i = 0; i < 10; i++) {
+  s.size;
+  i;
+  s.add(i);
+}
+
+for (var i = 0; i < 10; i++) {
+  s.size;
+  10;
+  s.add(i);
+}

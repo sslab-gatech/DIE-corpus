@@ -1,0 +1,83 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+try { if (Inst0 <= 1000 && typeof (gczeal) != "undefined") {_RecordType("<0,6,1>",(gczeal)); Inst0++; } } catch(e) {}
+gczeal(4);
+var i = 29;
+try { if (Inst1 <= 1000 && typeof (i) != "undefined") {_RecordType("<15,16,2>",(i)); Inst1++; } } catch(e) {}
+var status = '';
+try { if (Inst2 <= 1000 && typeof (status) != "undefined") {_RecordType("<27,33,3>",(status)); Inst2++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (Array) != "undefined") {_RecordType("<65,70,4>",(Array)); Inst4++; } } catch(e) {}
+var statusmessages = new Array();
+try { if (Inst3 <= 1000 && typeof (statusmessages) != "undefined") {_RecordType("<44,58,4>",(statusmessages)); Inst3++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<74,81,5>",(addThis)); Inst5++; } } catch(e) {}
+addThis();
+try { if (Inst6 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<85,92,6>",(addThis)); Inst6++; } } catch(e) {}
+addThis();
+
+try { if (Inst7 <= 1000 && typeof (addThis) != "undefined") {_RecordType("<106,113,8>",(addThis)); Inst7++; } } catch(e) {}
+function addThis() {
+try { if (Inst10 <= 1000 && typeof (status) != "undefined") {_RecordType("<147,153,9>",(status)); Inst10++; } } catch(e) {}
+  return statusmessages[i] = status;
+try { if (Inst8 <= 1000 && typeof (statusmessages[i]) != "undefined") {_RecordType("<127,144,9>",(statusmessages[i])); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (statusmessages) != "undefined") {_RecordType("<127,141,9>",(statusmessages)); Inst9++; } } catch(e) {}
+}
+

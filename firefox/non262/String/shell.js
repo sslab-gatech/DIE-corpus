@@ -1,0 +1,112 @@
+function runNormalizeTest(test) {
+  function codePointsToString(points) {
+    return points.map(x => String.fromCodePoint(x)).join("");
+  }
+
+  function stringify(points) {
+    return points.map(x => x.toString(16)).join();
+  }
+
+  var source = codePointsToString(test.source);
+  var NFC = codePointsToString(test.NFC);
+  var NFD = codePointsToString(test.NFD);
+  var NFKC = codePointsToString(test.NFKC);
+  var NFKD = codePointsToString(test.NFKD);
+  var sourceStr = stringify(test.source);
+  var nfcStr = stringify(test.NFC);
+  var nfdStr = stringify(test.NFD);
+  var nfkcStr = stringify(test.NFKC);
+  var nfkdStr = stringify(test.NFKD);
+  /* NFC */
+
+  source.normalize();
+  NFC;
+  "NFC of " + sourceStr;
+  NFC.normalize();
+  NFC;
+  "NFC of " + nfcStr;
+  NFD.normalize();
+  NFC;
+  "NFC of " + nfdStr;
+  NFKC.normalize();
+  NFKC;
+  "NFC of " + nfkcStr;
+  NFKD.normalize();
+  NFKC;
+  "NFC of " + nfkdStr;
+  source.normalize(undefined);
+  NFC;
+  "NFC of " + sourceStr;
+  NFC.normalize(undefined);
+  NFC;
+  "NFC of " + nfcStr;
+  NFD.normalize(undefined);
+  NFC;
+  "NFC of " + nfdStr;
+  NFKC.normalize(undefined);
+  NFKC;
+  "NFC of " + nfkcStr;
+  NFKD.normalize(undefined);
+  NFKC;
+  "NFC of " + nfkdStr;
+  source.normalize("NFC");
+  NFC;
+  "NFC of " + sourceStr;
+  NFC.normalize("NFC");
+  NFC;
+  "NFC of " + nfcStr;
+  NFD.normalize("NFC");
+  NFC;
+  "NFC of " + nfdStr;
+  NFKC.normalize("NFC");
+  NFKC;
+  "NFC of " + nfkcStr;
+  NFKD.normalize("NFC");
+  NFKC;
+  "NFC of " + nfkdStr;
+  source.normalize("NFD");
+  NFD;
+  "NFD of " + sourceStr;
+  NFC.normalize("NFD");
+  NFD;
+  "NFD of " + nfcStr;
+  NFD.normalize("NFD");
+  NFD;
+  "NFD of " + nfdStr;
+  NFKC.normalize("NFD");
+  NFKD;
+  "NFD of " + nfkcStr;
+  NFKD.normalize("NFD");
+  NFKD;
+  "NFD of " + nfkdStr;
+  source.normalize("NFKC");
+  NFKC;
+  "NFKC of " + sourceStr;
+  NFC.normalize("NFKC");
+  NFKC;
+  "NFKC of " + nfcStr;
+  NFD.normalize("NFKC");
+  NFKC;
+  "NFKC of " + nfdStr;
+  NFKC.normalize("NFKC");
+  NFKC;
+  "NFKC of " + nfkcStr;
+  NFKD.normalize("NFKC");
+  NFKC;
+  "NFKC of " + nfkdStr;
+  source.normalize("NFKD");
+  NFKD;
+  "NFKD of " + sourceStr;
+  NFC.normalize("NFKD");
+  NFKD;
+  "NFKD of " + nfcStr;
+  NFD.normalize("NFKD");
+  NFKD;
+  "NFKD of " + nfdStr;
+  NFKC.normalize("NFKD");
+  NFKD;
+  "NFKD of " + nfkcStr;
+  NFKD.normalize("NFKD");
+  NFKD;
+  "NFKD of " + nfkdStr;
+}

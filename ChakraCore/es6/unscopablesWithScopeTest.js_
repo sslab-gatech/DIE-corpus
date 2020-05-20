@@ -1,0 +1,692 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+function t1() {
+  console.log(Array.prototype.hasOwnProperty(Symbol.unscopables));
+}
+
+t1();
+
+function t2() {
+  var globalScope = -1;
+  var find = globalScope;
+  var findIndex = globalScope;
+  var fill = globalScope;
+  var copyWithin = globalScope;
+  var entries = globalScope;
+  var includes = globalScope;
+  var keys = globalScope;
+  var values = globalScope;
+  with ([]) {
+    console.log(globalScope, find);
+    console.log(globalScope, findIndex);
+    console.log(globalScope, fill);
+    console.log(globalScope, copyWithin);
+    console.log(globalScope, entries);
+    console.log(globalScope, includes);
+    console.log(globalScope, keys);
+    console.log(globalScope, values);
+  }
+}
+
+t2();
+
+function t3() {
+  var globalScope = -1;
+  var find = globalScope;
+  var findIndex = globalScope;
+  var fill = globalScope;
+  var copyWithin = globalScope;
+  var entries = globalScope;
+  var includes = globalScope;
+  var keys = globalScope;
+  var values = globalScope;
+  var slice = globalScope;
+  var a = [];
+  a[Symbol.unscopables]["slice"] = true;
+  with (a) {
+    console.log(globalScope, find);
+    console.log(globalScope, findIndex);
+    console.log(globalScope, fill);
+    console.log(globalScope, copyWithin);
+    console.log(globalScope, entries);
+    console.log(globalScope, includes);
+    console.log(globalScope, keys);
+    console.log(globalScope, values);
+    console.log(globalScope, slice);
+  }
+}
+
+t3();
+
+function t4() {
+  var globalScope = -1;
+  var c = {
+    find: function () {
+      ;
+    },
+    slice: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      find: true
+    }
+  };
+  var find = globalScope;
+  var slice = globalScope;
+  with (c) {
+    console.log(globalScope != slice);
+    console.log(globalScope, find);
+  }
+  var props = {
+    "slice": true
+  };
+  c[Symbol.unscopables] = props;
+  with (c) {
+    console.log(globalScope != find);
+    console.log(globalScope, slice);
+  }
+}
+
+t4();
+
+function t5() {
+  var globalScope = -1;
+  var find = globalScope;
+  var slice = globalScope;
+  var c = {
+    find: function () {
+      ;
+    },
+    slice: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      "find": true
+    }
+  };
+  with (c) {
+    console.log(globalScope, find);
+    c[Symbol.unscopables]["slice"] = true;
+    console.log(globalScope, slice);
+  }
+}
+
+t5();
+
+function t6() {
+  var b = 1;
+  var c = {
+    get: function () {
+      return 4;
+    },
+    valueOf: function () {
+      WScript.Echo("valueOf");
+      return {}; // not a primitive
+    },
+    toString: function () {
+      WScript.Echo("toString");
+      return {}; // not a primitive
+    }
+  };
+  with ({
+    a: 1,
+    e: {
+      l: 1,
+      w: 2
+    }
+  }) {
+    function f() {
+      a = 2; //Set test
+
+      b = a; //Get test
+    }
+
+    f();
+    console.log(3, Object.keys(c).length);
+    console.log(2, Object.keys(e).length);
+    delete e;
+
+    try {
+      e.l;
+    } catch (e) {
+      ;
+    }
+
+    console.log(2, a);
+    console.log(2, b);
+  }
+  with (c) {
+    console.log(4, get());
+  }
+}
+
+t6();
+
+function t7() {
+  var o = {
+    f: function () {
+      return this;
+    },
+    x: 2,
+    [Symbol.unscopables]: {
+      "x": true
+    }
+  };
+  var x = -1;
+  var testValue = o.f();
+  with (o) {
+    eval("var b = f();");
+    console.log(testValue, b);
+    var a = f(); // if this is broken We will get an Assert in the WithScopeObject on chk builds before the areEqual call  but I'll leave this for fre builds
+
+    console.log(testValue, a);
+    console.log(-1, x);
+    console.log(o.x, b.x);
+    console.log(o.x, a.x);
+  }
+}
+
+t7();
+
+function t8() {
+  var adder = function (x) {
+    return function (y) {
+      return x + y;
+    };
+  };
+
+  var find = -1;
+  var findArray = [].find;
+  with ([]) {
+    find = adder(5);
+    console.log(6, find(1));
+  }
+  console.log(-1 != find);
+  find = findArray;
+}
+
+t8();
+
+function t9() {
+  var obj = {
+    a: 1
+  };
+  var a = false;
+  with (obj) {
+    obj[Symbol.unscopables] = {};
+    a = obj[Symbol.unscopables]["a"] = true;
+  }
+  console.log(1, obj.a);
+  console.log(true, a);
+}
+
+t9();
+
+function t10() {
+  var globalScope = -1;
+  var find = globalScope;
+  var findIndex = globalScope;
+  var fill = globalScope;
+  var copyWithin = globalScope;
+  var entries = globalScope;
+  var includes = globalScope;
+  var keys = globalScope;
+  var values = globalScope;
+  with ([]) {
+    function foo() {
+      function bar() {
+        function f00() {
+          function bat() {
+            console.log(globalScope, find);
+            console.log(globalScope, findIndex);
+            console.log(globalScope, fill);
+            console.log(globalScope, copyWithin);
+            console.log(globalScope, entries);
+            console.log(globalScope, includes);
+            console.log(globalScope, keys);
+            console.log(globalScope, values);
+          }
+        }
+      }
+    }
+  }
+}
+
+t10();
+
+function t11() {
+  var str = {
+    search: function () {
+      ;
+    },
+    split: function () {
+      ;
+    },
+    concat: function () {
+      ;
+    },
+    reduce: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      "search": true,
+      "split": true,
+      "concat": true,
+      "reduce": true
+    }
+  };
+  var arr = {
+    find: function () {
+      ;
+    },
+    keys: function () {
+      ;
+    },
+    concat: function () {
+      ;
+    },
+    reduce: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      "find": true,
+      "keys": true
+    }
+  };
+  var globalScope = -1;
+  var find = globalScope;
+  var keys = globalScope;
+  var search = globalScope;
+  var split = globalScope;
+  var reduce = globalScope;
+  var concat = globalScope;
+  var arrConcat = arr.concat;
+  var arrReduce = arr.reduce;
+  with (arr) {
+    with (str) {
+      console.log(globalScope, search);
+      console.log(globalScope, split);
+      console.log(arrConcat, concat);
+      console.log(arrReduce, reduce);
+      console.log(globalScope, find);
+      console.log(globalScope, keys);
+    }
+  }
+  arr[Symbol.unscopables]["concat"] = true;
+  arr[Symbol.unscopables]["reduce"] = true;
+  with (arr) {
+    with (str) {
+      console.log(globalScope, search);
+      console.log(globalScope, split);
+      console.log(globalScope, concat);
+      console.log(globalScope, reduce);
+      console.log(globalScope, find);
+      console.log(globalScope, keys);
+    }
+  }
+}
+
+t11();
+
+function t12() {
+  function foo() {
+    var p = {
+      a: 1
+    };
+    var obj = {
+      __proto__: p,
+      [Symbol.unscopables]: {
+        'a': true
+      }
+    };
+    var a = 2;
+    with (obj) {
+      console.log(2, a, ""); //Spec change we no longer inherit
+    }
+  }
+
+  foo();
+  let p = {
+    a: 1
+  };
+  let obj = {
+    __proto__: p,
+    [Symbol.unscopables]: {
+      'a': true
+    }
+  };
+  let a = 2;
+  with (obj) {
+    console.log(2, a);
+  }
+}
+
+t12();
+
+function t13() {
+  var globalScope = -1;
+  var proto = {
+    a: 1,
+    b: 2,
+    c: 3,
+    [Symbol.unscopables]: {
+      'a': true
+    }
+  };
+  var child = {
+    __proto__: proto,
+    [Symbol.unscopables]: {
+      'b': true
+    }
+  };
+  var child2 = {
+    __proto__: proto,
+    b: 21,
+    c: 31,
+    [Symbol.unscopables]: {
+      'b': true
+    }
+  };
+  var a = globalScope;
+  var b = globalScope;
+  with (child) {
+    console.log(1, a);
+    console.log(globalScope, b);
+    console.log(3, c);
+    a = 3;
+    b = 4;
+    console.log(2, proto.b);
+  }
+  console.log(4, b);
+  b = globalScope;
+  console.log(3, child.a);
+  console.log(1, proto.a);
+  var a = globalScope;
+  proto[Symbol.unscopables]["c"] = true;
+  with (child2) {
+    console.log(1, a);
+    console.log(globalScope, b);
+    console.log(31, c);
+    delete c;
+    console.log(3, proto.c);
+    console.log(3, child2.c);
+    delete c;
+    console.log(3, proto.c);
+    console.log(3, child2.c);
+  }
+}
+
+t13();
+
+function t14() {
+  var globalScope = -1;
+  var find = globalScope;
+  var values = globalScope;
+  var c = {
+    find: function () {
+      ;
+    },
+    values: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      "find": true,
+      "values": true
+    }
+  };
+  c[Symbol.unscopables] = 5;
+  with (c) {
+    console.log(globalScope != find);
+    console.log(globalScope != values);
+  }
+}
+
+t14();
+
+function t15() {
+  var globalScope = -1;
+  var find = globalScope;
+  var c = {
+    find: function () {
+      ;
+    },
+    [Symbol.unscopables]: {
+      "find": true
+    }
+  };
+  with (c) {
+    console.log(globalScope, eval("find"));
+    eval("find = 2");
+    console.log(2, eval("find"));
+    console.log(false, eval("delete find"));
+  }
+}
+
+t15();
+
+function t16() {
+  var o = {
+    a: 1
+  };
+  var a = 2;
+  with (o) {
+    o[Symbol.unscopables] = {
+      'a': true
+    };
+    console.log(2, a);
+  }
+}
+
+t16();
+
+function t17() {
+  var o = {
+    a: 1
+  };
+  var a = 2;
+  with (o) {
+    a += (o[Symbol.unscopables] = {
+      'a': true
+    }, 2); // This is a modification of Brian's Operator precedence test above
+    // This is a tricky one a is originally not unscopable so the a we use is o.a
+    // then the assignment happens after it is made unscopable
+
+    console.log(3, a);
+  }
+  console.log(1, o.a);
+  console.log(3, a);
+}
+
+t17();
+
+function t18() {
+  var a = 1;
+  this[Symbol.unscopables] = {
+    "a": true
+  };
+  console.log(1, a);
+  var b;
+  this[Symbol.unscopables]["b"] = true;
+  b = 1;
+  console.log(1, b);
+  this[Symbol.unscopables]["c"] = true;
+  var c = 1;
+  console.log(1, b);
+}
+
+t18();
+
+function t19() {
+  with ([]) {
+    find = 2;
+    console.log(2, find);
+  }
+  console.log(2, find); // strict mode
+
+  with ([]) {
+    function test() {
+      "use strict";
+
+      try {
+        findIndex = 2;
+      } catch (e) {
+        ;
+      }
+    }
+
+    test();
+  } // assignment test with let
+
+  let o = {
+    [Symbol.unscopables]: {
+      'b': true
+    }
+  };
+  let b = -1;
+  with (o) {
+    b = 1;
+  } // assignment test with evals
+
+  console.log(undefined, o.b);
+  console.log(1, b);
+  with (o) {
+    eval("b =2;");
+  }
+  console.log(undefined, o.b);
+  console.log(2, b);
+}
+
+t19();
+
+function t20() {
+  var globalScope = -1;
+  var input = globalScope;
+  var lastMatch = globalScope;
+  var lastParen = globalScope;
+  var leftContext = globalScope;
+  var props = {
+    "input": true,
+    "lastMatch": true,
+    "lastParen": true,
+    "leftContext": true
+  };
+  RegExp[Symbol.unscopables] = props;
+
+  for (i in RegExp[Symbol.unscopables]) {
+    console.log(props[i], RegExp[Symbol.unscopables][i]);
+  }
+
+  console.log(RegExp.hasOwnProperty(Symbol.unscopables));
+  with (RegExp) {
+    console.log(globalScope, input);
+    console.log(globalScope, lastMatch);
+    console.log(globalScope, lastParen);
+    console.log(globalScope, leftContext);
+  }
+}
+
+t20();
+
+function t21() {
+  var env = {
+    x: 1
+  };
+  var callCount = 0;
+  Object.defineProperty(env, Symbol.unscopables, {
+    get: function () {
+      callCount += 1;
+    }
+  });
+  with (env) {
+    void x;
+  }
+  console.log(1, callCount);
+}
+
+t21();
+
+function t22() {
+  var x = 0;
+  var env = {};
+  var callCount = 0;
+  Object.defineProperty(env, Symbol.unscopables, {
+    get: function () {
+      callCount += 1;
+    }
+  });
+  with (env) {
+    void x;
+  }
+  console.log(0, callCount);
+  var x = 0;
+  var env = {
+    x: 1
+  };
+  env[Symbol.unscopables] = {};
+  env[Symbol.unscopables].x = false;
+  with (env) {
+    console.log(1, x);
+  }
+}
+
+t22();
+
+function t23() {
+  var unscopables = {
+    x: true
+  };
+  Object.setPrototypeOf(unscopables, {
+    y: true
+  });
+  var env = {
+    x: 1,
+    y: 2,
+    [Symbol.unscopables]: unscopables
+  };
+  var x = -1;
+  var y = -2;
+  with (env) {
+    console.log(-1, x);
+    console.log(-2, y);
+  }
+}
+
+t23();
+
+function t24() {
+  console.log(null, Object.getPrototypeOf(Array.prototype[Symbol.unscopables]));
+}
+
+t24();
+
+function t25() {
+  var p = Object.getOwnPropertyDescriptor(Array.prototype, Symbol.unscopables);
+  console.log(p.writable);
+  console.log(p.enumerable);
+  console.log(p.configurable);
+}
+
+t25();
+
+function t26() {
+  var originalProto = Object.__proto__;
+  var o = {};
+  with (Object) {
+    console.log(Object.__proto__, __proto__);
+    __proto__ = o;
+    console.log(o, __proto__);
+  }
+  Object.__proto__ = originalProto;
+  with (Object) {
+    console.log(Object.__proto__, __proto__);
+    console.log(Object.__proto__, eval('__proto__'));
+    eval('__proto__ = o');
+    console.log(o, __proto__);
+    console.log(o, eval('__proto__'));
+  }
+  Object.__proto__ = originalProto;
+}
+
+t26();

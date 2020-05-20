@@ -1,0 +1,104 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+//-----------------------------------------------------------------------------
+var BUGNUMBER = 295052;
+try { if (Inst0 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<346,355,7>",(BUGNUMBER)); Inst0++; } } catch(e) {}
+var summary = 'Do not crash when apply method is called on String.prototype.match';
+try { if (Inst1 <= 1000 && typeof (summary) != "undefined") {_RecordType("<370,377,8>",(summary)); Inst1++; } } catch(e) {}
+var actual = 'No Crash';
+try { if (Inst2 <= 1000 && typeof (actual) != "undefined") {_RecordType("<454,460,9>",(actual)); Inst2++; } } catch(e) {}
+var expect = 'No Crash';
+try { if (Inst3 <= 1000 && typeof (expect) != "undefined") {_RecordType("<479,485,10>",(expect)); Inst3++; } } catch(e) {}
+try { if (Inst4 <= 1000 && typeof (printBugNumber) != "undefined") {_RecordType("<500,514,11>",(printBugNumber)); Inst4++; } } catch(e) {}try { if (Inst5 <= 1000 && typeof (BUGNUMBER) != "undefined") {_RecordType("<515,524,11>",(BUGNUMBER)); Inst5++; } } catch(e) {}
+printBugNumber(BUGNUMBER);
+try { if (Inst6 <= 1000 && typeof (printStatus) != "undefined") {_RecordType("<527,538,12>",(printStatus)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (summary) != "undefined") {_RecordType("<539,546,12>",(summary)); Inst7++; } } catch(e) {}
+printStatus(summary);
+
+try { if (Inst11 <= 1000 && typeof (e) != "undefined") {_RecordType("<645,646,17>",(e)); Inst11++; } } catch(e) {}
+try {
+try { if (Inst8 <= 1000 && typeof ("".match.apply) != "undefined") {_RecordType("<558,572,15>",("".match.apply)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof ("".match) != "undefined") {_RecordType("<558,566,15>",("".match)); Inst9++; } } catch(e) {}
+  "".match.apply();
+try { if (Inst10 <= 1000 && typeof (Error) != "undefined") {_RecordType("<588,593,16>",(Error)); Inst10++; } } catch(e) {}
+  throw new Error("should have thrown for undefined this");
+} catch (e) {
+try { if (Inst12 <= 1000 && typeof (e) != "undefined") {_RecordType("<652,653,18>",(e)); Inst12++; } } catch(e) {}try { if (Inst13 <= 1000 && typeof (TypeError) != "undefined") {_RecordType("<665,674,18>",(TypeError)); Inst13++; } } catch(e) {}
+  e instanceof TypeError;
+  true;
+  "No TypeError for String.prototype.match";
+}
+
+try { if (Inst14 <= 1000 && typeof (reportCompare) != "undefined") {_RecordType("<732,745,23>",(reportCompare)); Inst14++; } } catch(e) {}try { if (Inst15 <= 1000 && typeof (expect) != "undefined") {_RecordType("<746,752,23>",(expect)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (actual) != "undefined") {_RecordType("<754,760,23>",(actual)); Inst16++; } } catch(e) {}try { if (Inst17 <= 1000 && typeof (summary) != "undefined") {_RecordType("<762,769,23>",(summary)); Inst17++; } } catch(e) {}
+reportCompare(expect, actual, summary);
+

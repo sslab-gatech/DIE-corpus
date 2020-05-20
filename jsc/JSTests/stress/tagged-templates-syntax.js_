@@ -1,0 +1,63 @@
+function tag() {
+}
+
+function testSyntax(script) {
+    try {
+        eval(script);
+    } catch (error) {
+    }
+}
+
+function testSyntaxError(script, message) {
+    var error = null;
+    try {
+        eval(script);
+    } catch (e) {
+        error = e;
+    }
+}
+
+testSyntax("tag``");
+testSyntax("tag`Hello`");
+testSyntax("tag`Hello${tag}`");
+testSyntax("tag`${tag}`");
+testSyntax("tag`${tag} ${tag}`");
+testSyntax("tag`${tag}${tag}`");
+
+testSyntax("tag.prop``");
+testSyntax("tag.prop`Hello`");
+testSyntax("tag.prop`Hello${tag}`");
+testSyntax("tag.prop`${tag}`");
+testSyntax("tag.prop`${tag} ${tag}`");
+testSyntax("tag.prop`${tag}${tag}`");
+
+testSyntax("tag[prop]``");
+testSyntax("tag[prop]`Hello`");
+testSyntax("tag[prop]`Hello${tag}`");
+testSyntax("tag[prop]`${tag}`");
+testSyntax("tag[prop]`${tag} ${tag}`");
+testSyntax("tag[prop]`${tag}${tag}`");
+
+testSyntax("(tag())``");
+testSyntax("(tag())`Hello`");
+testSyntax("(tag())`Hello${tag}`");
+testSyntax("(tag())`${tag}`");
+testSyntax("(tag())`${tag} ${tag}`");
+testSyntax("(tag())`${tag}${tag}`");
+
+testSyntax("(class { say() { super.tag`` } })");
+testSyntax("(class { say() { super.tag`Hello` } })");
+testSyntax("(class { say() { super.tag`Hello${tag}` } })");
+testSyntax("(class { say() { super.tag`${tag}` } })");
+testSyntax("(class { say() { super.tag`${tag} ${tag}` } })");
+testSyntax("(class { say() { super.tag`${tag}${tag}` } })");
+
+testSyntax("(class extends Hello { constructor() { super()`` } })");
+testSyntax("(class extends Hello { constructor() { super()`Hello` } })");
+testSyntax("(class extends Hello { constructor() { super()`Hello${tag}` } })");
+testSyntax("(class extends Hello { constructor() { super()`${tag}` } })");
+testSyntax("(class extends Hello { constructor() { super()`${tag} ${tag}` } })");
+testSyntax("(class extends Hello { constructor() { super()`${tag}${tag}` } })");
+
+testSyntaxError("super`Hello${tag}`", "SyntaxError: super is not valid in this context.");
+testSyntaxError("(class { say() { super`Hello${tag}` } })", "SyntaxError: Cannot use super as tag for tagged templates.");

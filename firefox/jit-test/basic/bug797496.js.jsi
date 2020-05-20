@@ -1,0 +1,80 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+// |jit-test| error: TypeError
+try { if (Inst1 <= 1000 && typeof (Set) != "undefined") {_RecordType("<45,48,2>",(Set)); Inst1++; } } catch(e) {}
+var set = new Set(['a']);
+try { if (Inst0 <= 1000 && typeof (set) != "undefined") {_RecordType("<35,38,2>",(set)); Inst0++; } } catch(e) {}
+var n = 5;
+try { if (Inst2 <= 1000 && typeof (n) != "undefined") {_RecordType("<61,62,3>",(n)); Inst2++; } } catch(e) {}
+
+for (let v of set) {
+try { if (Inst3 <= 1000 && typeof (v) != "undefined") {_RecordType("<78,79,5>",(v)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (set) != "undefined") {_RecordType("<83,86,5>",(set)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (n) != "undefined") {_RecordType("<96,97,6>",(n)); Inst5++; } } catch(e) {}
+  if (n === 0) {
+    break;
+  }
+
+try { if (Inst7 <= 1000 && typeof (set) != "undefined") {_RecordType("<133,136,10>",(set)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (Set) != "undefined") {_RecordType("<141,144,10>",(Set)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (n) != "undefined") {_RecordType("<157,158,10>",(n)); Inst9++; } } catch(e) {}
+  let g = set(new Set(0xffffffff, n), 1);
+try { if (Inst6 <= 1000 && typeof (g) != "undefined") {_RecordType("<129,130,10>",(g)); Inst6++; } } catch(e) {}
+}
+

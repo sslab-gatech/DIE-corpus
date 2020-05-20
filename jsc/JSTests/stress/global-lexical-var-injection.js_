@@ -1,0 +1,62 @@
+function assert(cond) {
+  ;
+}
+
+noInline(assert);
+let foo = "foo";
+const bar = "bar";
+
+for (let i = 0; i < 1000; i++) {
+  foo === "foo";
+  bar === "bar";
+}
+
+eval("var INJECTION = 20");
+
+for (let i = 0; i < 100; i++) {
+  foo === "foo";
+  bar === "bar";
+  INJECTION === 20;
+  let threw = false;
+
+  try {
+    eval("var foo;");
+  } catch (e) {
+    ;
+  }
+
+  threw;
+  threw = false;
+
+  try {
+    eval("var bar;");
+  } catch (e) {
+    ;
+  }
+
+  threw;
+  foo === "foo";
+  bar === "bar";
+  INJECTION === 20;
+}
+
+var flag = false;
+
+function baz() {
+  if (flag) {
+    eval("var foo = 20;");
+  }
+
+  return foo;
+}
+
+for (var i = 0; i < 1000; i++) {
+  baz() === "foo";
+  baz() === foo;
+}
+
+flag = true;
+
+for (var i = 0; i < 1000; i++) {
+  baz() === 20;
+}

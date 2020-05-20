@@ -1,0 +1,99 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+var scenario = "add property after it was deleted for non-extensible object";
+try { if (Inst0 <= 1000 && typeof (scenario) != "undefined") {_RecordType("<371,379,5>",(scenario)); Inst0++; } } catch(e) {}
+try { if (Inst2 <= 1000 && typeof (y) != "undefined") {_RecordType("<470,471,9>",(y)); Inst2++; } } catch(e) {}
+var a = {
+  x: 0,
+
+  get y() {
+    return 0;
+  }
+
+}; // Force to use DictionaryTypeHandler before the property is deleted.
+try { if (Inst1 <= 1000 && typeof (a) != "undefined") {_RecordType("<449,450,6>",(a)); Inst1++; } } catch(e) {}
+
+try { if (Inst3 <= 1000 && typeof (a.x) != "undefined") {_RecordType("<576,579,15>",(a.x)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (a) != "undefined") {_RecordType("<576,577,15>",(a)); Inst4++; } } catch(e) {}
+delete a.x;
+try { if (Inst5 <= 1000 && typeof (Object.preventExtensions) != "undefined") {_RecordType("<581,605,16>",(Object.preventExtensions)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (Object) != "undefined") {_RecordType("<581,587,16>",(Object)); Inst6++; } } catch(e) {}try { if (Inst7 <= 1000 && typeof (a) != "undefined") {_RecordType("<606,607,16>",(a)); Inst7++; } } catch(e) {}
+Object.preventExtensions(a);
+
+try { if (Inst12 <= 1000 && typeof (ex) != "undefined") {_RecordType("<667,669,21>",(ex)); Inst12++; } } catch(e) {}
+try {
+  a.x = 1;
+try { if (Inst8 <= 1000 && typeof (a.x) != "undefined") {_RecordType("<619,622,19>",(a.x)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (a) != "undefined") {_RecordType("<619,620,19>",(a)); Inst9++; } } catch(e) {}
+try { if (Inst10 <= 1000 && typeof (print) != "undefined") {_RecordType("<630,635,20>",(print)); Inst10++; } } catch(e) {}try { if (Inst11 <= 1000 && typeof (scenario) != "undefined") {_RecordType("<647,655,20>",(scenario)); Inst11++; } } catch(e) {}
+  print("Return:", scenario);
+} catch (ex) {
+try { if (Inst13 <= 1000 && typeof (print) != "undefined") {_RecordType("<675,680,22>",(print)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (scenario) != "undefined") {_RecordType("<695,703,22>",(scenario)); Inst14++; } } catch(e) {}
+  print("Exception:", scenario);
+}
+

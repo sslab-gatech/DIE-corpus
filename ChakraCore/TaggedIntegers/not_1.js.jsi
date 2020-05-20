@@ -1,0 +1,133 @@
+var Inst0 = 0;
+var Inst1 = 0;
+var Inst2 = 0;
+var Inst3 = 0;
+var Inst4 = 0;
+var Inst5 = 0;
+var Inst6 = 0;
+var Inst7 = 0;
+var Inst8 = 0;
+var Inst9 = 0;
+var Inst10 = 0;
+var Inst11 = 0;
+var Inst12 = 0;
+var Inst13 = 0;
+var Inst14 = 0;
+var Inst15 = 0;
+var Inst16 = 0;
+var Inst17 = 0;
+var Inst18 = 0;
+var Inst19 = 0;
+var Inst20 = 0;
+var Inst21 = 0;
+var Inst22 = 0;
+var Inst23 = 0;
+var Inst24 = 0;
+var Inst25 = 0;
+var Inst26 = 0;
+ 
+function _TypeOfArray(a) {
+	let number = true;	
+	let string = true;
+	for (let i = 0; i < a.length; i++) {
+		if (number && (typeof a[i]) != "number") {
+			number = false;	
+		}
+		if (string && (typeof a[i]) != "string") {
+			string = false;	
+		}
+		if (!number && !string)
+			break;
+	}
+	if (number)
+		return "number";
+	else if (string)
+		return "string";
+	else
+		return "any";
+}
+
+function _TypeIsEqual(t1, t2) {
+	return JSON.stringify(t1) === JSON.stringify(t2);
+}
+
+function _TypeOf(a, step) {
+	var t;
+	var type = Object.prototype.toString.call(a).slice(8, -1).toLowerCase();	
+	if (type == "array") {
+		t = {type : type, extra: {elemType: _TypeOfArray(a)}};
+	} else if (type == "object") {
+		let shape = [];
+        if (step === undefined || step > 0) {
+            let keys = Object.keys(a);
+            let length = Math.min(100, keys.length);
+		    for (let i = 0; i < length; i++) {
+			    shape.push([keys[i], _TypeOf(a[keys[i]], step === undefined ? 1 : step - 1)]);	
+		    }
+        }
+		t = {type : type, extra: {shape: shape}};
+	} else {
+		t = {type : type};
+	} 
+	return t;
+}
+
+function _RecordType(loc, a) {
+	var t = _TypeOf(a);
+    print("~~~TypeInfo:" + loc + ":" + JSON.stringify(t));
+}
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+//Refer to bug Eze\125
+//Not Functionality
+try { if (Inst0 <= 1000 && typeof (verify) != "undefined") {_RecordType("<419,425,7>",(verify)); Inst0++; } } catch(e) {}
+function verify(get_actual, get_expected, testid, testdesc) {
+try { if (Inst1 <= 1000 && typeof (get_actual) != "undefined") {_RecordType("<426,436,7>",(get_actual)); Inst1++; } } catch(e) {}try { if (Inst2 <= 1000 && typeof (get_expected) != "undefined") {_RecordType("<438,450,7>",(get_expected)); Inst2++; } } catch(e) {}try { if (Inst3 <= 1000 && typeof (testid) != "undefined") {_RecordType("<452,458,7>",(testid)); Inst3++; } } catch(e) {}try { if (Inst4 <= 1000 && typeof (testdesc) != "undefined") {_RecordType("<460,468,7>",(testdesc)); Inst4++; } } catch(e) {}
+try { if (Inst5 <= 1000 && typeof (get_actual) != "undefined") {_RecordType("<478,488,8>",(get_actual)); Inst5++; } } catch(e) {}try { if (Inst6 <= 1000 && typeof (get_expected) != "undefined") {_RecordType("<492,504,8>",(get_expected)); Inst6++; } } catch(e) {}
+  if (get_actual != get_expected) {
+try { if (Inst7 <= 1000 && typeof (print) != "undefined") {_RecordType("<512,517,9>",(print)); Inst7++; } } catch(e) {}try { if (Inst8 <= 1000 && typeof (testid) != "undefined") {_RecordType("<518,524,9>",(testid)); Inst8++; } } catch(e) {}try { if (Inst9 <= 1000 && typeof (testdesc) != "undefined") {_RecordType("<533,541,9>",(testdesc)); Inst9++; } } catch(e) {}
+    print(testid + ":" + testdesc + "\t" + "failed");
+  }
+} //Test No 1 Checking Not for 0
+
+
+try { if (Inst10 <= 1000 && typeof (verify) != "undefined") {_RecordType("<601,607,14>",(verify)); Inst10++; } } catch(e) {}
+verify(~0, -1, 1, "\"Checking for 0\""); //Test No 2
+
+try { if (Inst11 <= 1000 && typeof (verify) != "undefined") {_RecordType("<655,661,16>",(verify)); Inst11++; } } catch(e) {}
+verify(~0xffffffff, 0, 2, "\"Checking result for 0xffffffff\""); //Test no 3
+
+try { if (Inst12 <= 1000 && typeof (verify) != "undefined") {_RecordType("<733,739,18>",(verify)); Inst12++; } } catch(e) {}
+verify(~~0xffffffff, -1, 3, "\"testing the not of 0xffffffff\""); //Test No 4 Ensuring that Not retaggs its result for NaN
+
+try { if (Inst13 <= 1000 && typeof (verify) != "undefined") {_RecordType("<857,863,20>",(verify)); Inst13++; } } catch(e) {}try { if (Inst14 <= 1000 && typeof (NaN) != "undefined") {_RecordType("<865,868,20>",(NaN)); Inst14++; } } catch(e) {}
+verify(~NaN, -1, 4, "\"Checking result for NaN\""); //Test No 5: Ensuring that Not retaggs its result for undefined
+
+try { if (Inst15 <= 1000 && typeof (verify) != "undefined") {_RecordType("<974,980,22>",(verify)); Inst15++; } } catch(e) {}try { if (Inst16 <= 1000 && typeof (undefined) != "undefined") {_RecordType("<982,991,22>",(undefined)); Inst16++; } } catch(e) {}
+verify(~undefined, -1, 5, "\"Checking for undefined\""); //Test No 6: Ensuring that Not retaggs its result for Infinity
+
+try { if (Inst17 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1095,1101,24>",(verify)); Inst17++; } } catch(e) {}try { if (Inst18 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<1103,1111,24>",(Infinity)); Inst18++; } } catch(e) {}
+verify(~Infinity, -1, 6, "\"Checking result for Infinity\""); //Test No 7: Ensuring that Not retaggs its result for -Infinity
+
+try { if (Inst19 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1222,1228,26>",(verify)); Inst19++; } } catch(e) {}try { if (Inst20 <= 1000 && typeof (Infinity) != "undefined") {_RecordType("<1231,1239,26>",(Infinity)); Inst20++; } } catch(e) {}
+verify(~-Infinity, -1, 7, "\"Checking result for -Infinity\""); //Test No 8
+
+try { if (Inst21 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1299,1305,28>",(verify)); Inst21++; } } catch(e) {}
+verify(~536870912, -536870913, 8, "\"Checking result for Tagged Limits 536870912 \""); //Test no 9
+
+try { if (Inst22 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1399,1405,30>",(verify)); Inst22++; } } catch(e) {}
+verify(~536870911, -536870912, 9, "\"Checking result for Tagged Limits-1 536870911\""); //Test No 10
+
+try { if (Inst23 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1501,1507,32>",(verify)); Inst23++; } } catch(e) {}
+verify(~-536870912, 536870911, 10, "\"Checking result for Tagged Limits -536870912 \""); //Test no 11
+
+try { if (Inst24 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1604,1610,34>",(verify)); Inst24++; } } catch(e) {}
+verify(~-536870913, 536870912, 11, "\"Checkings result for Tagged Limits+1 -536870913\""); //Test No 12
+
+try { if (Inst25 <= 1000 && typeof (verify) != "undefined") {_RecordType("<1709,1715,36>",(verify)); Inst25++; } } catch(e) {}
+verify(~-0, -1, 12, "\"Checking result for -0\"");
+try { if (Inst26 <= 1000 && typeof (print) != "undefined") {_RecordType("<1760,1765,37>",(print)); Inst26++; } } catch(e) {}
+print("Done");
+

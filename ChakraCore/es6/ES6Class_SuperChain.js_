@@ -1,0 +1,1442 @@
+//-------------------------------------------------------------------------------------------------------
+// Copyright (C) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+//-------------------------------------------------------------------------------------------------------
+// ES6 super chain tests
+class SimpleParent {
+  constructor() {
+    this.foo = 'SimpleParent';
+  }
+
+}
+
+let calls_to_ConstructorCountingParent = 0;
+
+class ConstructorCountingParent {
+  constructor() {
+    calls_to_ConstructorCountingParent++;
+  }
+
+}
+
+class UninitializedThisReturningArgumentConstructor extends SimpleParent {
+  constructor(arg) {
+    return arg;
+  }
+
+}
+
+;
+
+class InitializedThisReturningArgumentConstructor extends SimpleParent {
+  constructor(arg) {
+    super();
+    return arg;
+  }
+
+}
+
+;
+
+function t1() {
+  class DerivedClassUsingThis extends SimpleParent {
+    constructor() {
+      super();
+      this.bar = "DerivedClassUsingThis";
+    }
+
+  }
+
+  ;
+  let result = new DerivedClassUsingThis();
+  console.log("DerivedClassUsingThis", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassUsingThis);
+}
+
+t1();
+
+function t2() {
+  class DerivedClassUsingThisIllegally extends SimpleParent {
+    constructor() {
+      this.bar = "DerivedClassUsingThisIllegally";
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassUsingThisIllegally();
+  } catch (e) {
+    ;
+  }
+}
+
+t2();
+
+function t3() {
+  class DerivedClassUsingThisIllegally extends SimpleParent {
+    constructor() {
+      this.bar = "DerivedClassUsingThisIllegally";
+      super();
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassUsingThisIllegally();
+  } catch (e) {
+    ;
+  }
+}
+
+t3();
+
+function t4() {
+  class DerivedClassUsingThisViaLambda extends SimpleParent {
+    constructor() {
+      var arrow = () => {
+        this.bar = 'DerivedClassUsingThisViaLambda';
+      };
+
+      super();
+      arrow();
+    }
+
+  }
+
+  ;
+  let result = new DerivedClassUsingThisViaLambda();
+  console.log("DerivedClassUsingThisViaLambda", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassUsingThisViaLambda);
+}
+
+t4();
+
+function t5() {
+  class DerivedClassUsingThisIllegallyViaLambda extends SimpleParent {
+    constructor() {
+      var arrow = () => {
+        this.bar = 'DerivedClassUsingThisIllegallyViaLambda';
+      };
+
+      arrow();
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassUsingThisIllegallyViaLambda();
+  } catch (e) {
+    ;
+  }
+}
+
+t5();
+
+function t6() {
+  class DerivedClassUsingThisIllegallyViaLambda extends SimpleParent {
+    constructor() {
+      var arrow = () => {
+        this.bar = 'DerivedClassUsingThisIllegallyViaLambda';
+      };
+
+      arrow();
+      super();
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassUsingThisIllegallyViaLambda();
+  } catch (e) {
+    ;
+  }
+}
+
+t6();
+
+function t7() {
+  class DerivedClassUsingThisAndSuperViaLambda extends SimpleParent {
+    constructor() {
+      var this_arrow = () => {
+        this.bar = 'DerivedClassUsingThisAndSuperViaLambda';
+      };
+
+      var super_arrow = () => {
+        super();
+      };
+
+      super_arrow();
+      this_arrow();
+    }
+
+  }
+
+  ;
+  let result = new DerivedClassUsingThisAndSuperViaLambda();
+  console.log("DerivedClassUsingThisAndSuperViaLambda", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassUsingThisAndSuperViaLambda);
+}
+
+t7();
+
+function t8() {
+  class DerivedClassUsingThisAndSuperViaLambda extends SimpleParent {
+    constructor() {
+      var super_arrow = () => {
+        super();
+      };
+
+      var this_arrow = () => {
+        this.bar = 'DerivedClassUsingThisAndSuperViaLambda';
+      };
+
+      super_arrow();
+      this_arrow();
+    }
+
+  }
+
+  ;
+  let result = new DerivedClassUsingThisAndSuperViaLambda();
+  console.log("DerivedClassUsingThisAndSuperViaLambda", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassUsingThisAndSuperViaLambda);
+}
+
+t8();
+
+function t9() {
+  class IllegalThisAccessConstructor extends SimpleParent {
+    constructor() {
+      this.bar = 'something';
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalThisAccessConstructor();
+  } catch (e) {
+    ;
+  }
+}
+
+t9();
+
+function t10() {
+  class IllegalThisBeforeSuperConstructor extends SimpleParent {
+    constructor() {
+      this.bar = 'something';
+      super();
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalThisBeforeSuperConstructor();
+  } catch (e) {
+    ;
+  }
+}
+
+t10();
+
+function t11() {
+  class EmptyConstructor extends SimpleParent {
+    constructor() {
+      // Implicitly "return this;"
+      ;
+    }
+
+  }
+
+  ;
+
+  try {
+    new EmptyConstructor();
+  } catch (e) {
+    ;
+  }
+}
+
+t11();
+
+function t12() {
+  class DefaultConstructor extends SimpleParent {// Implicitly
+    // constructor(...args) { super(...args); }
+  }
+
+  ;
+  let obj = new DefaultConstructor();
+  console.log('SimpleParent', obj.foo);
+  console.log(obj instanceof SimpleParent);
+  console.log(obj instanceof DefaultConstructor);
+
+  class DefaultConstructorReturningArgumentViaBaseClass extends UninitializedThisReturningArgumentConstructor {// Implicitly
+    // constructor(...args) { super(...args); }
+  }
+
+  ;
+  obj = new DefaultConstructorReturningArgumentViaBaseClass({
+    bar: 'DefaultConstructorReturningArgumentViaBaseClass'
+  });
+  console.log('DefaultConstructorReturningArgumentViaBaseClass', obj.bar);
+  console.log(obj instanceof UninitializedThisReturningArgumentConstructor);
+  console.log(obj instanceof DefaultConstructorReturningArgumentViaBaseClass);
+}
+
+t12();
+
+function t13() {
+  try {
+    new InitializedThisReturningArgumentConstructor(null);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new InitializedThisReturningArgumentConstructor('string');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new InitializedThisReturningArgumentConstructor(5);
+  } catch (e) {
+    ;
+  }
+}
+
+t13();
+
+function t14() {
+  try {
+    new UninitializedThisReturningArgumentConstructor(null);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new UninitializedThisReturningArgumentConstructor('string');
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new UninitializedThisReturningArgumentConstructor(5);
+  } catch (e) {
+    ;
+  }
+}
+
+t14();
+
+function t15() {
+  try {
+    class A extends JSON {}
+
+    ;
+  } catch (e) {
+    ;
+  }
+
+  try {
+    class A extends Math {}
+
+    ;
+  } catch (e) {
+    ;
+  }
+
+  function* gf(a) {
+    yield 1 + a + this.a;
+  }
+
+  try {
+    class A extends gf {}
+  } catch (e) {
+    ;
+  }
+
+  var lambda = a => a;
+
+  try {
+    class A extends lambda {}
+  } catch (e) {
+    ;
+  }
+}
+
+t15();
+
+function t16() {
+  class ImplicitReturnUndefinedNotInitializedThis extends SimpleParent {
+    constructor() {
+      return;
+    }
+
+  }
+
+  try {
+    new ImplicitReturnUndefinedNotInitializedThis();
+  } catch (e) {
+    ;
+  }
+
+  class ExplicitReturnUndefinedNotInitializedThis extends SimpleParent {
+    constructor() {
+      return undefined;
+    }
+
+  }
+
+  try {
+    new ExplicitReturnUndefinedNotInitializedThis();
+  } catch (e) {
+    ;
+  }
+
+  class ImplicitReturnUndefinedInitializedThis extends SimpleParent {
+    constructor() {
+      super();
+      this.bar = 'ImplicitReturnUndefinedInitializedThis';
+      return;
+    }
+
+  }
+
+  let result = new ImplicitReturnUndefinedInitializedThis();
+  console.log('SimpleParent', result.foo);
+  console.log('ImplicitReturnUndefinedInitializedThis', result.bar);
+  console.log(result instanceof ImplicitReturnUndefinedInitializedThis);
+  console.log(result instanceof SimpleParent);
+
+  class ExplicitReturnUndefinedInitializedThis extends SimpleParent {
+    constructor() {
+      super();
+      this.bar = 'ExplicitReturnUndefinedInitializedThis';
+      return undefined;
+    }
+
+  }
+
+  result = new ExplicitReturnUndefinedInitializedThis();
+  console.log('SimpleParent', result.foo);
+  console.log('ExplicitReturnUndefinedInitializedThis', result.bar);
+  console.log(result instanceof ExplicitReturnUndefinedInitializedThis);
+  console.log(result instanceof SimpleParent);
+}
+
+t16();
+
+function t17() {
+  let obj = new UninitializedThisReturningArgumentConstructor({
+    foo: 'value'
+  });
+  console.log('value', obj.foo);
+}
+
+t17();
+
+function t18() {
+  // Reset call counter in parent
+  calls_to_ConstructorCountingParent = 0;
+
+  class IllegalSuperCallConstructor extends ConstructorCountingParent {
+    constructor() {
+      super();
+      super();
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalSuperCallConstructor();
+  } catch (e) {
+    ;
+  }
+
+  console.log(2, calls_to_ConstructorCountingParent);
+}
+
+t18();
+
+function t18() {
+  // Reset call counter in parent
+  calls_to_ConstructorCountingParent = 0;
+
+  class IllegalSuperCallConstructor extends ConstructorCountingParent {
+    constructor() {
+      let arrow = () => {
+        super();
+      };
+
+      super();
+      arrow();
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalSuperCallConstructor();
+  } catch (e) {
+    ;
+  }
+
+  console.log(2, calls_to_ConstructorCountingParent);
+}
+
+t18();
+
+function t19() {
+  // Reset call counter in parent
+  calls_to_ConstructorCountingParent = 0;
+
+  class IllegalSuperCallConstructor extends ConstructorCountingParent {
+    constructor() {
+      let arrow = () => {
+        super();
+      };
+
+      let arrow2 = () => {
+        super();
+      };
+
+      arrow();
+      arrow2();
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalSuperCallConstructor();
+  } catch (e) {
+    ;
+  }
+
+  console.log(2, calls_to_ConstructorCountingParent);
+}
+
+t19();
+
+function t20() {
+  // Reset call counter in parent
+  calls_to_ConstructorCountingParent = 0;
+
+  class IllegalSuperCallConstructor extends ConstructorCountingParent {
+    constructor() {
+      let arrow = () => {
+        super();
+        super();
+      };
+
+      arrow();
+    }
+
+  }
+
+  ;
+
+  try {
+    new IllegalSuperCallConstructor();
+  } catch (e) {
+    ;
+  }
+
+  console.log(2, calls_to_ConstructorCountingParent);
+}
+
+t20();
+
+function t21() {
+  class DerivedClassCapturingThisAndSuper extends SimpleParent {
+    constructor() {
+      let arrow = () => {
+        this.bar = 'lambda';
+        super();
+      };
+
+      super();
+      this.bar = "DerivedClassCapturingThisAndSuper";
+    }
+
+  }
+
+  ;
+  let result = new DerivedClassCapturingThisAndSuper();
+  console.log("DerivedClassCapturingThisAndSuper", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassCapturingThisAndSuper);
+}
+
+t21();
+
+function t22() {
+  let parent = new SimpleParent();
+
+  class SimpleDerivedClass extends SimpleParent {
+    constructor() {
+      super();
+      this.bar = "SimpleDerivedClass";
+    }
+
+  }
+
+  ;
+  let result = new SimpleDerivedClass();
+  console.log(Object.hasOwnProperty(parent, 'bar'));
+  console.log("SimpleParent", parent.foo);
+  console.log(parent instanceof SimpleParent);
+  console.log(parent instanceof SimpleDerivedClass);
+  console.log("SimpleDerivedClass", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof SimpleDerivedClass);
+}
+
+t22();
+
+function t23() {
+  class MiddleDerivedClass extends SimpleParent {
+    constructor() {
+      super();
+      this.bar = "MiddleDerivedClass";
+    }
+
+  }
+
+  ;
+
+  class BottomDerivedClass extends MiddleDerivedClass {
+    constructor() {
+      super();
+      this.baz = "BottomDerivedClass";
+    }
+
+  }
+
+  ;
+  let result = new BottomDerivedClass();
+  console.log("BottomDerivedClass", result.baz);
+  console.log("MiddleDerivedClass", result.bar);
+  console.log("SimpleParent", result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof MiddleDerivedClass);
+  console.log(result instanceof BottomDerivedClass);
+}
+
+t23();
+
+function t24() {
+  class A {
+    constructor() {
+      this.a = 'A';
+    }
+
+  }
+
+  class B extends A {
+    constructor() {
+      super();
+      this.b = 'B';
+    }
+
+  }
+
+  class C extends B {
+    constructor() {
+      var s = () => {
+        super();
+        this.c = 'C';
+        return this;
+      };
+
+      return s;
+    }
+
+  }
+
+  var maker = new C();
+  var result = maker();
+  console.log("C", result.c);
+  console.log("B", result.b);
+  console.log("A", result.a);
+  console.log(result instanceof A);
+  console.log(result instanceof B);
+  console.log(result instanceof C);
+
+  try {
+    var result2 = maker();
+  } catch (e) {
+    ;
+  } // creating a new lambda should let us construct one more object
+
+
+  maker = new C();
+  result = maker();
+  console.log("C", result.c);
+  console.log("B", result.b);
+  console.log("A", result.a);
+  console.log(result instanceof A);
+  console.log(result instanceof B);
+  console.log(result instanceof C);
+
+  try {
+    var result2 = maker();
+  } catch (e) {
+    ;
+  }
+}
+
+t24();
+
+function t25() {
+  class A {
+    constructor() {
+      this.a = 'A';
+    }
+
+  }
+
+  class B extends A {
+    constructor() {
+      var s = () => {
+        super();
+        this.b = 'B';
+        return this;
+      };
+
+      return s;
+    }
+
+  }
+
+  class C extends B {
+    constructor() {
+      super();
+    }
+
+  }
+
+  var maker = new C();
+  var result = maker();
+  console.log("B", result.b);
+  console.log("A", result.a);
+  console.log(result instanceof A);
+  console.log(result instanceof B);
+  console.log(result instanceof C);
+
+  try {
+    var result2 = maker();
+  } catch (e) {
+    ;
+  } // creating a new lambda should let us construct one more object
+
+
+  maker = new C();
+  result = maker();
+  console.log("B", result.b);
+  console.log("A", result.a);
+  console.log(result instanceof A);
+  console.log(result instanceof B);
+  console.log(result instanceof C);
+
+  try {
+    var result2 = maker();
+  } catch (e) {
+    ;
+  }
+}
+
+t25();
+
+function t26() {
+  class A {
+    constructor() {
+      this.a = 'A';
+    }
+
+  }
+
+  class B extends A {
+    constructor() {
+      super();
+      this.b = 'B';
+    }
+
+  }
+
+  class C extends B {
+    constructor() {
+      var s = () => {
+        this.c = 'C';
+        super();
+        return this;
+      };
+
+      return s;
+    }
+
+  }
+
+  var maker = new C();
+
+  try {
+    var result = maker();
+  } catch (e) {
+    ;
+  }
+}
+
+t26();
+
+function t27() {
+  class A {
+    constructor() {
+      this.a = 'A';
+    }
+
+  }
+
+  class B extends A {
+    constructor() {
+      var s = () => {
+        this.b = 'B';
+        super();
+        return this;
+      };
+
+      return s;
+    }
+
+  }
+
+  class C extends B {
+    constructor() {
+      super();
+    }
+
+  }
+
+  var maker = new C();
+
+  try {
+    var result = maker();
+  } catch (e) {
+    ;
+  }
+}
+
+t27();
+
+function t28() {
+  class NullExtendsExpression extends null {}
+
+  ;
+
+  try {
+    new NullExtendsExpression();
+  } catch (e) {
+    ;
+  }
+}
+
+t28();
+
+function t29() {
+  class NullExtendsExpressionWithConstructor extends null {
+    constructor(arg) {
+      return arg;
+    }
+
+  }
+
+  ;
+  var result = new NullExtendsExpressionWithConstructor({
+    foo: 'value'
+  });
+  console.log('value', result.foo);
+  console.log(result instanceof NullExtendsExpressionWithConstructor);
+}
+
+t29();
+
+function t30() {
+  let returnFalse = () => {
+    return false;
+  };
+
+  class DerivedClassAccessThisImplicitReturn extends SimpleParent {
+    constructor() {
+      if (returnFalse()) {
+        super();
+      }
+
+      this.bar = '';
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassAccessThisImplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassImplicitReturn extends SimpleParent {
+    constructor() {
+      if (returnFalse()) {
+        super();
+      }
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassImplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassAccessThisExplicitReturn extends SimpleParent {
+    constructor() {
+      if (returnFalse()) {
+        super();
+      }
+
+      this.bar = '';
+      return this;
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassAccessThisExplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassExplicitReturn extends SimpleParent {
+    constructor() {
+      if (returnFalse()) {
+        super();
+      }
+
+      return this;
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassExplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassAccessThisViaLambdaImplicitReturn extends SimpleParent {
+    constructor() {
+      let arrow = () => {
+        this.foo = '';
+      };
+
+      if (returnFalse()) {
+        super();
+      }
+
+      arrow();
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassAccessThisViaLambdaImplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassAccessThisViaLambdaExplicitReturn extends SimpleParent {
+    constructor() {
+      let arrow = () => {
+        this.foo = '';
+      };
+
+      if (returnFalse()) {
+        super();
+      }
+
+      arrow();
+      return this;
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassAccessThisViaLambdaExplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassWithThisScopeCaptureNoAccessImplicitReturn extends SimpleParent {
+    constructor() {
+      let arrow = () => {
+        this.foo = '';
+      };
+
+      if (returnFalse()) {
+        super();
+      }
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassWithThisScopeCaptureNoAccessImplicitReturn();
+  } catch (e) {
+    ;
+  }
+
+  class DerivedClassWithThisScopeCaptureNoAccessExplicitReturn extends SimpleParent {
+    constructor() {
+      let arrow = () => {
+        this.foo = '';
+      };
+
+      if (returnFalse()) {
+        super();
+      }
+
+      return this;
+    }
+
+  }
+
+  ;
+
+  try {
+    new DerivedClassWithThisScopeCaptureNoAccessExplicitReturn();
+  } catch (e) {
+    ;
+  }
+}
+
+t30();
+
+function t31() {
+  class SuperCallInEvalClass extends SimpleParent {
+    constructor() {
+      eval('super();');
+    }
+
+  }
+
+  ;
+  var result = new SuperCallInEvalClass();
+  console.log('SimpleParent', result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof SuperCallInEvalClass);
+}
+
+t31();
+
+function t32() {
+  class SuperCallInEvalClass extends SimpleParent {
+    constructor() {
+      eval('super(); this.bar = "SuperCallInEvalClass";');
+    }
+
+  }
+
+  ;
+  var result = new SuperCallInEvalClass();
+  console.log('SimpleParent', result.foo);
+  console.log('SuperCallInEvalClass', result.bar);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof SuperCallInEvalClass);
+}
+
+t32();
+
+function t33() {
+  class SuperCallInEvalClass extends SimpleParent {
+    constructor(callSuperInCtor, callSuperInLambda, callSuperInEval) {
+      console.log(SuperCallInEvalClass, new.target);
+
+      let arrow_pre = () => {
+        console.log(SuperCallInEvalClass, new.target);
+      };
+
+      let arrow_post = () => {
+        this.baz = "SuperCallInEvalClass_arrow";
+      };
+
+      let arrow_super = () => {
+        super();
+      };
+
+      arrow_pre();
+
+      if (callSuperInCtor) {
+        super();
+      }
+
+      if (callSuperInLambda) {
+        arrow_super();
+      }
+
+      if (callSuperInEval) {
+        eval('super();');
+      }
+
+      arrow_post();
+      eval('this.bar = "SuperCallInEvalClass_eval";');
+      this.bot = 'SuperCallInEvalClass_ctor';
+    }
+
+  }
+
+  ;
+
+  function verifyObj(result) {
+    console.log('SimpleParent', result.foo);
+    console.log('SuperCallInEvalClass_eval', result.bar);
+    console.log('SuperCallInEvalClass_arrow', result.baz);
+    console.log('SuperCallInEvalClass_ctor', result.bot);
+    console.log(result instanceof SimpleParent);
+    console.log(result instanceof SuperCallInEvalClass);
+  }
+
+  verifyObj(new SuperCallInEvalClass(true, false, false));
+  verifyObj(new SuperCallInEvalClass(false, true, false));
+  verifyObj(new SuperCallInEvalClass(false, false, true));
+
+  try {
+    new SuperCallInEvalClass(false, false, false);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new SuperCallInEvalClass(true, true, false);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new SuperCallInEvalClass(true, false, true);
+  } catch (e) {
+    ;
+  }
+
+  try {
+    new SuperCallInEvalClass(false, true, true);
+  } catch (e) {
+    ;
+  }
+}
+
+t33();
+
+function t34() {
+  class DerivedClassUsingSuperInEval extends SimpleParent {
+    constructor() {
+      eval('super();');
+    }
+
+  }
+
+  ;
+
+  class DerivedClassUsingSuperInArrow extends DerivedClassUsingSuperInEval {
+    constructor() {
+      let arrow = () => {
+        super();
+      };
+
+      arrow();
+    }
+
+  }
+
+  ;
+
+  class DerivedClassUsingDefaultConstructor extends DerivedClassUsingSuperInArrow {}
+
+  class BottomLevelDerivedClass extends DerivedClassUsingDefaultConstructor {
+    constructor() {
+      super();
+    }
+
+  }
+
+  ;
+  var result = new BottomLevelDerivedClass();
+  console.log('SimpleParent', result.foo);
+  console.log(result instanceof SimpleParent);
+  console.log(result instanceof DerivedClassUsingSuperInEval);
+  console.log(result instanceof DerivedClassUsingSuperInArrow);
+  console.log(result instanceof DerivedClassUsingDefaultConstructor);
+  console.log(result instanceof BottomLevelDerivedClass);
+}
+
+t34();
+
+function t35() {
+  function Base() {
+    console.log(new.target, Derived);
+    this.foo = "Base";
+    return this;
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  class Derived extends Base {
+    constructor() {
+      let arrow = () => {
+        super();
+      };
+
+      arrow();
+      this.bar = "Derived";
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t35();
+
+function t36() {
+  function Base() {
+    console.log(new.target, Derived);
+    this.foo = "Base";
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  class Derived extends Base {
+    constructor() {
+      super();
+      this.bar = "Derived";
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t36();
+
+function t37() {
+  function Base() {
+    console.log(new.target, Derived);
+    this.foo = "Base";
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  class Derived extends Base {
+    constructor() {
+      eval('super();');
+      this.bar = "Derived";
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t37();
+
+function t38() {
+  function Base() {
+    console.log(new.target, Derived);
+    this.foo = "Base";
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  class Derived extends Base {
+    constructor() {
+      let arrow = () => {
+        super();
+      };
+
+      arrow();
+      this.bar = "Derived";
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t38();
+
+function t39() {
+  function BaseReturnsArgument(arg) {
+    console.log(new.target, DerivedFromBase);
+    this.foo = 'BaseReturnsArgument';
+    return arg;
+  }
+
+  BaseReturnsArgument.prototype = {
+    constructor: BaseReturnsArgument
+  };
+
+  class DerivedFromBase extends BaseReturnsArgument {
+    constructor(arg) {
+      super(arg);
+      console.log(this === arg);
+      this.bar = 'DerivedFromBase';
+    }
+
+  }
+
+  function testDerivedClass(arg) {
+    let result = new DerivedFromBase(arg);
+    console.log(result instanceof BaseReturnsArgument);
+    console.log(result instanceof DerivedFromBase);
+    console.log('BaseReturnsArgument', result.foo);
+    console.log('DerivedFromBase', result.bar);
+  }
+
+  testDerivedClass();
+  testDerivedClass(undefined);
+  testDerivedClass(null);
+  testDerivedClass('string');
+  testDerivedClass(5);
+  testDerivedClass(Symbol());
+}
+
+t39();
+
+function t40() {
+  function Base() {
+    console.log(new.target, Derived);
+    this.foo = 'bad';
+    return {
+      foo: 'Base'
+    };
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  class Derived extends Base {
+    constructor() {
+      super();
+      this.bar = 'Derived';
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t40();
+
+function t41() {
+  function Base() {
+    console.log(new.target, Derived);
+    console.log(3, arguments[0], 'arguments[0] === 3');
+    console.log('str', arguments[1]);
+    console.log(1, arguments[2], 'arguments[2] === 1');
+    console.log(2, arguments[3], 'arguments[3] === 2');
+    console.log(3, arguments[4], 'arguments[4] === 3');
+    console.log(5, arguments.length, 'arguments.length === 5');
+    this.foo = 'Base';
+  }
+
+  Base.prototype = {
+    constructor: Base
+  };
+
+  function foo() {
+    return 'str';
+  }
+
+  class Derived extends Base {
+    constructor() {
+      super(1 + 2, foo(), ...[1, 2, 3]);
+      this.bar = 'Derived';
+    }
+
+  }
+
+  let result = new Derived();
+  console.log(result instanceof Base);
+  console.log(result instanceof Derived);
+  console.log('Base', result.foo);
+  console.log('Derived', result.bar);
+}
+
+t41();

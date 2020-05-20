@@ -1,0 +1,235 @@
+console.log("This test checks that function declarations are treated as statements.");
+
+function f() {
+  return false;
+}
+
+function ifTest() {
+  if (true) {
+    function f() {
+      return true;
+    }
+  }
+
+  return f();
+}
+
+ifTest();
+
+function ifElseTest() {
+  if (false) {
+    return false;
+  } else {
+    function f() {
+      return true;
+    }
+  }
+
+  return f();
+}
+
+ifElseTest();
+
+function labelTest() {
+  label: function f() {
+    return true;
+  }
+
+  return f();
+}
+
+labelTest();
+
+function deepNesting() {
+  var y = '';
+  {
+    function foo() {
+      return 'abc';
+    }
+  }
+
+  if (true) {
+    {
+      {
+        {
+          {
+            {
+              {
+                {
+                  {
+                    {
+                      {
+                        let x = 'abc';
+                        y = x;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return foo();
+}
+
+;
+deepNesting();
+
+function deepNestingForFunctionDeclaration() {
+  var y = '';
+  {
+    {
+      {
+        {
+          {
+            {
+              {
+                {
+                  {
+                    {
+                      {
+                        {
+                          {
+                            {
+                              function foo() {
+                                return 'abc';
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (true) {
+    {
+      {
+        {
+          {
+            {
+              {
+                {
+                  {
+                    {
+                      {
+                        let x = 'abc';
+                        y = x;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return foo();
+}
+
+;
+deepNestingForFunctionDeclaration();
+eval(`function deepNestingInEval () {
+var y = '';
+{
+function foo() { return 'abc'; }
+}
+if (true) {
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+let x = 'abc';
+y = x;
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+return foo();
+};`);
+deepNestingInEval();
+eval(`function deepNestingForFunctionDeclarationInEval () {
+var y = '';
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+function foo() { return 'abc'; }
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+if (true) {
+{
+{
+{
+{
+{
+{
+{
+{
+{
+{
+let x = 'abc';
+y = x;
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+return foo();
+};`);
+deepNestingForFunctionDeclarationInEval();

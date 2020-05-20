@@ -4,7 +4,7 @@ This repo includes pre-processed corpus set used by DIE.
 The JS files in this repo are collected from [ChakraCore](https://github.com/microsoft/ChakraCore/tree/master/test),
 [d8](https://github.com/v8/v8/tree/master/test), [jsc](https://github.com/WebKit/webkit/tree/master/JSTests), [spidermonkey](https://github.com/mozilla/spidernode/tree/master/test), and [js-vuln-db](https://github.com/tunz/js-vuln-db).
 
-To resolve runtime errors and get type information, these corpus set was sanitized once. Please check the algorithm in the [paper](https://gts3.org/assets/papers/2020/park:die.pdf)).
+To resolve runtime errors and get type information, these corpus set was sanitized once. Please check the algorithm in the [paper](https://gts3.org/assets/papers/2020/park:die.pdf).
 
 
 #### MISC
